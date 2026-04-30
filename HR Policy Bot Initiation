@@ -1,0 +1,25 @@
+● The command to start the server:
+
+  cd /home/charles/HR_policy_bot_proto && source .venv/bin/activate && uvicorn src.main:app --host 0.0.0.0 --port 8000
+
+  Or if you want it as a one-liner you can paste directly:
+
+  cd /home/charles/HR_policy_bot_proto && source .venv/bin/activate && uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+
+  (--reload is optional — auto-restarts on file changes, handy during dev.)
+
+  If the server is currently running, kill it first with Ctrl+C in its terminal, then run the above. GUI will be at http://localhost:8000.
+
+❯ I shut it down but still running. How to kill process                                                                                                                                                     
+
+● Bash(lsof -ti:8000)
+  ⎿  174260
+     603030
+
+● Bash(kill 174260 603030)
+  ⎿  (No output)
+
+● Done. For future reference, the one-liner to kill whatever is on port 8000:
+
+  kill $(lsof -ti:8000)
+

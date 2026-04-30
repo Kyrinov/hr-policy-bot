@@ -1,0 +1,92 @@
+domain_selectors:
+  laws-lois.justice.gc.ca:
+    content_selector:
+      - ".lawBody"
+      - ".regulation-content"
+      - "main"
+      - "[id='main-content']"
+    remove_selector:
+      - "nav"
+      - "header"
+      - "footer"
+      - ".asideContainer"
+      - ".topContainer"
+      - ".bottomNav"
+    heading_selector: ["h1", "h2", "h3", "h4", "h5", "h6"]
+    paragraph_selector: "p"
+
+  www.tbs-sct.canada.ca:
+    content_selector:
+      - "main"
+      - ".mwsgeneric-base-html"
+      - "[id='wb-cont']"
+    remove_selector:
+      - "nav"
+      - "header"
+      - "footer"
+      - "#wb-info"
+      - ".pagedetails"
+      - ".wb-sldr"
+      - ".footer"
+    heading_selector: ["h1", "h2", "h3", "h4"]
+    paragraph_selector: "p"
+
+  www.canada.ca:
+    content_selector:
+      - "main"
+      - ".mwsgeneric-base-html"
+      - "[id='main-content']"
+    remove_selector:
+      - "nav"
+      - "header"
+      - "footer"
+      - "#wb-info"
+      - ".pagedetails"
+      - ".header-site"
+    heading_selector: ["h1", "h2", "h3", "h4", "h5"]
+    paragraph_selector: "p"
+
+  www.njc-cnm.gc.ca:
+    content_selector:
+      - "main"
+      - ".content-area"
+      - "article"
+      - "[id='wb-cont']"
+    remove_selector:
+      - "nav"
+      - "header"
+      - "footer"
+      - ".header"
+      - ".footer-super"
+    heading_selector: ["h1", "h2", "h3", "h4"]
+    paragraph_selector: "p"
+
+  decisions.fpslreb-crtespf.gc.ca:
+    content_selector:
+      - "main"
+      - ".decision-content"
+      - "[id='main-content']"
+    remove_selector:
+      - "nav"
+      - "header"
+      - "footer"
+      - ".sidebar"
+    heading_selector: ["h1", "h2", "h3"]
+    paragraph_selector: "p"
+
+  default:
+    content_selector:
+      - "main"
+      - "article"
+      - ".content"
+      - "[id='main-content']"
+    remove_selector:
+      - "nav"
+      - "header"
+      - "footer"
+      - "aside"
+      - "iframe"
+      - "script"
+      - "style"
+    heading_selector: ["h1", "h2", "h3", "h4", "h5", "h6"]
+    paragraph_selector: "p"

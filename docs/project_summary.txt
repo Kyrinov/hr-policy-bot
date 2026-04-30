@@ -1,0 +1,253 @@
+DND HR-CIV POLICY ADVISORY BOT — PROJECT SUMMARY
+Prototype Development Log: Architecture, Issues, and Fixes
+Generated: 2026-04-16
+===========================================================
+
+
+WHAT THIS SYSTEM IS
+-------------------
+This is a proof-of-concept multi-agent AI system built for the Department of National Defence,
+ADM(HR-Civ) directorate. Its purpose is to help HR policy advisors get accurate, well-referenced
+guidance on federal HR policy questions quickly, without manually searching dozens of Treasury
+Board and legislative instruments.
+
+A user types a question (e.g. "Can a manager extend a term appointment?") into a web GUI. The
+system routes that question through a set of specialist AI agents, each responsible for a specific
+HR domain. Those agents fetch and read the actual policy documents from government websites, then
+synthesize their findings into a structured response with citations and links to source material.
+
+
+HARDWARE AND STACK
+------------------
+- Hardware:       NVIDIA Jetson Orin AGX, 64 GB VRAM
+- Inference:      Ollama (local), model: gemma4:31b (previously tested with qwen3.5:35b)
+- Backend:        Python / FastAPI / Uvicorn
+- Realtime:       WebSockets (FastAPI native)
+- Database:       SQLite via aiosqlite
+- Frontend:       Vanilla HTML/CSS/JS (no framework)
+- Policy fetch:   Async HTTP with SQLite-backed cache (7-day TTL)
+
+
+ARCHITECTURE
+------------
+The system has four main layers:
+
+1. WEB LAYER (src/api/)
+   - websocket.py: Accepts WebSocket connections, assigns a query_id per session,
+     dispatches query_start messages to process_query(), streams status updates
+     back to the client in real time.
+   - routes.py: REST endpoints for health check, agent listing, query history,
+     feedback submission, and feedback export.
+
+2. AGENT LAYER (src/agents/)
+   - orchestrator.py: The coordinator. Receives the user's query, runs a routing
+     LLM call to decide which specialist agents are relevant, dispatches sub-queries
+     to those specialists in parallel, then runs a synthesis LLM call to produce the
+     final unified response.
+   - specialist.py: Eight domain agents (staffing, classification, labour, learning,
+     equity, ohs, languages, governance). Each fetches its assigned policy instruments,
+     extracts text, and asks the LLM to produce structured findings with citations.
+   - prompts/: System prompts for all nine agents, tuned to require JSON-only output.
+
+3. FETCH LAYER (src/fetch/)
+   - engine.py: Async HTTP fetching with per-domain concurrency limits (max 3 concurrent,
+     1-second minimum delay per domain). Normalizes laws-lois.justice.gc.ca URLs to their
+     FullText.html variants. Results are cached in SQLite for 7 days.
+
+4. DATA LAYER (src/data/, src/models/)
+   - db.py: All database I/O — queries, agent responses, orchestrator responses,
+     feedback, and the fetch cache.
+   - policy_registry.json: The canonical list of 8 agents and their assigned policy
+     instruments (deduplicated by URL). This is the authoritative source of which
+     documents the system knows about.
+   - schemas.py: Pydantic v2 models for every data structure in the system.
+
+
+WEBSOCKET MESSAGE FLOW
+----------------------
+The client and server communicate entirely over a single persistent WebSocket connection.
+The sequence for a query is:
+
+  Server → Client:  session_welcome        (connection established, query_id assigned)
+  Client → Server:  query_start            (user submits question)
+  Server → Client:  user_query             (server echoes query back with query_id)
+  Server → Client:  agent_status_update    (repeated — one per agent state change)
+  Server → Client:  response_complete      (final answer, citations, metadata)
+
+There is no streaming of the response text itself — the full answer arrives in one
+response_complete message once all agents have finished.
+
+
+POLICY REGISTRY
+---------------
+The system knows about policies through src/data/policy_registry.json. Each of the 8
+specialist agents has an assigned list of instruments. The registry contains the canonical
+URL for each instrument. When the fetch engine retrieves a document, it stores the text
+in the SQLite cache so subsequent queries don't re-download it.
+
+
+FEEDBACK SYSTEM
+---------------
+After each response, the user can rate it ("Accurate" or "Needs Work") and add a comment.
+This is submitted via POST /api/feedback and stored in the SQLite feedback table alongside
+the query_id. The data can be exported via GET /api/feedback/export.
+
+Important caveat: feedback is collected but does not currently feed back into the system
+automatically. There is no live retraining, prompt adjustment, or retrieval modification
+driven by ratings. The feedback database is infrastructure for future human review and
+eventual model improvement, appropriate for a PoC at this stage.
+
+
+BUGS IDENTIFIED AND FIXED
+--------------------------
+
+--- BUG 1: laws-lois URL normalization (fetch/engine.py) ---
+STATUS: Fixed (prior to this session)
+
+The policy registry stores act index URLs like:
+  https://laws-lois.justice.gc.ca/eng/acts/p-33.01/
+These pages return navigation HTML, not the legislative text. The fix added a
+_normalize_url() method that rewrites act index URLs to their FullText.html variant:
+  https://laws-lois.justice.gc.ca/eng/acts/p-33.01/FullText.html
+Regulations already referenced FullText.html directly, so no change was needed there.
+
+
+--- BUG 2: JSON-only enforcement in specialist prompts ---
+STATUS: Fixed (prior to this session)
+
+The specialist agent prompts were not strictly requiring JSON output. The LLM
+(gemma4:31b) was occasionally producing explanatory text before or after the JSON
+object, which caused parsing failures. The prompts were updated to explicitly require
+a bare JSON object with no preamble, commentary, or code fences.
+
+
+--- BUG 3: JSON extraction — brace boundary method ---
+STATUS: Fixed (prior to this session)
+
+The original code attempted to strip markdown code fences (```json ... ```) from LLM
+responses, which was the correct approach for Qwen3.5 but failed with gemma4. The fix
+replaced the code-fence stripping approach with a {/} boundary extraction: find the
+first { and last } in the response and extract that substring. This is model-agnostic
+and handles any amount of surrounding text.
+Applied in both orchestrator.py and specialist.py.
+
+
+--- BUG 4: WebSocket crash — "Cannot call send" RuntimeError ---
+STATUS: Fixed (prior to this session)
+
+The WebSocket endpoint had a race condition where it attempted to send a message on a
+connection that had already been closed (e.g. if the client disconnected mid-query).
+FastAPI raises a RuntimeError in this case. The fix added try/except guards around all
+websocket.send_json() calls, and ensured the finally block in the endpoint handler
+always runs cleanup regardless of how the connection terminated.
+
+
+--- BUG 5: GUI shows no output after query completes (MAIN BUG) ---
+STATUS: Fixed (this session, escalated to Claude Opus)
+
+This was the most persistent bug, surviving two fix attempts before being resolved.
+
+Root cause: A chicken-and-egg problem in the client-side message filter.
+
+In app.js, handleMessage() filters incoming WebSocket messages by query_id:
+
+  if (data.type !== 'agent_status_update' && data.type !== 'session_welcome') {
+      if (!currentQueryId || currentQueryId !== data.query_id) return;
+  }
+
+The variable currentQueryId is set inside handleUserQueryMessage(), which is called
+when a 'user_query' message arrives. However, 'user_query' was NOT in the bypass list
+— it was subject to the filter. Since currentQueryId is null at the moment user_query
+arrives (it hasn't been set yet), the filter dropped the message. With user_query
+silently discarded, currentQueryId was never set, so every subsequent message
+(including response_complete) was also dropped.
+
+Previous fix attempts had focused on handleResponseComplete() (the rendering function),
+not realising the message was being discarded 20 lines before it could reach that
+function. No amount of rendering logic fixes a message that never arrives.
+
+The fix was a one-character change to the filter condition:
+
+  if (data.type !== 'agent_status_update'
+      && data.type !== 'session_welcome'
+      && data.type !== 'user_query') {        // ← added this condition
+      if (!currentQueryId || currentQueryId !== data.query_id) return;
+  }
+
+
+--- BUG 6: Citation links lead to a JSON dead end ---
+STATUS: Fixed (this session)
+
+When users clicked citation links in the sidebar, the URLs were either invalid or
+pointed to API JSON endpoints rather than the actual government policy documents.
+
+Root cause: The orchestrator's _build_synthesis_prompt() method only passed instrument
+titles to the synthesis LLM — not their URLs. The LLM had no URL data to work with
+and was forced to generate (hallucinate) URLs from its training knowledge. These
+fabricated URLs were structurally plausible but wrong.
+
+The authoritative URLs were available in the specialist agent responses (they come
+directly from policy_registry.json via the fetch engine), but that data was being
+discarded before it reached the orchestrator's synthesis prompt.
+
+The fix had two parts, both in orchestrator.py:
+
+  1. _build_synthesis_prompt() was updated to include the full citation data
+     (title, URL, and section) in the text passed to the LLM, so the model at
+     least has the correct information available when composing its analysis.
+
+  2. A new _aggregate_citations() method was added that collects all citations
+     from the specialist responses in Python — bypassing the LLM entirely for
+     URL generation. After the LLM produces its synthesis text, the LLM-generated
+     citations (with potentially hallucinated URLs) are discarded and replaced with
+     the Python-aggregated ones (with registry-sourced URLs). This makes citation
+     URL correctness independent of LLM behaviour.
+
+
+--- BUG 7: Feedback rating not registering on submit ---
+STATUS: Fixed (this session)
+
+Clicking "Accurate" or "Needs Work" appeared to work visually (buttons greyed out),
+but clicking "Submit Feedback" produced an alert saying no rating had been selected.
+
+Root cause: When a feedback button was clicked, the handler disabled ALL buttons —
+including the one just clicked. The submitFeedback() function then queried for
+'.btn-feedback:not([disabled])' to find the selected rating. Since the clicked button
+was also disabled, this query returned nothing and the rating was always null.
+
+The fix: the click handler now adds a 'selected' CSS class to the clicked button
+(in addition to the existing visual changes), and submitFeedback() queries for
+'.btn-feedback.selected' instead of ':not([disabled])'. The selection is now
+tracked independently of the disabled state.
+
+
+CURRENT SYSTEM STATUS
+---------------------
+All seven identified bugs are resolved. The system:
+- Accepts queries via the WebSocket GUI
+- Routes them to relevant specialist agents
+- Fetches and caches policy instrument text from government websites
+- Produces structured responses with summary and detailed analysis
+- Displays citations with working links to source documents
+- Accepts and stores user feedback
+
+Known limitations (not bugs, by design for PoC):
+- Response times are long (10-25+ minutes depending on the number of agents invoked
+  and whether documents are cached). This is a function of the local LLM inference
+  speed on the Jetson hardware, not an application bug.
+- Feedback does not automatically improve system behaviour — it is collected for
+  future human review and potential model improvement.
+- The system's knowledge is bounded by policy_registry.json. Questions touching
+  instruments not in the registry will receive a "gaps and limitations" disclosure.
+
+
+HOW TO START THE SERVER
+-----------------------
+  cd /home/charles/HR_policy_bot_proto
+  source .venv/bin/activate
+  uvicorn src.main:app --host 0.0.0.0 --port 8000
+
+Kill any existing process on port 8000 first if needed:
+  kill $(lsof -ti:8000)
+
+Access the GUI at: http://localhost:8000

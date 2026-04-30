@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Policy Advisory System — DND ADM(HR-Civ)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Calibri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="header-bar">
+        <div class="header-content">
+            <h1>ADM(HR-Civ) // HR Policy Advisory System</h1>
+            <p class="subtitle">Pilot — Internal Use Only — April 2026</p>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="chat-panel">
+            <div class="chat-history" id="chatHistory">
+                <div class="welcome-message">
+                    <h2>Welcome to the HR Policy Advisory System</h2>
+                    <p>This system synthesizes guidance from DND civilian HR policy instruments. Submit your question below to receive well-referenced policy advice from our specialist agents.</p>
+                    <div class="example-queries">
+                        <p class="example-label">Example questions:</p>
+                        <ul>
+                            <li>What are the requirements for staffing a bilingual position at DND?</li>
+                            <li>What is the process for handling a workplace grievance?</li>
+                            <li>What accommodations are required for an employee with a disability?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar-area" id="progressBarArea" aria-live="polite" aria-atomic="true" hidden>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-status-text" id="progressStatusText"></p>
+            </div>
+
+            <div class="query-input-area">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="queryInput" 
+                        placeholder="Type your HR policy question here..." 
+                        rows="3"
+                        aria-label="Policy query input"
+                    ></textarea>
+                    <button id="sendButton" aria-label="Send query">
+                        <span>Send Query</span>
+                    </button>
+                </div>
+                <p class="input-note">Your question will be routed to relevant specialist agents for analysis.</p>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <section class="agent-status-panel" aria-labelledby="agent-status-heading">
+                <h2 id="agent-status-heading">Agent Status</h2>
+                <div class="agent-list" id="agentList">
+                    <div class="agent-item" data-agent="orchestrator">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Orchestrator</span>
+                    </div>
+                    <div class="agent-item" data-agent="staffing">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Staffing & Recruitment</span>
+                    </div>
+                    <div class="agent-item" data-agent="classification">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Classification & Compensation</span>
+                    </div>
+                    <div class="agent-item" data-agent="labour">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Labour Relations</span>
+                    </div>
+                    <div class="agent-item" data-agent="learning">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Learning & Performance</span>
+                    </div>
+                    <div class="agent-item" data-agent="equity">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Equity, Diversity & Inclusion</span>
+                    </div>
+                    <div class="agent-item" data-agent="ohs">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Health, Safety & Wellness</span>
+                    </div>
+                    <div class="agent-item" data-agent="languages">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Official Languages</span>
+                    </div>
+                    <div class="agent-item" data-agent="governance">
+                        <span class="status-dot" data-status="idle"></span>
+                        <span class="agent-name">Values, Ethics & Governance</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="citation-panel" aria-labelledby="citation-heading">
+                <h2 id="citation-heading">Policy Citations</h2>
+                <div class="citation-list" id="citationList">
+                    <p class="citation-placeholder">Citations will appear here after a response is generated.</p>
+                </div>
+            </section>
+
+            <section class="feedback-panel" aria-labelledby="feedback-heading">
+                <h2 id="feedback-heading">Feedback</h2>
+                <div class="feedback-content" id="feedbackContent">
+                    <p class="feedback-placeholder">Feedback controls will appear after a response.</p>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <footer class="footer-bar">
+        <p>ADM(HR-Civ) — Pilot System — Not for Operational Decisions</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
