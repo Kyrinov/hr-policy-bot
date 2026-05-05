@@ -42,7 +42,7 @@ def _load_config(path: Path) -> AppConfig:
         data = yaml.safe_load(f)
 
     # Environment variable overrides for sensitive/deployment values
-    if model_name := os.environ.get("OLLAMA_MODEL"):
+    if model_name := os.environ.get("VLLM_MODEL"):
         data.setdefault("model", {})["name"] = model_name
     if host := os.environ.get("SERVER_HOST"):
         data.setdefault("server", {})["host"] = host
