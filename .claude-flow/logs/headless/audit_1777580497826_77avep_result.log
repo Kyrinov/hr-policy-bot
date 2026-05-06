@@ -1,0 +1,175 @@
+[2026-04-30T20:22:23.892Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I'll create a comprehensive security analysis report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"title\": \"CORS Misconfiguration with Credentials\",\n      \"description\": \"CORS middleware allows all origins with credentials enabled. allow_origins=['*'] combined with allow_credentials=True is a security vulnerability. This allows any website to make authenticated requests on behalf of users. If a user visits a malicious site, it can interact with this API using the user's session/credentials.\",\n      \"cwe\": \"CWE-1004: Sensitive Cookie Without Secure Flag\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": \"130, 160, 173, 186\",\n      \"title\": \"Exception Details Exposed in HTTP Responses\",\n      \"description\": \"Exceptions are converted to strings and sent in HTTPException detail fields. This exposes sensitive error information (file paths, database errors, internal structure) to users. Should return generic error messages.\",\n      \"cwe\": \"CWE-209: Information Exposure Through an Error Message\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 99,\n      \"title\": \"SSRF (Server-Side Request Forgery) Vulnerability\",\n      \"description\": \"The fetch engine accepts URLs from user queries via orchestrator without sufficient validation. URL normalization (lines 67-72) only handles laws-lois.justice.gc.ca. An attacker could craft queries requesting URLs like 'http://localhost:8000/admin', 'http://169.254.169.254/', or internal IP ranges. No allowlist of valid domains is enforced.\",\n      \"cwe\": \"CWE-918: Server-Side Request Forgery\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 85,\n      \"title\": \"Unvalidated File Path Construction\",\n      \"description\": \"FileResponse(str(static_path / 'index.html')) constructs a file path without validating static_path. If static_path mount fails and falls back to None (line 46), this will raise an error. Ensure static_path is always valid before serving.\",\n      \"cwe\": \"CWE-426: Untrusted Search Path\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": \"97\",\n      \"title\": \"No WebSocket Message Size Limit\",\n      \"description\": \"WebSocket receives JSON via receive_json() with no specified max_size. An attacker can send extremely large messages to cause memory exhaustion (DoS). Should set max_size parameter on websocket.receive_json().\",\n      \"cwe\": \"CWE-400: Uncontrolled Resource Consumption\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": \"155-160\",\n      \"title\": \"Domain Extraction via String Parsing\",\n      \"description\": \"_get_domain() uses naive string splitting: url.split('//')[-1].split('/')[0]. This is fragile and could be bypassed by malformed URLs. Should use urllib.parse.urlparse() for robust domain extraction.\",\n      \"cwe\": \"CWE-20: Improper Input Validation\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"config.yaml\",\n      \"line\": 8,\n      \"title\": \"Insecure Default Binding Address\",\n      \"description\": \"Server binds to 0.0.0.0 by default, exposing the API to all network interfaces. This is fine for local development but unsafe for production. Should bind to 127.0.0.1 or a specific interface by default.\",\n      \"cwe\": \"CWE-1021: Improper Restriction of Rendered UI Layers\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 37,\n      \"title\": \"API Key Required Check Happens at Runtime\",\n      \"description\": \"GEMINI_API_KEY is checked in __init__() when client is first accessed, not at startup. If missing, requests will fail with RuntimeError. The startup check in main.py (line 70-71) only logs a warning.\",\n      \"cwe\": \"CWE-520: .NET Misconfiguration\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": \"54\",\n      \"title\": \"Hardcoded User-Agent String\",\n      \"description\": \"User-Agent is hardcoded to Chrome 124 on Linux. This is not a security vulnerability but could help identify bot traffic. Consider randomizing or making it configurable.\",\n      \"cwe\": \"N/A\"\n    }\n  ],\n  \"riskScore\": 68,\n  \"riskLevel\": \"HIGH\",\n  \"summary\": {\n    \"critical\": 0,\n    \"high\": 3,\n    \"medium\": 4,\n    \"low\": 2,\n    \"total\": 9\n  },\n  \"recommendations\": [\n    {\n      \"priority\": 1,\n      \"action\": \"Fix CORS configuration\",\n      \"details\": \"Change allow_origins=['*'] to a specific whitelist of trusted domains (e.g., ['https://example.com']), and set allow_credentials=False if not needed, or allow_credentials=True ONLY if origins are not wildcard.\",\n      \"file\": \"src/main.py:34-40\"\n    },\n    {\n      \"priority\": 2,\n      \"action\": \"Implement SSRF protection\",\n      \"details\": \"Add URL validation before fetching. Maintain an allowlist of valid policy document domains (only laws-lois.justice.gc.ca and related government sources). Reject URLs matching internal IP ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8, 169.254.0.0/16).\",\n      \"file\": \"src/fetch/engine.py:60-65\"\n    },\n    {\n      \"priority\": 3,\n      \"action\": \"Hide exception details from users\",\n      \"details\": \"Return generic error messages in HTTP responses. Log full exceptions server-side only. Example: `raise HTTPException(status_code=500, detail='An error occurred')` instead of `detail=str(e)`.\",\n      \"file\": \"src/api/routes.py (all routes)\"\n    },\n    {\n      \"priority\": 4,\n      \"action\": \"Add WebSocket message size limits\",\n      \"details\": \"Set max_size parameter: `data = await websocket.receive_json(mode='text')` and validate payload size before parsing.\",\n      \"file\": \"src/api/websocket.py:97\"\n    },\n    {\n      \"priority\": 5,\n      \"action\": \"Use urllib for URL parsing\",\n      \"details\": \"Replace string-based domain extraction with `from urllib.parse import urlparse; domain = urlparse(url).netloc`.\",\n      \"file\": \"src/fetch/engine.py:155-160\"\n    },\n    {\n      \"priority\": 6,\n      \"action\": \"Bind to localhost by default\",\n      \"details\": \"Change server.host from '0.0.0.0' to '127.0.0.1' in config.yaml, or make it configurable via environment variable.\",\n      \"file\": \"config.yaml:8\"\n    },\n    {\n      \"priority\": 7,\n      \"action\": \"Require API keys at startup\",\n      \"details\": \"Move GEMINI_API_KEY check to app startup event instead of lazy initialization. Fail fast if missing.\",\n      \"file\": \"src/main.py:68-71\"\n    },\n    {\n      \"priority\": 8,\n      \"action\": \"Validate FeedbackRecord input\",\n      \"details\": \"FeedbackRecord accepts arbitrary query_id values. Validate that query_id exists before saving. Also validate rating enum values.\",\n      \"file\": \"src/models/schemas.py:142-147, src/api/routes.py:163-173\"\n    }\n  ],\n  \"positiveFindings\": [\n    \"✓ Parameterized SQL queries throughout (no SQL injection risk)\",\n    \"✓ Async/await pattern prevents blocking attacks\",\n    \"✓ Rate limiting on LLM (semaphore prevents concurrent overload)\",\n    \"✓ Domain-level rate limiting on web fetching (prevents target bombardment)\",\n    \"✓ Timeout on HTTP requests (prevents hang attacks)\",\n    \"✓ Pydantic models provide input validation\",\n    \"✓ API key not hardcoded in source (uses environment variable)\",\n    \"✓ HTTPS support available (though not enforced in config)\"\n  ],\n  \"dependencies\": {\n    \"audited\": [\n      \"fastapi==0.104.1\",\n      \"httpx==0.25.2\",\n      \"google-generativeai (latest)\",\n      \"aiosqlite==0.19.0\",\n      \"pydantic==2.5.0\"\n    ],\n    \"notes\": \"No audit of .venv/lib dependencies performed. Run `pip-audit` separately for dependency CVEs.\",\n    \"recommendation\": \"Run `pip install pip-audit && pip-audit` to check for known vulnerabilities in installed packages.\"\n  },\n  \"testingRecommendations\": [\n    \"Test CORS with curl -H 'Origin: http://evil.com' to verify restrictive headers\",\n    \"Attempt SSRF attacks: query with http://localhost:8000, http://169.254.169.254, http://admin.internal\",\n    \"Send oversized WebSocket messages and monitor memory usage\",\n    \"Verify database errors are not exposed in API responses\",\n    \"Test with invalid/missing GEMINI_API_KEY at startup\"\n  ]\n}\n```\n\n## Key Findings Summary\n\n**Risk Score: 68/100 (HIGH)**\n\nThe application has **3 high-severity vulnerabilities**:\n\n1. **CORS misconfiguration** — allows cross-origin requests with credentials, enabling account takeover attacks\n2. **SSRF vulnerability** — insufficient URL validation allows attackers to request internal resources\n3. **Error disclosure** — exception details leaked to users reveal system internals\n\n**Immediate Actions Required:**\n- [ ] Fix CORS: Replace `allow_origins=[\"*\"]` with specific domain whitelist\n- [ ] Add SSRF protection: Validate URLs against government domain allowlist\n- [ ] Hide exceptions: Return generic error messages, log details server-side only\n- [ ] Run `pip-audit` to check dependency vulnerabilities\n\nThe code follows good security practices (parameterized queries, timeouts, rate limiting) but these three issues require urgent patching before production deployment.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "title": "CORS Misconfiguration with Credentials",
+        "description": "CORS middleware allows all origins with credentials enabled. allow_origins=['*'] combined with allow_credentials=True is a security vulnerability. This allows any website to make authenticated requests on behalf of users. If a user visits a malicious site, it can interact with this API using the user's session/credentials.",
+        "cwe": "CWE-1004: Sensitive Cookie Without Secure Flag"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": "130, 160, 173, 186",
+        "title": "Exception Details Exposed in HTTP Responses",
+        "description": "Exceptions are converted to strings and sent in HTTPException detail fields. This exposes sensitive error information (file paths, database errors, internal structure) to users. Should return generic error messages.",
+        "cwe": "CWE-209: Information Exposure Through an Error Message"
+      },
+      {
+        "severity": "high",
+        "file": "src/fetch/engine.py",
+        "line": 99,
+        "title": "SSRF (Server-Side Request Forgery) Vulnerability",
+        "description": "The fetch engine accepts URLs from user queries via orchestrator without sufficient validation. URL normalization (lines 67-72) only handles laws-lois.justice.gc.ca. An attacker could craft queries requesting URLs like 'http://localhost:8000/admin', 'http://169.254.169.254/', or internal IP ranges. No allowlist of valid domains is enforced.",
+        "cwe": "CWE-918: Server-Side Request Forgery"
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 85,
+        "title": "Unvalidated File Path Construction",
+        "description": "FileResponse(str(static_path / 'index.html')) constructs a file path without validating static_path. If static_path mount fails and falls back to None (line 46), this will raise an error. Ensure static_path is always valid before serving.",
+        "cwe": "CWE-426: Untrusted Search Path"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": "97",
+        "title": "No WebSocket Message Size Limit",
+        "description": "WebSocket receives JSON via receive_json() with no specified max_size. An attacker can send extremely large messages to cause memory exhaustion (DoS). Should set max_size parameter on websocket.receive_json().",
+        "cwe": "CWE-400: Uncontrolled Resource Consumption"
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": "155-160",
+        "title": "Domain Extraction via String Parsing",
+        "description": "_get_domain() uses naive string splitting: url.split('//')[-1].split('/')[0]. This is fragile and could be bypassed by malformed URLs. Should use urllib.parse.urlparse() for robust domain extraction.",
+        "cwe": "CWE-20: Improper Input Validation"
+      },
+      {
+        "severity": "medium",
+        "file": "config.yaml",
+        "line": 8,
+        "title": "Insecure Default Binding Address",
+        "description": "Server binds to 0.0.0.0 by default, exposing the API to all network interfaces. This is fine for local development but unsafe for production. Should bind to 127.0.0.1 or a specific interface by default.",
+        "cwe": "CWE-1021: Improper Restriction of Rendered UI Layers"
+      },
+      {
+        "severity": "low",
+        "file": "src/llm/client.py",
+        "line": 37,
+        "title": "API Key Required Check Happens at Runtime",
+        "description": "GEMINI_API_KEY is checked in __init__() when client is first accessed, not at startup. If missing, requests will fail with RuntimeError. The startup check in main.py (line 70-71) only logs a warning.",
+        "cwe": "CWE-520: .NET Misconfiguration"
+      },
+      {
+        "severity": "low",
+        "file": "src/fetch/engine.py",
+        "line": "54",
+        "title": "Hardcoded User-Agent String",
+        "description": "User-Agent is hardcoded to Chrome 124 on Linux. This is not a security vulnerability but could help identify bot traffic. Consider randomizing or making it configurable.",
+        "cwe": "N/A"
+      }
+    ],
+    "riskScore": 68,
+    "riskLevel": "HIGH",
+    "summary": {
+      "critical": 0,
+      "high": 3,
+      "medium": 4,
+      "low": 2,
+      "total": 9
+    },
+    "recommendations": [
+      {
+        "priority": 1,
+        "action": "Fix CORS configuration",
+        "details": "Change allow_origins=['*'] to a specific whitelist of trusted domains (e.g., ['https://example.com']), and set allow_credentials=False if not needed, or allow_credentials=True ONLY if origins are not wildcard.",
+        "file": "src/main.py:34-40"
+      },
+      {
+        "priority": 2,
+        "action": "Implement SSRF protection",
+        "details": "Add URL validation before fetching. Maintain an allowlist of valid policy document domains (only laws-lois.justice.gc.ca and related government sources). Reject URLs matching internal IP ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8, 169.254.0.0/16).",
+        "file": "src/fetch/engine.py:60-65"
+      },
+      {
+        "priority": 3,
+        "action": "Hide exception details from users",
+        "details": "Return generic error messages in HTTP responses. Log full exceptions server-side only. Example: `raise HTTPException(status_code=500, detail='An error occurred')` instead of `detail=str(e)`.",
+        "file": "src/api/routes.py (all routes)"
+      },
+      {
+        "priority": 4,
+        "action": "Add WebSocket message size limits",
+        "details": "Set max_size parameter: `data = await websocket.receive_json(mode='text')` and validate payload size before parsing.",
+        "file": "src/api/websocket.py:97"
+      },
+      {
+        "priority": 5,
+        "action": "Use urllib for URL parsing",
+        "details": "Replace string-based domain extraction with `from urllib.parse import urlparse; domain = urlparse(url).netloc`.",
+        "file": "src/fetch/engine.py:155-160"
+      },
+      {
+        "priority": 6,
+        "action": "Bind to localhost by default",
+        "details": "Change server.host from '0.0.0.0' to '127.0.0.1' in config.yaml, or make it configurable via environment variable.",
+        "file": "config.yaml:8"
+      },
+      {
+        "priority": 7,
+        "action": "Require API keys at startup",
+        "details": "Move GEMINI_API_KEY check to app startup event instead of lazy initialization. Fail fast if missing.",
+        "file": "src/main.py:68-71"
+      },
+      {
+        "priority": 8,
+        "action": "Validate FeedbackRecord input",
+        "details": "FeedbackRecord accepts arbitrary query_id values. Validate that query_id exists before saving. Also validate rating enum values.",
+        "file": "src/models/schemas.py:142-147, src/api/routes.py:163-173"
+      }
+    ],
+    "positiveFindings": [
+      "✓ Parameterized SQL queries throughout (no SQL injection risk)",
+      "✓ Async/await pattern prevents blocking attacks",
+      "✓ Rate limiting on LLM (semaphore prevents concurrent overload)",
+      "✓ Domain-level rate limiting on web fetching (prevents target bombardment)",
+      "✓ Timeout on HTTP requests (prevents hang attacks)",
+      "✓ Pydantic models provide input validation",
+      "✓ API key not hardcoded in source (uses environment variable)",
+      "✓ HTTPS support available (though not enforced in config)"
+    ],
+    "dependencies": {
+      "audited": [
+        "fastapi==0.104.1",
+        "httpx==0.25.2",
+        "google-generativeai (latest)",
+        "aiosqlite==0.19.0",
+        "pydantic==2.5.0"
+      ],
+      "notes": "No audit of .venv/lib dependencies performed. Run `pip-audit` separately for dependency CVEs.",
+      "recommendation": "Run `pip install pip-audit && pip-audit` to check for known vulnerabilities in installed packages."
+    },
+    "testingRecommendations": [
+      "Test CORS with curl -H 'Origin: http://evil.com' to verify restrictive headers",
+      "Attempt SSRF attacks: query with http://localhost:8000, http://169.254.169.254, http://admin.internal",
+      "Send oversized WebSocket messages and monitor memory usage",
+      "Verify database errors are not exposed in API responses",
+      "Test with invalid/missing GEMINI_API_KEY at startup"
+    ]
+  },
+  "durationMs": 46066,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T20:22:23.892Z",
+  "executionId": "audit_1777580497826_77avep"
+}

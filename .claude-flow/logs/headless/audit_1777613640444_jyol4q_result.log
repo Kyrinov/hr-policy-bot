@@ -1,0 +1,120 @@
+[2026-05-01T05:34:53.384Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Based on my analysis of your DND HR-Civ Multi-Agent Policy Advisory System codebase, here's the comprehensive security audit:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 34,\n      \"description\": \"CRITICAL: CORS middleware allows all origins with credentials enabled. This permits any website to make authenticated requests to your API (allow_origins=['*'] with allow_credentials=True).\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 97,\n      \"description\": \"No input validation on WebSocket query_text. Accepts unbounded strings without length limits, vulnerable to DoS attacks. No sanitization of user input before passing to LLM.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/agents/orchestrator.py\",\n      \"line\": 75,\n      \"description\": \"Prompt injection vulnerability: User input directly interpolated into LLM prompts without sanitization. Malicious input can manipulate agent behavior or extract sensitive information.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 130,\n      \"description\": \"Exception details leaked to clients. Stack traces and implementation details exposed via HTTP responses (HTTPException with str(e)).\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 67,\n      \"description\": \"Potential SSRF vulnerability: URL normalization regex (laws-lois.justice.gc.ca) is permissive and doesn't validate against path traversal attacks. Attacker could potentially access unintended resources.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 155,\n      \"description\": \"Insecure URL parsing: _get_domain() uses string split instead of proper URL parsing (urlparse). Malicious URLs could bypass domain-based rate limiting (e.g., http://evil.com@legitimate.com).\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 64,\n      \"description\": \"No authentication or authorization on any REST endpoints. Any user can query all historical queries, feedback, and system data without authentication.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 76,\n      \"description\": \"Missing CSRF protection and rate limiting on WebSocket endpoint. No token validation, no request rate limits. Vulnerable to abuse and amplification attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 69,\n      \"description\": \"Sensitive API key checks logged as warnings. GEMINI_API_KEY exposure in error messages could reveal authentication requirements to attackers.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 19,\n      \"description\": \"Hardcoded database path without encryption: SQLite database stores all queries, responses, and user feedback in plaintext. No field-level encryption for sensitive data.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"Server binds to 0.0.0.0:8000 with no HTTPS enforcement. No HTTP Strict-Transport-Security header. Vulnerable to man-in-the-middle attacks in network transit.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 27,\n      \"description\": \"Missing security headers: No Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, or X-XSS-Protection headers configured.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 177,\n      \"description\": \"Unrestricted export endpoint: /feedback/export returns all feedback with no pagination, rate limiting, or authentication. Could expose large datasets.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    \"IMMEDIATE (High Priority):\",\n    \"1. Fix CORS: Change allow_origins=['*'] to specific origins. Remove allow_credentials=True or use more restrictive domain list.\",\n    \"2. Add input validation: Implement query length limits (e.g., max 5000 chars), validate WebSocket messages, use Pydantic validators.\",\n    \"3. Sanitize prompts: Never interpolate user input directly. Use parameterized prompt templates with {placeholder} substitution.\",\n    \"4. Add authentication: Implement JWT or session-based auth for all REST endpoints and WebSocket connections.\",\n    \"5. Remove error details: Catch exceptions, log details server-side, return generic error messages to clients (e.g., 'An error occurred').\",\n    \"6. Use proper URL parsing: Replace string.split() with urllib.parse.urlparse() or furl library for URL validation.\",\n    \"7. Add rate limiting: Use slowapi or similar library to limit requests per IP (e.g., 100 req/min for REST, 10 msg/min for WebSocket).\",\n    \"\",\n    \"SHORT TERM (Within 1-2 weeks):\",\n    \"8. Add HTTPS enforcement: Configure SSL/TLS, set HSTS header, force redirect from HTTP.\",\n    \"9. Security headers: Add middleware for CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy.\",\n    \"10. Database encryption: Encrypt SQLite database at rest, add field-level encryption for sensitive columns (query_text, findings).\",\n    \"11. Audit logging: Log all access attempts, authentication failures, and sensitive operations with timestamps and user identifiers.\",\n    \"12. Input length limits: Set max_connections limit on WebSocket, validate query_text length before processing.\",\n    \"13. CSRF protection: Implement CSRF tokens for state-changing operations.\",\n    \"\",\n    \"LONG TERM (Within 1 month):\",\n    \"14. API key management: Move GEMINI_API_KEY to secure vault (AWS Secrets Manager, HashiCorp Vault, etc.).\",\n    \"15. Privacy controls: Implement data retention policies, GDPR-compliant deletion, user consent tracking.\",\n    \"16. Penetration testing: Conduct professional security assessment and OWASP Top 10 review.\",\n    \"17. API documentation: Document security requirements in OpenAPI/Swagger spec.\",\n    \"18. Access control: Implement role-based access control (RBAC) for different user types (admin, analyst, viewer).\"\n  ]\n}\n```\n\n## Key Security Issues Summary\n\n**Critical Threats:**\n1. **CORS misconfiguration** - Allows cross-origin requests with credentials\n2. **Prompt injection** - Unvalidated user input in LLM prompts\n3. **No authentication** - All endpoints publicly accessible\n4. **Information disclosure** - Stack traces and error details leaked to clients\n\n**Attack Scenarios:**\n- Attacker browses to their website, which makes authenticated API calls to your server (CORS)\n- Attacker submits malicious query to manipulate agent behavior or extract system prompts\n- Attacker exports all historical queries and feedback (no auth, no rate limiting)\n- Attacker floods WebSocket endpoint with connections or oversized messages (DoS)\n\nWould you like me to create patches for any of these vulnerabilities?\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 34,
+        "description": "CRITICAL: CORS middleware allows all origins with credentials enabled. This permits any website to make authenticated requests to your API (allow_origins=['*'] with allow_credentials=True)."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 97,
+        "description": "No input validation on WebSocket query_text. Accepts unbounded strings without length limits, vulnerable to DoS attacks. No sanitization of user input before passing to LLM."
+      },
+      {
+        "severity": "high",
+        "file": "src/agents/orchestrator.py",
+        "line": 75,
+        "description": "Prompt injection vulnerability: User input directly interpolated into LLM prompts without sanitization. Malicious input can manipulate agent behavior or extract sensitive information."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 130,
+        "description": "Exception details leaked to clients. Stack traces and implementation details exposed via HTTP responses (HTTPException with str(e))."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 67,
+        "description": "Potential SSRF vulnerability: URL normalization regex (laws-lois.justice.gc.ca) is permissive and doesn't validate against path traversal attacks. Attacker could potentially access unintended resources."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 155,
+        "description": "Insecure URL parsing: _get_domain() uses string split instead of proper URL parsing (urlparse). Malicious URLs could bypass domain-based rate limiting (e.g., http://evil.com@legitimate.com)."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 64,
+        "description": "No authentication or authorization on any REST endpoints. Any user can query all historical queries, feedback, and system data without authentication."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 76,
+        "description": "Missing CSRF protection and rate limiting on WebSocket endpoint. No token validation, no request rate limits. Vulnerable to abuse and amplification attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 69,
+        "description": "Sensitive API key checks logged as warnings. GEMINI_API_KEY exposure in error messages could reveal authentication requirements to attackers."
+      },
+      {
+        "severity": "medium",
+        "file": "src/data/db.py",
+        "line": 19,
+        "description": "Hardcoded database path without encryption: SQLite database stores all queries, responses, and user feedback in plaintext. No field-level encryption for sensitive data."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "Server binds to 0.0.0.0:8000 with no HTTPS enforcement. No HTTP Strict-Transport-Security header. Vulnerable to man-in-the-middle attacks in network transit."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 27,
+        "description": "Missing security headers: No Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, or X-XSS-Protection headers configured."
+      },
+      {
+        "severity": "low",
+        "file": "src/api/routes.py",
+        "line": 177,
+        "description": "Unrestricted export endpoint: /feedback/export returns all feedback with no pagination, rate limiting, or authentication. Could expose large datasets."
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      "IMMEDIATE (High Priority):",
+      "1. Fix CORS: Change allow_origins=['*'] to specific origins. Remove allow_credentials=True or use more restrictive domain list.",
+      "2. Add input validation: Implement query length limits (e.g., max 5000 chars), validate WebSocket messages, use Pydantic validators.",
+      "3. Sanitize prompts: Never interpolate user input directly. Use parameterized prompt templates with {placeholder} substitution.",
+      "4. Add authentication: Implement JWT or session-based auth for all REST endpoints and WebSocket connections.",
+      "5. Remove error details: Catch exceptions, log details server-side, return generic error messages to clients (e.g., 'An error occurred').",
+      "6. Use proper URL parsing: Replace string.split() with urllib.parse.urlparse() or furl library for URL validation.",
+      "7. Add rate limiting: Use slowapi or similar library to limit requests per IP (e.g., 100 req/min for REST, 10 msg/min for WebSocket).",
+      "",
+      "SHORT TERM (Within 1-2 weeks):",
+      "8. Add HTTPS enforcement: Configure SSL/TLS, set HSTS header, force redirect from HTTP.",
+      "9. Security headers: Add middleware for CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy.",
+      "10. Database encryption: Encrypt SQLite database at rest, add field-level encryption for sensitive columns (query_text, findings).",
+      "11. Audit logging: Log all access attempts, authentication failures, and sensitive operations with timestamps and user identifiers.",
+      "12. Input length limits: Set max_connections limit on WebSocket, validate query_text length before processing.",
+      "13. CSRF protection: Implement CSRF tokens for state-changing operations.",
+      "",
+      "LONG TERM (Within 1 month):",
+      "14. API key management: Move GEMINI_API_KEY to secure vault (AWS Secrets Manager, HashiCorp Vault, etc.).",
+      "15. Privacy controls: Implement data retention policies, GDPR-compliant deletion, user consent tracking.",
+      "16. Penetration testing: Conduct professional security assessment and OWASP Top 10 review.",
+      "17. API documentation: Document security requirements in OpenAPI/Swagger spec.",
+      "18. Access control: Implement role-based access control (RBAC) for different user types (admin, analyst, viewer)."
+    ]
+  },
+  "durationMs": 52939,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-01T05:34:53.383Z",
+  "executionId": "audit_1777613640444_jyol4q"
+}

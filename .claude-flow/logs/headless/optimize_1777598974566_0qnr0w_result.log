@@ -1,0 +1,143 @@
+[2026-05-01T01:32:20.047Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I have everything I need for a precise analysis. Here are the findings:\n\n---\n\n## Performance Analysis\n\nThis is a Python/FastAPI + aiosqlite backend with no React (pure JS frontend). The issues are backend-focused.\n\n---\n\n### 1. Missing Database Indexes — CRITICAL\n\n`db.py:21-71` defines four tables with zero indexes on `query_id` foreign keys. Every `get_agent_responses()`, `get_orchestrator_response()`, and `get_feedback_for_query()` does a full table scan. At 1,000 queries × 8 agent responses each = 8,000 rows scanned on every lookup.\n\n**Fix** — add to `_SCHEMA` in `db.py`:\n\n```python\n_SCHEMA = \"\"\"\n...existing CREATE TABLE statements...\n\nCREATE INDEX IF NOT EXISTS idx_agent_responses_query_id\n    ON agent_responses(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_orchestrator_responses_query_id\n    ON orchestrator_responses(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_feedback_query_id\n    ON feedback(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_queries_timestamp\n    ON queries(timestamp DESC);\n\"\"\"\n```\n\n---\n\n### 2. Rate-Limit Lock Serializes All Fetches — HIGH\n\n`engine.py:79-84` uses a **single** `_domain_lock` to enforce the 1-second inter-request delay. Every concurrent fetch, regardless of domain, must wait for this lock. With 8 specialists each fetching 3-4 URLs in parallel, this serializes the critical section across all domains.\n\n```python\n# Current: one lock for all domains\nasync with self._domain_lock:           # ← global bottleneck\n    last_request = self._domain_last_request[domain]\n    ...\n```\n\n**Fix** — use per-domain locks:\n\n```python\nself._domain_locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)\n\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:          # per-domain, not global\n        last_request = self._domain_last_request[domain]\n        delay_required = 1.0 - (time.time() - last_request)\n        if delay_required > 0:\n            await asyncio.sleep(delay_required)\n        self._domain_last_request[domain] = time.time()\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)\n```\n\n---\n\n### 3. Cache Check After Rate-Limit Delay — HIGH\n\n`engine.py:74-95`: the cache is checked inside `_do_fetch()`, which is called *after* acquiring the domain semaphore and waiting for the rate-limit delay. Cached URLs waste a full semaphore slot and potentially wait 1s for no reason.\n\n```python\n# Current flow: wait → acquire semaphore → check cache\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    async with self._domain_lock:\n        ...await asyncio.sleep(delay_required)...   # waits even for cache hits\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)            # cache checked here — too late\n\n# Better: check cache first, skip rate limiting entirely if cached\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    cached = await self._cache.get(url)\n    if cached is not None:\n        return cached.content                       # skip rate limit + semaphore\n\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:\n        ...\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)\n```\n\n---\n\n### 4. Two LLM Calls Per Query (Routing + Synthesis) — MEDIUM\n\n`orchestrator.py:244,281,300`: every user query makes **two** full LLM round-trips — one routing call (`_route()`) and one synthesis call (`process()`). The routing call uses the same heavy `ORCHESTRATOR_PROMPT` as synthesis (87 lines of system prompt repeated twice).\n\nThe routing call should use a much shorter system prompt since it only needs to return a small JSON blob:\n\n```python\n_ROUTING_PROMPT = \"\"\"You are an HR policy routing agent. Given a query, select which specialist agents to invoke.\nAvailable agents: staffing, classification, labour, learning, equity, ohs, languages, governance.\nRespond ONLY with valid JSON: {\"selected_agents\": [...], \"sub_queries\": {\"agent_id\": \"sub-query\"}}\nSelect only agents whose domain is genuinely relevant (typically 1-3).\"\"\"\n\nasync def _route(self, query_text: str) -> dict[str, Any]:\n    raw = await self._llm_client.chat(\n        system_prompt=_ROUTING_PROMPT,   # ← short prompt, not the 87-line ORCHESTRATOR_PROMPT\n        user_message=f\"QUERY: {query_text}\",\n    )\n    ...\n```\n\nThis reduces routing token cost by ~70% and improves latency.\n\n---\n\n### 5. Fallback Invokes All 8 Agents — MEDIUM\n\n`orchestrator.py:312-317`: when routing fails, all 8 specialists run. This multiplies LLM calls and fetch operations by 8×. A smarter fallback would default to 2-3 high-frequency agents (staffing + governance cover most queries):\n\n```python\n_DEFAULT_FALLBACK_AGENTS = [\"staffing\", \"governance\", \"labour\"]\n\nexcept Exception as e:\n    logger.warning(\"Routing failed, using fallback agents: %s\", e)\n    return {\n        \"selected_agents\": _DEFAULT_FALLBACK_AGENTS,\n        \"sub_queries\": {aid: query_text for aid in _DEFAULT_FALLBACK_AGENTS},\n    }\n```\n\n---\n\n### 6. New DB Connection Per Operation — MEDIUM\n\n`db.py:92,112,130,...`: every method opens and closes an `aiosqlite` connection. A single request that saves a query, 8 agent responses, and an orchestrator response opens **~11 connections**. SQLite handles this but there's measurable overhead.\n\n**Fix** — persist a single connection at startup:\n\n```python\nclass DatabaseManager:\n    def __init__(self, db_path: Path = _DB_PATH) -> None:\n        self._db_path = db_path\n        self._db_path.parent.mkdir(parents=True, exist_ok=True)\n        self._db: aiosqlite.Connection | None = None\n\n    async def initialize(self) -> None:\n        self._db = await aiosqlite.connect(self._db_path)\n        self._db.row_factory = aiosqlite.Row\n        await self._db.executescript(_SCHEMA)\n        await self._db.commit()\n\n    async def close(self) -> None:\n        if self._db:\n            await self._db.close()\n\n    async def save_query(self, record: QueryRecord) -> None:\n        await self._db.execute(\"INSERT OR REPLACE INTO queries ...\", (...))\n        await self._db.commit()\n```\n\nRegister `close()` in the FastAPI shutdown event.\n\n---\n\n### 7. Fetch Cache Never Expires — MEDIUM\n\n`db.py:63-71`: `fetch_cache` stores full HTML content with a TTL column, but `clear_expired()` is never called from application code. Cache grows unbounded forever.\n\n**Fix** — call it on startup and periodically:\n\n```python\n# In main.py startup_event:\nasync def startup_event() -> None:\n    db = DatabaseManager()\n    await db.initialize()\n    await db.clear_expired()          # purge stale on startup\n\n# Or add a periodic background task:\nasync def _periodic_cache_cleanup() -> None:\n    while True:\n        await asyncio.sleep(3600)     # every hour\n        db = DatabaseManager()\n        await db.clear_expired()\n```\n\n---\n\n### 8. Unbounded Domain Tracking Dicts — LOW\n\n`engine.py:43-46`: `_domain_semaphores` and `_domain_last_request` grow with each unique domain and are never pruned. With a fixed set of ~6 government domains this is a non-issue in practice, but it's worth bounding for correctness:\n\n```python\nfrom functools import lru_cache\n\n# Or cap with a fixed dict + cleanup of entries older than 1 hour\ndef _maybe_prune_domain_tracking(self) -> None:\n    cutoff = time.time() - 3600\n    stale = [d for d, t in self._domain_last_request.items() if t < cutoff]\n    for d in stale:\n        del self._domain_last_request[d]\n        self._domain_semaphores.pop(d, None)\n        self._domain_locks.pop(d, None)\n```\n\n---\n\n### 9. JavaScript Event Listener Leak — LOW\n\n`static/js/app.js` (feedback buttons): `showFeedbackControls()` adds `click` listeners to `.btn-feedback` buttons on every query response. If a user submits multiple queries without refreshing, listeners accumulate on the same DOM nodes.\n\n**Fix** — replace the node to drop all listeners, or use `{ once: true }`:\n\n```javascript\ndocument.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n    btn.addEventListener('click', handler, { once: true });  // auto-removes after first click\n});\n```\n\n---\n\n### Priority Order\n\n| # | Issue | File | Impact | Effort |\n|---|-------|------|--------|--------|\n| 1 | Missing DB indexes | `db.py:21` | Full table scans | 5 min |\n| 2 | Rate-limit lock serializes all domains | `engine.py:79` | Parallel fetch slowdown | 15 min |\n| 3 | Cache checked after delay | `engine.py:74` | Wasted wait on cache hits | 15 min |\n| 4 | Two LLM calls, routing uses heavy prompt | `orchestrator.py:300` | ~2× LLM cost per query | 10 min |\n| 5 | Fallback invokes all 8 agents | `orchestrator.py:313` | 8× overhead on routing failure | 5 min |\n| 6 | New DB connection per operation | `db.py:92+` | Connection overhead | 30 min |\n| 7 | Cache never purged | `db.py:63` | Unbounded disk growth | 10 min |\n| 8 | JS event listener accumulation | `app.js` | Minor browser memory | 5 min |\n\nItems 1–5 have the highest ROI and can be done in under an hour combined. Want me to apply any of these?\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis",
+        "content": "\nThis is a Python/FastAPI + aiosqlite backend with no React (pure JS frontend). The issues are backend-focused.\n\n---\n\n",
+        "level": 2
+      },
+      {
+        "title": "1. Missing Database Indexes — CRITICAL",
+        "content": "\n`db.py:21-71` defines four tables with zero indexes on `query_id` foreign keys. Every `get_agent_responses()`, `get_orchestrator_response()`, and `get_feedback_for_query()` does a full table scan. At 1,000 queries × 8 agent responses each = 8,000 rows scanned on every lookup.\n\n**Fix** — add to `_SCHEMA` in `db.py`:\n\n```python\n_SCHEMA = \"\"\"\n...existing CREATE TABLE statements...\n\nCREATE INDEX IF NOT EXISTS idx_agent_responses_query_id\n    ON agent_responses(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_orchestrator_responses_query_id\n    ON orchestrator_responses(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_feedback_query_id\n    ON feedback(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_queries_timestamp\n    ON queries(timestamp DESC);\n\"\"\"\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "2. Rate-Limit Lock Serializes All Fetches — HIGH",
+        "content": "\n`engine.py:79-84` uses a **single** `_domain_lock` to enforce the 1-second inter-request delay. Every concurrent fetch, regardless of domain, must wait for this lock. With 8 specialists each fetching 3-4 URLs in parallel, this serializes the critical section across all domains.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "Current: one lock for all domains",
+        "content": "async with self._domain_lock:           # ← global bottleneck\n    last_request = self._domain_last_request[domain]\n    ...\n```\n\n**Fix** — use per-domain locks:\n\n```python\nself._domain_locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)\n\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:          # per-domain, not global\n        last_request = self._domain_last_request[domain]\n        delay_required = 1.0 - (time.time() - last_request)\n        if delay_required > 0:\n            await asyncio.sleep(delay_required)\n        self._domain_last_request[domain] = time.time()\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "3. Cache Check After Rate-Limit Delay — HIGH",
+        "content": "\n`engine.py:74-95`: the cache is checked inside `_do_fetch()`, which is called *after* acquiring the domain semaphore and waiting for the rate-limit delay. Cached URLs waste a full semaphore slot and potentially wait 1s for no reason.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "Current flow: wait → acquire semaphore → check cache",
+        "content": "async def _fetch_with_concurrency(self, url: str) -> str:\n    async with self._domain_lock:\n        ...await asyncio.sleep(delay_required)...   # waits even for cache hits\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)            # cache checked here — too late\n\n",
+        "level": 1
+      },
+      {
+        "title": "Better: check cache first, skip rate limiting entirely if cached",
+        "content": "async def _fetch_with_concurrency(self, url: str) -> str:\n    cached = await self._cache.get(url)\n    if cached is not None:\n        return cached.content                       # skip rate limit + semaphore\n\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:\n        ...\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "4. Two LLM Calls Per Query (Routing + Synthesis) — MEDIUM",
+        "content": "\n`orchestrator.py:244,281,300`: every user query makes **two** full LLM round-trips — one routing call (`_route()`) and one synthesis call (`process()`). The routing call uses the same heavy `ORCHESTRATOR_PROMPT` as synthesis (87 lines of system prompt repeated twice).\n\nThe routing call should use a much shorter system prompt since it only needs to return a small JSON blob:\n\n```python\n_ROUTING_PROMPT = \"\"\"You are an HR policy routing agent. Given a query, select which specialist agents to invoke.\nAvailable agents: staffing, classification, labour, learning, equity, ohs, languages, governance.\nRespond ONLY with valid JSON: {\"selected_agents\": [...], \"sub_queries\": {\"agent_id\": \"sub-query\"}}\nSelect only agents whose domain is genuinely relevant (typically 1-3).\"\"\"\n\nasync def _route(self, query_text: str) -> dict[str, Any]:\n    raw = await self._llm_client.chat(\n        system_prompt=_ROUTING_PROMPT,   # ← short prompt, not the 87-line ORCHESTRATOR_PROMPT\n        user_message=f\"QUERY: {query_text}\",\n    )\n    ...\n```\n\nThis reduces routing token cost by ~70% and improves latency.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "5. Fallback Invokes All 8 Agents — MEDIUM",
+        "content": "\n`orchestrator.py:312-317`: when routing fails, all 8 specialists run. This multiplies LLM calls and fetch operations by 8×. A smarter fallback would default to 2-3 high-frequency agents (staffing + governance cover most queries):\n\n```python\n_DEFAULT_FALLBACK_AGENTS = [\"staffing\", \"governance\", \"labour\"]\n\nexcept Exception as e:\n    logger.warning(\"Routing failed, using fallback agents: %s\", e)\n    return {\n        \"selected_agents\": _DEFAULT_FALLBACK_AGENTS,\n        \"sub_queries\": {aid: query_text for aid in _DEFAULT_FALLBACK_AGENTS},\n    }\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "6. New DB Connection Per Operation — MEDIUM",
+        "content": "\n`db.py:92,112,130,...`: every method opens and closes an `aiosqlite` connection. A single request that saves a query, 8 agent responses, and an orchestrator response opens **~11 connections**. SQLite handles this but there's measurable overhead.\n\n**Fix** — persist a single connection at startup:\n\n```python\nclass DatabaseManager:\n    def __init__(self, db_path: Path = _DB_PATH) -> None:\n        self._db_path = db_path\n        self._db_path.parent.mkdir(parents=True, exist_ok=True)\n        self._db: aiosqlite.Connection | None = None\n\n    async def initialize(self) -> None:\n        self._db = await aiosqlite.connect(self._db_path)\n        self._db.row_factory = aiosqlite.Row\n        await self._db.executescript(_SCHEMA)\n        await self._db.commit()\n\n    async def close(self) -> None:\n        if self._db:\n            await self._db.close()\n\n    async def save_query(self, record: QueryRecord) -> None:\n        await self._db.execute(\"INSERT OR REPLACE INTO queries ...\", (...))\n        await self._db.commit()\n```\n\nRegister `close()` in the FastAPI shutdown event.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "7. Fetch Cache Never Expires — MEDIUM",
+        "content": "\n`db.py:63-71`: `fetch_cache` stores full HTML content with a TTL column, but `clear_expired()` is never called from application code. Cache grows unbounded forever.\n\n**Fix** — call it on startup and periodically:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "In main.py startup_event:",
+        "content": "async def startup_event() -> None:\n    db = DatabaseManager()\n    await db.initialize()\n    await db.clear_expired()          # purge stale on startup\n\n",
+        "level": 1
+      },
+      {
+        "title": "Or add a periodic background task:",
+        "content": "async def _periodic_cache_cleanup() -> None:\n    while True:\n        await asyncio.sleep(3600)     # every hour\n        db = DatabaseManager()\n        await db.clear_expired()\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "8. Unbounded Domain Tracking Dicts — LOW",
+        "content": "\n`engine.py:43-46`: `_domain_semaphores` and `_domain_last_request` grow with each unique domain and are never pruned. With a fixed set of ~6 government domains this is a non-issue in practice, but it's worth bounding for correctness:\n\n```python\nfrom functools import lru_cache\n\n",
+        "level": 3
+      },
+      {
+        "title": "Or cap with a fixed dict + cleanup of entries older than 1 hour",
+        "content": "def _maybe_prune_domain_tracking(self) -> None:\n    cutoff = time.time() - 3600\n    stale = [d for d, t in self._domain_last_request.items() if t < cutoff]\n    for d in stale:\n        del self._domain_last_request[d]\n        self._domain_semaphores.pop(d, None)\n        self._domain_locks.pop(d, None)\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "9. JavaScript Event Listener Leak — LOW",
+        "content": "\n`static/js/app.js` (feedback buttons): `showFeedbackControls()` adds `click` listeners to `.btn-feedback` buttons on every query response. If a user submits multiple queries without refreshing, listeners accumulate on the same DOM nodes.\n\n**Fix** — replace the node to drop all listeners, or use `{ once: true }`:\n\n```javascript\ndocument.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n    btn.addEventListener('click', handler, { once: true });  // auto-removes after first click\n});\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "Priority Order",
+        "content": "| # | Issue | File | Impact | Effort |\n|---|-------|------|--------|--------|\n| 1 | Missing DB indexes | `db.py:21` | Full table scans | 5 min |\n| 2 | Rate-limit lock serializes all domains | `engine.py:79` | Parallel fetch slowdown | 15 min |\n| 3 | Cache checked after delay | `engine.py:74` | Wasted wait on cache hits | 15 min |\n| 4 | Two LLM calls, routing uses heavy prompt | `orchestrator.py:300` | ~2× LLM cost per query | 10 min |\n| 5 | Fallback invokes all 8 agents | `orchestrator.py:313` | 8× overhead on routing failure | 5 min |\n| 6 | New DB connection per operation | `db.py:92+` | Connection overhead | 30 min |\n| 7 | Cache never purged | `db.py:63` | Unbounded disk growth | 10 min |\n| 8 | JS event listener accumulation | `app.js` | Minor browser memory | 5 min |\n\nItems 1–5 have the highest ROI and can be done in under an hour combined. Want me to apply any of these?",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "_SCHEMA = \"\"\"\n...existing CREATE TABLE statements...\n\nCREATE INDEX IF NOT EXISTS idx_agent_responses_query_id\n    ON agent_responses(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_orchestrator_responses_query_id\n    ON orchestrator_responses(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_feedback_query_id\n    ON feedback(query_id);\n\nCREATE INDEX IF NOT EXISTS idx_queries_timestamp\n    ON queries(timestamp DESC);\n\"\"\""
+      },
+      {
+        "language": "python",
+        "code": "# Current: one lock for all domains\nasync with self._domain_lock:           # ← global bottleneck\n    last_request = self._domain_last_request[domain]\n    ..."
+      },
+      {
+        "language": "python",
+        "code": "self._domain_locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)\n\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:          # per-domain, not global\n        last_request = self._domain_last_request[domain]\n        delay_required = 1.0 - (time.time() - last_request)\n        if delay_required > 0:\n            await asyncio.sleep(delay_required)\n        self._domain_last_request[domain] = time.time()\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)"
+      },
+      {
+        "language": "python",
+        "code": "# Current flow: wait → acquire semaphore → check cache\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    async with self._domain_lock:\n        ...await asyncio.sleep(delay_required)...   # waits even for cache hits\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)            # cache checked here — too late\n\n# Better: check cache first, skip rate limiting entirely if cached\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    cached = await self._cache.get(url)\n    if cached is not None:\n        return cached.content                       # skip rate limit + semaphore\n\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:\n        ...\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)"
+      },
+      {
+        "language": "python",
+        "code": "_ROUTING_PROMPT = \"\"\"You are an HR policy routing agent. Given a query, select which specialist agents to invoke.\nAvailable agents: staffing, classification, labour, learning, equity, ohs, languages, governance.\nRespond ONLY with valid JSON: {\"selected_agents\": [...], \"sub_queries\": {\"agent_id\": \"sub-query\"}}\nSelect only agents whose domain is genuinely relevant (typically 1-3).\"\"\"\n\nasync def _route(self, query_text: str) -> dict[str, Any]:\n    raw = await self._llm_client.chat(\n        system_prompt=_ROUTING_PROMPT,   # ← short prompt, not the 87-line ORCHESTRATOR_PROMPT\n        user_message=f\"QUERY: {query_text}\",\n    )\n    ..."
+      },
+      {
+        "language": "python",
+        "code": "_DEFAULT_FALLBACK_AGENTS = [\"staffing\", \"governance\", \"labour\"]\n\nexcept Exception as e:\n    logger.warning(\"Routing failed, using fallback agents: %s\", e)\n    return {\n        \"selected_agents\": _DEFAULT_FALLBACK_AGENTS,\n        \"sub_queries\": {aid: query_text for aid in _DEFAULT_FALLBACK_AGENTS},\n    }"
+      },
+      {
+        "language": "python",
+        "code": "class DatabaseManager:\n    def __init__(self, db_path: Path = _DB_PATH) -> None:\n        self._db_path = db_path\n        self._db_path.parent.mkdir(parents=True, exist_ok=True)\n        self._db: aiosqlite.Connection | None = None\n\n    async def initialize(self) -> None:\n        self._db = await aiosqlite.connect(self._db_path)\n        self._db.row_factory = aiosqlite.Row\n        await self._db.executescript(_SCHEMA)\n        await self._db.commit()\n\n    async def close(self) -> None:\n        if self._db:\n            await self._db.close()\n\n    async def save_query(self, record: QueryRecord) -> None:\n        await self._db.execute(\"INSERT OR REPLACE INTO queries ...\", (...))\n        await self._db.commit()"
+      },
+      {
+        "language": "python",
+        "code": "# In main.py startup_event:\nasync def startup_event() -> None:\n    db = DatabaseManager()\n    await db.initialize()\n    await db.clear_expired()          # purge stale on startup\n\n# Or add a periodic background task:\nasync def _periodic_cache_cleanup() -> None:\n    while True:\n        await asyncio.sleep(3600)     # every hour\n        db = DatabaseManager()\n        await db.clear_expired()"
+      },
+      {
+        "language": "python",
+        "code": "from functools import lru_cache\n\n# Or cap with a fixed dict + cleanup of entries older than 1 hour\ndef _maybe_prune_domain_tracking(self) -> None:\n    cutoff = time.time() - 3600\n    stale = [d for d, t in self._domain_last_request.items() if t < cutoff]\n    for d in stale:\n        del self._domain_last_request[d]\n        self._domain_semaphores.pop(d, None)\n        self._domain_locks.pop(d, None)"
+      },
+      {
+        "language": "javascript",
+        "code": "document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n    btn.addEventListener('click', handler, { once: true });  // auto-removes after first click\n});"
+      }
+    ]
+  },
+  "durationMs": 165480,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-05-01T01:32:20.046Z",
+  "executionId": "optimize_1777598974566_0qnr0w"
+}

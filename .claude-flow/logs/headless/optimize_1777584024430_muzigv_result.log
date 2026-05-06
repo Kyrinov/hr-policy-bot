@@ -1,0 +1,17 @@
+[2026-04-30T21:20:28.814Z] RESULT
+============================================================
+{
+  "success": false,
+  "output": "You're out of extra usage · resets 9:20pm (America/Halifax)\n",
+  "parsedOutput": {
+    "sections": [],
+    "codeBlocks": []
+  },
+  "durationMs": 4384,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-04-30T21:20:28.814Z",
+  "executionId": "optimize_1777584024430_muzigv",
+  "error": "Process exited with code 1"
+}

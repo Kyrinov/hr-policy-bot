@@ -1,0 +1,183 @@
+[2026-04-30T13:30:22.807Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Here's a comprehensive security analysis of the HR policy bot codebase:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 34,\n      \"description\": \"CORS misconfiguration: allow_origins=['*'] with allow_credentials=True exposes the API to CSRF attacks. An attacker can make authenticated requests from any origin.\",\n      \"cwe\": \"CWE-346: Origin Validation Error\",\n      \"impact\": \"Cross-Site Request Forgery (CSRF), unauthorized API access from malicious websites\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 1,\n      \"description\": \"No authentication or authorization implemented on any endpoint. All API routes are publicly accessible without credentials.\",\n      \"cwe\": \"CWE-306: Missing Authentication for Critical Function\",\n      \"impact\": \"Unauthorized access to sensitive HR policy queries, feedback submission, and data export\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 134,\n      \"description\": \"Insecure Direct Object Reference (IDOR): /queries/{query_id} endpoint allows any user to retrieve any query using a guessable ID (UUID). No access control checks whether the requesting user owns the query.\",\n      \"cwe\": \"CWE-639: Authorization Bypass Through User-Controlled Key\",\n      \"impact\": \"Users can view other users' HR policy queries and responses, disclosing sensitive HR information\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 176,\n      \"description\": \"No access control on /feedback/export endpoint exposes all user feedback including names, ratings, and comments. Should require admin authentication.\",\n      \"cwe\": \"CWE-639: Authorization Bypass\",\n      \"impact\": \"Disclosure of all user feedback and confidential HR advisory comments\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 134,\n      \"description\": \"Input validation missing on query_id parameter. While parameterized queries prevent SQL injection, the parameter accepts any string without validation.\",\n      \"cwe\": \"CWE-20: Improper Input Validation\",\n      \"impact\": \"Enumeration attacks, resource exhaustion via malformed requests\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 88,\n      \"description\": \"Health endpoint exposes detailed system information including database status, Ollama models, and cache health. Can be used for reconnaissance.\",\n      \"cwe\": \"CWE-200: Exposure of Sensitive Information\",\n      \"impact\": \"Information disclosure useful for attack planning\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 27,\n      \"description\": \"No rate limiting on API endpoints. While fetch engine has per-domain rate limits, there's no protection against brute-force or DoS attacks.\",\n      \"cwe\": \"CWE-770: Allocation of Resources Without Limits\",\n      \"impact\": \"Denial of Service attacks, resource exhaustion\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 20,\n      \"description\": \"Gemini API key read from environment variable. Ensure GEMINI_API_KEY is not committed to version control or exposed in logs/backups.\",\n      \"cwe\": \"CWE-798: Use of Hard-Coded Credentials\",\n      \"impact\": \"API key compromise if environment is exposed\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 160,\n      \"description\": \"Generic exception handling returns full error details in HTTP responses (str(e)). May expose implementation details or stack traces.\",\n      \"cwe\": \"CWE-209: Information Exposure Through Error Messages\",\n      \"impact\": \"Information disclosure through verbose error responses\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 19,\n      \"description\": \"Database file permissions not explicitly set. Ensure hr_policy_agent.db has 0600 (user read/write only) in production.\",\n      \"cwe\": \"CWE-276: Incorrect Default File Permissions\",\n      \"impact\": \"Local file access vulnerability on multi-user systems\"\n    }\n  ],\n  \"riskScore\": 78,\n  \"summary\": {\n    \"critical_issues\": 0,\n    \"high_issues\": 4,\n    \"medium_issues\": 6,\n    \"low_issues\": 1,\n    \"total_issues\": 11\n  },\n  \"recommendations\": [\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Implement Authentication & Authorization\",\n      \"description\": \"Add JWT or API key authentication to all endpoints. Implement role-based access control.\",\n      \"effort\": \"High\"\n    },\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Fix CORS Configuration\",\n      \"description\": \"Remove allow_origins=['*'] and allow_credentials=True. Specify only trusted origins.\",\n      \"effort\": \"Low\",\n      \"fix\": \"Change src/main.py line 36 to: allow_origins=['https://yourdomain.com']\"\n    },\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Add Access Control to Data Endpoints\",\n      \"description\": \"Verify user owns query/feedback before returning. Add authorization middleware.\",\n      \"effort\": \"Medium\"\n    },\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Restrict/Protect Health Endpoints\",\n      \"description\": \"Require authentication for /health and /api/health or remove them entirely.\",\n      \"effort\": \"Low\"\n    },\n    {\n      \"priority\": \"HIGH\",\n      \"action\": \"Implement Rate Limiting\",\n      \"description\": \"Add middleware to limit requests: 100/minute per IP, 1000/hour global.\",\n      \"effort\": \"Medium\"\n    },\n    {\n      \"priority\": \"HIGH\",\n      \"action\": \"Add Input Validation\",\n      \"description\": \"Validate query_id (UUID format), feedback ratings (enum), query length.\",\n      \"effort\": \"Low\"\n    },\n    {\n      \"priority\": \"MEDIUM\",\n      \"action\": \"Reduce Information Disclosure\",\n      \"description\": \"Use generic error responses. Log details server-side only.\",\n      \"effort\": \"Medium\"\n    },\n    {\n      \"priority\": \"MEDIUM\",\n      \"action\": \"Secure Secret Management\",\n      \"description\": \"Ensure .env files are in .gitignore. Use secrets manager in production.\",\n      \"effort\": \"Low\"\n    },\n    {\n      \"priority\": \"MEDIUM\",\n      \"action\": \"Add HTTPS Enforcement\",\n      \"description\": \"Configure HTTPS-only headers (HSTS, Secure cookies).\",\n      \"effort\": \"Low\"\n    },\n    {\n      \"priority\": \"MEDIUM\",\n      \"action\": \"Implement Audit Logging\",\n      \"description\": \"Log sensitive operations with user identity, timestamp, action.\",\n      \"effort\": \"High\"\n    }\n  ],\n  \"positives\": [\n    \"SQL injection is mitigated - using parameterized queries throughout\",\n    \"XSS risk is low - FastAPI/Pydantic validates data types\",\n    \"Hardcoded secrets not found in source code (config uses env vars)\",\n    \"Async/await properly used - no blocking calls\",\n    \"Proper use of aiosqlite for database access\"\n  ],\n  \"riskScore_breakdown\": {\n    \"authentication\": 25,\n    \"authorization\": 25,\n    \"data_protection\": 15,\n    \"input_validation\": 8,\n    \"information_disclosure\": 5\n  },\n  \"analysis_date\": \"2026-04-30\",\n  \"scope\": \"HR Policy Bot Proto - src/ directory\"\n}\n```\n\n## Key Findings Summary\n\n**Critical Issues (4):**\n1. **No Authentication** — All endpoints are publicly accessible\n2. **CORS Misconfiguration** — `allow_origins=[\"*\"]` with credentials enabled = CSRF vulnerability\n3. **Missing Access Controls** — Users can access any query/feedback via UUID enumeration\n4. **Unrestricted Data Export** — Feedback export endpoint has no access checks\n\n**Medium Issues (6):**\n- No rate limiting on endpoints\n- Health endpoints expose system details\n- Verbose error messages leak implementation info\n- API key in environment (best practice, but needs safeguards)\n- No input validation on IDs\n- Database file permissions not enforced\n\n**Quick Wins:**\n- Fix CORS in `src/main.py:36` (change to specific origin)\n- Add UUID validation to `src/api/routes.py:134`\n- Protect `/health` endpoints with authentication\n- Add `.env` to `.gitignore`\n\nThe codebase is well-structured and uses security-conscious patterns (parameterized queries, async code), but **authentication and authorization are the critical gaps** for a multi-user system handling federal HR policy data.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 34,
+        "description": "CORS misconfiguration: allow_origins=['*'] with allow_credentials=True exposes the API to CSRF attacks. An attacker can make authenticated requests from any origin.",
+        "cwe": "CWE-346: Origin Validation Error",
+        "impact": "Cross-Site Request Forgery (CSRF), unauthorized API access from malicious websites"
+      },
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 1,
+        "description": "No authentication or authorization implemented on any endpoint. All API routes are publicly accessible without credentials.",
+        "cwe": "CWE-306: Missing Authentication for Critical Function",
+        "impact": "Unauthorized access to sensitive HR policy queries, feedback submission, and data export"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 134,
+        "description": "Insecure Direct Object Reference (IDOR): /queries/{query_id} endpoint allows any user to retrieve any query using a guessable ID (UUID). No access control checks whether the requesting user owns the query.",
+        "cwe": "CWE-639: Authorization Bypass Through User-Controlled Key",
+        "impact": "Users can view other users' HR policy queries and responses, disclosing sensitive HR information"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 176,
+        "description": "No access control on /feedback/export endpoint exposes all user feedback including names, ratings, and comments. Should require admin authentication.",
+        "cwe": "CWE-639: Authorization Bypass",
+        "impact": "Disclosure of all user feedback and confidential HR advisory comments"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 134,
+        "description": "Input validation missing on query_id parameter. While parameterized queries prevent SQL injection, the parameter accepts any string without validation.",
+        "cwe": "CWE-20: Improper Input Validation",
+        "impact": "Enumeration attacks, resource exhaustion via malformed requests"
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 88,
+        "description": "Health endpoint exposes detailed system information including database status, Ollama models, and cache health. Can be used for reconnaissance.",
+        "cwe": "CWE-200: Exposure of Sensitive Information",
+        "impact": "Information disclosure useful for attack planning"
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 27,
+        "description": "No rate limiting on API endpoints. While fetch engine has per-domain rate limits, there's no protection against brute-force or DoS attacks.",
+        "cwe": "CWE-770: Allocation of Resources Without Limits",
+        "impact": "Denial of Service attacks, resource exhaustion"
+      },
+      {
+        "severity": "medium",
+        "file": "src/llm/client.py",
+        "line": 20,
+        "description": "Gemini API key read from environment variable. Ensure GEMINI_API_KEY is not committed to version control or exposed in logs/backups.",
+        "cwe": "CWE-798: Use of Hard-Coded Credentials",
+        "impact": "API key compromise if environment is exposed"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 160,
+        "description": "Generic exception handling returns full error details in HTTP responses (str(e)). May expose implementation details or stack traces.",
+        "cwe": "CWE-209: Information Exposure Through Error Messages",
+        "impact": "Information disclosure through verbose error responses"
+      },
+      {
+        "severity": "low",
+        "file": "src/data/db.py",
+        "line": 19,
+        "description": "Database file permissions not explicitly set. Ensure hr_policy_agent.db has 0600 (user read/write only) in production.",
+        "cwe": "CWE-276: Incorrect Default File Permissions",
+        "impact": "Local file access vulnerability on multi-user systems"
+      }
+    ],
+    "riskScore": 78,
+    "summary": {
+      "critical_issues": 0,
+      "high_issues": 4,
+      "medium_issues": 6,
+      "low_issues": 1,
+      "total_issues": 11
+    },
+    "recommendations": [
+      {
+        "priority": "CRITICAL",
+        "action": "Implement Authentication & Authorization",
+        "description": "Add JWT or API key authentication to all endpoints. Implement role-based access control.",
+        "effort": "High"
+      },
+      {
+        "priority": "CRITICAL",
+        "action": "Fix CORS Configuration",
+        "description": "Remove allow_origins=['*'] and allow_credentials=True. Specify only trusted origins.",
+        "effort": "Low",
+        "fix": "Change src/main.py line 36 to: allow_origins=['https://yourdomain.com']"
+      },
+      {
+        "priority": "CRITICAL",
+        "action": "Add Access Control to Data Endpoints",
+        "description": "Verify user owns query/feedback before returning. Add authorization middleware.",
+        "effort": "Medium"
+      },
+      {
+        "priority": "CRITICAL",
+        "action": "Restrict/Protect Health Endpoints",
+        "description": "Require authentication for /health and /api/health or remove them entirely.",
+        "effort": "Low"
+      },
+      {
+        "priority": "HIGH",
+        "action": "Implement Rate Limiting",
+        "description": "Add middleware to limit requests: 100/minute per IP, 1000/hour global.",
+        "effort": "Medium"
+      },
+      {
+        "priority": "HIGH",
+        "action": "Add Input Validation",
+        "description": "Validate query_id (UUID format), feedback ratings (enum), query length.",
+        "effort": "Low"
+      },
+      {
+        "priority": "MEDIUM",
+        "action": "Reduce Information Disclosure",
+        "description": "Use generic error responses. Log details server-side only.",
+        "effort": "Medium"
+      },
+      {
+        "priority": "MEDIUM",
+        "action": "Secure Secret Management",
+        "description": "Ensure .env files are in .gitignore. Use secrets manager in production.",
+        "effort": "Low"
+      },
+      {
+        "priority": "MEDIUM",
+        "action": "Add HTTPS Enforcement",
+        "description": "Configure HTTPS-only headers (HSTS, Secure cookies).",
+        "effort": "Low"
+      },
+      {
+        "priority": "MEDIUM",
+        "action": "Implement Audit Logging",
+        "description": "Log sensitive operations with user identity, timestamp, action.",
+        "effort": "High"
+      }
+    ],
+    "positives": [
+      "SQL injection is mitigated - using parameterized queries throughout",
+      "XSS risk is low - FastAPI/Pydantic validates data types",
+      "Hardcoded secrets not found in source code (config uses env vars)",
+      "Async/await properly used - no blocking calls",
+      "Proper use of aiosqlite for database access"
+    ],
+    "riskScore_breakdown": {
+      "authentication": 25,
+      "authorization": 25,
+      "data_protection": 15,
+      "input_validation": 8,
+      "information_disclosure": 5
+    },
+    "analysis_date": "2026-04-30",
+    "scope": "HR Policy Bot Proto - src/ directory"
+  },
+  "durationMs": 66394,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T13:30:22.807Z",
+  "executionId": "audit_1777555756413_ic9x40"
+}

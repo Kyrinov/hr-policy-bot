@@ -1,0 +1,124 @@
+[2026-05-01T00:58:43.331Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Here's your security audit report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"title\": \"CORS Misconfiguration - Allow All Origins\",\n      \"description\": \"CORS middleware allows requests from any origin (allow_origins=['*']). Enables cross-site request forgery attacks where malicious websites make unauthorized requests on behalf of users.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 64,\n      \"title\": \"Missing Authentication and Authorization\",\n      \"description\": \"All API endpoints are publicly accessible without authentication. Anyone can export all feedback data (/feedback/export), list all queries, and access system information.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 76,\n      \"title\": \"Unrestricted WebSocket Access - DoS Risk\",\n      \"description\": \"WebSocket endpoint accepts unlimited connections without auth or rate limiting. No query size validation. Attackers can establish unlimited connections and send large payloads to exhaust memory.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 99,\n      \"title\": \"Server-Side Request Forgery (SSRF)\",\n      \"description\": \"No URL validation. Attackers could craft URLs to: probe internal networks (localhost), access cloud metadata (169.254.169.254), or fetch internal documents.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 104,\n      \"title\": \"Information Disclosure via Error Messages\",\n      \"description\": \"Exception details logged and returned in responses. Stack traces expose internal paths, library versions, and system architecture.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 35,\n      \"title\": \"API Key Exposure Without Validation\",\n      \"description\": \"GEMINI_API_KEY read from environment without format validation or rotation mechanism. Key accessible to all Python code.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 122,\n      \"title\": \"Exception Details in WebSocket Messages\",\n      \"description\": \"Full exception strings sent to clients (line 122), exposing internal implementation details.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 308,\n      \"title\": \"Cache Poisoning Risk\",\n      \"description\": \"Cache uses URL as key with no content validation. No verification that cached content hasn't been tampered with.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 75,\n      \"title\": \"Prompt Injection via String Concatenation\",\n      \"description\": \"System prompt and user message concatenated directly (f'{system_prompt}\\\\n\\\\n{user_message}'). Attackers can inject instructions to override behavior.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 97,\n      \"title\": \"JSON Parsing Without Size Limits\",\n      \"description\": \"WebSocket.receive_json() called without max_size validation. Large payloads could cause memory exhaustion.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Implement authentication/authorization\",\n      \"details\": \"Add OAuth2 or JWT to protect all API endpoints and WebSocket connections\"\n    },\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Fix CORS to specific origins\",\n      \"details\": \"Change allow_origins=['*'] to allow_origins=['https://yourdomain.com']\"\n    },\n    {\n      \"priority\": \"CRITICAL\",\n      \"action\": \"Validate URLs to prevent SSRF\",\n      \"details\": \"Whitelist URLs against policy_registry.json. Block private IPs (127.0.0.0/8, 10.0.0.0/8, 192.168.0.0/16, 169.254.0.0/16)\"\n    },\n    {\n      \"priority\": \"HIGH\",\n      \"action\": \"Protect WebSocket endpoint\",\n      \"details\": \"Add auth, per-IP limits (5 connections), query size limits (5KB), rate limiting\"\n    },\n    {\n      \"priority\": \"HIGH\",\n      \"action\": \"Sanitize error messages\",\n      \"details\": \"Return generic errors to clients; log full details server-side only\"\n    },\n    {\n      \"priority\": \"MEDIUM\",\n      \"action\": \"Add input validation\",\n      \"details\": \"Validate query_text size, limit parameters, and request payloads\"\n    },\n    {\n      \"priority\": \"MEDIUM\",\n      \"action\": \"Use structured prompting\",\n      \"details\": \"Stop concatenating system_prompt + user_message. Use LLM API structured inputs to prevent prompt injection\"\n    }\n  ]\n}\n```\n\n## Key Findings\n\n**Risk Score: 72/100** (High Risk)\n\n### Critical Issues (Must Fix)\n1. **No authentication** — All endpoints public, including feedback export\n2. **CORS allows all origins** — CSRF attacks possible\n3. **SSRF vulnerability** — Can probe internal networks, cloud metadata\n\n### High Priority (Fix Before Production)\n- WebSocket unrestricted — DoS risk via unlimited connections\n- Error messages expose internals — Information disclosure\n- Prompt injection via concatenation\n\n### Positive Points\n- ✅ SQL injection prevented via parameterized queries\n- ✅ Per-domain rate limiting on fetch engine\n- ✅ Proper async/await usage\n- ✅ Good use of Pydantic validation\n\nThe system is well-architected but **not production-ready** without authentication and input validation.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "title": "CORS Misconfiguration - Allow All Origins",
+        "description": "CORS middleware allows requests from any origin (allow_origins=['*']). Enables cross-site request forgery attacks where malicious websites make unauthorized requests on behalf of users."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 64,
+        "title": "Missing Authentication and Authorization",
+        "description": "All API endpoints are publicly accessible without authentication. Anyone can export all feedback data (/feedback/export), list all queries, and access system information."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 76,
+        "title": "Unrestricted WebSocket Access - DoS Risk",
+        "description": "WebSocket endpoint accepts unlimited connections without auth or rate limiting. No query size validation. Attackers can establish unlimited connections and send large payloads to exhaust memory."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 99,
+        "title": "Server-Side Request Forgery (SSRF)",
+        "description": "No URL validation. Attackers could craft URLs to: probe internal networks (localhost), access cloud metadata (169.254.169.254), or fetch internal documents."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 104,
+        "title": "Information Disclosure via Error Messages",
+        "description": "Exception details logged and returned in responses. Stack traces expose internal paths, library versions, and system architecture."
+      },
+      {
+        "severity": "medium",
+        "file": "src/llm/client.py",
+        "line": 35,
+        "title": "API Key Exposure Without Validation",
+        "description": "GEMINI_API_KEY read from environment without format validation or rotation mechanism. Key accessible to all Python code."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 122,
+        "title": "Exception Details in WebSocket Messages",
+        "description": "Full exception strings sent to clients (line 122), exposing internal implementation details."
+      },
+      {
+        "severity": "medium",
+        "file": "src/data/db.py",
+        "line": 308,
+        "title": "Cache Poisoning Risk",
+        "description": "Cache uses URL as key with no content validation. No verification that cached content hasn't been tampered with."
+      },
+      {
+        "severity": "low",
+        "file": "src/llm/client.py",
+        "line": 75,
+        "title": "Prompt Injection via String Concatenation",
+        "description": "System prompt and user message concatenated directly (f'{system_prompt}\\n\\n{user_message}'). Attackers can inject instructions to override behavior."
+      },
+      {
+        "severity": "low",
+        "file": "src/api/websocket.py",
+        "line": 97,
+        "title": "JSON Parsing Without Size Limits",
+        "description": "WebSocket.receive_json() called without max_size validation. Large payloads could cause memory exhaustion."
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      {
+        "priority": "CRITICAL",
+        "action": "Implement authentication/authorization",
+        "details": "Add OAuth2 or JWT to protect all API endpoints and WebSocket connections"
+      },
+      {
+        "priority": "CRITICAL",
+        "action": "Fix CORS to specific origins",
+        "details": "Change allow_origins=['*'] to allow_origins=['https://yourdomain.com']"
+      },
+      {
+        "priority": "CRITICAL",
+        "action": "Validate URLs to prevent SSRF",
+        "details": "Whitelist URLs against policy_registry.json. Block private IPs (127.0.0.0/8, 10.0.0.0/8, 192.168.0.0/16, 169.254.0.0/16)"
+      },
+      {
+        "priority": "HIGH",
+        "action": "Protect WebSocket endpoint",
+        "details": "Add auth, per-IP limits (5 connections), query size limits (5KB), rate limiting"
+      },
+      {
+        "priority": "HIGH",
+        "action": "Sanitize error messages",
+        "details": "Return generic errors to clients; log full details server-side only"
+      },
+      {
+        "priority": "MEDIUM",
+        "action": "Add input validation",
+        "details": "Validate query_text size, limit parameters, and request payloads"
+      },
+      {
+        "priority": "MEDIUM",
+        "action": "Use structured prompting",
+        "details": "Stop concatenating system_prompt + user_message. Use LLM API structured inputs to prevent prompt injection"
+      }
+    ]
+  },
+  "durationMs": 60949,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-01T00:58:43.330Z",
+  "executionId": "audit_1777597062381_lcp4on"
+}

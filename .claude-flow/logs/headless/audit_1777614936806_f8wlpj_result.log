@@ -1,0 +1,89 @@
+[2026-05-01T05:56:14.918Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I'll analyze the source code for security vulnerabilities. Let me compile the findings:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"critical\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"CORS configured with allow_origins=['*'] and allow_credentials=True. This allows any website to make authenticated requests to your API. Attackers can perform CSRF attacks and access user data from any origin.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 120,\n      \"description\": \"No authentication on /api/queries endpoint. Exposes query history and HR policy advisory responses to any unauthenticated user. Contains sensitive HR policy consultation data.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 134,\n      \"description\": \"No authentication on /api/queries/{query_id} endpoint. Anyone can retrieve any query and its responses by guessing or enumerating query IDs.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 176,\n      \"description\": \"No authentication on /api/feedback/export endpoint. Exports all feedback records without access control. Sensitive HR feedback could be leaked.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 97,\n      \"description\": \"No input validation on WebSocket message. query_text is unbounded and could be exploited for DoS via large payloads or code injection.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 224,\n      \"description\": \"Error messages exposed to clients via WebSocket. Full exception stack traces can leak sensitive information about the system architecture.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/agents/orchestrator.py\",\n      \"line\": 174,\n      \"description\": \"Specialist responses embedded directly in LLM prompt without sanitization. Malicious specialist responses could inject prompts into the LLM context.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 163,\n      \"description\": \"No authentication on /api/feedback POST endpoint. Anyone can submit feedback records, potentially polluting the feedback database.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 121,\n      \"description\": \"No rate limiting on REST API endpoints. Unauthenticated endpoints are vulnerable to brute force, enumeration, and DoS attacks.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 68,\n      \"description\": \"Limited URL validation. Only laws-lois.justice.gc.ca URLs have special handling. Other URLs could potentially be manipulated (though domain rate-limiting provides some protection).\"\n    }\n  ],\n  \"riskScore\": 78,\n  \"recommendations\": [\n    \"IMMEDIATE: Restrict CORS to specific trusted origins. Change allow_origins from ['*'] to ['https://yourdomain.com']. Set allow_credentials=False unless authentication is required.\",\n    \"IMMEDIATE: Add authentication/authorization to all REST API endpoints. Implement token-based auth (JWT) or API keys for /api/queries, /api/feedback, etc.\",\n    \"IMMEDIATE: Implement input validation on WebSocket query_text. Add max length (e.g., 5000 chars), sanitize special characters, and validate format.\",\n    \"HIGH: Mask error messages sent to clients. Log full exceptions server-side, but return generic 'An error occurred' messages to clients.\",\n    \"HIGH: Add rate limiting to REST API endpoints using middleware (e.g., slowapi for FastAPI).\",\n    \"MEDIUM: Sanitize specialist responses before embedding in LLM prompts. Use JSON schema validation and quote injection-prone fields.\",\n    \"MEDIUM: Add audit logging for sensitive operations (queries, feedback access, exports).\",\n    \"MEDIUM: Implement proper TTL on WebSocket sessions and add connection limits per client IP.\",\n    \"MEDIUM: Validate all URLs passed to fetch engine against a whitelist of allowed domains.\",\n    \"LOW: Add database encryption for sensitive fields (query_text, feedback, etc.) at rest.\"\n  ]\n}\n```\n\n## Key Issues Summary\n\n**Critical (1):** Your CORS setup allows any website to make authenticated requests—this is a critical CSRF/data theft vulnerability.\n\n**High (3):** All REST API endpoints lack authentication, exposing query history and feedback data publicly. Anyone can access HR policy consultations meant to be internal.\n\n**Medium (4):** WebSocket input validation, error exposure, prompt injection, and feedback pollution risks.\n\nWould you like me to fix these vulnerabilities? I can start with the CORS configuration and authentication layer.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "critical",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "CORS configured with allow_origins=['*'] and allow_credentials=True. This allows any website to make authenticated requests to your API. Attackers can perform CSRF attacks and access user data from any origin."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 120,
+        "description": "No authentication on /api/queries endpoint. Exposes query history and HR policy advisory responses to any unauthenticated user. Contains sensitive HR policy consultation data."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 134,
+        "description": "No authentication on /api/queries/{query_id} endpoint. Anyone can retrieve any query and its responses by guessing or enumerating query IDs."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 176,
+        "description": "No authentication on /api/feedback/export endpoint. Exports all feedback records without access control. Sensitive HR feedback could be leaked."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 97,
+        "description": "No input validation on WebSocket message. query_text is unbounded and could be exploited for DoS via large payloads or code injection."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 224,
+        "description": "Error messages exposed to clients via WebSocket. Full exception stack traces can leak sensitive information about the system architecture."
+      },
+      {
+        "severity": "medium",
+        "file": "src/agents/orchestrator.py",
+        "line": 174,
+        "description": "Specialist responses embedded directly in LLM prompt without sanitization. Malicious specialist responses could inject prompts into the LLM context."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 163,
+        "description": "No authentication on /api/feedback POST endpoint. Anyone can submit feedback records, potentially polluting the feedback database."
+      },
+      {
+        "severity": "low",
+        "file": "src/api/routes.py",
+        "line": 121,
+        "description": "No rate limiting on REST API endpoints. Unauthenticated endpoints are vulnerable to brute force, enumeration, and DoS attacks."
+      },
+      {
+        "severity": "low",
+        "file": "src/fetch/engine.py",
+        "line": 68,
+        "description": "Limited URL validation. Only laws-lois.justice.gc.ca URLs have special handling. Other URLs could potentially be manipulated (though domain rate-limiting provides some protection)."
+      }
+    ],
+    "riskScore": 78,
+    "recommendations": [
+      "IMMEDIATE: Restrict CORS to specific trusted origins. Change allow_origins from ['*'] to ['https://yourdomain.com']. Set allow_credentials=False unless authentication is required.",
+      "IMMEDIATE: Add authentication/authorization to all REST API endpoints. Implement token-based auth (JWT) or API keys for /api/queries, /api/feedback, etc.",
+      "IMMEDIATE: Implement input validation on WebSocket query_text. Add max length (e.g., 5000 chars), sanitize special characters, and validate format.",
+      "HIGH: Mask error messages sent to clients. Log full exceptions server-side, but return generic 'An error occurred' messages to clients.",
+      "HIGH: Add rate limiting to REST API endpoints using middleware (e.g., slowapi for FastAPI).",
+      "MEDIUM: Sanitize specialist responses before embedding in LLM prompts. Use JSON schema validation and quote injection-prone fields.",
+      "MEDIUM: Add audit logging for sensitive operations (queries, feedback access, exports).",
+      "MEDIUM: Implement proper TTL on WebSocket sessions and add connection limits per client IP.",
+      "MEDIUM: Validate all URLs passed to fetch engine against a whitelist of allowed domains.",
+      "LOW: Add database encryption for sensitive fields (query_text, feedback, etc.) at rest."
+    ]
+  },
+  "durationMs": 38112,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-01T05:56:14.918Z",
+  "executionId": "audit_1777614936806_f8wlpj"
+}

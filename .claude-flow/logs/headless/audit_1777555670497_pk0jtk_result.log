@@ -1,0 +1,108 @@
+[2026-04-30T13:28:37.216Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I have a complete picture of your codebase. Let me compile the security audit report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 34,\n      \"description\": \"CORS misconfiguration: allow_origins=['*'] with allow_credentials=True enables CSRF attacks. Any website can make authenticated requests to your API.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 176,\n      \"description\": \"Authentication bypass: /api/feedback/export endpoint exports all feedback records with no authentication or authorization checks.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 77,\n      \"description\": \"No authentication on WebSocket endpoint. Any client can connect and submit queries without credentials.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 64,\n      \"description\": \"Sensitive information disclosure: /api/health endpoint exposes database statistics, query counts, and component status without authentication.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 130,\n      \"description\": \"Information disclosure: Exception details returned to client via HTTPException(detail=str(e)). Can reveal stack traces and internal implementation details.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 212,\n      \"description\": \"Information disclosure: Error messages with exception details sent to WebSocket clients without sanitization.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 98,\n      \"description\": \"Unvalidated input: WebSocket receives raw JSON without validation of message structure, size, or content.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 104,\n      \"description\": \"Information disclosure: Health check endpoint includes database error messages and details.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 80,\n      \"description\": \"Missing rate limiting: No rate limit on WebSocket connections or query submissions. Could enable DOS or API bill explosion.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 70,\n      \"description\": \"Missing secret validation: GEMINI_API_KEY warning is logged but checked at startup only. Should be validated per-request or enforced at app initialization.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 19,\n      \"description\": \"Database stored in plain text location with no encryption at rest. Query content logged unencrypted.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 27,\n      \"description\": \"Missing security headers: No Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS, or X-XSS-Protection headers configured.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    \"Add authentication middleware (JWT, OAuth2, or API keys) to all endpoints. Require authentication for /api/*, /ws, and /health.\",\n    \"Fix CORS configuration: use specific allowed origins instead of '*'. Set allow_credentials=False or remove wildcard.\",\n    \"Add rate limiting using FastAPI middleware (e.g., slowapi) with per-IP and per-endpoint limits.\",\n    \"Sanitize error messages: Return generic error responses to clients, log detailed errors server-side only.\",\n    \"Add input validation and size limits to WebSocket messages using Pydantic validators.\",\n    \"Add security headers middleware: CSP, X-Frame-Options, X-Content-Type-Options, HSTS, X-XSS-Protection.\",\n    \"Encrypt sensitive fields in database (query_text, feedback comments) using field-level encryption.\",\n    \"Implement access control: Only allow users to view their own queries/feedback. Use query_id as auth token or user-based access.\",\n    \"Add request/response logging with audit trail (who accessed what, when). Exclude PII from logs.\",\n    \"Validate and constrain query_id format (UUID validation) to prevent injection attacks.\",\n    \"Add database connection pooling and set read-only flags for GET endpoints.\",\n    \"Implement timeouts on LLM API calls to prevent hanging connections.\",\n    \"Add secrets scanning to CI/CD pipeline to prevent accidental API key commits.\",\n    \"Validate environment variables at startup with clear error messages if missing.\",\n    \"Add database migrations and version control for schema changes.\",\n    \"Implement HTTPS-only mode in production (security headers, redirects).\",\n    \"Add audit logging for all data access, especially feedback exports and query retrieval.\"\n  ]\n}\n```\n\n## Summary\n\nYour codebase has **12 identified vulnerabilities** with a **risk score of 72/100** (high risk). The most critical issues are:\n\n1. **No authentication** on any API endpoint (WebSocket, /api, /health)\n2. **CORS misconfiguration** allowing cross-site credential attacks\n3. **Data exposure** through unprotected feedback export and health endpoints\n4. **Information disclosure** via error messages and exception details\n5. **No rate limiting** on LLM calls (cost/DOS risk)\n\nThe database layer uses **parameterized queries correctly** (no SQL injection risk), but data is stored unencrypted and queryable without auth. I recommend implementing JWT authentication and fixing CORS as the first priority.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 34,
+        "description": "CORS misconfiguration: allow_origins=['*'] with allow_credentials=True enables CSRF attacks. Any website can make authenticated requests to your API."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 176,
+        "description": "Authentication bypass: /api/feedback/export endpoint exports all feedback records with no authentication or authorization checks."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 77,
+        "description": "No authentication on WebSocket endpoint. Any client can connect and submit queries without credentials."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 64,
+        "description": "Sensitive information disclosure: /api/health endpoint exposes database statistics, query counts, and component status without authentication."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 130,
+        "description": "Information disclosure: Exception details returned to client via HTTPException(detail=str(e)). Can reveal stack traces and internal implementation details."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 212,
+        "description": "Information disclosure: Error messages with exception details sent to WebSocket clients without sanitization."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 98,
+        "description": "Unvalidated input: WebSocket receives raw JSON without validation of message structure, size, or content."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 104,
+        "description": "Information disclosure: Health check endpoint includes database error messages and details."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 80,
+        "description": "Missing rate limiting: No rate limit on WebSocket connections or query submissions. Could enable DOS or API bill explosion."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 70,
+        "description": "Missing secret validation: GEMINI_API_KEY warning is logged but checked at startup only. Should be validated per-request or enforced at app initialization."
+      },
+      {
+        "severity": "low",
+        "file": "src/data/db.py",
+        "line": 19,
+        "description": "Database stored in plain text location with no encryption at rest. Query content logged unencrypted."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 27,
+        "description": "Missing security headers: No Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS, or X-XSS-Protection headers configured."
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      "Add authentication middleware (JWT, OAuth2, or API keys) to all endpoints. Require authentication for /api/*, /ws, and /health.",
+      "Fix CORS configuration: use specific allowed origins instead of '*'. Set allow_credentials=False or remove wildcard.",
+      "Add rate limiting using FastAPI middleware (e.g., slowapi) with per-IP and per-endpoint limits.",
+      "Sanitize error messages: Return generic error responses to clients, log detailed errors server-side only.",
+      "Add input validation and size limits to WebSocket messages using Pydantic validators.",
+      "Add security headers middleware: CSP, X-Frame-Options, X-Content-Type-Options, HSTS, X-XSS-Protection.",
+      "Encrypt sensitive fields in database (query_text, feedback comments) using field-level encryption.",
+      "Implement access control: Only allow users to view their own queries/feedback. Use query_id as auth token or user-based access.",
+      "Add request/response logging with audit trail (who accessed what, when). Exclude PII from logs.",
+      "Validate and constrain query_id format (UUID validation) to prevent injection attacks.",
+      "Add database connection pooling and set read-only flags for GET endpoints.",
+      "Implement timeouts on LLM API calls to prevent hanging connections.",
+      "Add secrets scanning to CI/CD pipeline to prevent accidental API key commits.",
+      "Validate environment variables at startup with clear error messages if missing.",
+      "Add database migrations and version control for schema changes.",
+      "Implement HTTPS-only mode in production (security headers, redirects).",
+      "Add audit logging for all data access, especially feedback exports and query retrieval."
+    ]
+  },
+  "durationMs": 46719,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T13:28:37.216Z",
+  "executionId": "audit_1777555670497_pk0jtk"
+}

@@ -1,0 +1,94 @@
+[2026-05-01T05:45:36.786Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Based on my analysis of your HR policy bot codebase, here's the security assessment:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"CORS configured with allow_origins=['*'] - allows any website to access your API. This is inappropriate for a system handling sensitive HR policy data. Requests from malicious sites could retrieve policy guidance and feedback.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 176,\n      \"description\": \"No authentication or authorization checks on /feedback/export endpoint - exposes all user feedback records without access control. Anyone can retrieve sensitive HR advisor feedback.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 120,\n      \"description\": \"No authentication on /queries and /queries/{query_id} endpoints - allows unauthenticated access to all HR policy queries made by your organization. Sensitive queries are publicly readable.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 163,\n      \"description\": \"No validation on FeedbackRecord input - no checks for data type, length, or content sanitization. Could allow injection attacks or DoS via oversized payloads.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 104,\n      \"description\": \"Exception details leaked in HTTP responses (health endpoint line 104: str(e)). Detailed error messages expose system internals and could facilitate targeted attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 85,\n      \"description\": \"No path traversal protection on FileResponse for static files. While limited to static_path, using Path.resolve() would be more explicit. Could allow reading files outside static directory if path construction is modified later.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 134,\n      \"description\": \"Query parameter 'query_id' accepts any string without validation. No UUID format enforcement. While protected from SQL injection by parameterized queries, could allow enumeration attacks or buffer issues.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 70,\n      \"description\": \"Missing GEMINI_API_KEY warning logged - if logs are exposed, this reveals deployment issues. Consider reducing log verbosity for missing credentials.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"config.yaml\",\n      \"line\": 7,\n      \"description\": \"Server configured to listen on 0.0.0.0 (all interfaces) without TLS. In production, should bind to specific interface and enforce HTTPS.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 70,\n      \"description\": \"User-Agent header hardcoded to Chrome - masquerades as browser. Low risk but violates best practices for API clients. Should use descriptive user-agent like 'DND-HR-Policy-Bot/0.1'.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    \"**URGENT**: Implement authentication (JWT or OAuth2) on all API endpoints. Queries and feedback contain sensitive HR policy information.\",\n    \"**URGENT**: Restrict CORS origins to specific frontend domain(s) only: `allow_origins=[\\\"https://yourfrontend.example.com\\\"]`\",\n    \"**HIGH**: Add authorization checks - verify user role/permissions before accessing queries and feedback endpoints\",\n    \"**HIGH**: Validate all input parameters: query_id should match UUID pattern, feedback comment should have length limits\",\n    \"**HIGH**: Implement rate limiting on API endpoints using FastAPI middleware (e.g., slowapi) to prevent DoS and enumeration attacks\",\n    \"**MEDIUM**: Remove detailed exception messages from HTTP responses. Log full errors server-side, return generic messages to client (e.g., 'Internal server error')\",\n    \"**MEDIUM**: Use UUID4 for all record IDs (already doing this well) and validate format on input\",\n    \"**MEDIUM**: Add request/response logging middleware but scrub sensitive data before storage\",\n    \"**MEDIUM**: Validate FeedbackRecord using Pydantic constraints: max length on comment, validate rating enum\",\n    \"**MEDIUM**: Add Content-Security-Policy and other security headers (X-Content-Type-Options, X-Frame-Options)\",\n    \"**MEDIUM**: Enforce HTTPS in production (use HTTPS_REDIRECT middleware, set secure cookies)\",\n    \"**LOW**: Update User-Agent header to identify your bot: `headers={\\\"User-Agent\\\": \\\"DND-HR-Policy-Bot/0.1 (+https://yoursite.com)\\\"}`\",\n    \"**PROCESS**: Conduct security review of policy_registry.json and specialist prompts to ensure no hardcoded secrets or sensitive data\",\n    \"**PROCESS**: Implement API key rotation strategy for GEMINI_API_KEY\",\n    \"**PROCESS**: Add security.md documenting your threat model and how you address authentication, data classification, and incident response\"\n  ]\n}\n```\n\n## Summary\n\n**Overall Risk Score: 72/100** (Medium-High risk for production)\n\n### Critical Issues to Fix Before Deploying:\n\n1. **No authentication** - This is the biggest issue. Your API exposes all HR queries and feedback openly.\n2. **Overpermissive CORS** - Combined with no auth, this enables cross-site attacks.\n3. **No input validation** - FeedbackRecord accepts any input without length/type checks.\n\n### Quick Wins (High Impact, Low Effort):\n\n```python\n# In src/main.py, replace CORS:\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"https://yourdomain.com\"],  # Specific domain only\n    allow_credentials=True,\n    allow_methods=[\"GET\", \"POST\"],\n    allow_headers=[\"Content-Type\"],\n)\n\n# In src/api/routes.py, add to routes requiring auth:\nfrom fastapi import Depends, HTTPException, status\n\ndef verify_api_key(api_key: str = Header(...)) -> str:\n    if api_key != os.environ.get(\"API_KEY\"):\n        raise HTTPException(status_code=401)\n    return api_key\n\n@router.get(\"/queries\")\nasync def list_queries(\n    limit: int = Query(50, ge=1, le=100),\n    _: str = Depends(verify_api_key)  # Add this\n) -> list[dict]:\n    ...\n```\n\nWant me to implement these fixes?\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "CORS configured with allow_origins=['*'] - allows any website to access your API. This is inappropriate for a system handling sensitive HR policy data. Requests from malicious sites could retrieve policy guidance and feedback."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 176,
+        "description": "No authentication or authorization checks on /feedback/export endpoint - exposes all user feedback records without access control. Anyone can retrieve sensitive HR advisor feedback."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 120,
+        "description": "No authentication on /queries and /queries/{query_id} endpoints - allows unauthenticated access to all HR policy queries made by your organization. Sensitive queries are publicly readable."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 163,
+        "description": "No validation on FeedbackRecord input - no checks for data type, length, or content sanitization. Could allow injection attacks or DoS via oversized payloads."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 104,
+        "description": "Exception details leaked in HTTP responses (health endpoint line 104: str(e)). Detailed error messages expose system internals and could facilitate targeted attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 85,
+        "description": "No path traversal protection on FileResponse for static files. While limited to static_path, using Path.resolve() would be more explicit. Could allow reading files outside static directory if path construction is modified later."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 134,
+        "description": "Query parameter 'query_id' accepts any string without validation. No UUID format enforcement. While protected from SQL injection by parameterized queries, could allow enumeration attacks or buffer issues."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 70,
+        "description": "Missing GEMINI_API_KEY warning logged - if logs are exposed, this reveals deployment issues. Consider reducing log verbosity for missing credentials."
+      },
+      {
+        "severity": "low",
+        "file": "config.yaml",
+        "line": 7,
+        "description": "Server configured to listen on 0.0.0.0 (all interfaces) without TLS. In production, should bind to specific interface and enforce HTTPS."
+      },
+      {
+        "severity": "low",
+        "file": "src/fetch/engine.py",
+        "line": 70,
+        "description": "User-Agent header hardcoded to Chrome - masquerades as browser. Low risk but violates best practices for API clients. Should use descriptive user-agent like 'DND-HR-Policy-Bot/0.1'."
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      "**URGENT**: Implement authentication (JWT or OAuth2) on all API endpoints. Queries and feedback contain sensitive HR policy information.",
+      "**URGENT**: Restrict CORS origins to specific frontend domain(s) only: `allow_origins=[\"https://yourfrontend.example.com\"]`",
+      "**HIGH**: Add authorization checks - verify user role/permissions before accessing queries and feedback endpoints",
+      "**HIGH**: Validate all input parameters: query_id should match UUID pattern, feedback comment should have length limits",
+      "**HIGH**: Implement rate limiting on API endpoints using FastAPI middleware (e.g., slowapi) to prevent DoS and enumeration attacks",
+      "**MEDIUM**: Remove detailed exception messages from HTTP responses. Log full errors server-side, return generic messages to client (e.g., 'Internal server error')",
+      "**MEDIUM**: Use UUID4 for all record IDs (already doing this well) and validate format on input",
+      "**MEDIUM**: Add request/response logging middleware but scrub sensitive data before storage",
+      "**MEDIUM**: Validate FeedbackRecord using Pydantic constraints: max length on comment, validate rating enum",
+      "**MEDIUM**: Add Content-Security-Policy and other security headers (X-Content-Type-Options, X-Frame-Options)",
+      "**MEDIUM**: Enforce HTTPS in production (use HTTPS_REDIRECT middleware, set secure cookies)",
+      "**LOW**: Update User-Agent header to identify your bot: `headers={\"User-Agent\": \"DND-HR-Policy-Bot/0.1 (+https://yoursite.com)\"}`",
+      "**PROCESS**: Conduct security review of policy_registry.json and specialist prompts to ensure no hardcoded secrets or sensitive data",
+      "**PROCESS**: Implement API key rotation strategy for GEMINI_API_KEY",
+      "**PROCESS**: Add security.md documenting your threat model and how you address authentication, data classification, and incident response"
+    ]
+  },
+  "durationMs": 43344,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-01T05:45:36.786Z",
+  "executionId": "audit_1777614293442_9d45ac"
+}

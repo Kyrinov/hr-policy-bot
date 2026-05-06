@@ -1,0 +1,168 @@
+[2026-04-30T13:27:50.497Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I have a complete picture of the codebase. Let me compile the findings into actionable suggestions.\n\n---\n\n## Performance Analysis — HR Policy Bot\n\n**Note: the frontend is vanilla JS, not React** — so the re-render analysis is replaced with equivalent JS DOM findings.\n\n---\n\n### 1. N+1 Query Patterns\n\n**Issue: `DatabaseManager` instantiated per REST request**\n\n`src/api/routes.py` constructs a fresh `DatabaseManager` on every endpoint call. While `aiosqlite` is fast, the repeated path resolution and schema verification add unnecessary overhead under concurrent load.\n\n```python\n# CURRENT — fresh object every call\n@router.get(\"/api/queries/{query_id}\")\nasync def get_query(query_id: str):\n    db = DatabaseManager()   # ← new instance per request\n    ...\n```\n\n**Fix: share a single instance via FastAPI's dependency injection.**\n\n```python\n# src/api/deps.py\nfrom functools import lru_cache\nfrom src.data.db import DatabaseManager\n\n@lru_cache(maxsize=1)\ndef get_db() -> DatabaseManager:\n    return DatabaseManager()\n\n# src/api/routes.py\nfrom fastapi import Depends\nfrom src.api.deps import get_db\n\n@router.get(\"/api/queries/{query_id}\")\nasync def get_query(query_id: str, db: DatabaseManager = Depends(get_db)):\n    record = await db.get_query(query_id)\n    ...\n```\n\n---\n\n**Issue: `get_orchestrator_response` followed by `get_agent_responses` — two serial round-trips**\n\nIn `routes.py` (the detail endpoint), the code fetches the orchestrator response and agent responses sequentially. These are independent queries and can run in parallel.\n\n```python\n# CURRENT — serial\nrecord = await db.get_query(query_id)\norch   = await db.get_orchestrator_response(query_id)  # round-trip 1\nagents = await db.get_agent_responses(query_id)         # round-trip 2\n```\n\n**Fix: parallel gather.**\n\n```python\nimport asyncio\n\nrecord, orch, agents = await asyncio.gather(\n    db.get_query(query_id),\n    db.get_orchestrator_response(query_id),\n    db.get_agent_responses(query_id),\n)\n```\n\n---\n\n### 2. Frontend DOM Performance (no React, but equivalent issues)\n\n**Issue: `renderCitations()` rebuilds the entire citations panel on every `response_complete` message**\n\n`static/js/app.js` sets `innerHTML` on the citations container wholesale, discarding and recreating all DOM nodes each time — expensive if the panel is already populated (e.g., a user who re-submits quickly).\n\n**Fix: clear first, then build with a `DocumentFragment` to minimize reflows.**\n\n```javascript\nfunction renderCitations(citations) {\n  const container = document.getElementById('citations-list');\n  container.textContent = '';               // single DOM mutation to clear\n\n  const frag = document.createDocumentFragment();\n  const grouped = groupBy(citations, c => c.agent_domain);\n\n  for (const [domain, items] of Object.entries(grouped)) {\n    const section = buildCitationSection(domain, items); // pure DOM builder\n    frag.appendChild(section);\n  }\n  container.appendChild(frag);             // single reflow\n}\n```\n\n---\n\n**Issue: WebSocket `handleMessage` runs `JSON.parse` + `querySelector` inside a tight message loop**\n\nEvery incoming WS frame calls several `document.querySelector(...)` selectors by constructing strings dynamically. Cache the elements once on `init()`.\n\n```javascript\n// CURRENT — re-queried every message\nfunction handleAgentStatusUpdate(msg) {\n  const el = document.querySelector(`[data-agent=\"${msg.agent_id}\"]`);\n  ...\n}\n\n// BETTER — cache on init\nconst _agentEls = {};\nfunction init() {\n  document.querySelectorAll('[data-agent]').forEach(el => {\n    _agentEls[el.dataset.agent] = el;\n  });\n}\n\nfunction handleAgentStatusUpdate(msg) {\n  const el = _agentEls[msg.agent_id];   // O(1) lookup, no DOM traversal\n  if (el) el.className = `status-${msg.status}`;\n}\n```\n\n---\n\n### 3. Caching Opportunities\n\n**Issue: `_normalize_url()` and `_get_domain()` recompile/re-parse on every fetch**\n\n`src/fetch/engine.py` uses `re.sub()` with inline pattern strings inside hot paths.\n\n```python\n# CURRENT — pattern compiled on every call\nurl = re.sub(r'/[^/]+\\.html$', '/FullText.html', url)\n```\n\n**Fix: pre-compile at module level.**\n\n```python\n# src/fetch/engine.py  (module level)\nimport re\n_FULLTEXT_RE = re.compile(r'/[^/]+\\.html$')\n\nclass FetchEngine:\n    @staticmethod\n    def _normalize_url(url: str) -> str:\n        return _FULLTEXT_RE.sub('/FullText.html', url)\n```\n\n---\n\n**Issue: no scheduled `clear_expired()` call — the fetch cache grows unboundedly**\n\n`src/fetch/cache.py` has `clear_expired()` but nothing calls it automatically. On a long-running server the `fetch_cache` table will accumulate stale rows forever, degrading every SQLite scan.\n\n**Fix: schedule periodic cleanup in `main.py`.**\n\n```python\n# src/main.py\nimport asyncio\nfrom src.fetch.cache import FetchCache\n\n@app.on_event(\"startup\")\nasync def startup_event():\n    await db.initialize()\n    asyncio.create_task(_cache_cleanup_loop())\n\nasync def _cache_cleanup_loop():\n    cache = FetchCache(db)\n    while True:\n        await asyncio.sleep(3600)       # hourly\n        await cache.clear_expired()\n```\n\n---\n\n**Issue: recently-answered queries are re-synthesized on duplicate submissions**\n\nIf two users (or the same user retrying) send the identical query within the cache TTL window, the orchestrator runs the full agent pipeline again. The `queries` table already stores results — they just aren't checked before processing.\n\n**Fix: query deduplication check before orchestration.**\n\n```python\n# src/api/websocket.py — inside process_query(), before orchestration\nexisting = await db.list_queries(limit=50)\nfor q in existing:\n    if q[\"query_text\"].strip() == query_text.strip():\n        cached_orch = await db.get_orchestrator_response(q[\"query_id\"])\n        if cached_orch:\n            await send(WSResponseComplete(...cached_orch...))\n            return\n```\n\n---\n\n### 4. Memory Leak Risks\n\n**Issue: browser context created but only cleaned up on exception — not in normal fast paths**\n\n`src/fetch/browser.py` creates a fresh `BrowserContext` per fetch and closes it in a `finally` block. But if a `TimeoutError` is raised before `context` is assigned, the finally block tries to close an unbound name.\n\n```python\n# CURRENT — potential NameError in finally\nasync def fetch(self, url: str) -> str:\n    context = await self._browser.new_context(...)\n    try:\n        page = await context.new_page()\n        ...\n    finally:\n        await context.close()   # ← safe only if context was assigned\n```\n\n**Fix: initialize to `None` and guard.**\n\n```python\nasync def fetch(self, url: str) -> str:\n    context = None\n    try:\n        context = await self._browser.new_context(...)\n        page = await context.new_page()\n        ...\n    finally:\n        if context is not None:\n            await context.close()\n```\n\n---\n\n**Issue: `asyncio.create_task` result not retained — task can be garbage-collected mid-execution**\n\n`src/api/websocket.py` stores the active task in `self._active_tasks[query_id]`, which is good. But the task is removed from the dict immediately on completion without awaiting, leaving a window where the task object could be GC'd before its result is processed if another coroutine holds no reference.\n\n**Fix: use a `done_callback` to remove from the dict only after the result is consumed.**\n\n```python\ntask = asyncio.create_task(self.process_query(ws, data))\nself._active_tasks[query_id] = task\ntask.add_done_callback(lambda t: self._active_tasks.pop(query_id, None))\n```\n\n---\n\n### 5. Redundant Computations\n\n**Issue: `_aggregate_citations()` iterates specialist responses twice**\n\n`src/agents/orchestrator.py` loops over `specialist_responses` once to build a seen-URL set and again to build the output list — it can be done in one pass.\n\n```python\n# CURRENT — two passes\nseen_urls = set()\nfor resp in specialist_responses:\n    for cit in resp.citations:\n        if cit.url not in seen_urls:\n            seen_urls.add(cit.url)\n            citations.append(...)\n\n# BETTER — one pass with dict (preserves order, deduplicates)\ndef _aggregate_citations(self, specialist_responses):\n    seen: dict[str, OrchestratorCitation] = {}\n    for resp in specialist_responses:\n        for cit in resp.citations:\n            if cit.url not in seen:\n                seen[cit.url] = OrchestratorCitation(\n                    url=cit.url,\n                    title=cit.title,\n                    source_agents=[resp.agent_id],\n                )\n            else:\n                seen[cit.url].source_agents.append(resp.agent_id)\n    return list(seen.values())\n```\n\n---\n\n**Issue: JSON extraction uses a fragile `find('{') / rfind('}')` scan on every LLM response**\n\n`src/agents/specialist.py` and `orchestrator.py` parse LLM output by finding the outermost `{}` braces. This is O(n) on response length and breaks on responses where JSON is not the outermost structure.\n\n**Fix: use `json.loads` with a regex fallback targeting the first complete object.**\n\n```python\nimport re, json\n\n_JSON_RE = re.compile(r'\\{.*\\}', re.DOTALL)\n\ndef _parse_response(self, raw: str) -> dict:\n    try:\n        return json.loads(raw)\n    except json.JSONDecodeError:\n        m = _JSON_RE.search(raw)\n        if m:\n            try:\n                return json.loads(m.group())\n            except json.JSONDecodeError:\n                pass\n    return {}   # caller handles empty dict\n```\n\n---\n\n### Priority Summary\n\n| Priority | Issue | File | Estimated Impact |\n|---|---|---|---|\n| High | `DatabaseManager()` per request | `src/api/routes.py` | CPU + latency under load |\n| High | Serial DB fetches on detail endpoint | `src/api/routes.py` | ~2× latency on query detail |\n| High | No `clear_expired()` schedule | `src/main.py` | DB bloat → slower scans |\n| Medium | `None`-guard on browser context | `src/fetch/browser.py` | Prevent occasional leak |\n| Medium | Pre-compile fetch regexes | `src/fetch/engine.py` | Small CPU win on every fetch |\n| Medium | `renderCitations` DOM batching | `static/js/app.js` | Smooth UI on large citation sets |\n| Medium | Cache `querySelector` results | `static/js/app.js` | Reduces per-message DOM traversal |\n| Low | Two-pass citation aggregation | `src/agents/orchestrator.py` | Negligible at 8 agents |\n| Low | JSON parse strategy | `src/agents/specialist.py` | Robustness > speed |\n| Low | Query deduplication | `src/api/websocket.py` | LLM cost savings for repeat queries |\n\nThe highest-leverage changes are the `DatabaseManager` singleton, parallel `asyncio.gather` on the detail endpoint, and the cache cleanup loop — all are low-risk, drop-in changes.\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis — HR Policy Bot",
+        "content": "\n**Note: the frontend is vanilla JS, not React** — so the re-render analysis is replaced with equivalent JS DOM findings.\n\n---\n\n",
+        "level": 2
+      },
+      {
+        "title": "1. N+1 Query Patterns",
+        "content": "\n**Issue: `DatabaseManager` instantiated per REST request**\n\n`src/api/routes.py` constructs a fresh `DatabaseManager` on every endpoint call. While `aiosqlite` is fast, the repeated path resolution and schema verification add unnecessary overhead under concurrent load.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "CURRENT — fresh object every call",
+        "content": "@router.get(\"/api/queries/{query_id}\")\nasync def get_query(query_id: str):\n    db = DatabaseManager()   # ← new instance per request\n    ...\n```\n\n**Fix: share a single instance via FastAPI's dependency injection.**\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "src/api/deps.py",
+        "content": "from functools import lru_cache\nfrom src.data.db import DatabaseManager\n\n@lru_cache(maxsize=1)\ndef get_db() -> DatabaseManager:\n    return DatabaseManager()\n\n",
+        "level": 1
+      },
+      {
+        "title": "src/api/routes.py",
+        "content": "from fastapi import Depends\nfrom src.api.deps import get_db\n\n@router.get(\"/api/queries/{query_id}\")\nasync def get_query(query_id: str, db: DatabaseManager = Depends(get_db)):\n    record = await db.get_query(query_id)\n    ...\n```\n\n---\n\n**Issue: `get_orchestrator_response` followed by `get_agent_responses` — two serial round-trips**\n\nIn `routes.py` (the detail endpoint), the code fetches the orchestrator response and agent responses sequentially. These are independent queries and can run in parallel.\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "CURRENT — serial",
+        "content": "record = await db.get_query(query_id)\norch   = await db.get_orchestrator_response(query_id)  # round-trip 1\nagents = await db.get_agent_responses(query_id)         # round-trip 2\n```\n\n**Fix: parallel gather.**\n\n```python\nimport asyncio\n\nrecord, orch, agents = await asyncio.gather(\n    db.get_query(query_id),\n    db.get_orchestrator_response(query_id),\n    db.get_agent_responses(query_id),\n)\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "2. Frontend DOM Performance (no React, but equivalent issues)",
+        "content": "\n**Issue: `renderCitations()` rebuilds the entire citations panel on every `response_complete` message**\n\n`static/js/app.js` sets `innerHTML` on the citations container wholesale, discarding and recreating all DOM nodes each time — expensive if the panel is already populated (e.g., a user who re-submits quickly).\n\n**Fix: clear first, then build with a `DocumentFragment` to minimize reflows.**\n\n```javascript\nfunction renderCitations(citations) {\n  const container = document.getElementById('citations-list');\n  container.textContent = '';               // single DOM mutation to clear\n\n  const frag = document.createDocumentFragment();\n  const grouped = groupBy(citations, c => c.agent_domain);\n\n  for (const [domain, items] of Object.entries(grouped)) {\n    const section = buildCitationSection(domain, items); // pure DOM builder\n    frag.appendChild(section);\n  }\n  container.appendChild(frag);             // single reflow\n}\n```\n\n---\n\n**Issue: WebSocket `handleMessage` runs `JSON.parse` + `querySelector` inside a tight message loop**\n\nEvery incoming WS frame calls several `document.querySelector(...)` selectors by constructing strings dynamically. Cache the elements once on `init()`.\n\n```javascript\n// CURRENT — re-queried every message\nfunction handleAgentStatusUpdate(msg) {\n  const el = document.querySelector(`[data-agent=\"${msg.agent_id}\"]`);\n  ...\n}\n\n// BETTER — cache on init\nconst _agentEls = {};\nfunction init() {\n  document.querySelectorAll('[data-agent]').forEach(el => {\n    _agentEls[el.dataset.agent] = el;\n  });\n}\n\nfunction handleAgentStatusUpdate(msg) {\n  const el = _agentEls[msg.agent_id];   // O(1) lookup, no DOM traversal\n  if (el) el.className = `status-${msg.status}`;\n}\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "3. Caching Opportunities",
+        "content": "\n**Issue: `_normalize_url()` and `_get_domain()` recompile/re-parse on every fetch**\n\n`src/fetch/engine.py` uses `re.sub()` with inline pattern strings inside hot paths.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "CURRENT — pattern compiled on every call",
+        "content": "url = re.sub(r'/[^/]+\\.html$', '/FullText.html', url)\n```\n\n**Fix: pre-compile at module level.**\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "src/fetch/engine.py  (module level)",
+        "content": "import re\n_FULLTEXT_RE = re.compile(r'/[^/]+\\.html$')\n\nclass FetchEngine:\n    @staticmethod\n    def _normalize_url(url: str) -> str:\n        return _FULLTEXT_RE.sub('/FullText.html', url)\n```\n\n---\n\n**Issue: no scheduled `clear_expired()` call — the fetch cache grows unboundedly**\n\n`src/fetch/cache.py` has `clear_expired()` but nothing calls it automatically. On a long-running server the `fetch_cache` table will accumulate stale rows forever, degrading every SQLite scan.\n\n**Fix: schedule periodic cleanup in `main.py`.**\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "src/main.py",
+        "content": "import asyncio\nfrom src.fetch.cache import FetchCache\n\n@app.on_event(\"startup\")\nasync def startup_event():\n    await db.initialize()\n    asyncio.create_task(_cache_cleanup_loop())\n\nasync def _cache_cleanup_loop():\n    cache = FetchCache(db)\n    while True:\n        await asyncio.sleep(3600)       # hourly\n        await cache.clear_expired()\n```\n\n---\n\n**Issue: recently-answered queries are re-synthesized on duplicate submissions**\n\nIf two users (or the same user retrying) send the identical query within the cache TTL window, the orchestrator runs the full agent pipeline again. The `queries` table already stores results — they just aren't checked before processing.\n\n**Fix: query deduplication check before orchestration.**\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "src/api/websocket.py — inside process_query(), before orchestration",
+        "content": "existing = await db.list_queries(limit=50)\nfor q in existing:\n    if q[\"query_text\"].strip() == query_text.strip():\n        cached_orch = await db.get_orchestrator_response(q[\"query_id\"])\n        if cached_orch:\n            await send(WSResponseComplete(...cached_orch...))\n            return\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "4. Memory Leak Risks",
+        "content": "\n**Issue: browser context created but only cleaned up on exception — not in normal fast paths**\n\n`src/fetch/browser.py` creates a fresh `BrowserContext` per fetch and closes it in a `finally` block. But if a `TimeoutError` is raised before `context` is assigned, the finally block tries to close an unbound name.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "CURRENT — potential NameError in finally",
+        "content": "async def fetch(self, url: str) -> str:\n    context = await self._browser.new_context(...)\n    try:\n        page = await context.new_page()\n        ...\n    finally:\n        await context.close()   # ← safe only if context was assigned\n```\n\n**Fix: initialize to `None` and guard.**\n\n```python\nasync def fetch(self, url: str) -> str:\n    context = None\n    try:\n        context = await self._browser.new_context(...)\n        page = await context.new_page()\n        ...\n    finally:\n        if context is not None:\n            await context.close()\n```\n\n---\n\n**Issue: `asyncio.create_task` result not retained — task can be garbage-collected mid-execution**\n\n`src/api/websocket.py` stores the active task in `self._active_tasks[query_id]`, which is good. But the task is removed from the dict immediately on completion without awaiting, leaving a window where the task object could be GC'd before its result is processed if another coroutine holds no reference.\n\n**Fix: use a `done_callback` to remove from the dict only after the result is consumed.**\n\n```python\ntask = asyncio.create_task(self.process_query(ws, data))\nself._active_tasks[query_id] = task\ntask.add_done_callback(lambda t: self._active_tasks.pop(query_id, None))\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "5. Redundant Computations",
+        "content": "\n**Issue: `_aggregate_citations()` iterates specialist responses twice**\n\n`src/agents/orchestrator.py` loops over `specialist_responses` once to build a seen-URL set and again to build the output list — it can be done in one pass.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "CURRENT — two passes",
+        "content": "seen_urls = set()\nfor resp in specialist_responses:\n    for cit in resp.citations:\n        if cit.url not in seen_urls:\n            seen_urls.add(cit.url)\n            citations.append(...)\n\n",
+        "level": 1
+      },
+      {
+        "title": "BETTER — one pass with dict (preserves order, deduplicates)",
+        "content": "def _aggregate_citations(self, specialist_responses):\n    seen: dict[str, OrchestratorCitation] = {}\n    for resp in specialist_responses:\n        for cit in resp.citations:\n            if cit.url not in seen:\n                seen[cit.url] = OrchestratorCitation(\n                    url=cit.url,\n                    title=cit.title,\n                    source_agents=[resp.agent_id],\n                )\n            else:\n                seen[cit.url].source_agents.append(resp.agent_id)\n    return list(seen.values())\n```\n\n---\n\n**Issue: JSON extraction uses a fragile `find('{') / rfind('}')` scan on every LLM response**\n\n`src/agents/specialist.py` and `orchestrator.py` parse LLM output by finding the outermost `{}` braces. This is O(n) on response length and breaks on responses where JSON is not the outermost structure.\n\n**Fix: use `json.loads` with a regex fallback targeting the first complete object.**\n\n```python\nimport re, json\n\n_JSON_RE = re.compile(r'\\{.*\\}', re.DOTALL)\n\ndef _parse_response(self, raw: str) -> dict:\n    try:\n        return json.loads(raw)\n    except json.JSONDecodeError:\n        m = _JSON_RE.search(raw)\n        if m:\n            try:\n                return json.loads(m.group())\n            except json.JSONDecodeError:\n                pass\n    return {}   # caller handles empty dict\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "Priority Summary",
+        "content": "| Priority | Issue | File | Estimated Impact |\n|---|---|---|---|\n| High | `DatabaseManager()` per request | `src/api/routes.py` | CPU + latency under load |\n| High | Serial DB fetches on detail endpoint | `src/api/routes.py` | ~2× latency on query detail |\n| High | No `clear_expired()` schedule | `src/main.py` | DB bloat → slower scans |\n| Medium | `None`-guard on browser context | `src/fetch/browser.py` | Prevent occasional leak |\n| Medium | Pre-compile fetch regexes | `src/fetch/engine.py` | Small CPU win on every fetch |\n| Medium | `renderCitations` DOM batching | `static/js/app.js` | Smooth UI on large citation sets |\n| Medium | Cache `querySelector` results | `static/js/app.js` | Reduces per-message DOM traversal |\n| Low | Two-pass citation aggregation | `src/agents/orchestrator.py` | Negligible at 8 agents |\n| Low | JSON parse strategy | `src/agents/specialist.py` | Robustness > speed |\n| Low | Query deduplication | `src/api/websocket.py` | LLM cost savings for repeat queries |\n\nThe highest-leverage changes are the `DatabaseManager` singleton, parallel `asyncio.gather` on the detail endpoint, and the cache cleanup loop — all are low-risk, drop-in changes.",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "# CURRENT — fresh object every call\n@router.get(\"/api/queries/{query_id}\")\nasync def get_query(query_id: str):\n    db = DatabaseManager()   # ← new instance per request\n    ..."
+      },
+      {
+        "language": "python",
+        "code": "# src/api/deps.py\nfrom functools import lru_cache\nfrom src.data.db import DatabaseManager\n\n@lru_cache(maxsize=1)\ndef get_db() -> DatabaseManager:\n    return DatabaseManager()\n\n# src/api/routes.py\nfrom fastapi import Depends\nfrom src.api.deps import get_db\n\n@router.get(\"/api/queries/{query_id}\")\nasync def get_query(query_id: str, db: DatabaseManager = Depends(get_db)):\n    record = await db.get_query(query_id)\n    ..."
+      },
+      {
+        "language": "python",
+        "code": "# CURRENT — serial\nrecord = await db.get_query(query_id)\norch   = await db.get_orchestrator_response(query_id)  # round-trip 1\nagents = await db.get_agent_responses(query_id)         # round-trip 2"
+      },
+      {
+        "language": "python",
+        "code": "import asyncio\n\nrecord, orch, agents = await asyncio.gather(\n    db.get_query(query_id),\n    db.get_orchestrator_response(query_id),\n    db.get_agent_responses(query_id),\n)"
+      },
+      {
+        "language": "javascript",
+        "code": "function renderCitations(citations) {\n  const container = document.getElementById('citations-list');\n  container.textContent = '';               // single DOM mutation to clear\n\n  const frag = document.createDocumentFragment();\n  const grouped = groupBy(citations, c => c.agent_domain);\n\n  for (const [domain, items] of Object.entries(grouped)) {\n    const section = buildCitationSection(domain, items); // pure DOM builder\n    frag.appendChild(section);\n  }\n  container.appendChild(frag);             // single reflow\n}"
+      },
+      {
+        "language": "javascript",
+        "code": "// CURRENT — re-queried every message\nfunction handleAgentStatusUpdate(msg) {\n  const el = document.querySelector(`[data-agent=\"${msg.agent_id}\"]`);\n  ...\n}\n\n// BETTER — cache on init\nconst _agentEls = {};\nfunction init() {\n  document.querySelectorAll('[data-agent]').forEach(el => {\n    _agentEls[el.dataset.agent] = el;\n  });\n}\n\nfunction handleAgentStatusUpdate(msg) {\n  const el = _agentEls[msg.agent_id];   // O(1) lookup, no DOM traversal\n  if (el) el.className = `status-${msg.status}`;\n}"
+      },
+      {
+        "language": "python",
+        "code": "# CURRENT — pattern compiled on every call\nurl = re.sub(r'/[^/]+\\.html$', '/FullText.html', url)"
+      },
+      {
+        "language": "python",
+        "code": "# src/fetch/engine.py  (module level)\nimport re\n_FULLTEXT_RE = re.compile(r'/[^/]+\\.html$')\n\nclass FetchEngine:\n    @staticmethod\n    def _normalize_url(url: str) -> str:\n        return _FULLTEXT_RE.sub('/FullText.html', url)"
+      },
+      {
+        "language": "python",
+        "code": "# src/main.py\nimport asyncio\nfrom src.fetch.cache import FetchCache\n\n@app.on_event(\"startup\")\nasync def startup_event():\n    await db.initialize()\n    asyncio.create_task(_cache_cleanup_loop())\n\nasync def _cache_cleanup_loop():\n    cache = FetchCache(db)\n    while True:\n        await asyncio.sleep(3600)       # hourly\n        await cache.clear_expired()"
+      },
+      {
+        "language": "python",
+        "code": "# src/api/websocket.py — inside process_query(), before orchestration\nexisting = await db.list_queries(limit=50)\nfor q in existing:\n    if q[\"query_text\"].strip() == query_text.strip():\n        cached_orch = await db.get_orchestrator_response(q[\"query_id\"])\n        if cached_orch:\n            await send(WSResponseComplete(...cached_orch...))\n            return"
+      },
+      {
+        "language": "python",
+        "code": "# CURRENT — potential NameError in finally\nasync def fetch(self, url: str) -> str:\n    context = await self._browser.new_context(...)\n    try:\n        page = await context.new_page()\n        ...\n    finally:\n        await context.close()   # ← safe only if context was assigned"
+      },
+      {
+        "language": "python",
+        "code": "async def fetch(self, url: str) -> str:\n    context = None\n    try:\n        context = await self._browser.new_context(...)\n        page = await context.new_page()\n        ...\n    finally:\n        if context is not None:\n            await context.close()"
+      },
+      {
+        "language": "python",
+        "code": "task = asyncio.create_task(self.process_query(ws, data))\nself._active_tasks[query_id] = task\ntask.add_done_callback(lambda t: self._active_tasks.pop(query_id, None))"
+      },
+      {
+        "language": "python",
+        "code": "# CURRENT — two passes\nseen_urls = set()\nfor resp in specialist_responses:\n    for cit in resp.citations:\n        if cit.url not in seen_urls:\n            seen_urls.add(cit.url)\n            citations.append(...)\n\n# BETTER — one pass with dict (preserves order, deduplicates)\ndef _aggregate_citations(self, specialist_responses):\n    seen: dict[str, OrchestratorCitation] = {}\n    for resp in specialist_responses:\n        for cit in resp.citations:\n            if cit.url not in seen:\n                seen[cit.url] = OrchestratorCitation(\n                    url=cit.url,\n                    title=cit.title,\n                    source_agents=[resp.agent_id],\n                )\n            else:\n                seen[cit.url].source_agents.append(resp.agent_id)\n    return list(seen.values())"
+      },
+      {
+        "language": "python",
+        "code": "import re, json\n\n_JSON_RE = re.compile(r'\\{.*\\}', re.DOTALL)\n\ndef _parse_response(self, raw: str) -> dict:\n    try:\n        return json.loads(raw)\n    except json.JSONDecodeError:\n        m = _JSON_RE.search(raw)\n        if m:\n            try:\n                return json.loads(m.group())\n            except json.JSONDecodeError:\n                pass\n    return {}   # caller handles empty dict"
+      }
+    ]
+  },
+  "durationMs": 156294,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-04-30T13:27:50.497Z",
+  "executionId": "optimize_1777555514203_eaile2"
+}

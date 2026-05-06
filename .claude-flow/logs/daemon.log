@@ -20,3 +20,1949 @@
 [2026-04-30T13:03:14.142Z] [INFO] Worker testgaps deferred: CPU load too high: 27.19
 [2026-04-30T13:08:05.034Z] [INFO] Worker audit deferred: CPU load too high: 27.02
 [2026-04-30T13:10:14.146Z] [INFO] Worker map deferred: CPU load too high: 28.05
+[2026-04-30T13:14:14.170Z] [INFO] Worker optimize deferred: CPU load too high: 29.64
+[2026-04-30T13:18:05.082Z] [INFO] Worker audit deferred: CPU load too high: 25.78
+[2026-04-30T13:23:14.198Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T13:23:14.198Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T13:23:18.477Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:23:18.478Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:25:14.202Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-04-30T13:25:14.202Z] [INFO] Worker map completed in 0ms
+[2026-04-30T13:25:14.203Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-04-30T13:25:14.203Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T13:25:18.096Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:25:18.097Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:25:53.754Z] [INFO] Worker testgaps completed in 159556ms
+[2026-04-30T13:25:53.755Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-04-30T13:25:53.755Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T13:25:53.756Z] [INFO] Starting worker: testgaps (2/2 concurrent)
+[2026-04-30T13:25:53.756Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T13:25:53.762Z] [INFO] Starting worker: audit (3/2 concurrent)
+[2026-04-30T13:25:53.762Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T13:25:57.566Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:25:57.566Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:27:50.615Z] [INFO] Worker optimize completed in 156412ms
+[2026-04-30T13:27:54.271Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:27:54.271Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:28:05.093Z] [INFO] Worker audit deferred: max concurrent (2) reached
+[2026-04-30T13:28:37.217Z] [INFO] Worker audit completed in 163455ms
+[2026-04-30T13:28:37.217Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-04-30T13:28:37.218Z] [INFO] Starting worker: optimize (3/2 concurrent)
+[2026-04-30T13:28:37.218Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T13:28:37.225Z] [INFO] Worker map completed in 8ms
+[2026-04-30T13:28:41.050Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:28:41.050Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:29:14.205Z] [INFO] Worker optimize deferred: max concurrent (2) reached
+[2026-04-30T13:29:16.412Z] [INFO] Worker testgaps completed in 202656ms
+[2026-04-30T13:29:16.412Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T13:29:16.412Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T13:29:16.515Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T13:29:16.515Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T13:29:19.978Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:29:19.978Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:30:22.901Z] [INFO] Worker audit completed in 66488ms
+[2026-04-30T13:30:22.901Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T13:30:22.902Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T13:30:26.574Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:30:26.574Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:30:49.423Z] [INFO] Worker optimize completed in 132205ms
+[2026-04-30T13:30:53.389Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:30:53.389Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:31:14.170Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T13:31:14.170Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T13:31:31.179Z] [INFO] Worker audit completed in 134664ms
+[2026-04-30T13:32:42.699Z] [INFO] Worker optimize completed in 139798ms
+[2026-04-30T13:38:05.142Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T13:38:05.142Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T13:38:09.052Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:38:09.052Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:38:22.260Z] [INFO] Worker audit completed in 17118ms
+[2026-04-30T13:40:14.258Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T13:40:14.258Z] [INFO] Worker map completed in 0ms
+[2026-04-30T13:44:14.262Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T13:44:14.262Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T13:44:18.138Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:44:18.139Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:45:53.790Z] [INFO] Starting worker: testgaps (2/2 concurrent)
+[2026-04-30T13:45:53.790Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T13:45:57.618Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:45:57.618Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:47:48.947Z] [INFO] Worker optimize completed in 214685ms
+[2026-04-30T13:48:22.267Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T13:48:22.267Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T13:48:25.869Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:48:25.869Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:48:26.854Z] [INFO] Worker audit completed in 4587ms
+[2026-04-30T13:48:31.226Z] [INFO] Worker testgaps completed in 157436ms
+[2026-04-30T13:55:14.314Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T13:55:14.314Z] [INFO] Worker map completed in 0ms
+[2026-04-30T13:58:26.862Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T13:58:26.862Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T13:58:30.673Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T13:58:30.673Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T13:58:31.343Z] [INFO] Worker audit completed in 4481ms
+[2026-04-30T14:01:14.228Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T14:01:14.228Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T14:02:48.978Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T14:02:48.978Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T14:02:52.729Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:02:52.729Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:02:53.407Z] [INFO] Worker optimize completed in 4429ms
+[2026-04-30T14:08:31.240Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T14:08:31.240Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T14:08:31.344Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T14:08:31.344Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T14:08:34.817Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:08:34.817Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:08:35.046Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:08:35.046Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:08:35.847Z] [INFO] Worker audit completed in 4503ms
+[2026-04-30T14:08:35.978Z] [INFO] Worker testgaps completed in 4738ms
+[2026-04-30T14:10:14.362Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T14:10:14.362Z] [INFO] Worker map completed in 0ms
+[2026-04-30T14:17:53.441Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T14:17:53.442Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T14:17:57.415Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:17:57.415Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:17:59.085Z] [INFO] Worker optimize completed in 5644ms
+[2026-04-30T14:18:35.850Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T14:18:35.850Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T14:18:39.620Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:18:39.621Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:18:40.556Z] [INFO] Worker audit completed in 4706ms
+[2026-04-30T14:25:14.418Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T14:25:14.418Z] [INFO] Worker map completed in 0ms
+[2026-04-30T14:28:35.994Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T14:28:35.994Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T14:28:39.547Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:28:39.547Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:28:40.558Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T14:28:40.558Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T14:28:44.487Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:28:44.488Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:29:24.643Z] [INFO] Worker audit completed in 44085ms
+[2026-04-30T14:31:14.260Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-04-30T14:31:14.260Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T14:31:32.689Z] [INFO] Worker testgaps completed in 176695ms
+[2026-04-30T14:32:59.126Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T14:32:59.126Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T14:33:03.047Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:33:03.047Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:34:58.203Z] [INFO] Worker optimize completed in 119077ms
+[2026-04-30T14:39:24.650Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T14:39:24.650Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T14:39:28.125Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:39:28.125Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:40:14.461Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-04-30T14:40:14.462Z] [INFO] Worker map completed in 1ms
+[2026-04-30T14:40:52.115Z] [INFO] Worker audit completed in 87465ms
+[2026-04-30T14:49:58.242Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T14:49:58.242Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T14:50:02.190Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:50:02.190Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:50:52.150Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T14:50:52.150Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T14:50:56.236Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:50:56.236Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:51:32.701Z] [INFO] Worker testgaps deferred: max concurrent (2) reached
+[2026-04-30T14:51:50.572Z] [INFO] Worker optimize completed in 112330ms
+[2026-04-30T14:51:50.573Z] [INFO] Starting worker: testgaps (2/2 concurrent)
+[2026-04-30T14:51:50.573Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T14:51:54.138Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T14:51:54.139Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T14:51:56.517Z] [INFO] Worker audit completed in 64367ms
+[2026-04-30T14:54:12.507Z] [INFO] Worker testgaps completed in 141934ms
+[2026-04-30T14:55:14.518Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T14:55:14.518Z] [INFO] Worker map completed in 0ms
+[2026-04-30T15:01:14.314Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T15:01:14.314Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T15:01:56.522Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T15:01:56.522Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T15:02:00.440Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:02:00.440Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:02:46.464Z] [INFO] Worker audit completed in 49942ms
+[2026-04-30T15:06:50.602Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T15:06:50.602Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T15:06:54.559Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:06:54.559Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:08:38.730Z] [INFO] Worker optimize completed in 108128ms
+[2026-04-30T15:10:14.574Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T15:10:14.574Z] [INFO] Worker map completed in 0ms
+[2026-04-30T15:11:32.714Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T15:11:32.714Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T15:11:36.351Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:11:36.351Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:12:46.490Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T15:12:46.490Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T15:12:50.006Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:12:50.007Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:13:41.346Z] [INFO] Worker audit completed in 54856ms
+[2026-04-30T15:13:46.341Z] [INFO] Worker testgaps completed in 133627ms
+[2026-04-30T15:23:38.750Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T15:23:38.750Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T15:23:41.350Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T15:23:41.350Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T15:23:56.202Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:23:56.202Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:23:58.829Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:23:58.830Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:24:04.970Z] [INFO] Worker audit completed in 23620ms
+[2026-04-30T15:24:08.475Z] [INFO] Worker optimize completed in 29725ms
+[2026-04-30T15:25:14.630Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T15:25:14.630Z] [INFO] Worker map completed in 0ms
+[2026-04-30T15:31:14.370Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T15:31:14.370Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T15:33:46.346Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T15:33:46.346Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T15:33:50.027Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:33:50.028Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:33:55.628Z] [INFO] Worker testgaps completed in 9282ms
+[2026-04-30T15:34:04.980Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T15:34:04.980Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T15:34:08.691Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:34:08.691Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:34:10.125Z] [INFO] Worker audit completed in 5145ms
+[2026-04-30T15:39:08.478Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T15:39:08.478Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T15:39:11.835Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:39:11.835Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:39:12.480Z] [INFO] Worker optimize completed in 4002ms
+[2026-04-30T15:40:14.683Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T15:40:14.684Z] [INFO] Worker map completed in 1ms
+[2026-04-30T15:44:10.146Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T15:44:10.146Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T15:44:14.249Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:44:14.249Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:44:15.134Z] [INFO] Worker audit completed in 4988ms
+[2026-04-30T15:53:55.662Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T15:53:55.662Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T15:53:59.369Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:53:59.370Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:54:00.232Z] [INFO] Worker testgaps completed in 4570ms
+[2026-04-30T15:54:12.490Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T15:54:12.490Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T15:54:15.138Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T15:54:15.138Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T15:54:16.164Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:54:16.164Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:54:16.863Z] [INFO] Worker optimize completed in 4373ms
+[2026-04-30T15:54:18.631Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T15:54:18.631Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T15:54:19.414Z] [INFO] Worker audit completed in 4276ms
+[2026-04-30T15:55:14.738Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T15:55:14.738Z] [INFO] Worker map completed in 0ms
+[2026-04-30T16:01:14.422Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T16:01:14.422Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T16:04:19.418Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T16:04:19.418Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T16:04:22.885Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:04:22.886Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:04:23.801Z] [INFO] Worker audit completed in 4383ms
+[2026-04-30T16:09:16.918Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T16:09:16.918Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T16:09:20.293Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:09:20.293Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:09:21.030Z] [INFO] Worker optimize completed in 4112ms
+[2026-04-30T16:10:14.790Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T16:10:14.790Z] [INFO] Worker map completed in 0ms
+[2026-04-30T16:14:00.270Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T16:14:00.270Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T16:14:04.010Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:14:04.010Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:14:04.669Z] [INFO] Worker testgaps completed in 4399ms
+[2026-04-30T16:14:23.804Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T16:14:23.805Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T16:14:27.518Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:14:27.518Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:14:28.621Z] [INFO] Worker audit completed in 4817ms
+[2026-04-30T16:24:21.050Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T16:24:21.050Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T16:24:24.459Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:24:24.459Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:24:25.498Z] [INFO] Worker optimize completed in 4448ms
+[2026-04-30T16:24:28.622Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T16:24:28.622Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T16:24:32.344Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:24:32.344Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:24:33.137Z] [INFO] Worker audit completed in 4515ms
+[2026-04-30T16:25:14.830Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T16:25:14.830Z] [INFO] Worker map completed in 0ms
+[2026-04-30T16:31:14.474Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T16:31:14.474Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T16:34:04.711Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T16:34:04.711Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T16:34:08.505Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:34:08.506Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:34:09.182Z] [INFO] Worker testgaps completed in 4471ms
+[2026-04-30T16:34:33.140Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T16:34:33.140Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T16:34:36.853Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:34:36.854Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:34:37.847Z] [INFO] Worker audit completed in 4707ms
+[2026-04-30T16:39:25.501Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T16:39:25.501Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T16:39:28.861Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:39:28.861Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:39:29.582Z] [INFO] Worker optimize completed in 4081ms
+[2026-04-30T16:40:14.870Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T16:40:14.870Z] [INFO] Worker map completed in 0ms
+[2026-04-30T16:44:37.862Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T16:44:37.862Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T16:44:41.442Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:44:41.442Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:44:42.299Z] [INFO] Worker audit completed in 4437ms
+[2026-04-30T16:54:09.228Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T16:54:09.228Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T16:54:12.572Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:54:12.572Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:54:13.447Z] [INFO] Worker testgaps completed in 4219ms
+[2026-04-30T16:54:29.586Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T16:54:29.586Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T16:54:33.645Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:54:33.645Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:54:34.567Z] [INFO] Worker optimize completed in 4981ms
+[2026-04-30T16:54:42.306Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T16:54:42.307Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T16:54:46.172Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T16:54:46.173Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T16:54:46.849Z] [INFO] Worker audit completed in 4543ms
+[2026-04-30T16:55:14.898Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T16:55:14.898Z] [INFO] Worker map completed in 0ms
+[2026-04-30T17:01:14.522Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T17:01:14.522Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T17:04:46.866Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T17:04:46.866Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T17:04:50.314Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:04:50.314Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:04:51.675Z] [INFO] Worker audit completed in 4809ms
+[2026-04-30T17:09:34.578Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T17:09:34.578Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T17:09:37.923Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:09:37.924Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:09:38.769Z] [INFO] Worker optimize completed in 4191ms
+[2026-04-30T17:10:14.926Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T17:10:14.926Z] [INFO] Worker map completed in 0ms
+[2026-04-30T17:14:13.494Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T17:14:13.494Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T17:14:17.309Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:14:17.309Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:14:18.162Z] [INFO] Worker testgaps completed in 4668ms
+[2026-04-30T17:14:51.702Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T17:14:51.702Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T17:14:55.435Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:14:55.435Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:14:56.428Z] [INFO] Worker audit completed in 4726ms
+[2026-04-30T17:24:38.786Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T17:24:38.786Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T17:24:42.775Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:24:42.775Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:24:43.380Z] [INFO] Worker optimize completed in 4594ms
+[2026-04-30T17:24:56.442Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T17:24:56.442Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T17:25:00.446Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:25:00.447Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:25:01.868Z] [INFO] Worker audit completed in 5426ms
+[2026-04-30T17:25:14.938Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T17:25:14.938Z] [INFO] Worker map completed in 0ms
+[2026-04-30T17:31:14.570Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T17:31:14.570Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T17:34:18.214Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T17:34:18.214Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T17:34:22.325Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:34:22.326Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:34:23.005Z] [INFO] Worker testgaps completed in 4791ms
+[2026-04-30T17:35:01.890Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T17:35:01.890Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T17:35:05.658Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:35:05.659Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:35:06.442Z] [INFO] Worker audit completed in 4552ms
+[2026-04-30T17:39:43.382Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T17:39:43.382Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T17:39:46.879Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:39:46.880Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:39:47.528Z] [INFO] Worker optimize completed in 4146ms
+[2026-04-30T17:40:14.950Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T17:40:14.950Z] [INFO] Worker map completed in 0ms
+[2026-04-30T17:45:06.482Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T17:45:06.482Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T17:45:10.355Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:45:10.355Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:45:12.067Z] [INFO] Worker audit completed in 5585ms
+[2026-04-30T17:54:23.047Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T17:54:23.047Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T17:54:26.392Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:54:26.392Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:54:27.278Z] [INFO] Worker testgaps completed in 4231ms
+[2026-04-30T17:54:47.549Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T17:54:47.549Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T17:54:50.990Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:54:50.990Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:54:51.761Z] [INFO] Worker optimize completed in 4212ms
+[2026-04-30T17:55:12.087Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T17:55:12.087Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T17:55:14.953Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-04-30T17:55:14.954Z] [INFO] Worker map completed in 1ms
+[2026-04-30T17:55:15.834Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T17:55:15.834Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T17:55:16.741Z] [INFO] Worker audit completed in 4654ms
+[2026-04-30T18:01:14.618Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T18:01:14.618Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T18:05:16.771Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T18:05:16.771Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T18:05:20.261Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:05:20.262Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:05:21.087Z] [INFO] Worker audit completed in 4315ms
+[2026-04-30T18:09:51.786Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T18:09:51.786Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T18:09:55.389Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:09:55.389Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:09:55.961Z] [INFO] Worker optimize completed in 4175ms
+[2026-04-30T18:10:14.974Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T18:10:14.974Z] [INFO] Worker map completed in 0ms
+[2026-04-30T18:14:27.279Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T18:14:27.279Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T18:14:30.602Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:14:30.602Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:14:31.452Z] [INFO] Worker testgaps completed in 4173ms
+[2026-04-30T18:15:21.134Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T18:15:21.134Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T18:15:24.537Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:15:24.537Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:15:25.683Z] [INFO] Worker audit completed in 4549ms
+[2026-04-30T18:24:55.986Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T18:24:55.986Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T18:24:59.398Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:24:59.399Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:25:00.102Z] [INFO] Worker optimize completed in 4116ms
+[2026-04-30T18:25:14.990Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T18:25:14.990Z] [INFO] Worker map completed in 0ms
+[2026-04-30T18:25:25.694Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T18:25:25.694Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T18:25:29.174Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:25:29.174Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:25:30.127Z] [INFO] Worker audit completed in 4433ms
+[2026-04-30T18:31:14.666Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T18:31:14.666Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T18:34:31.454Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T18:34:31.454Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T18:34:35.632Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:34:35.632Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:34:36.615Z] [INFO] Worker testgaps completed in 5162ms
+[2026-04-30T18:35:30.129Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T18:35:30.129Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T18:35:33.576Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:35:33.576Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:35:34.866Z] [INFO] Worker audit completed in 4737ms
+[2026-04-30T18:40:00.134Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T18:40:00.134Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T18:40:03.832Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:40:03.832Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:40:04.747Z] [INFO] Worker optimize completed in 4613ms
+[2026-04-30T18:40:14.998Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T18:40:14.998Z] [INFO] Worker map completed in 0ms
+[2026-04-30T18:45:34.870Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T18:45:34.870Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T18:45:38.669Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:45:38.670Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:45:39.447Z] [INFO] Worker audit completed in 4576ms
+[2026-04-30T18:54:36.622Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T18:54:36.622Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T18:54:40.307Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:54:40.307Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:54:41.087Z] [INFO] Worker testgaps completed in 4465ms
+[2026-04-30T18:55:04.770Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T18:55:04.770Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T18:55:08.090Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:55:08.090Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:55:08.750Z] [INFO] Worker optimize completed in 3980ms
+[2026-04-30T18:55:15.006Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T18:55:15.006Z] [INFO] Worker map completed in 0ms
+[2026-04-30T18:55:39.454Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T18:55:39.454Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T18:55:43.395Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T18:55:43.395Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T18:55:44.307Z] [INFO] Worker audit completed in 4853ms
+[2026-04-30T19:01:14.702Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T19:01:14.702Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T19:05:44.323Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T19:05:44.323Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T19:05:48.370Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:05:48.370Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:06:11.819Z] [INFO] Worker audit completed in 27496ms
+[2026-04-30T19:10:08.780Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T19:10:08.780Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T19:10:12.463Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:10:12.463Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:10:13.302Z] [INFO] Worker optimize completed in 4522ms
+[2026-04-30T19:10:15.009Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T19:10:15.010Z] [INFO] Worker map completed in 1ms
+[2026-04-30T19:14:41.098Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T19:14:41.098Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T19:14:44.440Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:14:44.440Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:14:45.282Z] [INFO] Worker testgaps completed in 4184ms
+[2026-04-30T19:16:11.862Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T19:16:11.862Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T19:16:15.576Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:16:15.576Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:16:16.395Z] [INFO] Worker audit completed in 4533ms
+[2026-04-30T19:25:13.334Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T19:25:13.334Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T19:25:15.012Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-04-30T19:25:15.012Z] [INFO] Worker map completed in 0ms
+[2026-04-30T19:25:16.981Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:25:16.982Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:26:16.438Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T19:26:16.438Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T19:26:19.896Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:26:19.896Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:27:23.877Z] [INFO] Worker audit completed in 67439ms
+[2026-04-30T19:27:36.255Z] [INFO] Worker optimize completed in 142921ms
+[2026-04-30T19:31:14.746Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T19:31:14.746Z] [INFO] Worker consolidate completed in 1ms
+[2026-04-30T19:34:45.297Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T19:34:45.297Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T19:34:48.613Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:34:48.613Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:37:23.930Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T19:37:23.930Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T19:37:27.419Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:37:27.419Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:38:13.802Z] [INFO] Worker audit completed in 49872ms
+[2026-04-30T19:40:15.054Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-04-30T19:40:15.054Z] [INFO] Worker map completed in 0ms
+[2026-04-30T19:40:28.134Z] [INFO] Worker testgaps completed in 342837ms
+[2026-04-30T19:42:36.262Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T19:42:36.262Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T19:42:39.870Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:42:39.871Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:44:42.975Z] [INFO] Worker optimize completed in 126713ms
+[2026-04-30T19:48:13.842Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T19:48:13.842Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T19:48:17.458Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:48:17.458Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:49:22.195Z] [INFO] Worker audit completed in 68354ms
+[2026-04-30T19:55:15.098Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T19:55:15.098Z] [INFO] Worker map completed in 1ms
+[2026-04-30T19:59:22.246Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T19:59:22.246Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T19:59:26.029Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:59:26.030Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T19:59:42.986Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-04-30T19:59:42.986Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T19:59:46.624Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T19:59:46.625Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:00:28.177Z] [INFO] Worker testgaps deferred: max concurrent (2) reached
+[2026-04-30T20:00:36.497Z] [INFO] Worker audit completed in 74251ms
+[2026-04-30T20:00:36.498Z] [INFO] Starting worker: testgaps (2/2 concurrent)
+[2026-04-30T20:00:36.498Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T20:00:40.104Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:00:40.104Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:01:14.783Z] [INFO] Worker consolidate deferred: max concurrent (2) reached
+[2026-04-30T20:01:52.611Z] [INFO] Worker optimize completed in 129625ms
+[2026-04-30T20:01:52.612Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-04-30T20:01:52.612Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T20:03:55.093Z] [INFO] Worker testgaps completed in 198595ms
+[2026-04-30T20:10:15.130Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T20:10:15.130Z] [INFO] Worker map completed in 0ms
+[2026-04-30T20:10:36.502Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T20:10:36.502Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T20:10:40.516Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:10:40.517Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:11:37.823Z] [INFO] Worker audit completed in 61321ms
+[2026-04-30T20:16:52.630Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T20:16:52.630Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T20:16:56.532Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:16:56.533Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:20:10.611Z] [INFO] Worker optimize completed in 197981ms
+[2026-04-30T20:20:28.194Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T20:20:28.194Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T20:20:31.557Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:20:31.558Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:21:37.826Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-04-30T20:21:37.826Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T20:21:41.598Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:21:41.598Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:22:23.893Z] [INFO] Worker audit completed in 46067ms
+[2026-04-30T20:24:06.306Z] [INFO] Worker testgaps completed in 218112ms
+[2026-04-30T20:25:15.170Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T20:25:15.170Z] [INFO] Worker map completed in 0ms
+[2026-04-30T20:31:14.822Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T20:31:14.822Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T20:32:23.941Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T20:32:23.942Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T20:32:27.450Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:32:27.450Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:32:28.395Z] [INFO] Worker audit completed in 4454ms
+[2026-04-30T20:35:10.614Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T20:35:10.614Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T20:35:14.346Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:35:14.346Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:35:15.095Z] [INFO] Worker optimize completed in 4481ms
+[2026-04-30T20:40:15.212Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T20:40:15.212Z] [INFO] Worker map completed in 0ms
+[2026-04-30T20:42:28.450Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T20:42:28.450Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T20:42:32.423Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:42:32.423Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:42:33.214Z] [INFO] Worker audit completed in 4764ms
+[2026-04-30T20:44:06.338Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T20:44:06.338Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T20:44:09.722Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:44:09.723Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:44:10.650Z] [INFO] Worker testgaps completed in 4312ms
+[2026-04-30T20:50:15.137Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T20:50:15.138Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T20:50:18.795Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:50:18.795Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:50:19.562Z] [INFO] Worker optimize completed in 4425ms
+[2026-04-30T20:52:33.274Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T20:52:33.274Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T20:52:36.714Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T20:52:36.714Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T20:52:37.551Z] [INFO] Worker audit completed in 4276ms
+[2026-04-30T20:55:15.254Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T20:55:15.254Z] [INFO] Worker map completed in 1ms
+[2026-04-30T21:01:14.864Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T21:01:14.864Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T21:02:37.554Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T21:02:37.554Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T21:02:41.264Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:02:41.264Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:02:42.111Z] [INFO] Worker audit completed in 4557ms
+[2026-04-30T21:04:10.686Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T21:04:10.686Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T21:04:14.334Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:04:14.335Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:04:15.015Z] [INFO] Worker testgaps completed in 4329ms
+[2026-04-30T21:05:19.606Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T21:05:19.606Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T21:05:23.160Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:05:23.161Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:05:24.383Z] [INFO] Worker optimize completed in 4777ms
+[2026-04-30T21:10:15.295Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T21:10:15.295Z] [INFO] Worker map completed in 0ms
+[2026-04-30T21:12:42.118Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T21:12:42.118Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T21:12:46.007Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:12:46.008Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:12:46.863Z] [INFO] Worker audit completed in 4745ms
+[2026-04-30T21:20:24.430Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T21:20:24.430Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T21:20:28.030Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:20:28.030Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:20:28.815Z] [INFO] Worker optimize completed in 4385ms
+[2026-04-30T21:22:46.874Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T21:22:46.874Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T21:22:50.334Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:22:50.334Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:22:51.359Z] [INFO] Worker audit completed in 4485ms
+[2026-04-30T21:24:15.054Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T21:24:15.054Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T21:24:18.719Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:24:18.719Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:24:19.415Z] [INFO] Worker testgaps completed in 4361ms
+[2026-04-30T21:25:15.298Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T21:25:15.298Z] [INFO] Worker map completed in 0ms
+[2026-04-30T21:31:14.902Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T21:31:14.902Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T21:32:51.374Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T21:32:51.374Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T21:32:55.391Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:32:55.391Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:32:56.231Z] [INFO] Worker audit completed in 4857ms
+[2026-04-30T21:35:28.866Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T21:35:28.866Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T21:35:32.503Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:35:32.504Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:35:33.154Z] [INFO] Worker optimize completed in 4288ms
+[2026-04-30T21:40:15.338Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T21:40:15.338Z] [INFO] Worker map completed in 0ms
+[2026-04-30T21:42:56.250Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T21:42:56.250Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T21:42:59.718Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:42:59.719Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:43:00.487Z] [INFO] Worker audit completed in 4237ms
+[2026-04-30T21:44:19.458Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T21:44:19.458Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T21:44:22.787Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:44:22.787Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:44:23.446Z] [INFO] Worker testgaps completed in 3988ms
+[2026-04-30T21:50:33.210Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T21:50:33.210Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T21:50:36.605Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:50:36.605Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:50:37.394Z] [INFO] Worker optimize completed in 4184ms
+[2026-04-30T21:53:00.510Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T21:53:00.510Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T21:53:04.072Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T21:53:04.072Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T21:53:04.935Z] [INFO] Worker audit completed in 4425ms
+[2026-04-30T21:55:15.378Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T21:55:15.407Z] [INFO] Worker map completed in 29ms
+[2026-04-30T22:01:14.942Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T22:01:14.942Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T22:03:04.962Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T22:03:04.962Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T22:03:08.514Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:03:08.514Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:03:09.487Z] [INFO] Worker audit completed in 4525ms
+[2026-04-30T22:04:23.494Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T22:04:23.494Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T22:04:26.851Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:04:26.851Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:04:27.426Z] [INFO] Worker testgaps completed in 3932ms
+[2026-04-30T22:05:37.396Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T22:05:37.396Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T22:05:40.700Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:05:40.701Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:05:41.410Z] [INFO] Worker optimize completed in 4014ms
+[2026-04-30T22:10:15.446Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T22:10:15.446Z] [INFO] Worker map completed in 0ms
+[2026-04-30T22:13:09.518Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T22:13:09.518Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T22:13:13.188Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:13:13.188Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:13:13.863Z] [INFO] Worker audit completed in 4345ms
+[2026-04-30T22:20:41.414Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T22:20:41.414Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T22:20:44.907Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:20:44.907Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:20:45.867Z] [INFO] Worker optimize completed in 4452ms
+[2026-04-30T22:23:13.898Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T22:23:13.898Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T22:23:17.709Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:23:17.709Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:23:18.387Z] [INFO] Worker audit completed in 4489ms
+[2026-04-30T22:24:27.474Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T22:24:27.474Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T22:24:31.197Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:24:31.197Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:24:31.902Z] [INFO] Worker testgaps completed in 4428ms
+[2026-04-30T22:25:15.482Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T22:25:15.482Z] [INFO] Worker map completed in 0ms
+[2026-04-30T22:31:14.974Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T22:31:14.974Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T22:33:18.426Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T22:33:18.426Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T22:33:22.503Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:33:22.504Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:33:23.367Z] [INFO] Worker audit completed in 4941ms
+[2026-04-30T22:35:45.874Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T22:35:45.874Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T22:35:49.250Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:35:49.250Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:35:50.127Z] [INFO] Worker optimize completed in 4253ms
+[2026-04-30T22:40:15.520Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T22:40:15.521Z] [INFO] Worker map completed in 1ms
+[2026-04-30T22:43:23.399Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T22:43:23.399Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T22:43:27.247Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:43:27.247Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:43:28.118Z] [INFO] Worker audit completed in 4719ms
+[2026-04-30T22:44:31.954Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T22:44:31.954Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T22:44:35.297Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:44:35.297Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:44:36.002Z] [INFO] Worker testgaps completed in 4048ms
+[2026-04-30T22:50:50.138Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T22:50:50.138Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T22:50:53.695Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:50:53.695Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:50:54.431Z] [INFO] Worker optimize completed in 4293ms
+[2026-04-30T22:53:28.154Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T22:53:28.154Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T22:53:32.051Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T22:53:32.052Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T22:53:32.971Z] [INFO] Worker audit completed in 4817ms
+[2026-04-30T22:55:15.558Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T22:55:15.558Z] [INFO] Worker map completed in 0ms
+[2026-04-30T23:01:14.987Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T23:01:14.987Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T23:03:33.022Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T23:03:33.022Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T23:03:36.640Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:03:36.640Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:03:37.919Z] [INFO] Worker audit completed in 4897ms
+[2026-04-30T23:04:36.059Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T23:04:36.059Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T23:04:39.415Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:04:39.415Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:04:40.103Z] [INFO] Worker testgaps completed in 4044ms
+[2026-04-30T23:05:54.446Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T23:05:54.446Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T23:05:58.098Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:05:58.099Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:05:58.834Z] [INFO] Worker optimize completed in 4388ms
+[2026-04-30T23:10:15.595Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T23:10:15.596Z] [INFO] Worker map completed in 1ms
+[2026-04-30T23:13:37.946Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T23:13:37.946Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T23:13:41.726Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:13:41.727Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:13:42.431Z] [INFO] Worker audit completed in 4485ms
+[2026-04-30T23:20:58.854Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T23:20:58.854Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T23:21:02.639Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:21:02.639Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:21:03.386Z] [INFO] Worker optimize completed in 4533ms
+[2026-04-30T23:23:42.434Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T23:23:42.434Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T23:23:45.851Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:23:45.851Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:23:46.631Z] [INFO] Worker audit completed in 4197ms
+[2026-04-30T23:24:40.103Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T23:24:40.103Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T23:24:43.886Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:24:43.886Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:24:44.554Z] [INFO] Worker testgaps completed in 4451ms
+[2026-04-30T23:25:15.626Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T23:25:15.626Z] [INFO] Worker map completed in 0ms
+[2026-04-30T23:31:15.002Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-04-30T23:31:15.002Z] [INFO] Worker consolidate completed in 0ms
+[2026-04-30T23:33:46.638Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T23:33:46.638Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T23:33:51.849Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:33:51.849Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:33:52.803Z] [INFO] Worker audit completed in 6165ms
+[2026-04-30T23:36:03.410Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T23:36:03.410Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T23:36:07.081Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:36:07.081Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:36:07.766Z] [INFO] Worker optimize completed in 4356ms
+[2026-04-30T23:40:15.662Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T23:40:15.662Z] [INFO] Worker map completed in 0ms
+[2026-04-30T23:43:52.814Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T23:43:52.814Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T23:43:56.576Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:43:56.576Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:43:57.282Z] [INFO] Worker audit completed in 4468ms
+[2026-04-30T23:44:44.558Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-04-30T23:44:44.558Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-04-30T23:44:48.227Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:44:48.227Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:44:48.852Z] [INFO] Worker testgaps completed in 4294ms
+[2026-04-30T23:51:07.794Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-04-30T23:51:07.794Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-04-30T23:51:11.161Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:51:11.161Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:51:11.742Z] [INFO] Worker optimize completed in 3948ms
+[2026-04-30T23:53:57.300Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-04-30T23:53:57.300Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-04-30T23:54:01.052Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-04-30T23:54:01.052Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-04-30T23:54:01.867Z] [INFO] Worker audit completed in 4567ms
+[2026-04-30T23:55:15.694Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-04-30T23:55:15.694Z] [INFO] Worker map completed in 0ms
+[2026-05-01T00:01:15.010Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T00:01:15.010Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T00:04:01.887Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T00:04:01.888Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T00:04:05.626Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:04:05.626Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:04:06.410Z] [INFO] Worker audit completed in 4523ms
+[2026-05-01T00:04:48.858Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T00:04:48.858Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T00:04:52.583Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:04:52.584Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:04:53.298Z] [INFO] Worker testgaps completed in 4440ms
+[2026-05-01T00:06:11.773Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T00:06:11.773Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T00:06:15.434Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:06:15.434Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:06:16.314Z] [INFO] Worker optimize completed in 4541ms
+[2026-05-01T00:10:15.726Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T00:10:15.726Z] [INFO] Worker map completed in 0ms
+[2026-05-01T00:14:06.434Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T00:14:06.434Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T00:14:10.142Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:14:10.142Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:14:10.963Z] [INFO] Worker audit completed in 4529ms
+[2026-05-01T00:21:16.350Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T00:21:16.350Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T00:21:20.346Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:21:20.346Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:22:40.875Z] [INFO] Worker optimize completed in 84525ms
+[2026-05-01T00:24:10.990Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T00:24:10.990Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T00:24:14.769Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:24:14.769Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:24:53.310Z] [INFO] Starting worker: testgaps (2/2 concurrent)
+[2026-05-01T00:24:53.310Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T00:24:57.138Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:24:57.139Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:25:15.749Z] [INFO] Worker map deferred: max concurrent (2) reached
+[2026-05-01T00:25:22.615Z] [INFO] Worker audit completed in 71625ms
+[2026-05-01T00:25:22.616Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-05-01T00:25:22.616Z] [INFO] Worker map completed in 0ms
+[2026-05-01T00:28:09.388Z] [INFO] Worker testgaps completed in 196078ms
+[2026-05-01T00:31:15.020Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T00:31:15.020Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T00:35:22.645Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T00:35:22.645Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T00:35:26.439Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:35:26.440Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:36:46.003Z] [INFO] Worker audit completed in 83358ms
+[2026-05-01T00:37:40.929Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T00:37:40.930Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T00:37:44.735Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:37:44.735Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:39:25.839Z] [INFO] Worker optimize completed in 104910ms
+[2026-05-01T00:40:15.783Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T00:40:15.784Z] [INFO] Worker map completed in 1ms
+[2026-05-01T00:46:46.006Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T00:46:46.006Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T00:46:49.761Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:46:49.761Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:47:42.375Z] [INFO] Worker audit completed in 56369ms
+[2026-05-01T00:48:09.414Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T00:48:09.414Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T00:48:13.149Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:48:13.149Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:51:50.901Z] [INFO] Worker testgaps completed in 221486ms
+[2026-05-01T00:54:25.882Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T00:54:25.882Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T00:54:29.481Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:54:29.481Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:55:15.814Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-05-01T00:55:15.814Z] [INFO] Worker map completed in 0ms
+[2026-05-01T00:57:39.111Z] [INFO] Worker optimize completed in 193229ms
+[2026-05-01T00:57:42.381Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T00:57:42.381Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T00:57:46.124Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T00:57:46.124Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T00:58:43.331Z] [INFO] Worker audit completed in 60950ms
+[2026-05-01T01:01:15.050Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T01:01:15.050Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T01:08:43.390Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T01:08:43.390Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T01:08:46.939Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:08:46.939Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:09:37.371Z] [INFO] Worker audit completed in 53981ms
+[2026-05-01T01:10:15.846Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T01:10:15.847Z] [INFO] Worker map completed in 1ms
+[2026-05-01T01:11:50.906Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T01:11:50.906Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T01:11:55.044Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:11:55.044Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:12:39.159Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-05-01T01:12:39.159Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T01:12:42.761Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:12:42.761Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:14:34.515Z] [INFO] Worker optimize completed in 115356ms
+[2026-05-01T01:15:00.704Z] [INFO] Worker testgaps completed in 189798ms
+[2026-05-01T01:19:37.416Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T01:19:37.417Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T01:19:40.844Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:19:40.844Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:20:29.303Z] [INFO] Worker audit completed in 51887ms
+[2026-05-01T01:25:15.850Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T01:25:15.850Z] [INFO] Worker map completed in 0ms
+[2026-05-01T01:29:34.566Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T01:29:34.566Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T01:29:37.925Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:29:37.926Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:30:29.349Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-05-01T01:30:29.349Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T01:30:32.932Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:30:32.932Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:31:15.077Z] [INFO] Worker consolidate deferred: max concurrent (2) reached
+[2026-05-01T01:31:16.771Z] [INFO] Worker audit completed in 47422ms
+[2026-05-01T01:31:16.772Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-05-01T01:31:16.772Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T01:32:20.047Z] [INFO] Worker optimize completed in 165481ms
+[2026-05-01T01:35:00.720Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T01:35:00.720Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T01:35:04.337Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:35:04.337Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:35:05.042Z] [INFO] Worker testgaps completed in 4322ms
+[2026-05-01T01:40:15.882Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T01:40:15.882Z] [INFO] Worker map completed in 0ms
+[2026-05-01T01:41:16.802Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T01:41:16.802Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T01:41:20.541Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:41:20.541Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:41:21.359Z] [INFO] Worker audit completed in 4557ms
+[2026-05-01T01:47:20.082Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T01:47:20.082Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T01:47:23.614Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:47:23.614Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:47:24.382Z] [INFO] Worker optimize completed in 4300ms
+[2026-05-01T01:51:21.394Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T01:51:21.394Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T01:51:24.807Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:51:24.807Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:51:25.655Z] [INFO] Worker audit completed in 4261ms
+[2026-05-01T01:55:05.062Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T01:55:05.062Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T01:55:08.615Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T01:55:08.615Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T01:55:09.386Z] [INFO] Worker testgaps completed in 4324ms
+[2026-05-01T01:55:15.890Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T01:55:15.890Z] [INFO] Worker map completed in 0ms
+[2026-05-01T02:01:15.082Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T02:01:15.082Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T02:01:25.665Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T02:01:25.665Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T02:01:29.416Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:01:29.416Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:01:30.203Z] [INFO] Worker audit completed in 4538ms
+[2026-05-01T02:02:24.422Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T02:02:24.422Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T02:02:28.106Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:02:28.107Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:02:28.951Z] [INFO] Worker optimize completed in 4530ms
+[2026-05-01T02:10:15.918Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T02:10:15.918Z] [INFO] Worker map completed in 0ms
+[2026-05-01T02:11:30.216Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T02:11:30.216Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T02:11:33.925Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:11:33.925Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:11:35.019Z] [INFO] Worker audit completed in 4803ms
+[2026-05-01T02:15:09.410Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T02:15:09.410Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T02:15:13.169Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:15:13.169Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:15:13.846Z] [INFO] Worker testgaps completed in 4436ms
+[2026-05-01T02:17:28.994Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T02:17:28.994Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T02:17:32.565Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:17:32.566Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:17:33.250Z] [INFO] Worker optimize completed in 4256ms
+[2026-05-01T02:21:35.066Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T02:21:35.066Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T02:21:38.803Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:21:38.803Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:21:39.611Z] [INFO] Worker audit completed in 4545ms
+[2026-05-01T02:25:15.922Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T02:25:15.922Z] [INFO] Worker map completed in 0ms
+[2026-05-01T02:31:15.098Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T02:31:15.098Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T02:31:39.634Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T02:31:39.634Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T02:31:43.408Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:31:43.409Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:31:44.191Z] [INFO] Worker audit completed in 4557ms
+[2026-05-01T02:32:33.298Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T02:32:33.298Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T02:32:37.089Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:32:37.089Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:32:37.662Z] [INFO] Worker optimize completed in 4365ms
+[2026-05-01T02:35:13.874Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T02:35:13.874Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T02:35:17.475Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:35:17.475Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:35:18.170Z] [INFO] Worker testgaps completed in 4296ms
+[2026-05-01T02:40:15.950Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T02:40:15.950Z] [INFO] Worker map completed in 1ms
+[2026-05-01T02:41:44.249Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T02:41:44.249Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T02:41:48.102Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:41:48.102Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:41:48.988Z] [INFO] Worker audit completed in 4739ms
+[2026-05-01T02:47:37.714Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T02:47:37.714Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T02:47:41.575Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:47:41.576Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:47:42.951Z] [INFO] Worker optimize completed in 5237ms
+[2026-05-01T02:51:48.989Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T02:51:48.990Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T02:51:52.451Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:51:52.451Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:51:53.374Z] [INFO] Worker audit completed in 4385ms
+[2026-05-01T02:55:15.978Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T02:55:15.978Z] [INFO] Worker map completed in 0ms
+[2026-05-01T02:55:18.173Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T02:55:18.173Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T02:55:21.826Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T02:55:21.826Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T02:55:22.466Z] [INFO] Worker testgaps completed in 4293ms
+[2026-05-01T03:01:15.126Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T03:01:15.126Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T03:01:53.378Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T03:01:53.378Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T03:01:57.360Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:01:57.360Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:01:58.098Z] [INFO] Worker audit completed in 4720ms
+[2026-05-01T03:02:42.994Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T03:02:42.994Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T03:02:46.696Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:02:46.696Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:02:47.338Z] [INFO] Worker optimize completed in 4344ms
+[2026-05-01T03:10:16.006Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T03:10:16.006Z] [INFO] Worker map completed in 0ms
+[2026-05-01T03:11:58.106Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T03:11:58.106Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T03:12:02.011Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:12:02.011Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:12:02.915Z] [INFO] Worker audit completed in 4809ms
+[2026-05-01T03:15:22.498Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T03:15:22.498Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T03:15:26.224Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:15:26.224Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:15:27.010Z] [INFO] Worker testgaps completed in 4512ms
+[2026-05-01T03:17:47.386Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T03:17:47.386Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T03:17:51.236Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:17:51.236Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:17:51.866Z] [INFO] Worker optimize completed in 4480ms
+[2026-05-01T03:22:02.930Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T03:22:02.930Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T03:22:07.019Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:22:07.019Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:22:07.827Z] [INFO] Worker audit completed in 4897ms
+[2026-05-01T03:25:16.034Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T03:25:16.034Z] [INFO] Worker map completed in 0ms
+[2026-05-01T03:31:15.150Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T03:31:15.150Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T03:32:07.845Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T03:32:07.845Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T03:32:11.339Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:32:11.339Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:32:12.219Z] [INFO] Worker audit completed in 4373ms
+[2026-05-01T03:32:51.869Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T03:32:51.870Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T03:32:55.319Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:32:55.319Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:32:56.023Z] [INFO] Worker optimize completed in 4154ms
+[2026-05-01T03:35:27.046Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T03:35:27.046Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T03:35:30.394Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:35:30.394Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:35:31.442Z] [INFO] Worker testgaps completed in 4396ms
+[2026-05-01T03:40:16.060Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T03:40:16.061Z] [INFO] Worker map completed in 1ms
+[2026-05-01T03:42:12.238Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T03:42:12.238Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T03:42:16.160Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:42:16.161Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:42:16.995Z] [INFO] Worker audit completed in 4756ms
+[2026-05-01T03:47:56.029Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T03:47:56.030Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T03:47:59.705Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:47:59.705Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:48:00.458Z] [INFO] Worker optimize completed in 4429ms
+[2026-05-01T03:52:17.010Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T03:52:17.010Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T03:52:20.464Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:52:20.464Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:52:21.391Z] [INFO] Worker audit completed in 4381ms
+[2026-05-01T03:55:16.086Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T03:55:16.086Z] [INFO] Worker map completed in 0ms
+[2026-05-01T03:55:31.458Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T03:55:31.458Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T03:55:34.931Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T03:55:34.931Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T03:55:35.558Z] [INFO] Worker testgaps completed in 4100ms
+[2026-05-01T04:01:15.175Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T04:01:15.176Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T04:02:21.422Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T04:02:21.422Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T04:02:24.884Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:02:24.884Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:02:25.602Z] [INFO] Worker audit completed in 4180ms
+[2026-05-01T04:03:00.465Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T04:03:00.466Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T04:03:04.135Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:03:04.135Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:03:04.818Z] [INFO] Worker optimize completed in 4353ms
+[2026-05-01T04:10:16.110Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T04:10:16.110Z] [INFO] Worker map completed in 0ms
+[2026-05-01T04:12:25.637Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T04:12:25.638Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T04:12:29.360Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:12:29.360Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:12:30.915Z] [INFO] Worker audit completed in 5277ms
+[2026-05-01T04:15:35.602Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T04:15:35.602Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T04:15:39.442Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:15:39.442Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:15:40.110Z] [INFO] Worker testgaps completed in 4508ms
+[2026-05-01T04:18:04.832Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T04:18:04.833Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T04:18:08.208Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:18:08.208Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:18:09.027Z] [INFO] Worker optimize completed in 4195ms
+[2026-05-01T04:22:30.954Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T04:22:30.954Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T04:22:34.538Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:22:34.538Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:22:35.375Z] [INFO] Worker audit completed in 4421ms
+[2026-05-01T04:25:16.134Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T04:25:16.134Z] [INFO] Worker map completed in 0ms
+[2026-05-01T04:31:15.198Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T04:31:15.198Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T04:32:35.400Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T04:32:35.400Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T04:32:39.212Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:32:39.212Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:32:40.090Z] [INFO] Worker audit completed in 4690ms
+[2026-05-01T04:33:09.045Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T04:33:09.045Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T04:33:12.858Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:33:12.858Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:33:13.446Z] [INFO] Worker optimize completed in 4401ms
+[2026-05-01T04:35:40.159Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T04:35:40.159Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T04:35:44.048Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:35:44.048Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:35:44.810Z] [INFO] Worker testgaps completed in 4651ms
+[2026-05-01T04:40:16.159Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T04:40:16.159Z] [INFO] Worker map completed in 0ms
+[2026-05-01T04:42:40.138Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T04:42:40.138Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T04:42:43.998Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:42:43.998Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:42:44.855Z] [INFO] Worker audit completed in 4717ms
+[2026-05-01T04:48:13.466Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T04:48:13.466Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T04:48:17.421Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:48:17.421Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:48:18.187Z] [INFO] Worker optimize completed in 4721ms
+[2026-05-01T04:52:44.905Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T04:52:44.906Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T04:52:48.725Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:52:48.725Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:52:49.640Z] [INFO] Worker audit completed in 4735ms
+[2026-05-01T04:55:16.182Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T04:55:16.182Z] [INFO] Worker map completed in 0ms
+[2026-05-01T04:55:44.838Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T04:55:44.838Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T04:55:48.140Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T04:55:48.140Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T04:55:49.543Z] [INFO] Worker testgaps completed in 4706ms
+[2026-05-01T05:01:15.218Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T05:01:15.218Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T05:02:49.694Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T05:02:49.694Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T05:02:53.163Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:02:53.164Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:02:54.119Z] [INFO] Worker audit completed in 4425ms
+[2026-05-01T05:03:18.210Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T05:03:18.210Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T05:03:21.549Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:03:21.549Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:03:22.178Z] [INFO] Worker optimize completed in 3969ms
+[2026-05-01T05:10:16.206Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T05:10:16.206Z] [INFO] Worker map completed in 0ms
+[2026-05-01T05:12:54.120Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T05:12:54.120Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T05:12:57.778Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:12:57.778Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:12:58.599Z] [INFO] Worker audit completed in 4480ms
+[2026-05-01T05:15:49.600Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T05:15:49.600Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T05:15:53.249Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:15:53.249Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:15:53.947Z] [INFO] Worker testgaps completed in 4347ms
+[2026-05-01T05:18:22.206Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T05:18:22.206Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T05:18:25.753Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:18:25.753Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:18:26.478Z] [INFO] Worker optimize completed in 4272ms
+[2026-05-01T05:22:58.603Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T05:22:58.604Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T05:23:02.260Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:23:02.260Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:24:00.438Z] [INFO] Worker audit completed in 61835ms
+[2026-05-01T05:25:16.226Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T05:25:16.226Z] [INFO] Worker map completed in 0ms
+[2026-05-01T05:31:15.238Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T05:31:15.238Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T05:33:26.510Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T05:33:26.510Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T05:33:30.097Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:33:30.097Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:34:00.443Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-05-01T05:34:00.444Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T05:34:03.837Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:34:03.837Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:34:53.384Z] [INFO] Worker audit completed in 52941ms
+[2026-05-01T05:35:45.979Z] [INFO] Worker optimize completed in 139470ms
+[2026-05-01T05:35:53.954Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T05:35:53.954Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T05:35:57.628Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:35:57.628Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:40:16.246Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-05-01T05:40:16.246Z] [INFO] Worker map completed in 0ms
+[2026-05-01T05:40:54.430Z] [INFO] Worker testgaps completed in 300476ms
+[2026-05-01T05:44:53.442Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T05:44:53.442Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T05:44:57.100Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:44:57.100Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:45:36.787Z] [INFO] Worker audit completed in 43345ms
+[2026-05-01T05:50:46.030Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T05:50:46.031Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T05:50:49.949Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:50:49.949Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:52:12.035Z] [INFO] Worker optimize completed in 86005ms
+[2026-05-01T05:55:16.266Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T05:55:16.266Z] [INFO] Worker map completed in 0ms
+[2026-05-01T05:55:36.806Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T05:55:36.806Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T05:55:40.539Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T05:55:40.540Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T05:56:14.919Z] [INFO] Worker audit completed in 38113ms
+[2026-05-01T06:00:54.439Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T06:00:54.439Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T06:00:58.060Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:00:58.061Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:01:15.258Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-05-01T06:01:15.259Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T06:04:07.480Z] [INFO] Worker testgaps completed in 193041ms
+[2026-05-01T06:06:14.938Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T06:06:14.938Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T06:06:18.526Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:06:18.526Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:07:12.050Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-05-01T06:07:12.050Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T06:07:15.640Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:07:15.641Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:07:30.120Z] [INFO] Worker audit completed in 75182ms
+[2026-05-01T06:09:41.123Z] [INFO] Worker optimize completed in 149073ms
+[2026-05-01T06:10:16.286Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T06:10:16.286Z] [INFO] Worker map completed in 1ms
+[2026-05-01T06:17:30.138Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T06:17:30.138Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T06:17:33.607Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:17:33.607Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:18:23.423Z] [INFO] Worker audit completed in 53285ms
+[2026-05-01T06:24:07.490Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T06:24:07.490Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T06:24:11.437Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:24:11.438Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:24:41.158Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-05-01T06:24:41.158Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T06:24:44.745Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:24:44.745Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:25:07.210Z] [INFO] Worker optimize completed in 26052ms
+[2026-05-01T06:25:16.294Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-05-01T06:25:16.294Z] [INFO] Worker map completed in 0ms
+[2026-05-01T06:27:07.048Z] [INFO] Worker testgaps completed in 179558ms
+[2026-05-01T06:28:23.450Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T06:28:23.450Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T06:28:27.222Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:28:27.223Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:28:28.027Z] [INFO] Worker audit completed in 4577ms
+[2026-05-01T06:31:15.278Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T06:31:15.278Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T06:38:28.059Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T06:38:28.059Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T06:38:31.755Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:38:31.755Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:38:32.439Z] [INFO] Worker audit completed in 4380ms
+[2026-05-01T06:40:07.218Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T06:40:07.218Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T06:40:10.570Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:40:10.570Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:40:11.322Z] [INFO] Worker optimize completed in 4104ms
+[2026-05-01T06:40:16.298Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T06:40:16.298Z] [INFO] Worker map completed in 0ms
+[2026-05-01T06:47:07.058Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T06:47:07.058Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T06:47:11.014Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:47:11.015Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:47:11.690Z] [INFO] Worker testgaps completed in 4632ms
+[2026-05-01T06:48:32.474Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T06:48:32.474Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T06:48:35.856Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:48:35.856Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:48:36.595Z] [INFO] Worker audit completed in 4121ms
+[2026-05-01T06:55:11.337Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T06:55:11.337Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T06:55:14.868Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:55:14.869Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:55:15.591Z] [INFO] Worker optimize completed in 4254ms
+[2026-05-01T06:55:16.300Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T06:55:16.301Z] [INFO] Worker map completed in 1ms
+[2026-05-01T06:58:36.634Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T06:58:36.634Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T06:58:40.392Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T06:58:40.393Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T06:58:41.115Z] [INFO] Worker audit completed in 4481ms
+[2026-05-01T07:01:15.287Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T07:01:15.287Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T07:07:11.702Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T07:07:11.702Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T07:07:15.612Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:07:15.612Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:07:17.159Z] [INFO] Worker testgaps completed in 5456ms
+[2026-05-01T07:08:41.158Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T07:08:41.158Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T07:08:44.618Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:08:44.618Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:08:45.958Z] [INFO] Worker audit completed in 4800ms
+[2026-05-01T07:10:15.606Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T07:10:15.606Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T07:10:16.302Z] [INFO] Starting worker: map (2/2 concurrent)
+[2026-05-01T07:10:16.302Z] [INFO] Worker map completed in 0ms
+[2026-05-01T07:10:19.353Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:10:19.353Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:10:20.090Z] [INFO] Worker optimize completed in 4484ms
+[2026-05-01T07:18:46.006Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T07:18:46.006Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T07:18:49.754Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:18:49.754Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:18:50.623Z] [INFO] Worker audit completed in 4617ms
+[2026-05-01T07:25:16.320Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T07:25:16.321Z] [INFO] Worker map completed in 1ms
+[2026-05-01T07:25:20.093Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T07:25:20.094Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T07:25:23.717Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:25:23.717Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:25:24.434Z] [INFO] Worker optimize completed in 4341ms
+[2026-05-01T07:27:17.174Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T07:27:17.174Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T07:27:20.826Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:27:20.827Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:27:21.587Z] [INFO] Worker testgaps completed in 4413ms
+[2026-05-01T07:28:50.674Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T07:28:50.674Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T07:28:54.222Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:28:54.222Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:28:54.987Z] [INFO] Worker audit completed in 4313ms
+[2026-05-01T07:31:15.302Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T07:31:15.302Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T07:38:55.042Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T07:38:55.042Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T07:38:58.784Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:38:58.784Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:39:00.007Z] [INFO] Worker audit completed in 4965ms
+[2026-05-01T07:40:16.338Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T07:40:16.338Z] [INFO] Worker map completed in 0ms
+[2026-05-01T07:40:24.442Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T07:40:24.442Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T07:40:28.067Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:40:28.068Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:40:28.686Z] [INFO] Worker optimize completed in 4245ms
+[2026-05-01T07:47:21.609Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T07:47:21.609Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T07:47:24.990Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:47:24.991Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:47:25.722Z] [INFO] Worker testgaps completed in 4113ms
+[2026-05-01T07:49:00.008Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T07:49:00.008Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T07:49:03.493Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:49:03.494Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:49:04.283Z] [INFO] Worker audit completed in 4275ms
+[2026-05-01T07:55:16.354Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T07:55:16.354Z] [INFO] Worker map completed in 0ms
+[2026-05-01T07:55:28.690Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T07:55:28.691Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T07:55:32.105Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:55:32.105Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:55:32.710Z] [INFO] Worker optimize completed in 4020ms
+[2026-05-01T07:59:04.287Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T07:59:04.287Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T07:59:08.089Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T07:59:08.090Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T07:59:08.875Z] [INFO] Worker audit completed in 4588ms
+[2026-05-01T08:01:15.318Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T08:01:15.318Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T08:07:25.746Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T08:07:25.746Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T08:07:29.731Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:07:29.731Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:07:30.518Z] [INFO] Worker testgaps completed in 4772ms
+[2026-05-01T08:09:08.882Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T08:09:08.882Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T08:09:12.614Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:09:12.614Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:09:13.335Z] [INFO] Worker audit completed in 4453ms
+[2026-05-01T08:10:16.366Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T08:10:16.366Z] [INFO] Worker map completed in 0ms
+[2026-05-01T08:10:32.727Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T08:10:32.727Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T08:10:36.390Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:10:36.391Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:10:36.955Z] [INFO] Worker optimize completed in 4228ms
+[2026-05-01T08:19:13.347Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T08:19:13.347Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T08:19:17.368Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:19:17.368Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:19:18.247Z] [INFO] Worker audit completed in 4900ms
+[2026-05-01T08:25:16.382Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T08:25:16.382Z] [INFO] Worker map completed in 0ms
+[2026-05-01T08:25:36.974Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T08:25:36.974Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T08:25:40.683Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:25:40.683Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:25:41.415Z] [INFO] Worker optimize completed in 4441ms
+[2026-05-01T08:27:30.546Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T08:27:30.546Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T08:27:33.882Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:27:33.882Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:27:34.650Z] [INFO] Worker testgaps completed in 4104ms
+[2026-05-01T08:29:18.263Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T08:29:18.263Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T08:29:22.124Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:29:22.124Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:29:22.951Z] [INFO] Worker audit completed in 4688ms
+[2026-05-01T08:31:15.332Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T08:31:15.333Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T08:39:22.970Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T08:39:22.970Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T08:39:26.591Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:39:26.591Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:39:27.470Z] [INFO] Worker audit completed in 4500ms
+[2026-05-01T08:40:16.397Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T08:40:16.398Z] [INFO] Worker map completed in 1ms
+[2026-05-01T08:40:41.438Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T08:40:41.438Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T08:40:45.109Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:40:45.109Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:40:45.782Z] [INFO] Worker optimize completed in 4344ms
+[2026-05-01T08:47:34.682Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T08:47:34.682Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T08:47:38.297Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:47:38.297Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:47:39.046Z] [INFO] Worker testgaps completed in 4364ms
+[2026-05-01T08:49:27.494Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T08:49:27.494Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T08:49:30.959Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:49:30.959Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:49:31.835Z] [INFO] Worker audit completed in 4341ms
+[2026-05-01T08:55:16.402Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T08:55:16.403Z] [INFO] Worker map completed in 1ms
+[2026-05-01T08:55:45.811Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T08:55:45.811Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T08:55:49.179Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:55:49.180Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:55:49.806Z] [INFO] Worker optimize completed in 3995ms
+[2026-05-01T08:59:31.862Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T08:59:31.862Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T08:59:35.356Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T08:59:35.357Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T08:59:36.195Z] [INFO] Worker audit completed in 4333ms
+[2026-05-01T09:01:15.346Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T09:01:15.347Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T09:07:39.083Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T09:07:39.083Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T09:07:42.742Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:07:42.743Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:07:43.887Z] [INFO] Worker testgaps completed in 4803ms
+[2026-05-01T09:09:36.226Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T09:09:36.226Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T09:09:39.599Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:09:39.599Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:09:40.751Z] [INFO] Worker audit completed in 4525ms
+[2026-05-01T09:10:16.409Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T09:10:16.409Z] [INFO] Worker map completed in 0ms
+[2026-05-01T09:10:49.838Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T09:10:49.838Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T09:10:53.657Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:10:53.658Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:10:54.310Z] [INFO] Worker optimize completed in 4472ms
+[2026-05-01T09:19:40.790Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T09:19:40.790Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T09:19:44.503Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:19:44.503Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:19:45.346Z] [INFO] Worker audit completed in 4556ms
+[2026-05-01T09:25:16.422Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T09:25:16.422Z] [INFO] Worker map completed in 0ms
+[2026-05-01T09:25:54.349Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T09:25:54.349Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T09:25:58.181Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:25:58.181Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:25:58.850Z] [INFO] Worker optimize completed in 4501ms
+[2026-05-01T09:27:43.926Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T09:27:43.926Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T09:27:47.524Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:27:47.524Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:27:48.210Z] [INFO] Worker testgaps completed in 4284ms
+[2026-05-01T09:29:45.386Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T09:29:45.386Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T09:29:48.953Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:29:48.953Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:29:49.802Z] [INFO] Worker audit completed in 4416ms
+[2026-05-01T09:31:15.358Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T09:31:15.358Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T09:39:49.846Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T09:39:49.846Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T09:39:53.676Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:39:53.676Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:39:54.675Z] [INFO] Worker audit completed in 4829ms
+[2026-05-01T09:40:16.434Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T09:40:16.434Z] [INFO] Worker map completed in 0ms
+[2026-05-01T09:40:58.890Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T09:40:58.890Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T09:41:02.529Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:41:02.529Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:41:03.710Z] [INFO] Worker optimize completed in 4820ms
+[2026-05-01T09:47:48.254Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T09:47:48.254Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T09:47:51.556Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:47:51.557Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:47:52.362Z] [INFO] Worker testgaps completed in 4108ms
+[2026-05-01T09:49:54.700Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T09:49:54.701Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T09:49:58.682Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:49:58.683Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:49:59.686Z] [INFO] Worker audit completed in 4986ms
+[2026-05-01T09:55:16.446Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T09:55:16.446Z] [INFO] Worker map completed in 1ms
+[2026-05-01T09:56:03.758Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T09:56:03.758Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T09:56:07.581Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T09:56:07.581Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T09:56:08.267Z] [INFO] Worker optimize completed in 4508ms
+[2026-05-01T09:59:59.734Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T09:59:59.734Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T10:00:03.292Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:00:03.292Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:01:15.367Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-05-01T10:01:15.368Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T10:04:23.423Z] [INFO] Worker audit completed in 263689ms
+[2026-05-01T10:07:52.410Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T10:07:52.410Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T10:07:56.371Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:07:56.372Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:07:57.067Z] [INFO] Worker testgaps completed in 4657ms
+[2026-05-01T10:10:16.458Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T10:10:16.458Z] [INFO] Worker map completed in 0ms
+[2026-05-01T10:11:08.270Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T10:11:08.270Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T10:11:12.294Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:11:12.294Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:11:13.011Z] [INFO] Worker optimize completed in 4741ms
+[2026-05-01T10:14:23.438Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T10:14:23.438Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T10:14:27.194Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:14:27.194Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:14:28.682Z] [INFO] Worker audit completed in 5244ms
+[2026-05-01T10:24:28.702Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T10:24:28.702Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T10:24:32.484Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:24:32.484Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:24:33.259Z] [INFO] Worker audit completed in 4557ms
+[2026-05-01T10:25:16.466Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T10:25:16.466Z] [INFO] Worker map completed in 0ms
+[2026-05-01T10:26:13.018Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T10:26:13.018Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T10:26:16.708Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:26:16.708Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:26:17.595Z] [INFO] Worker optimize completed in 4577ms
+[2026-05-01T10:27:57.118Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T10:27:57.118Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T10:28:00.864Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:28:00.865Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:28:01.518Z] [INFO] Worker testgaps completed in 4400ms
+[2026-05-01T10:31:15.370Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T10:31:15.370Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T10:34:33.286Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T10:34:33.286Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T10:34:36.792Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:34:36.792Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:34:37.735Z] [INFO] Worker audit completed in 4449ms
+[2026-05-01T10:40:16.470Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T10:40:16.470Z] [INFO] Worker map completed in 0ms
+[2026-05-01T10:41:17.606Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T10:41:17.606Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T10:41:21.556Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:41:21.556Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:41:22.210Z] [INFO] Worker optimize completed in 4604ms
+[2026-05-01T10:44:37.766Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T10:44:37.766Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T10:44:41.391Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:44:41.392Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:44:44.007Z] [INFO] Worker audit completed in 6242ms
+[2026-05-01T10:48:01.573Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T10:48:01.573Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T10:48:05.333Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:48:05.333Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:48:05.998Z] [INFO] Worker testgaps completed in 4425ms
+[2026-05-01T10:54:44.043Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T10:54:44.044Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T10:54:48.206Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:54:48.206Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:54:49.119Z] [INFO] Worker audit completed in 5076ms
+[2026-05-01T10:55:16.478Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T10:55:16.478Z] [INFO] Worker map completed in 0ms
+[2026-05-01T10:56:22.226Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T10:56:22.226Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T10:56:26.164Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T10:56:26.165Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T10:56:26.775Z] [INFO] Worker optimize completed in 4549ms
+[2026-05-01T11:01:15.378Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T11:01:15.378Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T11:04:49.158Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T11:04:49.158Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T11:04:53.133Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:04:53.133Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:04:53.871Z] [INFO] Worker audit completed in 4713ms
+[2026-05-01T11:08:06.053Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T11:08:06.054Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T11:08:09.592Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:08:09.592Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:08:10.322Z] [INFO] Worker testgaps completed in 4269ms
+[2026-05-01T11:10:16.486Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T11:10:16.486Z] [INFO] Worker map completed in 0ms
+[2026-05-01T11:11:26.794Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T11:11:26.794Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T11:11:30.302Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:11:30.302Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:11:31.162Z] [INFO] Worker optimize completed in 4368ms
+[2026-05-01T11:14:53.914Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T11:14:53.914Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T11:14:57.337Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:14:57.337Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:14:58.107Z] [INFO] Worker audit completed in 4192ms
+[2026-05-01T11:24:58.120Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T11:24:58.120Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T11:25:02.059Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:25:02.059Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:25:02.871Z] [INFO] Worker audit completed in 4750ms
+[2026-05-01T11:25:16.494Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T11:25:16.494Z] [INFO] Worker map completed in 0ms
+[2026-05-01T11:26:31.182Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T11:26:31.182Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T11:26:34.992Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:26:34.992Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:26:35.690Z] [INFO] Worker optimize completed in 4508ms
+[2026-05-01T11:28:10.324Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T11:28:10.325Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T11:28:13.891Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:28:13.891Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:28:14.794Z] [INFO] Worker testgaps completed in 4470ms
+[2026-05-01T11:31:15.385Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T11:31:15.386Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T11:35:02.922Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T11:35:02.922Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T11:35:06.393Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:35:06.393Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:35:07.186Z] [INFO] Worker audit completed in 4264ms
+[2026-05-01T11:40:16.502Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T11:40:16.502Z] [INFO] Worker map completed in 0ms
+[2026-05-01T11:41:35.714Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T11:41:35.714Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T11:41:39.392Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:41:39.392Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:41:40.078Z] [INFO] Worker optimize completed in 4364ms
+[2026-05-01T11:45:07.242Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T11:45:07.242Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T11:45:11.205Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:45:11.205Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:45:12.171Z] [INFO] Worker audit completed in 4929ms
+[2026-05-01T11:48:14.798Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T11:48:14.798Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T11:48:18.363Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:48:18.363Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:48:19.366Z] [INFO] Worker testgaps completed in 4568ms
+[2026-05-01T11:55:12.174Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T11:55:12.174Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T11:55:16.506Z] [INFO] Worker map deferred: CPU load too high: 9.81
+[2026-05-01T11:55:19.751Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:55:19.752Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:55:20.255Z] [INFO] Worker audit completed in 8081ms
+[2026-05-01T11:55:20.256Z] [INFO] Worker map deferred: CPU load too high: 10.55
+[2026-05-01T11:55:50.286Z] [INFO] Worker map deferred: CPU load too high: 12.39
+[2026-05-01T11:56:20.294Z] [INFO] Worker map deferred: CPU load too high: 13.70
+[2026-05-01T11:56:40.098Z] [INFO] Worker optimize deferred: CPU load too high: 13.94
+[2026-05-01T11:56:50.306Z] [INFO] Worker map deferred: CPU load too high: 14.09
+[2026-05-01T11:57:20.314Z] [INFO] Worker optimize deferred: CPU load too high: 14.12
+[2026-05-01T11:57:50.342Z] [INFO] Worker map deferred: CPU load too high: 14.41
+[2026-05-01T11:58:20.346Z] [INFO] Worker optimize deferred: CPU load too high: 15.31
+[2026-05-01T11:58:50.374Z] [INFO] Worker map deferred: CPU load too high: 13.38
+[2026-05-01T11:59:20.382Z] [INFO] Worker optimize deferred: CPU load too high: 9.76
+[2026-05-01T11:59:50.410Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T11:59:50.410Z] [INFO] Worker map completed in 0ms
+[2026-05-01T11:59:50.411Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T11:59:50.411Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T11:59:54.029Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T11:59:54.029Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T11:59:54.791Z] [INFO] Worker optimize completed in 4380ms
+[2026-05-01T12:01:15.391Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T12:01:15.392Z] [INFO] Worker consolidate completed in 1ms
+[2026-05-01T12:05:20.266Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T12:05:20.266Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T12:05:23.885Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:05:23.886Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:05:25.198Z] [INFO] Worker audit completed in 4932ms
+[2026-05-01T12:08:19.374Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T12:08:19.374Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T12:08:22.874Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:08:22.875Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:08:23.714Z] [INFO] Worker testgaps completed in 4340ms
+[2026-05-01T12:10:16.511Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T12:10:16.511Z] [INFO] Worker map completed in 0ms
+[2026-05-01T12:11:40.126Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T12:11:40.126Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T12:11:44.238Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:11:44.239Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:11:45.003Z] [INFO] Worker optimize completed in 4877ms
+[2026-05-01T12:15:25.210Z] [INFO] Worker audit deferred: CPU load too high: 10.59
+[2026-05-01T12:25:16.514Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T12:25:16.514Z] [INFO] Worker map completed in 0ms
+[2026-05-01T12:25:16.515Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T12:25:16.515Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T12:25:20.527Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:25:20.528Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:25:21.679Z] [INFO] Worker audit completed in 5164ms
+[2026-05-01T12:25:25.214Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T12:25:25.214Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T12:25:29.109Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:25:29.110Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:25:29.891Z] [INFO] Worker audit completed in 4676ms
+[2026-05-01T12:26:45.036Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T12:26:45.037Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T12:26:52.982Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:26:52.983Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:26:53.590Z] [INFO] Worker optimize completed in 8554ms
+[2026-05-01T12:28:23.727Z] [INFO] Worker testgaps deferred: CPU load too high: 26.50
+[2026-05-01T12:31:15.394Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T12:31:15.394Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T12:31:15.395Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T12:31:15.395Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T12:31:19.382Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:31:19.382Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:31:20.146Z] [INFO] Worker testgaps completed in 4751ms
+[2026-05-01T12:35:29.906Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T12:35:29.906Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T12:35:33.870Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:35:33.870Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:35:34.806Z] [INFO] Worker audit completed in 4900ms
+[2026-05-01T12:40:16.518Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T12:40:16.518Z] [INFO] Worker map completed in 0ms
+[2026-05-01T12:41:53.626Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T12:41:53.626Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T12:41:57.405Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:41:57.405Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:41:58.086Z] [INFO] Worker optimize completed in 4461ms
+[2026-05-01T12:45:34.825Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T12:45:34.825Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T12:45:38.768Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:45:38.768Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:45:39.539Z] [INFO] Worker audit completed in 4714ms
+[2026-05-01T12:48:23.746Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T12:48:23.746Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T12:48:27.575Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:48:27.575Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:48:28.283Z] [INFO] Worker testgaps completed in 4537ms
+[2026-05-01T12:55:16.522Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T12:55:16.522Z] [INFO] Worker map completed in 0ms
+[2026-05-01T12:55:39.562Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T12:55:39.562Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T12:55:43.448Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:55:43.449Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:55:44.239Z] [INFO] Worker audit completed in 4677ms
+[2026-05-01T12:56:58.130Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-05-01T12:56:58.130Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-01T12:57:01.947Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T12:57:01.947Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T12:57:02.630Z] [INFO] Worker optimize completed in 4500ms
+[2026-05-01T13:01:15.398Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-05-01T13:01:15.398Z] [INFO] Worker consolidate completed in 0ms
+[2026-05-01T13:05:44.270Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-01T13:05:44.270Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-01T13:05:48.539Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T13:05:48.539Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T13:05:49.375Z] [INFO] Worker audit completed in 5105ms
+[2026-05-01T13:08:28.298Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-01T13:08:28.298Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-01T13:08:32.197Z] [INFO] Daemon already running (PID: 1903378), skipping start
+[2026-05-01T13:08:32.198Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-01T13:08:33.486Z] [INFO] Worker testgaps completed in 5188ms
+[2026-05-01T13:10:16.526Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-01T13:10:16.526Z] [INFO] Worker map completed in 0ms
+[2026-05-06T13:54:03.387Z] [INFO] Scheduled map (interval: 900s, first run in 0s)
+[2026-05-06T13:54:03.387Z] [INFO] Scheduled audit (interval: 600s, first run in 120s)
+[2026-05-06T13:54:03.387Z] [INFO] Scheduled optimize (interval: 900s, first run in 240s)
+[2026-05-06T13:54:03.387Z] [INFO] Scheduled consolidate (interval: 1800s, first run in 360s)
+[2026-05-06T13:54:03.387Z] [INFO] Scheduled testgaps (interval: 1200s, first run in 480s)
+[2026-05-06T13:54:03.389Z] [INFO] Daemon started (PID: 1251124, CPUs: 12, workers: 5, maxCpuLoad: 9.600000000000001, minFreeMemoryPercent: 10%)
+[2026-05-06T13:54:03.390Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T13:54:03.391Z] [INFO] Worker map deferred: CPU load too high: 18.40
+[2026-05-06T13:56:03.393Z] [INFO] Worker audit deferred: CPU load too high: 18.63
+[2026-05-06T13:58:03.421Z] [INFO] Worker optimize deferred: CPU load too high: 19.08
+[2026-05-06T14:00:03.445Z] [INFO] Worker consolidate deferred: CPU load too high: 18.09
+[2026-05-06T14:02:03.447Z] [INFO] Worker testgaps deferred: CPU load too high: 17.63
+[2026-05-06T14:06:03.453Z] [INFO] Worker audit deferred: CPU load too high: 16.55
+[2026-05-06T14:09:03.453Z] [INFO] Worker map deferred: CPU load too high: 15.94
+[2026-05-06T14:13:03.481Z] [INFO] Worker optimize deferred: CPU load too high: 16.03
+[2026-05-06T14:16:03.517Z] [INFO] Worker audit deferred: CPU load too high: 17.80
+[2026-05-06T14:22:03.509Z] [INFO] Worker testgaps deferred: CPU load too high: 15.99
+[2026-05-06T14:24:03.509Z] [INFO] Worker map deferred: CPU load too high: 16.80
+[2026-05-06T14:26:03.581Z] [INFO] Worker audit deferred: CPU load too high: 16.83
+[2026-05-06T14:28:03.537Z] [INFO] Worker optimize deferred: CPU load too high: 17.35
+[2026-05-06T14:30:03.502Z] [INFO] Worker consolidate deferred: CPU load too high: 16.97
+[2026-05-06T14:36:03.637Z] [INFO] Worker audit deferred: CPU load too high: 20.15
+[2026-05-06T14:39:03.525Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-06T14:39:03.526Z] [INFO] Worker map completed in 1ms
+[2026-05-06T14:39:03.527Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-05-06T14:39:03.528Z] [INFO] Worker map completed in 1ms
+[2026-05-06T14:39:03.529Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-05-06T14:39:03.529Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-06T14:39:03.776Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-05-06T14:39:03.776Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-06T14:39:07.415Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:39:07.415Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:39:07.630Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:39:07.630Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:40:06.047Z] [INFO] Worker audit completed in 62518ms
+[2026-05-06T14:40:06.048Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-05-06T14:40:06.050Z] [INFO] Starting worker: testgaps (3/2 concurrent)
+[2026-05-06T14:40:06.050Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-06T14:40:06.057Z] [INFO] Worker consolidate completed in 9ms
+[2026-05-06T14:40:09.759Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:40:09.760Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:40:54.640Z] [INFO] Worker optimize completed in 110864ms
+[2026-05-06T14:40:54.641Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-05-06T14:40:54.641Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-06T14:40:54.803Z] [INFO] Starting worker: map (3/2 concurrent)
+[2026-05-06T14:40:54.804Z] [INFO] Worker map completed in 1ms
+[2026-05-06T14:40:58.734Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:40:58.734Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:41:31.123Z] [INFO] Worker audit completed in 36482ms
+[2026-05-06T14:41:31.124Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-05-06T14:41:31.124Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-06T14:41:31.132Z] [INFO] Starting worker: audit (3/2 concurrent)
+[2026-05-06T14:41:31.132Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-06T14:41:34.630Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:41:34.630Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:42:03.543Z] [INFO] Worker testgaps deferred: max concurrent (2) reached
+[2026-05-06T14:42:57.004Z] [INFO] Worker optimize completed in 85880ms
+[2026-05-06T14:43:00.774Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:43:00.774Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:43:03.541Z] [INFO] Worker optimize deferred: max concurrent (2) reached
+[2026-05-06T14:43:43.847Z] [INFO] Worker testgaps completed in 217797ms
+[2026-05-06T14:43:43.848Z] [INFO] Starting worker: testgaps (2/2 concurrent)
+[2026-05-06T14:43:43.848Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-06T14:43:43.855Z] [INFO] Starting worker: map (3/2 concurrent)
+[2026-05-06T14:43:43.855Z] [INFO] Worker map completed in 0ms
+[2026-05-06T14:43:47.947Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:43:47.947Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:43:55.577Z] [INFO] Worker audit completed in 144445ms
+[2026-05-06T14:43:55.578Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-05-06T14:43:55.578Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-06T14:43:55.585Z] [INFO] Starting worker: optimize (3/2 concurrent)
+[2026-05-06T14:43:55.585Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-06T14:43:59.564Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:43:59.565Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:44:07.132Z] [INFO] Worker audit completed in 11554ms
+[2026-05-06T14:44:11.115Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:44:11.115Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:45:42.853Z] [INFO] Worker optimize completed in 107268ms
+[2026-05-06T14:45:42.854Z] [INFO] Starting worker: consolidate (2/2 concurrent)
+[2026-05-06T14:45:42.854Z] [INFO] Starting worker: audit (3/2 concurrent)
+[2026-05-06T14:45:42.854Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-06T14:45:43.004Z] [INFO] Worker consolidate completed in 150ms
+[2026-05-06T14:45:46.635Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:45:46.635Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:46:03.645Z] [INFO] Worker audit deferred: max concurrent (2) reached
+[2026-05-06T14:46:29.560Z] [INFO] Worker audit completed in 46706ms
+[2026-05-06T14:46:29.561Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-05-06T14:46:29.561Z] [INFO] Running testgaps in headless mode (Claude Code AI)
+[2026-05-06T14:46:29.569Z] [INFO] Starting worker: optimize (2/2 concurrent)
+[2026-05-06T14:46:29.570Z] [INFO] Running optimize in headless mode (Claude Code AI)
+[2026-05-06T14:46:33.713Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:46:33.713Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:47:30.756Z] [INFO] Worker testgaps completed in 226908ms
+[2026-05-06T14:47:30.757Z] [INFO] Starting worker: audit (2/2 concurrent)
+[2026-05-06T14:47:30.757Z] [INFO] Running audit in headless mode (Claude Code AI)
+[2026-05-06T14:47:34.640Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:47:34.640Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:47:35.620Z] [INFO] Worker optimize completed in 66051ms
+[2026-05-06T14:47:39.100Z] [INFO] Daemon already running (PID: 1251124), skipping start
+[2026-05-06T14:47:39.100Z] [INFO] Claude Code headless mode available - AI workers enabled
+[2026-05-06T14:47:40.438Z] [INFO] Worker audit completed in 9681ms
+[2026-05-06T14:48:47.056Z] [INFO] Worker testgaps completed in 137495ms

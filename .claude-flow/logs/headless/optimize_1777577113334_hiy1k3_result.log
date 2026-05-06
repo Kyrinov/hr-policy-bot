@@ -1,0 +1,135 @@
+[2026-04-30T19:27:36.254Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Here's the full performance analysis with actionable fixes:\n\n---\n\n## Performance Analysis: HR Policy Bot\n\n### 1. N+1 Query Patterns\n\n**`src/api/routes.py:125,138,168,181` — New `DatabaseManager()` per request**\n\nEvery endpoint creates a fresh DB manager instead of reusing a shared instance. Fix with a module-level singleton:\n\n```python\n# src/api/routes.py — top of file\nfrom src.data.db import DatabaseManager\n\n_db = DatabaseManager()  # shared singleton\n\n@router.get(\"/queries\")\nasync def list_queries(limit: int = Query(50, ge=1, le=100)) -> list[dict]:\n    return await _db.list_queries(limit=limit)  # reuse, no instantiation overhead\n```\n\n**`src/api/routes.py:134–160` — 4 sequential DB connections per `GET /queries/{id}`**\n\nFour separate `aiosqlite.connect()` open/close cycles for one logical read. Batch them with a single transaction:\n\n```python\n# src/data/db.py — add this method\nasync def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        # single connection, all reads inside\n        query = await self._fetch_query(db, query_id)\n        if not query:\n            return None\n        agent_responses = await self._fetch_agent_responses(db, query_id)\n        orchestrator = await self._fetch_orchestrator_response(db, query_id)\n        feedback = await self._fetch_feedback(db, query_id)\n    return {**query, \"agent_responses\": agent_responses,\n            \"orchestrator_response\": orchestrator, \"feedback\": feedback}\n```\n\n**`src/data/db.py` — Missing index on `fetch_cache` TTL queries**\n\nCache expiry queries scan the full table without an index:\n\n```sql\n-- Add to schema init in db.py\nCREATE INDEX IF NOT EXISTS idx_fetch_cache_ttl\n  ON fetch_cache(fetched_at, ttl_hours);\n```\n\n---\n\n### 2. React Re-renders (Frontend)\n\nThis project has no React — it uses vanilla JS. The equivalent issues are DOM re-renders and event listener accumulation.\n\n**`static/js/app.js:391–407` — Memory leak: event listeners stack up on every query**\n\nEvery call to `showFeedbackControls()` adds new listeners without removing old ones. After 5 queries, a single click fires 5 handlers:\n\n```javascript\n// Before showing new controls, clone to wipe old listeners\nfunction showFeedbackControls() {\n    const submitBtn = document.getElementById('submitFeedback');\n    if (submitBtn) {\n        const fresh = submitBtn.cloneNode(true);  // drops all listeners\n        submitBtn.parentNode.replaceChild(fresh, submitBtn);\n        fresh.addEventListener('click', submitFeedback);\n    }\n\n    document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n        const fresh = btn.cloneNode(true);\n        btn.parentNode.replaceChild(fresh, btn);\n        fresh.addEventListener('click', () => { /* ... */ });\n    });\n}\n```\n\n**`static/js/app.js:181` — Streaming chunks cause reflow on every chunk**\n\n`textEl.textContent += data.chunk` rewrites the DOM on each chunk (100+ times per response). Buffer first:\n\n```javascript\n// Module-level buffer\nlet _chunkBuffer = '';\nlet _flushScheduled = false;\n\nfunction handleResponseChunk(data) {\n    _chunkBuffer += data.chunk;\n    if (!_flushScheduled) {\n        _flushScheduled = true;\n        requestAnimationFrame(() => {\n            textEl.textContent += _chunkBuffer;\n            _chunkBuffer = '';\n            _flushScheduled = false;\n            scrollToBottom();\n        });\n    }\n}\n```\n\n**`static/js/app.js:173` — DOM query on every streaming chunk**\n\n```javascript\n// Cache reference once when message element is created, not inside hot loop\nlet _activeMessageEl = null;  // module level\n\nfunction createMessage() {\n    _activeMessageEl = document.createElement('div');\n    // ... append to chatHistory\n}\n\nfunction handleResponseChunk(data) {\n    // Use _activeMessageEl directly — no querySelector per chunk\n}\n```\n\n**`static/js/app.js:90–92` — WebSocket reconnect timeout accumulation**\n\n```javascript\nlet _reconnectTimer = null;\n\nws.onclose = () => {\n    if (_reconnectTimer) clearTimeout(_reconnectTimer);  // cancel pending\n    _reconnectTimer = setTimeout(connectWebSocket, 3000);\n};\n```\n\n---\n\n### 3. Caching Opportunities\n\n**`src/agents/specialist.py:72–75` — Blocking file I/O on every agent class init**\n\nPolicy registry is read from disk synchronously on each `SpecialistAgent.__init__`. Already cached in the singleton dict, but the first load blocks. Pre-load at startup:\n\n```python\n# src/agents/specialist.py — module level\n_REGISTRY_CACHE: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _REGISTRY_CACHE\n    if _REGISTRY_CACHE is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY_CACHE = json.load(f)\n    return _REGISTRY_CACHE\n\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]\n```\n\n**`src/fetch/cache.py:116–149` — Full table scan on every `/health` call**\n\nHealth check aggregates the entire `fetch_cache` table without an index. Add a cached summary updated on write:\n\n```python\n# Simple TTL cache for health stats (30-second window)\nimport time\n_health_cache: dict = {}\n_health_cache_ts: float = 0.0\n\nasync def health_check(self) -> dict:\n    global _health_cache, _health_cache_ts\n    if time.monotonic() - _health_cache_ts < 30:\n        return _health_cache\n    # run the expensive query...\n    _health_cache = result\n    _health_cache_ts = time.monotonic()\n    return result\n```\n\n**`src/main.py:49–51` — Static assets served with only 10-minute cache**\n\nFastAPI `StaticFiles` defaults to `max-age=600`. For versioned assets, use a year:\n\n```python\nfrom fastapi.staticfiles import StaticFiles\nfrom starlette.middleware.base import BaseHTTPMiddleware\n\nclass LongCacheMiddleware(BaseHTTPMiddleware):\n    async def dispatch(self, request, call_next):\n        response = await call_next(request)\n        if request.url.path.startswith((\"/css/\", \"/js/\")):\n            response.headers[\"Cache-Control\"] = \"public, max-age=31536000, immutable\"\n        return response\n\napp.add_middleware(LongCacheMiddleware)\n```\n\n---\n\n### 4. Memory Leaks\n\n**`src/fetch/engine.py:50–59` — `httpx.AsyncClient` not reused across requests**\n\nThe singleton is properly closed on shutdown, but verify the `httpx.AsyncClient` connection pool is actually shared across all concurrent fetches (it is, since `_client` is an instance variable on a singleton). Confirm `cleanup_fetch_engine()` is always called — add a safety net:\n\n```python\nimport atexit, asyncio\n\ndef cleanup_fetch_engine_sync():\n    loop = asyncio.get_event_loop()\n    if not loop.is_closed():\n        loop.run_until_complete(cleanup_fetch_engine())\n\natexit.register(cleanup_fetch_engine_sync)\n```\n\n**`src/api/websocket.py:116–128` — Duplicate `disconnect()` call (minor)**\n\n```python\n# websocket.py — remove duplicate in finally\nexcept WebSocketDisconnect:\n    if active_task and not active_task.done():\n        active_task.cancel()\n    await ws_manager.disconnect(query_id)\nfinally:\n    pass  # already cleaned up above\n```\n\n---\n\n### 5. Redundant Computations\n\n**`src/agents/specialist.py` and `src/agents/orchestrator.py` — Duplicated JSON extraction logic**\n\nSame \"find first `{`, find last `}`\" pattern in both files. Extract once:\n\n```python\n# src/agents/utils.py (new utility, minimal)\nimport json\n\ndef extract_json(raw: str) -> dict:\n    text = raw.strip()\n    start = text.find('{')\n    if start > 0:\n        text = text[start:]\n    end = text.rfind('}')\n    if end >= 0:\n        text = text[:end + 1]\n    return json.loads(text)\n```\n\nThen in both files: `from src.agents.utils import extract_json` and replace the repeated block.\n\n**`src/api/routes.py` — Two `/health` endpoints with overlapping DB queries**\n\n`main.py` and `routes.py` each define a health check that independently queries Ollama and the cache. Consolidate so one delegates to the other, avoiding two parallel DB+HTTP calls per health ping.\n\n---\n\n### Priority Order\n\n| Priority | Fix | File | Impact |\n|---|---|---|---|\n| 1 | Event listener leak fix | `app.js:391–407` | Eliminates double-click bug after first query |\n| 2 | Module-level DB singleton | `routes.py:125+` | Removes redundant object init per request |\n| 3 | Batch DB reads into single connection | `db.py` | Cuts 4 connections → 1 per query detail fetch |\n| 4 | Add TTL index on `fetch_cache` | `db.py` schema | Speeds up cache expiry + health checks |\n| 5 | Buffer streaming chunks via rAF | `app.js:181` | Eliminates 100+ reflows per response |\n| 6 | Cache health stats (30s TTL) | `cache.py:116` | Removes table scan on every health poll |\n| 7 | Extract shared `extract_json()` | both agent files | Code quality + testability |\n\nThe event listener leak (item 1) and the buffered chunk rendering (item 5) are the two changes that will have the most visible effect on user-facing behavior.\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis: HR Policy Bot",
+        "content": "\n",
+        "level": 2
+      },
+      {
+        "title": "1. N+1 Query Patterns",
+        "content": "\n**`src/api/routes.py:125,138,168,181` — New `DatabaseManager()` per request**\n\nEvery endpoint creates a fresh DB manager instead of reusing a shared instance. Fix with a module-level singleton:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "src/api/routes.py — top of file",
+        "content": "from src.data.db import DatabaseManager\n\n_db = DatabaseManager()  # shared singleton\n\n@router.get(\"/queries\")\nasync def list_queries(limit: int = Query(50, ge=1, le=100)) -> list[dict]:\n    return await _db.list_queries(limit=limit)  # reuse, no instantiation overhead\n```\n\n**`src/api/routes.py:134–160` — 4 sequential DB connections per `GET /queries/{id}`**\n\nFour separate `aiosqlite.connect()` open/close cycles for one logical read. Batch them with a single transaction:\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "src/data/db.py — add this method",
+        "content": "async def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        # single connection, all reads inside\n        query = await self._fetch_query(db, query_id)\n        if not query:\n            return None\n        agent_responses = await self._fetch_agent_responses(db, query_id)\n        orchestrator = await self._fetch_orchestrator_response(db, query_id)\n        feedback = await self._fetch_feedback(db, query_id)\n    return {**query, \"agent_responses\": agent_responses,\n            \"orchestrator_response\": orchestrator, \"feedback\": feedback}\n```\n\n**`src/data/db.py` — Missing index on `fetch_cache` TTL queries**\n\nCache expiry queries scan the full table without an index:\n\n```sql\n-- Add to schema init in db.py\nCREATE INDEX IF NOT EXISTS idx_fetch_cache_ttl\n  ON fetch_cache(fetched_at, ttl_hours);\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "2. React Re-renders (Frontend)",
+        "content": "\nThis project has no React — it uses vanilla JS. The equivalent issues are DOM re-renders and event listener accumulation.\n\n**`static/js/app.js:391–407` — Memory leak: event listeners stack up on every query**\n\nEvery call to `showFeedbackControls()` adds new listeners without removing old ones. After 5 queries, a single click fires 5 handlers:\n\n```javascript\n// Before showing new controls, clone to wipe old listeners\nfunction showFeedbackControls() {\n    const submitBtn = document.getElementById('submitFeedback');\n    if (submitBtn) {\n        const fresh = submitBtn.cloneNode(true);  // drops all listeners\n        submitBtn.parentNode.replaceChild(fresh, submitBtn);\n        fresh.addEventListener('click', submitFeedback);\n    }\n\n    document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n        const fresh = btn.cloneNode(true);\n        btn.parentNode.replaceChild(fresh, btn);\n        fresh.addEventListener('click', () => { /* ... */ });\n    });\n}\n```\n\n**`static/js/app.js:181` — Streaming chunks cause reflow on every chunk**\n\n`textEl.textContent += data.chunk` rewrites the DOM on each chunk (100+ times per response). Buffer first:\n\n```javascript\n// Module-level buffer\nlet _chunkBuffer = '';\nlet _flushScheduled = false;\n\nfunction handleResponseChunk(data) {\n    _chunkBuffer += data.chunk;\n    if (!_flushScheduled) {\n        _flushScheduled = true;\n        requestAnimationFrame(() => {\n            textEl.textContent += _chunkBuffer;\n            _chunkBuffer = '';\n            _flushScheduled = false;\n            scrollToBottom();\n        });\n    }\n}\n```\n\n**`static/js/app.js:173` — DOM query on every streaming chunk**\n\n```javascript\n// Cache reference once when message element is created, not inside hot loop\nlet _activeMessageEl = null;  // module level\n\nfunction createMessage() {\n    _activeMessageEl = document.createElement('div');\n    // ... append to chatHistory\n}\n\nfunction handleResponseChunk(data) {\n    // Use _activeMessageEl directly — no querySelector per chunk\n}\n```\n\n**`static/js/app.js:90–92` — WebSocket reconnect timeout accumulation**\n\n```javascript\nlet _reconnectTimer = null;\n\nws.onclose = () => {\n    if (_reconnectTimer) clearTimeout(_reconnectTimer);  // cancel pending\n    _reconnectTimer = setTimeout(connectWebSocket, 3000);\n};\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "3. Caching Opportunities",
+        "content": "\n**`src/agents/specialist.py:72–75` — Blocking file I/O on every agent class init**\n\nPolicy registry is read from disk synchronously on each `SpecialistAgent.__init__`. Already cached in the singleton dict, but the first load blocks. Pre-load at startup:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "src/agents/specialist.py — module level",
+        "content": "_REGISTRY_CACHE: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _REGISTRY_CACHE\n    if _REGISTRY_CACHE is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY_CACHE = json.load(f)\n    return _REGISTRY_CACHE\n\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]\n```\n\n**`src/fetch/cache.py:116–149` — Full table scan on every `/health` call**\n\nHealth check aggregates the entire `fetch_cache` table without an index. Add a cached summary updated on write:\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "Simple TTL cache for health stats (30-second window)",
+        "content": "import time\n_health_cache: dict = {}\n_health_cache_ts: float = 0.0\n\nasync def health_check(self) -> dict:\n    global _health_cache, _health_cache_ts\n    if time.monotonic() - _health_cache_ts < 30:\n        return _health_cache\n    # run the expensive query...\n    _health_cache = result\n    _health_cache_ts = time.monotonic()\n    return result\n```\n\n**`src/main.py:49–51` — Static assets served with only 10-minute cache**\n\nFastAPI `StaticFiles` defaults to `max-age=600`. For versioned assets, use a year:\n\n```python\nfrom fastapi.staticfiles import StaticFiles\nfrom starlette.middleware.base import BaseHTTPMiddleware\n\nclass LongCacheMiddleware(BaseHTTPMiddleware):\n    async def dispatch(self, request, call_next):\n        response = await call_next(request)\n        if request.url.path.startswith((\"/css/\", \"/js/\")):\n            response.headers[\"Cache-Control\"] = \"public, max-age=31536000, immutable\"\n        return response\n\napp.add_middleware(LongCacheMiddleware)\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "4. Memory Leaks",
+        "content": "\n**`src/fetch/engine.py:50–59` — `httpx.AsyncClient` not reused across requests**\n\nThe singleton is properly closed on shutdown, but verify the `httpx.AsyncClient` connection pool is actually shared across all concurrent fetches (it is, since `_client` is an instance variable on a singleton). Confirm `cleanup_fetch_engine()` is always called — add a safety net:\n\n```python\nimport atexit, asyncio\n\ndef cleanup_fetch_engine_sync():\n    loop = asyncio.get_event_loop()\n    if not loop.is_closed():\n        loop.run_until_complete(cleanup_fetch_engine())\n\natexit.register(cleanup_fetch_engine_sync)\n```\n\n**`src/api/websocket.py:116–128` — Duplicate `disconnect()` call (minor)**\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "websocket.py — remove duplicate in finally",
+        "content": "except WebSocketDisconnect:\n    if active_task and not active_task.done():\n        active_task.cancel()\n    await ws_manager.disconnect(query_id)\nfinally:\n    pass  # already cleaned up above\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "5. Redundant Computations",
+        "content": "\n**`src/agents/specialist.py` and `src/agents/orchestrator.py` — Duplicated JSON extraction logic**\n\nSame \"find first `{`, find last `}`\" pattern in both files. Extract once:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "src/agents/utils.py (new utility, minimal)",
+        "content": "import json\n\ndef extract_json(raw: str) -> dict:\n    text = raw.strip()\n    start = text.find('{')\n    if start > 0:\n        text = text[start:]\n    end = text.rfind('}')\n    if end >= 0:\n        text = text[:end + 1]\n    return json.loads(text)\n```\n\nThen in both files: `from src.agents.utils import extract_json` and replace the repeated block.\n\n**`src/api/routes.py` — Two `/health` endpoints with overlapping DB queries**\n\n`main.py` and `routes.py` each define a health check that independently queries Ollama and the cache. Consolidate so one delegates to the other, avoiding two parallel DB+HTTP calls per health ping.\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "Priority Order",
+        "content": "| Priority | Fix | File | Impact |\n|---|---|---|---|\n| 1 | Event listener leak fix | `app.js:391–407` | Eliminates double-click bug after first query |\n| 2 | Module-level DB singleton | `routes.py:125+` | Removes redundant object init per request |\n| 3 | Batch DB reads into single connection | `db.py` | Cuts 4 connections → 1 per query detail fetch |\n| 4 | Add TTL index on `fetch_cache` | `db.py` schema | Speeds up cache expiry + health checks |\n| 5 | Buffer streaming chunks via rAF | `app.js:181` | Eliminates 100+ reflows per response |\n| 6 | Cache health stats (30s TTL) | `cache.py:116` | Removes table scan on every health poll |\n| 7 | Extract shared `extract_json()` | both agent files | Code quality + testability |\n\nThe event listener leak (item 1) and the buffered chunk rendering (item 5) are the two changes that will have the most visible effect on user-facing behavior.",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "# src/api/routes.py — top of file\nfrom src.data.db import DatabaseManager\n\n_db = DatabaseManager()  # shared singleton\n\n@router.get(\"/queries\")\nasync def list_queries(limit: int = Query(50, ge=1, le=100)) -> list[dict]:\n    return await _db.list_queries(limit=limit)  # reuse, no instantiation overhead"
+      },
+      {
+        "language": "python",
+        "code": "# src/data/db.py — add this method\nasync def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        # single connection, all reads inside\n        query = await self._fetch_query(db, query_id)\n        if not query:\n            return None\n        agent_responses = await self._fetch_agent_responses(db, query_id)\n        orchestrator = await self._fetch_orchestrator_response(db, query_id)\n        feedback = await self._fetch_feedback(db, query_id)\n    return {**query, \"agent_responses\": agent_responses,\n            \"orchestrator_response\": orchestrator, \"feedback\": feedback}"
+      },
+      {
+        "language": "sql",
+        "code": "-- Add to schema init in db.py\nCREATE INDEX IF NOT EXISTS idx_fetch_cache_ttl\n  ON fetch_cache(fetched_at, ttl_hours);"
+      },
+      {
+        "language": "javascript",
+        "code": "// Before showing new controls, clone to wipe old listeners\nfunction showFeedbackControls() {\n    const submitBtn = document.getElementById('submitFeedback');\n    if (submitBtn) {\n        const fresh = submitBtn.cloneNode(true);  // drops all listeners\n        submitBtn.parentNode.replaceChild(fresh, submitBtn);\n        fresh.addEventListener('click', submitFeedback);\n    }\n\n    document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n        const fresh = btn.cloneNode(true);\n        btn.parentNode.replaceChild(fresh, btn);\n        fresh.addEventListener('click', () => { /* ... */ });\n    });\n}"
+      },
+      {
+        "language": "javascript",
+        "code": "// Module-level buffer\nlet _chunkBuffer = '';\nlet _flushScheduled = false;\n\nfunction handleResponseChunk(data) {\n    _chunkBuffer += data.chunk;\n    if (!_flushScheduled) {\n        _flushScheduled = true;\n        requestAnimationFrame(() => {\n            textEl.textContent += _chunkBuffer;\n            _chunkBuffer = '';\n            _flushScheduled = false;\n            scrollToBottom();\n        });\n    }\n}"
+      },
+      {
+        "language": "javascript",
+        "code": "// Cache reference once when message element is created, not inside hot loop\nlet _activeMessageEl = null;  // module level\n\nfunction createMessage() {\n    _activeMessageEl = document.createElement('div');\n    // ... append to chatHistory\n}\n\nfunction handleResponseChunk(data) {\n    // Use _activeMessageEl directly — no querySelector per chunk\n}"
+      },
+      {
+        "language": "javascript",
+        "code": "let _reconnectTimer = null;\n\nws.onclose = () => {\n    if (_reconnectTimer) clearTimeout(_reconnectTimer);  // cancel pending\n    _reconnectTimer = setTimeout(connectWebSocket, 3000);\n};"
+      },
+      {
+        "language": "python",
+        "code": "# src/agents/specialist.py — module level\n_REGISTRY_CACHE: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _REGISTRY_CACHE\n    if _REGISTRY_CACHE is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY_CACHE = json.load(f)\n    return _REGISTRY_CACHE\n\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]"
+      },
+      {
+        "language": "python",
+        "code": "# Simple TTL cache for health stats (30-second window)\nimport time\n_health_cache: dict = {}\n_health_cache_ts: float = 0.0\n\nasync def health_check(self) -> dict:\n    global _health_cache, _health_cache_ts\n    if time.monotonic() - _health_cache_ts < 30:\n        return _health_cache\n    # run the expensive query...\n    _health_cache = result\n    _health_cache_ts = time.monotonic()\n    return result"
+      },
+      {
+        "language": "python",
+        "code": "from fastapi.staticfiles import StaticFiles\nfrom starlette.middleware.base import BaseHTTPMiddleware\n\nclass LongCacheMiddleware(BaseHTTPMiddleware):\n    async def dispatch(self, request, call_next):\n        response = await call_next(request)\n        if request.url.path.startswith((\"/css/\", \"/js/\")):\n            response.headers[\"Cache-Control\"] = \"public, max-age=31536000, immutable\"\n        return response\n\napp.add_middleware(LongCacheMiddleware)"
+      },
+      {
+        "language": "python",
+        "code": "import atexit, asyncio\n\ndef cleanup_fetch_engine_sync():\n    loop = asyncio.get_event_loop()\n    if not loop.is_closed():\n        loop.run_until_complete(cleanup_fetch_engine())\n\natexit.register(cleanup_fetch_engine_sync)"
+      },
+      {
+        "language": "python",
+        "code": "# websocket.py — remove duplicate in finally\nexcept WebSocketDisconnect:\n    if active_task and not active_task.done():\n        active_task.cancel()\n    await ws_manager.disconnect(query_id)\nfinally:\n    pass  # already cleaned up above"
+      },
+      {
+        "language": "python",
+        "code": "# src/agents/utils.py (new utility, minimal)\nimport json\n\ndef extract_json(raw: str) -> dict:\n    text = raw.strip()\n    start = text.find('{')\n    if start > 0:\n        text = text[start:]\n    end = text.rfind('}')\n    if end >= 0:\n        text = text[:end + 1]\n    return json.loads(text)"
+      }
+    ]
+  },
+  "durationMs": 142920,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-04-30T19:27:36.254Z",
+  "executionId": "optimize_1777577113334_hiy1k3"
+}

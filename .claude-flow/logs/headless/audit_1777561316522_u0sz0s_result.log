@@ -1,0 +1,123 @@
+[2026-04-30T15:02:46.464Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Based on my analysis of the HR policy bot codebase, here is the security report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"CORS misconfiguration: allow_origins=['*'] allows cross-origin requests from any domain. This enables attackers to perform unauthorized actions on behalf of authenticated users.\",\n      \"cwe\": \"CWE-1275\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 70,\n      \"description\": \"Missing API key validation at startup. GEMINI_API_KEY is only checked with a warning log. Application will crash at runtime when LLM is invoked. Should fail startup or validate in config loading.\",\n      \"cwe\": \"CWE-345\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 1,\n      \"description\": \"No authentication/authorization on any REST endpoints. All endpoints are publicly accessible. No API key, JWT, or session validation exists.\",\n      \"cwe\": \"CWE-306\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 76,\n      \"description\": \"WebSocket endpoint has no authentication. Any client can connect and submit queries without validation.\",\n      \"cwe\": \"CWE-306\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 100,\n      \"description\": \"Unvalidated WebSocket input. data.get('query_text') is used directly without sanitization or input validation. Could allow prompt injection attacks.\",\n      \"cwe\": \"CWE-20\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 160,\n      \"description\": \"Exception details leaked in HTTP responses. detail=str(e) returns raw exception messages which may contain sensitive system information.\",\n      \"cwe\": \"CWE-209\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 186,\n      \"description\": \"Exception details leaked in HTTP responses for feedback export endpoint.\",\n      \"cwe\": \"CWE-209\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 224,\n      \"description\": \"Exception details leaked in WebSocket error message. f'Error processing query: {str(e)}' may expose sensitive information to client.\",\n      \"cwe\": \"CWE-209\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 68,\n      \"description\": \"Simple regex-based URL normalization may be bypassable. URL rewriting for 'laws-lois.justice.gc.ca' uses basic string matching without full URL parsing.\",\n      \"cwe\": \"CWE-172\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 1,\n      \"description\": \"No rate limiting on REST API endpoints. Endpoints like /queries, /feedback, /feedback/export are unprotected from brute force or DOS attacks.\",\n      \"cwe\": \"CWE-770\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 53,\n      \"description\": \"Static User-Agent header spoofs a browser. While not a vulnerability, it misrepresents the client identity and could violate website terms of service.\",\n      \"cwe\": \"CWE-648\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 19,\n      \"description\": \"Database file location is hardcoded and predictable at 'data/hr_policy_agent.db'. File permissions should be restricted (600).\",\n      \"cwe\": \"CWE-377\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 83,\n      \"description\": \"Database path creation uses default umask. Should explicitly set restrictive permissions (0o600) for SQLite database file.\",\n      \"cwe\": \"CWE-378\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    \"IMMEDIATE: Implement authentication (JWT or API key) for all endpoints. Require valid credentials on websocket and REST API connections.\",\n    \"IMMEDIATE: Fix CORS configuration. Change allow_origins=['*'] to specific trusted domains or require Origin header validation.\",\n    \"IMMEDIATE: Validate GEMINI_API_KEY at application startup, not just log a warning. Fail fast if missing.\",\n    \"HIGH: Implement input validation on WebSocket query_text. Use Pydantic schemas to validate all user input.\",\n    \"HIGH: Never expose exception details to clients. Implement error handlers that log full details but return generic messages.\",\n    \"HIGH: Add rate limiting to REST endpoints using middleware (e.g., slowapi or similar).\",\n    \"MEDIUM: Use comprehensive URL parsing (urllib.parse or similar) instead of regex for URL normalization.\",\n    \"MEDIUM: Set restrictive file permissions on SQLite database (mode 0o600) to prevent unauthorized file access.\",\n    \"MEDIUM: Consider implementing request signing or HMAC verification for API calls if this system becomes public-facing.\",\n    \"LOW: Update User-Agent header to accurately identify the client, or use a generic non-browser identifier.\",\n    \"LOW: Add security headers (CSP, X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security) to HTTP responses.\",\n    \"REVIEW: Audit all LLM prompts for prompt injection vulnerabilities. The orchestrator prompt includes user queries directly.\",\n    \"AUDIT: Review policy_registry.json for hardcoded secrets or sensitive information.\"\n  ]\n}\n```\n\n## Summary\n\n**Risk Score: 72/100 (High)**\n\nThe most critical issues are:\n\n1. **No Authentication** — All endpoints are publicly accessible\n2. **CORS Misconfiguration** — Accepts requests from any origin\n3. **Environment Variable Validation** — API key validation only logs warning, not enforced at startup\n4. **Information Disclosure** — Exception details leaked in error responses\n5. **Unvalidated Input** — WebSocket queries not sanitized before LLM processing\n\nThe codebase demonstrates good practices (parameterized SQL queries, environment-based secrets) but is missing critical security controls for a production system. Recommend implementing authentication, CORS restrictions, and input validation before deploying to DND's network.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "CORS misconfiguration: allow_origins=['*'] allows cross-origin requests from any domain. This enables attackers to perform unauthorized actions on behalf of authenticated users.",
+        "cwe": "CWE-1275"
+      },
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 70,
+        "description": "Missing API key validation at startup. GEMINI_API_KEY is only checked with a warning log. Application will crash at runtime when LLM is invoked. Should fail startup or validate in config loading.",
+        "cwe": "CWE-345"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 1,
+        "description": "No authentication/authorization on any REST endpoints. All endpoints are publicly accessible. No API key, JWT, or session validation exists.",
+        "cwe": "CWE-306"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 76,
+        "description": "WebSocket endpoint has no authentication. Any client can connect and submit queries without validation.",
+        "cwe": "CWE-306"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 100,
+        "description": "Unvalidated WebSocket input. data.get('query_text') is used directly without sanitization or input validation. Could allow prompt injection attacks.",
+        "cwe": "CWE-20"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 160,
+        "description": "Exception details leaked in HTTP responses. detail=str(e) returns raw exception messages which may contain sensitive system information.",
+        "cwe": "CWE-209"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 186,
+        "description": "Exception details leaked in HTTP responses for feedback export endpoint.",
+        "cwe": "CWE-209"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 224,
+        "description": "Exception details leaked in WebSocket error message. f'Error processing query: {str(e)}' may expose sensitive information to client.",
+        "cwe": "CWE-209"
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 68,
+        "description": "Simple regex-based URL normalization may be bypassable. URL rewriting for 'laws-lois.justice.gc.ca' uses basic string matching without full URL parsing.",
+        "cwe": "CWE-172"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 1,
+        "description": "No rate limiting on REST API endpoints. Endpoints like /queries, /feedback, /feedback/export are unprotected from brute force or DOS attacks.",
+        "cwe": "CWE-770"
+      },
+      {
+        "severity": "low",
+        "file": "src/fetch/engine.py",
+        "line": 53,
+        "description": "Static User-Agent header spoofs a browser. While not a vulnerability, it misrepresents the client identity and could violate website terms of service.",
+        "cwe": "CWE-648"
+      },
+      {
+        "severity": "low",
+        "file": "src/data/db.py",
+        "line": 19,
+        "description": "Database file location is hardcoded and predictable at 'data/hr_policy_agent.db'. File permissions should be restricted (600).",
+        "cwe": "CWE-377"
+      },
+      {
+        "severity": "low",
+        "file": "src/data/db.py",
+        "line": 83,
+        "description": "Database path creation uses default umask. Should explicitly set restrictive permissions (0o600) for SQLite database file.",
+        "cwe": "CWE-378"
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      "IMMEDIATE: Implement authentication (JWT or API key) for all endpoints. Require valid credentials on websocket and REST API connections.",
+      "IMMEDIATE: Fix CORS configuration. Change allow_origins=['*'] to specific trusted domains or require Origin header validation.",
+      "IMMEDIATE: Validate GEMINI_API_KEY at application startup, not just log a warning. Fail fast if missing.",
+      "HIGH: Implement input validation on WebSocket query_text. Use Pydantic schemas to validate all user input.",
+      "HIGH: Never expose exception details to clients. Implement error handlers that log full details but return generic messages.",
+      "HIGH: Add rate limiting to REST endpoints using middleware (e.g., slowapi or similar).",
+      "MEDIUM: Use comprehensive URL parsing (urllib.parse or similar) instead of regex for URL normalization.",
+      "MEDIUM: Set restrictive file permissions on SQLite database (mode 0o600) to prevent unauthorized file access.",
+      "MEDIUM: Consider implementing request signing or HMAC verification for API calls if this system becomes public-facing.",
+      "LOW: Update User-Agent header to accurately identify the client, or use a generic non-browser identifier.",
+      "LOW: Add security headers (CSP, X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security) to HTTP responses.",
+      "REVIEW: Audit all LLM prompts for prompt injection vulnerabilities. The orchestrator prompt includes user queries directly.",
+      "AUDIT: Review policy_registry.json for hardcoded secrets or sensitive information."
+    ]
+  },
+  "durationMs": 49942,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T15:02:46.464Z",
+  "executionId": "audit_1777561316522_u0sz0s"
+}

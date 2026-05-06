@@ -1,0 +1,131 @@
+[2026-05-06T14:40:06.047Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "I've completed a comprehensive security analysis of your HR Policy Bot codebase. Here's the report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"type\": \"CORS Misconfiguration\",\n      \"description\": \"CORS policy allows all origins (allow_origins=['*']). Permits any website to make requests to this API.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 662,\n      \"type\": \"SQL Injection\",\n      \"description\": \"Direct string interpolation in SQL: f\\\"SELECT COUNT(*) FROM {table_name}\\\". Table names not parameterized.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 133,\n      \"type\": \"Insecure Direct Object Reference (IDOR)\",\n      \"description\": \"GET /api/queries/{query_id} has no authorization. Any user can access any query by UUID.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 77,\n      \"type\": \"Missing WebSocket Authentication\",\n      \"description\": \"WS /ws accepts connections without authentication. Any client can invoke agents.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 22,\n      \"type\": \"Hardcoded API Key\",\n      \"description\": \"api_key='none' hardcoded. Pattern is insecure if real keys added this way.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 113,\n      \"type\": \"Information Disclosure\",\n      \"description\": \"Error messages leak system details: f\\\"error: {str(e)}\\\" returned to clients.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 98,\n      \"type\": \"Insufficient Input Validation\",\n      \"description\": \"WebSocket receives JSON without size limits or type validation.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 74,\n      \"type\": \"Unsafe URL Manipulation\",\n      \"description\": \"URL rewriting with regex without validation. Could enable SSRF attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 136,\n      \"type\": \"Browser Fallback SSRF Risk\",\n      \"description\": \"Browser fetcher used without URL validation. Could exploit for internal service access.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/config.py\",\n      \"line\": 72,\n      \"type\": \"Weak Environment Variable Handling\",\n      \"description\": \"Configuration from env vars has no validation. Port, host, model name unchecked.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 120,\n      \"type\": \"Missing Rate Limiting\",\n      \"description\": \"No rate limiting on any endpoint. Vulnerable to DoS attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 19,\n      \"type\": \"No HTTPS Enforcement\",\n      \"description\": \"Server runs on plain HTTP. All traffic unencrypted and vulnerable to MITM.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 21,\n      \"type\": \"Hardcoded Database Path\",\n      \"description\": \"Database path hardcoded relative to source. Cannot be configured at runtime.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"riskLevel\": \"HIGH\",\n  \"summary\": {\n    \"critical\": 0,\n    \"high\": 4,\n    \"medium\": 9,\n    \"low\": 1,\n    \"total\": 14\n  },\n  \"recommendations\": [\n    \"IMMEDIATE: Implement authentication/authorization. Add JWT-based auth to all endpoints and WebSocket. Currently any user can access any query (IDOR).\",\n    \"IMMEDIATE: Restrict CORS to trusted domains. Replace allow_origins=['*'] with specific domains.\",\n    \"URGENT: Add WebSocket authentication. Require valid token before accepting connections.\",\n    \"URGENT: Validate or whitelist all SQL queries. Fix _count() method SQL injection risk.\",\n    \"URGENT: Deploy behind HTTPS reverse proxy (nginx/Apache with SSL). Current HTTP-only setup exposes everything to MITM.\",\n    \"URGENT: Add input validation on all endpoints. Implement Pydantic validators, request size limits, and rate limiting.\",\n    \"HIGH: Return generic error messages to clients. Log detailed errors server-side only.\",\n    \"HIGH: Validate all URLs before fetching. Implement domain whitelist to prevent SSRF attacks.\",\n    \"HIGH: Load secrets from environment variables or secure vaults. Never hardcode credentials.\",\n    \"MEDIUM: Implement rate limiting (slowapi) - 100 req/min per IP.\",\n    \"MEDIUM: Add security headers (CSP, X-Frame-Options, HSTS).\",\n    \"MEDIUM: Sanitize logs. Never log query content or sensitive data.\",\n    \"MEDIUM: Add security audit logging (auth attempts, suspicious patterns).\"\n  ]\n}\n```\n\n**Key Findings:**\n\n- **Risk Score: 72/100 (HIGH)** — This is a pre-production prototype with significant security gaps\n- **4 High-Severity Issues**: CORS misconfiguration, SQL injection, IDOR, missing WebSocket auth\n- **No Authentication/Authorization**: System is entirely open; any user can access any query\n- **No HTTPS**: All data transmitted in plaintext over HTTP\n- **Data Exposure**: Query records and feedback stored unencrypted with no access control\n\n**Before Production:**\n1. Implement JWT-based authentication on all endpoints\n2. Add authorization checks (users can only access their own queries)\n3. Deploy with HTTPS and security headers\n4. Validate all inputs and implement rate limiting\n5. Use environment variables for all secrets/config\n\nWould you like me to create a patch file addressing the highest-priority issues?\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "type": "CORS Misconfiguration",
+        "description": "CORS policy allows all origins (allow_origins=['*']). Permits any website to make requests to this API."
+      },
+      {
+        "severity": "high",
+        "file": "src/data/db.py",
+        "line": 662,
+        "type": "SQL Injection",
+        "description": "Direct string interpolation in SQL: f\"SELECT COUNT(*) FROM {table_name}\". Table names not parameterized."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 133,
+        "type": "Insecure Direct Object Reference (IDOR)",
+        "description": "GET /api/queries/{query_id} has no authorization. Any user can access any query by UUID."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 77,
+        "type": "Missing WebSocket Authentication",
+        "description": "WS /ws accepts connections without authentication. Any client can invoke agents."
+      },
+      {
+        "severity": "medium",
+        "file": "src/llm/client.py",
+        "line": 22,
+        "type": "Hardcoded API Key",
+        "description": "api_key='none' hardcoded. Pattern is insecure if real keys added this way."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 113,
+        "type": "Information Disclosure",
+        "description": "Error messages leak system details: f\"error: {str(e)}\" returned to clients."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 98,
+        "type": "Insufficient Input Validation",
+        "description": "WebSocket receives JSON without size limits or type validation."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 74,
+        "type": "Unsafe URL Manipulation",
+        "description": "URL rewriting with regex without validation. Could enable SSRF attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 136,
+        "type": "Browser Fallback SSRF Risk",
+        "description": "Browser fetcher used without URL validation. Could exploit for internal service access."
+      },
+      {
+        "severity": "medium",
+        "file": "src/config.py",
+        "line": 72,
+        "type": "Weak Environment Variable Handling",
+        "description": "Configuration from env vars has no validation. Port, host, model name unchecked."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 120,
+        "type": "Missing Rate Limiting",
+        "description": "No rate limiting on any endpoint. Vulnerable to DoS attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 19,
+        "type": "No HTTPS Enforcement",
+        "description": "Server runs on plain HTTP. All traffic unencrypted and vulnerable to MITM."
+      },
+      {
+        "severity": "low",
+        "file": "src/data/db.py",
+        "line": 21,
+        "type": "Hardcoded Database Path",
+        "description": "Database path hardcoded relative to source. Cannot be configured at runtime."
+      }
+    ],
+    "riskScore": 72,
+    "riskLevel": "HIGH",
+    "summary": {
+      "critical": 0,
+      "high": 4,
+      "medium": 9,
+      "low": 1,
+      "total": 14
+    },
+    "recommendations": [
+      "IMMEDIATE: Implement authentication/authorization. Add JWT-based auth to all endpoints and WebSocket. Currently any user can access any query (IDOR).",
+      "IMMEDIATE: Restrict CORS to trusted domains. Replace allow_origins=['*'] with specific domains.",
+      "URGENT: Add WebSocket authentication. Require valid token before accepting connections.",
+      "URGENT: Validate or whitelist all SQL queries. Fix _count() method SQL injection risk.",
+      "URGENT: Deploy behind HTTPS reverse proxy (nginx/Apache with SSL). Current HTTP-only setup exposes everything to MITM.",
+      "URGENT: Add input validation on all endpoints. Implement Pydantic validators, request size limits, and rate limiting.",
+      "HIGH: Return generic error messages to clients. Log detailed errors server-side only.",
+      "HIGH: Validate all URLs before fetching. Implement domain whitelist to prevent SSRF attacks.",
+      "HIGH: Load secrets from environment variables or secure vaults. Never hardcode credentials.",
+      "MEDIUM: Implement rate limiting (slowapi) - 100 req/min per IP.",
+      "MEDIUM: Add security headers (CSP, X-Frame-Options, HSTS).",
+      "MEDIUM: Sanitize logs. Never log query content or sensitive data.",
+      "MEDIUM: Add security audit logging (auth attempts, suspicious patterns)."
+    ]
+  },
+  "durationMs": 62518,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-06T14:40:06.047Z",
+  "executionId": "audit_1778078343529_950a0o"
+}

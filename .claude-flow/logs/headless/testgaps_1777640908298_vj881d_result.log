@@ -1,0 +1,17 @@
+[2026-05-01T13:08:33.486Z] RESULT
+============================================================
+{
+  "success": false,
+  "output": "You're out of extra usage · resets May 5, 5am (America/Halifax)\n",
+  "parsedOutput": {
+    "sections": [],
+    "codeBlocks": []
+  },
+  "durationMs": 5188,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "testgaps",
+  "timestamp": "2026-05-01T13:08:33.486Z",
+  "executionId": "testgaps_1777640908298_vj881d",
+  "error": "Process exited with code 1"
+}

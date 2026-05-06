@@ -1,0 +1,93 @@
+[2026-04-30T19:38:13.802Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Based on my analysis of the actual project source code, here's the security report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"critical\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"CORS misconfiguration: allow_origins=['*'] combined with allow_credentials=True violates security. This allows ANY origin to make authenticated requests and steal credentials. Should restrict origins to known domains.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 97,\n      \"description\": \"WebSocket message size not validated. No limits on incoming JSON payload size, enabling denial-of-service attacks with large messages. Should implement max_size parameter.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 130,\n      \"description\": \"Error information disclosure: Raw exception messages returned in API responses (detail=str(e)). Exposes internal system details, database structure, and debug information to attackers. Should return generic error messages to users.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 99,\n      \"description\": \"No validation on query text before processing. User input passed directly to LLM system prompt concatenation without sanitization. Potential prompt injection vulnerability (line 75 in llm/client.py concatenates unsanitized input).\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 75,\n      \"description\": \"Unsafe string concatenation in prompt construction: f'{system_prompt}\\\\n\\\\n{user_message}'. User message not escaped/validated before injecting into LLM prompt. Could enable prompt injection attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 68,\n      \"description\": \"API key validation only at startup. GEMINI_API_KEY checked with warning but not verified as functional. If key is invalid/revoked, errors occur at runtime, not startup.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 158,\n      \"description\": \"URL domain extraction uses naive string splitting. The _get_domain() method splits on '//' and '/' without proper URL parsing. Could be bypassed with specially crafted URLs. Should use urllib.parse.urlparse().\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 102,\n      \"description\": \"Sensitive data in debug logs: Raw LLM responses logged with logger.debug(). If debug logging enabled, policy content exposed in logs. Should avoid logging raw API responses.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 8,\n      \"description\": \"HTTP only, no HTTPS enforcement. Server runs on plain HTTP (0.0.0.0:8000) with no HTTPS redirect or enforcement. Should configure HTTPS in production.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 19,\n      \"description\": \"No explicit file permission checks on SQLite database. Database stored at ./data/hr_policy_agent.db with no code-level permission restrictions. Security depends entirely on filesystem permissions.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    \"URGENT: Fix CORS configuration. Replace allow_origins=['*'] with specific trusted domains: allow_origins=['https://yourdomain.com']. Remove credentials from CORS if not needed.\",\n    \"Add WebSocket message size limits: use max_size parameter or request validation middleware to prevent DoS.\",\n    \"Sanitize all error responses. Return generic messages like 'Internal server error' instead of exposing exception details. Log full errors server-side only.\",\n    \"Implement input validation for query text. Use Pydantic validators to enforce max length (e.g., 2000 chars) and filter suspicious patterns before sending to LLM.\",\n    \"Use proper URL parsing via urllib.parse.urlparse() instead of string splitting for domain extraction.\",\n    \"Escape user input before injecting into prompts. Consider using templating with automatic escaping or explicit sanitization.\",\n    \"Add API key health check at startup: attempt a test call to verify the Gemini API key is valid before accepting requests.\",\n    \"Disable debug logging in production (logging.level should be WARNING or ERROR in config.yaml). Never log raw API responses.\",\n    \"Enforce HTTPS in production. Use middleware to redirect HTTP to HTTPS or bind to HTTPS port only.\",\n    \"Set restrictive SQLite file permissions: chmod 600 on the database file. Consider encrypting at-rest using SQLite's encryption module.\",\n    \"Add request size limits to FastAPI. Use starlette middleware to enforce max content-length and request body size.\",\n    \"Implement rate limiting on API endpoints to prevent brute force and DoS (use slowapi or similar).\",\n    \"Add authentication/authorization layer. Currently, all API endpoints are public. Use JWT tokens or similar for query access control.\",\n    \"Audit dependencies for known vulnerabilities: run 'pip audit' or use safety.io to check requirements.txt for CVEs.\"\n  ]\n}\n```\n\n## Key Risk Areas\n\n1. **CORS vulnerability is critical** — any website can make requests to your API pretending to be your users\n2. **Error disclosure exposes internals** — standard practice to hide system details from API responses\n3. **Prompt injection risk** — LLM receives unsanitized user input, could be manipulated to ignore instructions\n4. **No authentication** — anyone on the network can query your system without authorization\n\n## Good Security Practices Found ✅\n\n- Parameterized SQL queries (aiosqlite handles this automatically)\n- Rate limiting on LLM calls (semaphore-based)\n- Concurrency limits on web fetching\n- No hardcoded secrets in source code (using environment variables)\n- Proper async/await patterns\n- Pydantic input validation on data models\n\nWant me to create fixes for any of these vulnerabilities?\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "critical",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "CORS misconfiguration: allow_origins=['*'] combined with allow_credentials=True violates security. This allows ANY origin to make authenticated requests and steal credentials. Should restrict origins to known domains."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 97,
+        "description": "WebSocket message size not validated. No limits on incoming JSON payload size, enabling denial-of-service attacks with large messages. Should implement max_size parameter."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 130,
+        "description": "Error information disclosure: Raw exception messages returned in API responses (detail=str(e)). Exposes internal system details, database structure, and debug information to attackers. Should return generic error messages to users."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 99,
+        "description": "No validation on query text before processing. User input passed directly to LLM system prompt concatenation without sanitization. Potential prompt injection vulnerability (line 75 in llm/client.py concatenates unsanitized input)."
+      },
+      {
+        "severity": "medium",
+        "file": "src/llm/client.py",
+        "line": 75,
+        "description": "Unsafe string concatenation in prompt construction: f'{system_prompt}\\n\\n{user_message}'. User message not escaped/validated before injecting into LLM prompt. Could enable prompt injection attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 68,
+        "description": "API key validation only at startup. GEMINI_API_KEY checked with warning but not verified as functional. If key is invalid/revoked, errors occur at runtime, not startup."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 158,
+        "description": "URL domain extraction uses naive string splitting. The _get_domain() method splits on '//' and '/' without proper URL parsing. Could be bypassed with specially crafted URLs. Should use urllib.parse.urlparse()."
+      },
+      {
+        "severity": "low",
+        "file": "src/llm/client.py",
+        "line": 102,
+        "description": "Sensitive data in debug logs: Raw LLM responses logged with logger.debug(). If debug logging enabled, policy content exposed in logs. Should avoid logging raw API responses."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 8,
+        "description": "HTTP only, no HTTPS enforcement. Server runs on plain HTTP (0.0.0.0:8000) with no HTTPS redirect or enforcement. Should configure HTTPS in production."
+      },
+      {
+        "severity": "low",
+        "file": "src/data/db.py",
+        "line": 19,
+        "description": "No explicit file permission checks on SQLite database. Database stored at ./data/hr_policy_agent.db with no code-level permission restrictions. Security depends entirely on filesystem permissions."
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      "URGENT: Fix CORS configuration. Replace allow_origins=['*'] with specific trusted domains: allow_origins=['https://yourdomain.com']. Remove credentials from CORS if not needed.",
+      "Add WebSocket message size limits: use max_size parameter or request validation middleware to prevent DoS.",
+      "Sanitize all error responses. Return generic messages like 'Internal server error' instead of exposing exception details. Log full errors server-side only.",
+      "Implement input validation for query text. Use Pydantic validators to enforce max length (e.g., 2000 chars) and filter suspicious patterns before sending to LLM.",
+      "Use proper URL parsing via urllib.parse.urlparse() instead of string splitting for domain extraction.",
+      "Escape user input before injecting into prompts. Consider using templating with automatic escaping or explicit sanitization.",
+      "Add API key health check at startup: attempt a test call to verify the Gemini API key is valid before accepting requests.",
+      "Disable debug logging in production (logging.level should be WARNING or ERROR in config.yaml). Never log raw API responses.",
+      "Enforce HTTPS in production. Use middleware to redirect HTTP to HTTPS or bind to HTTPS port only.",
+      "Set restrictive SQLite file permissions: chmod 600 on the database file. Consider encrypting at-rest using SQLite's encryption module.",
+      "Add request size limits to FastAPI. Use starlette middleware to enforce max content-length and request body size.",
+      "Implement rate limiting on API endpoints to prevent brute force and DoS (use slowapi or similar).",
+      "Add authentication/authorization layer. Currently, all API endpoints are public. Use JWT tokens or similar for query access control.",
+      "Audit dependencies for known vulnerabilities: run 'pip audit' or use safety.io to check requirements.txt for CVEs."
+    ]
+  },
+  "durationMs": 49872,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T19:38:13.802Z",
+  "executionId": "audit_1777577843930_kh258n"
+}

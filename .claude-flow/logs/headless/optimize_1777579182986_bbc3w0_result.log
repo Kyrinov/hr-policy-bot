@@ -1,0 +1,178 @@
+[2026-04-30T20:01:52.611Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I have a thorough picture of the codebase. Here's the performance analysis:\n\n---\n\n## Performance Analysis: HR Policy Bot\n\n### 1. N+1 Query Patterns (Database)\n\n**`src/api/routes.py` — 4 separate DB connections per `GET /queries/{id}`**\n\n```python\n# Current: 4 round-trips, each opening/closing a connection\nquery = await db.get_query(query_id)                        # conn 1\nagent_responses = await db.get_agent_responses(query_id)   # conn 2\norchestrator_response = await db.get_orchestrator_response(query_id)  # conn 3\nfeedback = await db.get_feedback_for_query(query_id)        # conn 4\n```\n\nFix: add a single `get_query_full()` method that runs these queries in one open connection:\n\n```python\n# src/data/db.py — add this method\nasync def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        db.row_factory = aiosqlite.Row\n        async with db.execute(\"SELECT * FROM queries WHERE query_id = ?\", (query_id,)) as c:\n            query_row = await c.fetchone()\n        if query_row is None:\n            return None\n        async with db.execute(\"SELECT * FROM agent_responses WHERE query_id = ?\", (query_id,)) as c:\n            agent_rows = await c.fetchall()\n        async with db.execute(\"SELECT * FROM orchestrator_responses WHERE query_id = ?\", (query_id,)) as c:\n            orch_row = await c.fetchone()\n        async with db.execute(\n            \"SELECT * FROM feedback WHERE query_id = ? ORDER BY timestamp DESC LIMIT 1\", (query_id,)\n        ) as c:\n            fb_row = await c.fetchone()\n    # assemble and return dict\n```\n\n**`src/api/websocket.py` — double write of the query record**\n\n`save_query()` is called twice per query (lines 162, 182) — both open separate connections and do `INSERT OR REPLACE`. The second call is necessary to update `agents_invoked` and `processing_time_ms`. Consolidate into one write after the orchestrator finishes:\n\n```python\n# Remove the pre-processing save_query call.\n# After orchestrator completes, save once with all fields populated.\nquery_record = QueryRecord(\n    query_id=query_id,\n    query_text=query_text,\n    agents_invoked=response.agents_consulted,\n    overall_confidence=response.overall_confidence,\n    processing_time_ms=int(processing_time),\n)\nawait db_manager.save_query(query_record)\n```\n\n**Missing indexes** — SQLite will full-scan `agent_responses` and other tables on `query_id` lookups. Add to `_SCHEMA`:\n\n```sql\nCREATE INDEX IF NOT EXISTS idx_agent_responses_query ON agent_responses(query_id);\nCREATE INDEX IF NOT EXISTS idx_orch_responses_query ON orchestrator_responses(query_id);\nCREATE INDEX IF NOT EXISTS idx_feedback_query ON feedback(query_id);\n```\n\n---\n\n### 2. No React (Vanilla JS) — DOM Inefficiencies\n\n**`static/js/app.js:321` — full citation list rebuild on every response**\n\n`renderCitations()` does `citationList.innerHTML = ''` then constructs DOM node-by-node. For many citations this causes multiple reflows. Build a DocumentFragment off-screen:\n\n```js\nfunction renderCitations(citations) {\n    const frag = document.createDocumentFragment();\n    // build into frag ...\n    citationList.replaceChildren(frag);  // single reflow\n}\n```\n\n**`static/js/app.js:469` — `isProcessing()` does a DOM query on every keypress**\n\n```js\n// Current — DOM traversal on every input event\nfunction isProcessing() {\n    return !!currentQueryId &&\n           agentList.querySelector('.status-dot[data-status=\"working\"]') !== null;\n}\n```\n\nTrack processing state in a boolean variable instead:\n\n```js\nlet _processing = false;\n\nfunction setProcessing(val) { _processing = val; }\nfunction isProcessing() { return _processing; }\n```\n\n**`static/js/app.js:482` — `wrapWithCitations()` compiles a regex per citation**\n\n```js\n// Current: new RegExp per citation, per call\ncitations.forEach((citation, index) => {\n    result = result.replace(new RegExp(`(${search}[\\\\s\\\\S]*?)`, 'gi'), `$1${marker}`);\n});\n```\n\nThis regex is also greedy (`[\\s\\S]*?`) and can catastrophically backtrack on long text. Replace with a simple literal `indexOf` approach or avoid inline citation injection entirely (a sidebar already handles citations).\n\n**`static/js/app.js:293` — `badgeNames` object recreated on every `updateMessageWithMetadata()` call**\n\nThis object is never used (the function is defined but not called by any reachable code path — `handleResponseComplete` uses a different rendering path). Dead code worth removing.\n\n---\n\n### 3. Caching Opportunities\n\n**`src/llm/client.py:40` — `GenerativeModel` constructed on every `chat()` call**\n\n`_make_model()` allocates a new model object for every LLM call. The config is static. Cache by `(model_name, json_output)`:\n\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=4)\ndef _make_model(self, model: str | None, json_output: bool) -> genai.GenerativeModel:\n    ...\n```\n\nSince `lru_cache` doesn't work on instance methods directly, use a module-level dict:\n\n```python\n_model_cache: dict[tuple, genai.GenerativeModel] = {}\n\ndef _make_model(self, model: str | None = None, json_output: bool = False) -> genai.GenerativeModel:\n    key = (model or self._model_name, json_output)\n    if key not in _model_cache:\n        _model_cache[key] = genai.GenerativeModel(...)\n    return _model_cache[key]\n```\n\n**`src/agents/specialist.py:72` — policy registry JSON parsed 8 times (once per agent)**\n\nEach `SpecialistAgent.__init__` opens and parses the full `policy_registry.json`. Load it once:\n\n```python\n# module level\n_registry_cache: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _registry_cache\n    if _registry_cache is None:\n        with open(_REGISTRY_PATH) as f:\n            _registry_cache = json.load(f)\n    return _registry_cache\n\n# In _load_instruments:\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]\n```\n\n**`src/fetch/cache.py:38` — `content_hash` recomputes SHA-256 on every property access**\n\n```python\n@property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nChange to `__post_init__` or `cached_property`:\n\n```python\nfrom functools import cached_property\n\n@cached_property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nNote: `@dataclass` + `cached_property` requires `eq=False` or switching to a regular class. Alternatively compute in `__post_init__` and store in a field.\n\n---\n\n### 4. Memory Leaks\n\n**`src/api/websocket.py` — stale WebSocket entries on ungraceful disconnect**\n\nIf a client drops without a clean close (network cut), no `WebSocketDisconnect` is raised until the next `send()`. If no further messages are sent (e.g., the query is already complete), the entry stays in `_connections` permanently. Fix with a periodic cleanup or a heartbeat ping:\n\n```python\n# In WebSocketManager.send():\nasync def send(self, query_id: str, message: dict) -> bool:\n    ws = self._connections.get(query_id)\n    if ws is None:\n        return False\n    try:\n        await ws.send_json(message)\n        return True\n    except Exception:\n        await self.disconnect(query_id)\n        return False\n```\n\nThis is already done, but the leak path is: query completes → `response_complete` sent → socket silently dies → later queries never touch that slot. Add an explicit cleanup on query completion:\n\n```python\n# End of process_query, in the finally block of websocket_endpoint:\nawait ws_manager.disconnect(query_id)  # ← already there, good\n```\n\nThe existing `finally` block in `websocket_endpoint:127` handles this correctly. The real risk is if `_connections` grows under load without reuse — cap with a max-size check or use `WeakValueDictionary`.\n\n**`static/js/app.js:391` — event listener accumulation in `showFeedbackControls()`**\n\nEvery query response calls `showFeedbackControls()`, which sets `innerHTML` (destroying old nodes and their listeners — this part is fine), then calls `querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => btn.addEventListener(...))`. The old button nodes are GC'd correctly. No actual leak here, but the pattern is fragile — use event delegation on `feedbackContent` instead:\n\n```js\nfeedbackContent.addEventListener('click', (e) => {\n    const btn = e.target.closest('.btn-feedback');\n    if (btn) handleFeedbackRating(btn);\n});\n```\n\n---\n\n### 5. Redundant Computations\n\n**`src/fetch/engine.py:69` — regex compiled on every `_normalize_url()` call**\n\n```python\ndef _normalize_url(self, url: str) -> str:\n    import re\n    if re.search(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$', url):\n```\n\n`import re` inside a hot path is harmless (cached by Python), but `re.search` with a non-compiled pattern re-parses the regex string every call. Pre-compile:\n\n```python\n_LAWS_PATTERN = re.compile(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$')\n\ndef _normalize_url(self, url: str) -> str:\n    if _LAWS_PATTERN.search(url):\n        return url.rstrip('/') + '/FullText.html'\n    return url\n```\n\n**`src/api/routes.py` — `DatabaseManager()` instantiated on every request**\n\nEvery route handler does `db = DatabaseManager()`. The constructor is cheap (just sets a path), but it's unnecessary churn. Use the module-level singleton pattern already in use elsewhere:\n\n```python\n# Top of routes.py — one instance for the module lifetime\nfrom src.data.db import DatabaseManager as _DB\n_db = _DB()\n\n@router.get(\"/queries\")\nasync def list_queries(...):\n    queries = await _db.list_queries(limit=limit)\n```\n\n**`src/agents/orchestrator.py:144-151` and `:304-311` — duplicate JSON extraction logic**\n\nBoth `process()` and `_route()` have the same `text.find('{') ... text.rfind('}')` JSON-stripping logic. Extract to a helper:\n\n```python\ndef _extract_json(self, text: str) -> str:\n    text = text.strip()\n    start = text.find('{')\n    if start > 0:\n        text = text[start:]\n    end = text.rfind('}')\n    if end >= 0:\n        text = text[:end + 1]\n    return text\n```\n\n---\n\n### Priority Summary\n\n| Issue | Impact | Effort |\n|---|---|---|\n| Missing SQLite indexes on `query_id` FK columns | High — every query lookup is a full scan | Low (3 lines of DDL) |\n| 4 DB connections per `GET /queries/{id}` | Medium — overhead on the history endpoint | Medium |\n| Double `save_query` write per query | Low-Medium | Low |\n| `GenerativeModel` allocated per LLM call | Medium — object construction cost per inference | Low |\n| Policy registry parsed 8× at startup | Low (one-time) | Trivial |\n| `_normalize_url` uncompiled regex | Low | Trivial |\n| `content_hash` recomputes on every access | Low | Trivial |\n| `DatabaseManager()` per request in routes | Low | Trivial |\n| JS `isProcessing()` DOM query on keypress | Low for small UIs | Low |\n\nThe biggest wins are the **missing indexes** and **consolidating the query detail endpoint** into a single connection — those will matter most once the query log grows.\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis: HR Policy Bot",
+        "content": "\n",
+        "level": 2
+      },
+      {
+        "title": "1. N+1 Query Patterns (Database)",
+        "content": "\n**`src/api/routes.py` — 4 separate DB connections per `GET /queries/{id}`**\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "Current: 4 round-trips, each opening/closing a connection",
+        "content": "query = await db.get_query(query_id)                        # conn 1\nagent_responses = await db.get_agent_responses(query_id)   # conn 2\norchestrator_response = await db.get_orchestrator_response(query_id)  # conn 3\nfeedback = await db.get_feedback_for_query(query_id)        # conn 4\n```\n\nFix: add a single `get_query_full()` method that runs these queries in one open connection:\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "src/data/db.py — add this method",
+        "content": "async def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        db.row_factory = aiosqlite.Row\n        async with db.execute(\"SELECT * FROM queries WHERE query_id = ?\", (query_id,)) as c:\n            query_row = await c.fetchone()\n        if query_row is None:\n            return None\n        async with db.execute(\"SELECT * FROM agent_responses WHERE query_id = ?\", (query_id,)) as c:\n            agent_rows = await c.fetchall()\n        async with db.execute(\"SELECT * FROM orchestrator_responses WHERE query_id = ?\", (query_id,)) as c:\n            orch_row = await c.fetchone()\n        async with db.execute(\n            \"SELECT * FROM feedback WHERE query_id = ? ORDER BY timestamp DESC LIMIT 1\", (query_id,)\n        ) as c:\n            fb_row = await c.fetchone()\n    # assemble and return dict\n```\n\n**`src/api/websocket.py` — double write of the query record**\n\n`save_query()` is called twice per query (lines 162, 182) — both open separate connections and do `INSERT OR REPLACE`. The second call is necessary to update `agents_invoked` and `processing_time_ms`. Consolidate into one write after the orchestrator finishes:\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "Remove the pre-processing save_query call.",
+        "content": "",
+        "level": 1
+      },
+      {
+        "title": "After orchestrator completes, save once with all fields populated.",
+        "content": "query_record = QueryRecord(\n    query_id=query_id,\n    query_text=query_text,\n    agents_invoked=response.agents_consulted,\n    overall_confidence=response.overall_confidence,\n    processing_time_ms=int(processing_time),\n)\nawait db_manager.save_query(query_record)\n```\n\n**Missing indexes** — SQLite will full-scan `agent_responses` and other tables on `query_id` lookups. Add to `_SCHEMA`:\n\n```sql\nCREATE INDEX IF NOT EXISTS idx_agent_responses_query ON agent_responses(query_id);\nCREATE INDEX IF NOT EXISTS idx_orch_responses_query ON orchestrator_responses(query_id);\nCREATE INDEX IF NOT EXISTS idx_feedback_query ON feedback(query_id);\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "2. No React (Vanilla JS) — DOM Inefficiencies",
+        "content": "\n**`static/js/app.js:321` — full citation list rebuild on every response**\n\n`renderCitations()` does `citationList.innerHTML = ''` then constructs DOM node-by-node. For many citations this causes multiple reflows. Build a DocumentFragment off-screen:\n\n```js\nfunction renderCitations(citations) {\n    const frag = document.createDocumentFragment();\n    // build into frag ...\n    citationList.replaceChildren(frag);  // single reflow\n}\n```\n\n**`static/js/app.js:469` — `isProcessing()` does a DOM query on every keypress**\n\n```js\n// Current — DOM traversal on every input event\nfunction isProcessing() {\n    return !!currentQueryId &&\n           agentList.querySelector('.status-dot[data-status=\"working\"]') !== null;\n}\n```\n\nTrack processing state in a boolean variable instead:\n\n```js\nlet _processing = false;\n\nfunction setProcessing(val) { _processing = val; }\nfunction isProcessing() { return _processing; }\n```\n\n**`static/js/app.js:482` — `wrapWithCitations()` compiles a regex per citation**\n\n```js\n// Current: new RegExp per citation, per call\ncitations.forEach((citation, index) => {\n    result = result.replace(new RegExp(`(${search}[\\\\s\\\\S]*?)`, 'gi'), `$1${marker}`);\n});\n```\n\nThis regex is also greedy (`[\\s\\S]*?`) and can catastrophically backtrack on long text. Replace with a simple literal `indexOf` approach or avoid inline citation injection entirely (a sidebar already handles citations).\n\n**`static/js/app.js:293` — `badgeNames` object recreated on every `updateMessageWithMetadata()` call**\n\nThis object is never used (the function is defined but not called by any reachable code path — `handleResponseComplete` uses a different rendering path). Dead code worth removing.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "3. Caching Opportunities",
+        "content": "\n**`src/llm/client.py:40` — `GenerativeModel` constructed on every `chat()` call**\n\n`_make_model()` allocates a new model object for every LLM call. The config is static. Cache by `(model_name, json_output)`:\n\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=4)\ndef _make_model(self, model: str | None, json_output: bool) -> genai.GenerativeModel:\n    ...\n```\n\nSince `lru_cache` doesn't work on instance methods directly, use a module-level dict:\n\n```python\n_model_cache: dict[tuple, genai.GenerativeModel] = {}\n\ndef _make_model(self, model: str | None = None, json_output: bool = False) -> genai.GenerativeModel:\n    key = (model or self._model_name, json_output)\n    if key not in _model_cache:\n        _model_cache[key] = genai.GenerativeModel(...)\n    return _model_cache[key]\n```\n\n**`src/agents/specialist.py:72` — policy registry JSON parsed 8 times (once per agent)**\n\nEach `SpecialistAgent.__init__` opens and parses the full `policy_registry.json`. Load it once:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "module level",
+        "content": "_registry_cache: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _registry_cache\n    if _registry_cache is None:\n        with open(_REGISTRY_PATH) as f:\n            _registry_cache = json.load(f)\n    return _registry_cache\n\n",
+        "level": 1
+      },
+      {
+        "title": "In _load_instruments:",
+        "content": "def _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]\n```\n\n**`src/fetch/cache.py:38` — `content_hash` recomputes SHA-256 on every property access**\n\n```python\n@property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nChange to `__post_init__` or `cached_property`:\n\n```python\nfrom functools import cached_property\n\n@cached_property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nNote: `@dataclass` + `cached_property` requires `eq=False` or switching to a regular class. Alternatively compute in `__post_init__` and store in a field.\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "4. Memory Leaks",
+        "content": "\n**`src/api/websocket.py` — stale WebSocket entries on ungraceful disconnect**\n\nIf a client drops without a clean close (network cut), no `WebSocketDisconnect` is raised until the next `send()`. If no further messages are sent (e.g., the query is already complete), the entry stays in `_connections` permanently. Fix with a periodic cleanup or a heartbeat ping:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "In WebSocketManager.send():",
+        "content": "async def send(self, query_id: str, message: dict) -> bool:\n    ws = self._connections.get(query_id)\n    if ws is None:\n        return False\n    try:\n        await ws.send_json(message)\n        return True\n    except Exception:\n        await self.disconnect(query_id)\n        return False\n```\n\nThis is already done, but the leak path is: query completes → `response_complete` sent → socket silently dies → later queries never touch that slot. Add an explicit cleanup on query completion:\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "End of process_query, in the finally block of websocket_endpoint:",
+        "content": "await ws_manager.disconnect(query_id)  # ← already there, good\n```\n\nThe existing `finally` block in `websocket_endpoint:127` handles this correctly. The real risk is if `_connections` grows under load without reuse — cap with a max-size check or use `WeakValueDictionary`.\n\n**`static/js/app.js:391` — event listener accumulation in `showFeedbackControls()`**\n\nEvery query response calls `showFeedbackControls()`, which sets `innerHTML` (destroying old nodes and their listeners — this part is fine), then calls `querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => btn.addEventListener(...))`. The old button nodes are GC'd correctly. No actual leak here, but the pattern is fragile — use event delegation on `feedbackContent` instead:\n\n```js\nfeedbackContent.addEventListener('click', (e) => {\n    const btn = e.target.closest('.btn-feedback');\n    if (btn) handleFeedbackRating(btn);\n});\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "5. Redundant Computations",
+        "content": "\n**`src/fetch/engine.py:69` — regex compiled on every `_normalize_url()` call**\n\n```python\ndef _normalize_url(self, url: str) -> str:\n    import re\n    if re.search(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$', url):\n```\n\n`import re` inside a hot path is harmless (cached by Python), but `re.search` with a non-compiled pattern re-parses the regex string every call. Pre-compile:\n\n```python\n_LAWS_PATTERN = re.compile(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$')\n\ndef _normalize_url(self, url: str) -> str:\n    if _LAWS_PATTERN.search(url):\n        return url.rstrip('/') + '/FullText.html'\n    return url\n```\n\n**`src/api/routes.py` — `DatabaseManager()` instantiated on every request**\n\nEvery route handler does `db = DatabaseManager()`. The constructor is cheap (just sets a path), but it's unnecessary churn. Use the module-level singleton pattern already in use elsewhere:\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "Top of routes.py — one instance for the module lifetime",
+        "content": "from src.data.db import DatabaseManager as _DB\n_db = _DB()\n\n@router.get(\"/queries\")\nasync def list_queries(...):\n    queries = await _db.list_queries(limit=limit)\n```\n\n**`src/agents/orchestrator.py:144-151` and `:304-311` — duplicate JSON extraction logic**\n\nBoth `process()` and `_route()` have the same `text.find('{') ... text.rfind('}')` JSON-stripping logic. Extract to a helper:\n\n```python\ndef _extract_json(self, text: str) -> str:\n    text = text.strip()\n    start = text.find('{')\n    if start > 0:\n        text = text[start:]\n    end = text.rfind('}')\n    if end >= 0:\n        text = text[:end + 1]\n    return text\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "Priority Summary",
+        "content": "| Issue | Impact | Effort |\n|---|---|---|\n| Missing SQLite indexes on `query_id` FK columns | High — every query lookup is a full scan | Low (3 lines of DDL) |\n| 4 DB connections per `GET /queries/{id}` | Medium — overhead on the history endpoint | Medium |\n| Double `save_query` write per query | Low-Medium | Low |\n| `GenerativeModel` allocated per LLM call | Medium — object construction cost per inference | Low |\n| Policy registry parsed 8× at startup | Low (one-time) | Trivial |\n| `_normalize_url` uncompiled regex | Low | Trivial |\n| `content_hash` recomputes on every access | Low | Trivial |\n| `DatabaseManager()` per request in routes | Low | Trivial |\n| JS `isProcessing()` DOM query on keypress | Low for small UIs | Low |\n\nThe biggest wins are the **missing indexes** and **consolidating the query detail endpoint** into a single connection — those will matter most once the query log grows.",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "# Current: 4 round-trips, each opening/closing a connection\nquery = await db.get_query(query_id)                        # conn 1\nagent_responses = await db.get_agent_responses(query_id)   # conn 2\norchestrator_response = await db.get_orchestrator_response(query_id)  # conn 3\nfeedback = await db.get_feedback_for_query(query_id)        # conn 4"
+      },
+      {
+        "language": "python",
+        "code": "# src/data/db.py — add this method\nasync def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        db.row_factory = aiosqlite.Row\n        async with db.execute(\"SELECT * FROM queries WHERE query_id = ?\", (query_id,)) as c:\n            query_row = await c.fetchone()\n        if query_row is None:\n            return None\n        async with db.execute(\"SELECT * FROM agent_responses WHERE query_id = ?\", (query_id,)) as c:\n            agent_rows = await c.fetchall()\n        async with db.execute(\"SELECT * FROM orchestrator_responses WHERE query_id = ?\", (query_id,)) as c:\n            orch_row = await c.fetchone()\n        async with db.execute(\n            \"SELECT * FROM feedback WHERE query_id = ? ORDER BY timestamp DESC LIMIT 1\", (query_id,)\n        ) as c:\n            fb_row = await c.fetchone()\n    # assemble and return dict"
+      },
+      {
+        "language": "python",
+        "code": "# Remove the pre-processing save_query call.\n# After orchestrator completes, save once with all fields populated.\nquery_record = QueryRecord(\n    query_id=query_id,\n    query_text=query_text,\n    agents_invoked=response.agents_consulted,\n    overall_confidence=response.overall_confidence,\n    processing_time_ms=int(processing_time),\n)\nawait db_manager.save_query(query_record)"
+      },
+      {
+        "language": "sql",
+        "code": "CREATE INDEX IF NOT EXISTS idx_agent_responses_query ON agent_responses(query_id);\nCREATE INDEX IF NOT EXISTS idx_orch_responses_query ON orchestrator_responses(query_id);\nCREATE INDEX IF NOT EXISTS idx_feedback_query ON feedback(query_id);"
+      },
+      {
+        "language": "js",
+        "code": "function renderCitations(citations) {\n    const frag = document.createDocumentFragment();\n    // build into frag ...\n    citationList.replaceChildren(frag);  // single reflow\n}"
+      },
+      {
+        "language": "js",
+        "code": "// Current — DOM traversal on every input event\nfunction isProcessing() {\n    return !!currentQueryId &&\n           agentList.querySelector('.status-dot[data-status=\"working\"]') !== null;\n}"
+      },
+      {
+        "language": "js",
+        "code": "let _processing = false;\n\nfunction setProcessing(val) { _processing = val; }\nfunction isProcessing() { return _processing; }"
+      },
+      {
+        "language": "js",
+        "code": "// Current: new RegExp per citation, per call\ncitations.forEach((citation, index) => {\n    result = result.replace(new RegExp(`(${search}[\\\\s\\\\S]*?)`, 'gi'), `$1${marker}`);\n});"
+      },
+      {
+        "language": "python",
+        "code": "from functools import lru_cache\n\n@lru_cache(maxsize=4)\ndef _make_model(self, model: str | None, json_output: bool) -> genai.GenerativeModel:\n    ..."
+      },
+      {
+        "language": "python",
+        "code": "_model_cache: dict[tuple, genai.GenerativeModel] = {}\n\ndef _make_model(self, model: str | None = None, json_output: bool = False) -> genai.GenerativeModel:\n    key = (model or self._model_name, json_output)\n    if key not in _model_cache:\n        _model_cache[key] = genai.GenerativeModel(...)\n    return _model_cache[key]"
+      },
+      {
+        "language": "python",
+        "code": "# module level\n_registry_cache: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _registry_cache\n    if _registry_cache is None:\n        with open(_REGISTRY_PATH) as f:\n            _registry_cache = json.load(f)\n    return _registry_cache\n\n# In _load_instruments:\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]"
+      },
+      {
+        "language": "python",
+        "code": "@property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()"
+      },
+      {
+        "language": "python",
+        "code": "from functools import cached_property\n\n@cached_property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()"
+      },
+      {
+        "language": "python",
+        "code": "# In WebSocketManager.send():\nasync def send(self, query_id: str, message: dict) -> bool:\n    ws = self._connections.get(query_id)\n    if ws is None:\n        return False\n    try:\n        await ws.send_json(message)\n        return True\n    except Exception:\n        await self.disconnect(query_id)\n        return False"
+      },
+      {
+        "language": "python",
+        "code": "# End of process_query, in the finally block of websocket_endpoint:\nawait ws_manager.disconnect(query_id)  # ← already there, good"
+      },
+      {
+        "language": "js",
+        "code": "feedbackContent.addEventListener('click', (e) => {\n    const btn = e.target.closest('.btn-feedback');\n    if (btn) handleFeedbackRating(btn);\n});"
+      },
+      {
+        "language": "python",
+        "code": "def _normalize_url(self, url: str) -> str:\n    import re\n    if re.search(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$', url):"
+      },
+      {
+        "language": "python",
+        "code": "_LAWS_PATTERN = re.compile(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$')\n\ndef _normalize_url(self, url: str) -> str:\n    if _LAWS_PATTERN.search(url):\n        return url.rstrip('/') + '/FullText.html'\n    return url"
+      },
+      {
+        "language": "python",
+        "code": "# Top of routes.py — one instance for the module lifetime\nfrom src.data.db import DatabaseManager as _DB\n_db = _DB()\n\n@router.get(\"/queries\")\nasync def list_queries(...):\n    queries = await _db.list_queries(limit=limit)"
+      },
+      {
+        "language": "python",
+        "code": "def _extract_json(self, text: str) -> str:\n    text = text.strip()\n    start = text.find('{')\n    if start > 0:\n        text = text[start:]\n    end = text.rfind('}')\n    if end >= 0:\n        text = text[:end + 1]\n    return text"
+      }
+    ]
+  },
+  "durationMs": 129624,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-04-30T20:01:52.610Z",
+  "executionId": "optimize_1777579182986_bbc3w0"
+}

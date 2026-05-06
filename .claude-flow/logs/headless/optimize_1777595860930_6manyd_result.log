@@ -1,0 +1,145 @@
+[2026-05-01T00:39:25.838Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I have a thorough picture of the codebase. Here's the full performance analysis:\n\n---\n\n## Performance Analysis\n\nThis is a Python async backend (FastAPI + aiosqlite + Gemini + httpx). There's no React frontend visible in the source, so the \"unnecessary re-renders\" item doesn't apply. Every other category has concrete findings.\n\n---\n\n### 1. Critical: Domain Lock Serializes All Concurrent Fetches\n\n**File:** `src/fetch/engine.py:79-84`\n\nThe `_domain_lock` is a single global `asyncio.Lock` held while potentially sleeping up to 1 second for rate limiting. While one domain is sleeping, every fetch to *any other domain* is blocked:\n\n```python\nasync with self._domain_lock:          # global lock — blocks ALL fetches\n    delay_required = 1.0 - (time.time() - last_request)\n    if delay_required > 0:\n        await asyncio.sleep(delay_required)  # held for up to 1s!\n    self._domain_last_request[domain] = time.time()\n```\n\nA specialist fetching from `laws-lois.justice.gc.ca` blocks a concurrent specialist trying to fetch from `tbs-sct.canada.ca`. With 4–8 specialists running in parallel, this can add seconds to every query.\n\n**Fix:** Use per-domain locks, and only hold the lock long enough to read/write the timestamp — sleep *outside* the lock:\n\n```python\nself._domain_locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)\n\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:\n        last_request = self._domain_last_request[domain]\n        delay_required = 1.0 - (time.time() - last_request)\n        self._domain_last_request[domain] = time.time()\n\n    if delay_required > 0:\n        await asyncio.sleep(delay_required)\n\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)\n```\n\n---\n\n### 2. N+1-Style DB Connections — 4 Connections Per Query Detail Request\n\n**File:** `src/api/routes.py:133-160`\n\n`GET /queries/{query_id}` opens four separate aiosqlite connections in sequence:\n\n```python\nquery = await db.get_query(query_id)              # connection 1\nagent_responses = await db.get_agent_responses(query_id)      # connection 2\norchestrator_response = await db.get_orchestrator_response(query_id)  # connection 3\nfeedback = await db.get_feedback_for_query(query_id)          # connection 4\n```\n\nEach method in `db.py` does its own `async with aiosqlite.connect(...)`. SQLite connection setup is cheap but not free, and four sequential round-trips amplify latency.\n\n**Fix:** Add a single batched method to `DatabaseManager`:\n\n```python\nasync def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        db.row_factory = aiosqlite.Row\n        async with db.execute(\"SELECT * FROM queries WHERE query_id = ?\", (query_id,)) as c:\n            query_row = await c.fetchone()\n        if query_row is None:\n            return None\n        async with db.execute(\"SELECT * FROM agent_responses WHERE query_id = ?\", (query_id,)) as c:\n            agent_rows = await c.fetchall()\n        async with db.execute(\"SELECT * FROM orchestrator_responses WHERE query_id = ?\", (query_id,)) as c:\n            orch_row = await c.fetchone()\n        async with db.execute(\n            \"SELECT * FROM feedback WHERE query_id = ? ORDER BY timestamp DESC LIMIT 1\", (query_id,)\n        ) as c:\n            fb_row = await c.fetchone()\n    # assemble and return dict\n```\n\n---\n\n### 3. New `DatabaseManager()` Instantiated on Every API Request\n\n**File:** `src/api/routes.py:126, 140, 168, 182`\n\nEvery route handler creates a fresh `DatabaseManager`:\n\n```python\n@router.get(\"/queries\")\nasync def list_queries(...):\n    db = DatabaseManager()  # new object per request\n```\n\nThis isn't creating a DB connection yet, but it's redundant allocation and bypasses any future connection pooling. Compare with `websocket.py:22` which correctly creates one at module level.\n\n**Fix:** Create a single module-level instance in `routes.py`:\n\n```python\n_db = DatabaseManager()\n\n@router.get(\"/queries\")\nasync def list_queries(...):\n    queries = await _db.list_queries(limit=limit)\n```\n\n---\n\n### 4. Regex Compiled on Every `fetch()` Call\n\n**File:** `src/fetch/engine.py:68-72`\n\n```python\ndef _normalize_url(self, url: str) -> str:\n    import re\n    if re.search(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$', url):\n```\n\n`import re` inside a method is fine (Python caches it), but `re.search` with a string pattern recompiles the regex on every call. With batch fetching across multiple specialists, this fires dozens of times per query.\n\n**Fix:** Compile once at module level:\n\n```python\nimport re\n_LAWS_ACT_RE = re.compile(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$')\n\ndef _normalize_url(self, url: str) -> str:\n    if _LAWS_ACT_RE.search(url):\n        return url.rstrip('/') + '/FullText.html'\n    return url\n```\n\n---\n\n### 5. Policy Registry JSON Read 8 Times (Once Per Specialist)\n\n**File:** `src/agents/specialist.py:72-75`\n\n```python\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    with open(_REGISTRY_PATH) as f:\n        registry = json.load(f)          # full file read, every time\n    return [r for r in registry if agent_id in r[\"agent_ids\"]]\n```\n\nAll 8 `SpecialistAgent` objects read and parse the same JSON file from disk independently at startup.\n\n**Fix:** Cache the full registry at module level:\n\n```python\n_REGISTRY: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _REGISTRY\n    if _REGISTRY is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY = json.load(f)\n    return _REGISTRY\n\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]\n```\n\n---\n\n### 6. `content_hash` Re-hashes on Every Property Access\n\n**File:** `src/fetch/cache.py:37-38`\n\n```python\n@property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nThis is a property, not a cached value. Any code path that accesses it twice (which `set_cached` does indirectly through `FetchCacheEntry` creation) re-hashes up to 24KB of text. SHA-256 is fast but not free at this size.\n\n**Fix:** Compute once using `functools.cached_property` (or cache in `__post_init__` if you convert `CacheEntry` to a dataclass with `__post_init__`):\n\n```python\nfrom functools import cached_property\n\n@cached_property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nNote: `CacheEntry` is a `@dataclass` — `cached_property` requires `__dict__`, which dataclasses support unless `frozen=True` or `slots=True`. This is safe here.\n\n---\n\n### 7. New `GenerativeModel` Created on Every LLM Call\n\n**File:** `src/llm/client.py:40-50, 71-76`\n\n```python\nasync def chat(self, system_prompt: str, user_message: str, ...) -> str:\n    m = self._make_model(model)          # new GenerativeModel every call\n    contents = [{\"role\": \"user\", ...}]\n    return await self._generate(m, contents)\n```\n\n`_make_model` instantiates a new `genai.GenerativeModel` on every `chat()`, `stream_chat()`, and `chat_parsed()` call. With 8 specialists + 2 orchestrator calls per query, that's 10 model instantiations.\n\n**Fix:** Cache by `(model_name, json_output)`:\n\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=4)\ndef _make_model(self, model: str | None = None, json_output: bool = False) -> genai.GenerativeModel:\n    ...\n```\n\nOr cache as instance attributes since the config doesn't change at runtime:\n\n```python\ndef __init__(self):\n    ...\n    self._default_model = self._make_model()\n    self._json_model = self._make_model(json_output=True)\n```\n\n---\n\n### 8. System Prompt Concatenated Into User Turn (Missed Gemini Native Feature)\n\n**File:** `src/llm/client.py:75`\n\n```python\ncontents = [{\"role\": \"user\", \"parts\": [f\"{system_prompt}\\n\\n{user_message}\"]}]\n```\n\nGemini's `GenerativeModel` accepts a `system_instruction` parameter natively. Merging system prompt into the user turn means it must be re-processed by the model on every call and cannot benefit from any server-side caching.\n\n**Fix:**\n\n```python\ndef _make_model(self, model=None, json_output=False, system_prompt: str = \"\") -> genai.GenerativeModel:\n    return genai.GenerativeModel(\n        model_name=model or self._model_name,\n        generation_config=...,\n        system_instruction=system_prompt or None,\n    )\n\nasync def chat(self, system_prompt: str, user_message: str, ...) -> str:\n    m = self._make_model(system_prompt=system_prompt)\n    contents = [{\"role\": \"user\", \"parts\": [user_message]}]\n    return await self._generate(m, contents)\n```\n\n---\n\n### 9. Minor: Unbounded Growth of `_domain_semaphores` / `_domain_last_request`\n\n**File:** `src/fetch/engine.py:43-46`\n\n```python\nself._domain_semaphores: dict[str, asyncio.Semaphore] = defaultdict(lambda: asyncio.Semaphore(3))\nself._domain_last_request: dict[str, float] = defaultdict(float)\n```\n\nThese dicts grow indefinitely as new domains are fetched. For this policy bot with a fixed set of ~10 government domains, this won't cause problems in practice. But if the URL set ever expands dynamically, add a periodic pruning step using `clear_expired` pattern already in `FetchCache`.\n\n---\n\n### Priority Summary\n\n| # | Issue | Severity | File | Effort |\n|---|-------|----------|------|--------|\n| 1 | Domain lock blocks all parallel fetches | **High** | `engine.py:79` | Low |\n| 2 | 4 DB connections per query-detail request | **Medium** | `routes.py:140`, `db.py` | Medium |\n| 3 | `DatabaseManager()` per request | **Medium** | `routes.py:126,140,168,182` | Low |\n| 4 | Regex recompiled every fetch | **Low** | `engine.py:69` | Trivial |\n| 5 | Registry JSON read 8× at startup | **Low** | `specialist.py:72` | Trivial |\n| 6 | `content_hash` re-hashed on every access | **Low** | `cache.py:37` | Trivial |\n| 7 | New `GenerativeModel` per LLM call | **Low** | `client.py:40` | Low |\n| 8 | System prompt not using native Gemini feature | **Low** | `client.py:75` | Low |\n\nFix #1 first — it directly impacts wall-clock time for every query since specialists run in parallel. Fixes #3–#6 are one-liners with zero risk.\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis",
+        "content": "\nThis is a Python async backend (FastAPI + aiosqlite + Gemini + httpx). There's no React frontend visible in the source, so the \"unnecessary re-renders\" item doesn't apply. Every other category has concrete findings.\n\n---\n\n",
+        "level": 2
+      },
+      {
+        "title": "1. Critical: Domain Lock Serializes All Concurrent Fetches",
+        "content": "\n**File:** `src/fetch/engine.py:79-84`\n\nThe `_domain_lock` is a single global `asyncio.Lock` held while potentially sleeping up to 1 second for rate limiting. While one domain is sleeping, every fetch to *any other domain* is blocked:\n\n```python\nasync with self._domain_lock:          # global lock — blocks ALL fetches\n    delay_required = 1.0 - (time.time() - last_request)\n    if delay_required > 0:\n        await asyncio.sleep(delay_required)  # held for up to 1s!\n    self._domain_last_request[domain] = time.time()\n```\n\nA specialist fetching from `laws-lois.justice.gc.ca` blocks a concurrent specialist trying to fetch from `tbs-sct.canada.ca`. With 4–8 specialists running in parallel, this can add seconds to every query.\n\n**Fix:** Use per-domain locks, and only hold the lock long enough to read/write the timestamp — sleep *outside* the lock:\n\n```python\nself._domain_locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)\n\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:\n        last_request = self._domain_last_request[domain]\n        delay_required = 1.0 - (time.time() - last_request)\n        self._domain_last_request[domain] = time.time()\n\n    if delay_required > 0:\n        await asyncio.sleep(delay_required)\n\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "2. N+1-Style DB Connections — 4 Connections Per Query Detail Request",
+        "content": "\n**File:** `src/api/routes.py:133-160`\n\n`GET /queries/{query_id}` opens four separate aiosqlite connections in sequence:\n\n```python\nquery = await db.get_query(query_id)              # connection 1\nagent_responses = await db.get_agent_responses(query_id)      # connection 2\norchestrator_response = await db.get_orchestrator_response(query_id)  # connection 3\nfeedback = await db.get_feedback_for_query(query_id)          # connection 4\n```\n\nEach method in `db.py` does its own `async with aiosqlite.connect(...)`. SQLite connection setup is cheap but not free, and four sequential round-trips amplify latency.\n\n**Fix:** Add a single batched method to `DatabaseManager`:\n\n```python\nasync def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        db.row_factory = aiosqlite.Row\n        async with db.execute(\"SELECT * FROM queries WHERE query_id = ?\", (query_id,)) as c:\n            query_row = await c.fetchone()\n        if query_row is None:\n            return None\n        async with db.execute(\"SELECT * FROM agent_responses WHERE query_id = ?\", (query_id,)) as c:\n            agent_rows = await c.fetchall()\n        async with db.execute(\"SELECT * FROM orchestrator_responses WHERE query_id = ?\", (query_id,)) as c:\n            orch_row = await c.fetchone()\n        async with db.execute(\n            \"SELECT * FROM feedback WHERE query_id = ? ORDER BY timestamp DESC LIMIT 1\", (query_id,)\n        ) as c:\n            fb_row = await c.fetchone()\n    # assemble and return dict\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "3. New `DatabaseManager()` Instantiated on Every API Request",
+        "content": "\n**File:** `src/api/routes.py:126, 140, 168, 182`\n\nEvery route handler creates a fresh `DatabaseManager`:\n\n```python\n@router.get(\"/queries\")\nasync def list_queries(...):\n    db = DatabaseManager()  # new object per request\n```\n\nThis isn't creating a DB connection yet, but it's redundant allocation and bypasses any future connection pooling. Compare with `websocket.py:22` which correctly creates one at module level.\n\n**Fix:** Create a single module-level instance in `routes.py`:\n\n```python\n_db = DatabaseManager()\n\n@router.get(\"/queries\")\nasync def list_queries(...):\n    queries = await _db.list_queries(limit=limit)\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "4. Regex Compiled on Every `fetch()` Call",
+        "content": "\n**File:** `src/fetch/engine.py:68-72`\n\n```python\ndef _normalize_url(self, url: str) -> str:\n    import re\n    if re.search(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$', url):\n```\n\n`import re` inside a method is fine (Python caches it), but `re.search` with a string pattern recompiles the regex on every call. With batch fetching across multiple specialists, this fires dozens of times per query.\n\n**Fix:** Compile once at module level:\n\n```python\nimport re\n_LAWS_ACT_RE = re.compile(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$')\n\ndef _normalize_url(self, url: str) -> str:\n    if _LAWS_ACT_RE.search(url):\n        return url.rstrip('/') + '/FullText.html'\n    return url\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "5. Policy Registry JSON Read 8 Times (Once Per Specialist)",
+        "content": "\n**File:** `src/agents/specialist.py:72-75`\n\n```python\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    with open(_REGISTRY_PATH) as f:\n        registry = json.load(f)          # full file read, every time\n    return [r for r in registry if agent_id in r[\"agent_ids\"]]\n```\n\nAll 8 `SpecialistAgent` objects read and parse the same JSON file from disk independently at startup.\n\n**Fix:** Cache the full registry at module level:\n\n```python\n_REGISTRY: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _REGISTRY\n    if _REGISTRY is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY = json.load(f)\n    return _REGISTRY\n\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "6. `content_hash` Re-hashes on Every Property Access",
+        "content": "\n**File:** `src/fetch/cache.py:37-38`\n\n```python\n@property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nThis is a property, not a cached value. Any code path that accesses it twice (which `set_cached` does indirectly through `FetchCacheEntry` creation) re-hashes up to 24KB of text. SHA-256 is fast but not free at this size.\n\n**Fix:** Compute once using `functools.cached_property` (or cache in `__post_init__` if you convert `CacheEntry` to a dataclass with `__post_init__`):\n\n```python\nfrom functools import cached_property\n\n@cached_property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()\n```\n\nNote: `CacheEntry` is a `@dataclass` — `cached_property` requires `__dict__`, which dataclasses support unless `frozen=True` or `slots=True`. This is safe here.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "7. New `GenerativeModel` Created on Every LLM Call",
+        "content": "\n**File:** `src/llm/client.py:40-50, 71-76`\n\n```python\nasync def chat(self, system_prompt: str, user_message: str, ...) -> str:\n    m = self._make_model(model)          # new GenerativeModel every call\n    contents = [{\"role\": \"user\", ...}]\n    return await self._generate(m, contents)\n```\n\n`_make_model` instantiates a new `genai.GenerativeModel` on every `chat()`, `stream_chat()`, and `chat_parsed()` call. With 8 specialists + 2 orchestrator calls per query, that's 10 model instantiations.\n\n**Fix:** Cache by `(model_name, json_output)`:\n\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=4)\ndef _make_model(self, model: str | None = None, json_output: bool = False) -> genai.GenerativeModel:\n    ...\n```\n\nOr cache as instance attributes since the config doesn't change at runtime:\n\n```python\ndef __init__(self):\n    ...\n    self._default_model = self._make_model()\n    self._json_model = self._make_model(json_output=True)\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "8. System Prompt Concatenated Into User Turn (Missed Gemini Native Feature)",
+        "content": "\n**File:** `src/llm/client.py:75`\n\n```python\ncontents = [{\"role\": \"user\", \"parts\": [f\"{system_prompt}\\n\\n{user_message}\"]}]\n```\n\nGemini's `GenerativeModel` accepts a `system_instruction` parameter natively. Merging system prompt into the user turn means it must be re-processed by the model on every call and cannot benefit from any server-side caching.\n\n**Fix:**\n\n```python\ndef _make_model(self, model=None, json_output=False, system_prompt: str = \"\") -> genai.GenerativeModel:\n    return genai.GenerativeModel(\n        model_name=model or self._model_name,\n        generation_config=...,\n        system_instruction=system_prompt or None,\n    )\n\nasync def chat(self, system_prompt: str, user_message: str, ...) -> str:\n    m = self._make_model(system_prompt=system_prompt)\n    contents = [{\"role\": \"user\", \"parts\": [user_message]}]\n    return await self._generate(m, contents)\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "9. Minor: Unbounded Growth of `_domain_semaphores` / `_domain_last_request`",
+        "content": "\n**File:** `src/fetch/engine.py:43-46`\n\n```python\nself._domain_semaphores: dict[str, asyncio.Semaphore] = defaultdict(lambda: asyncio.Semaphore(3))\nself._domain_last_request: dict[str, float] = defaultdict(float)\n```\n\nThese dicts grow indefinitely as new domains are fetched. For this policy bot with a fixed set of ~10 government domains, this won't cause problems in practice. But if the URL set ever expands dynamically, add a periodic pruning step using `clear_expired` pattern already in `FetchCache`.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "Priority Summary",
+        "content": "| # | Issue | Severity | File | Effort |\n|---|-------|----------|------|--------|\n| 1 | Domain lock blocks all parallel fetches | **High** | `engine.py:79` | Low |\n| 2 | 4 DB connections per query-detail request | **Medium** | `routes.py:140`, `db.py` | Medium |\n| 3 | `DatabaseManager()` per request | **Medium** | `routes.py:126,140,168,182` | Low |\n| 4 | Regex recompiled every fetch | **Low** | `engine.py:69` | Trivial |\n| 5 | Registry JSON read 8× at startup | **Low** | `specialist.py:72` | Trivial |\n| 6 | `content_hash` re-hashed on every access | **Low** | `cache.py:37` | Trivial |\n| 7 | New `GenerativeModel` per LLM call | **Low** | `client.py:40` | Low |\n| 8 | System prompt not using native Gemini feature | **Low** | `client.py:75` | Low |\n\nFix #1 first — it directly impacts wall-clock time for every query since specialists run in parallel. Fixes #3–#6 are one-liners with zero risk.",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "async with self._domain_lock:          # global lock — blocks ALL fetches\n    delay_required = 1.0 - (time.time() - last_request)\n    if delay_required > 0:\n        await asyncio.sleep(delay_required)  # held for up to 1s!\n    self._domain_last_request[domain] = time.time()"
+      },
+      {
+        "language": "python",
+        "code": "self._domain_locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)\n\nasync def _fetch_with_concurrency(self, url: str) -> str:\n    domain = self._get_domain(url)\n    async with self._domain_locks[domain]:\n        last_request = self._domain_last_request[domain]\n        delay_required = 1.0 - (time.time() - last_request)\n        self._domain_last_request[domain] = time.time()\n\n    if delay_required > 0:\n        await asyncio.sleep(delay_required)\n\n    async with self._domain_semaphores[domain]:\n        return await self._do_fetch(url)"
+      },
+      {
+        "language": "python",
+        "code": "query = await db.get_query(query_id)              # connection 1\nagent_responses = await db.get_agent_responses(query_id)      # connection 2\norchestrator_response = await db.get_orchestrator_response(query_id)  # connection 3\nfeedback = await db.get_feedback_for_query(query_id)          # connection 4"
+      },
+      {
+        "language": "python",
+        "code": "async def get_query_full(self, query_id: str) -> dict | None:\n    async with aiosqlite.connect(self._db_path) as db:\n        db.row_factory = aiosqlite.Row\n        async with db.execute(\"SELECT * FROM queries WHERE query_id = ?\", (query_id,)) as c:\n            query_row = await c.fetchone()\n        if query_row is None:\n            return None\n        async with db.execute(\"SELECT * FROM agent_responses WHERE query_id = ?\", (query_id,)) as c:\n            agent_rows = await c.fetchall()\n        async with db.execute(\"SELECT * FROM orchestrator_responses WHERE query_id = ?\", (query_id,)) as c:\n            orch_row = await c.fetchone()\n        async with db.execute(\n            \"SELECT * FROM feedback WHERE query_id = ? ORDER BY timestamp DESC LIMIT 1\", (query_id,)\n        ) as c:\n            fb_row = await c.fetchone()\n    # assemble and return dict"
+      },
+      {
+        "language": "python",
+        "code": "@router.get(\"/queries\")\nasync def list_queries(...):\n    db = DatabaseManager()  # new object per request"
+      },
+      {
+        "language": "python",
+        "code": "_db = DatabaseManager()\n\n@router.get(\"/queries\")\nasync def list_queries(...):\n    queries = await _db.list_queries(limit=limit)"
+      },
+      {
+        "language": "python",
+        "code": "def _normalize_url(self, url: str) -> str:\n    import re\n    if re.search(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$', url):"
+      },
+      {
+        "language": "python",
+        "code": "import re\n_LAWS_ACT_RE = re.compile(r'laws-lois\\.justice\\.gc\\.ca/eng/acts/[^/]+/$')\n\ndef _normalize_url(self, url: str) -> str:\n    if _LAWS_ACT_RE.search(url):\n        return url.rstrip('/') + '/FullText.html'\n    return url"
+      },
+      {
+        "language": "python",
+        "code": "def _load_instruments(self, agent_id: str) -> list[dict]:\n    with open(_REGISTRY_PATH) as f:\n        registry = json.load(f)          # full file read, every time\n    return [r for r in registry if agent_id in r[\"agent_ids\"]]"
+      },
+      {
+        "language": "python",
+        "code": "_REGISTRY: list[dict] | None = None\n\ndef _get_registry() -> list[dict]:\n    global _REGISTRY\n    if _REGISTRY is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY = json.load(f)\n    return _REGISTRY\n\ndef _load_instruments(self, agent_id: str) -> list[dict]:\n    return [r for r in _get_registry() if agent_id in r[\"agent_ids\"]]"
+      },
+      {
+        "language": "python",
+        "code": "@property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()"
+      },
+      {
+        "language": "python",
+        "code": "from functools import cached_property\n\n@cached_property\ndef content_hash(self) -> str:\n    return hashlib.sha256(self.content.encode(\"utf-8\")).hexdigest()"
+      },
+      {
+        "language": "python",
+        "code": "async def chat(self, system_prompt: str, user_message: str, ...) -> str:\n    m = self._make_model(model)          # new GenerativeModel every call\n    contents = [{\"role\": \"user\", ...}]\n    return await self._generate(m, contents)"
+      },
+      {
+        "language": "python",
+        "code": "from functools import lru_cache\n\n@lru_cache(maxsize=4)\ndef _make_model(self, model: str | None = None, json_output: bool = False) -> genai.GenerativeModel:\n    ..."
+      },
+      {
+        "language": "python",
+        "code": "def __init__(self):\n    ...\n    self._default_model = self._make_model()\n    self._json_model = self._make_model(json_output=True)"
+      },
+      {
+        "language": "python",
+        "code": "contents = [{\"role\": \"user\", \"parts\": [f\"{system_prompt}\\n\\n{user_message}\"]}]"
+      },
+      {
+        "language": "python",
+        "code": "def _make_model(self, model=None, json_output=False, system_prompt: str = \"\") -> genai.GenerativeModel:\n    return genai.GenerativeModel(\n        model_name=model or self._model_name,\n        generation_config=...,\n        system_instruction=system_prompt or None,\n    )\n\nasync def chat(self, system_prompt: str, user_message: str, ...) -> str:\n    m = self._make_model(system_prompt=system_prompt)\n    contents = [{\"role\": \"user\", \"parts\": [user_message]}]\n    return await self._generate(m, contents)"
+      },
+      {
+        "language": "python",
+        "code": "self._domain_semaphores: dict[str, asyncio.Semaphore] = defaultdict(lambda: asyncio.Semaphore(3))\nself._domain_last_request: dict[str, float] = defaultdict(float)"
+      }
+    ]
+  },
+  "durationMs": 104908,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-05-01T00:39:25.838Z",
+  "executionId": "optimize_1777595860930_6manyd"
+}

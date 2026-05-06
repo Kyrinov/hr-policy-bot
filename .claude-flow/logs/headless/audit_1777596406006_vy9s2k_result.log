@@ -1,0 +1,132 @@
+[2026-05-01T00:47:42.374Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Based on my analysis of the codebase, here's the comprehensive security assessment:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 34,\n      \"type\": \"CORS Misconfiguration\",\n      \"description\": \"CORS middleware allows all origins (allow_origins=['*']) combined with allow_credentials=True. This enables CSRF attacks where malicious websites can make authenticated requests on behalf of users.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 64,\n      \"type\": \"Missing Authentication/Authorization\",\n      \"description\": \"REST API endpoints (/health, /agents, /queries, /feedback, /feedback/export) have NO authentication. Sensitive HR policy data and queries are publicly accessible to any user.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 76,\n      \"type\": \"Missing Authentication/Authorization\",\n      \"description\": \"WebSocket endpoint has NO authentication or authorization checks. Any client can submit policy queries, access results, and submit feedback on sensitive HR matters.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 27,\n      \"type\": \"Missing TLS/HTTPS\",\n      \"description\": \"Application listens on 0.0.0.0:8000 with no TLS enforcement. All data transmitted between client and server is unencrypted, allowing MITM attacks on sensitive HR policy data.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 130,\n      \"type\": \"Information Disclosure (Error Messages)\",\n      \"description\": \"HTTP error responses include raw exception messages via str(e). Could leak sensitive information about system internals, database structure, or file paths.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 100,\n      \"type\": \"Unvalidated User Input\",\n      \"description\": \"query_text from WebSocket receive_json() is not validated. No length limits, input sanitization, or type validation. Could enable buffer overflow or injection attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 76,\n      \"type\": \"Missing Rate Limiting\",\n      \"description\": \"WebSocket endpoint has no rate limiting. Unauthenticated users could establish many connections and submit high-volume queries for DoS attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"type\": \"Overly Permissive CORS\",\n      \"description\": \"CORS allows all HTTP methods (allow_methods=['*']) and headers (allow_headers=['*']). Enables attackers to use any HTTP method from cross-origin requests.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 27,\n      \"type\": \"Missing Security Headers\",\n      \"description\": \"No HSTS, X-Frame-Options, X-Content-Type-Options, or Content-Security-Policy headers configured. Application vulnerable to clickjacking, MIME-sniffing, and other header-based attacks.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 35,\n      \"type\": \"API Key Exposure Risk\",\n      \"description\": \"GEMINI_API_KEY loaded from environment variable. While excluded from git, if exposed in logs, error tracebacks, or error messages, the key could be compromised.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/config.py\",\n      \"line\": 12,\n      \"type\": \"Configuration Inconsistency\",\n      \"description\": \"Default model name in code is 'gemma4:26b' but config.yaml specifies 'gemini-3-flash-preview'. Creates confusion and potential inconsistency in deployments.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 99,\n      \"type\": \"Unvalidated JSON\",\n      \"description\": \"WebSocket receive_json() will raise JSONDecodeError if client sends invalid JSON, but this exception is only caught at the top level. Malformed messages could crash the handler.\"\n    }\n  ],\n  \"riskScore\": 82,\n  \"summary\": \"The application has critical security vulnerabilities. Most concerning: (1) NO AUTHENTICATION/AUTHORIZATION on any endpoint, allowing unrestricted access to sensitive HR policy data; (2) CORS misconfiguration enabling CSRF attacks; (3) No HTTPS/TLS encryption; (4) Unvalidated user input on WebSocket; (5) Missing security headers.\",\n  \"recommendations\": [\n    \"CRITICAL: Implement authentication (JWT, OAuth2, or API keys) on ALL endpoints immediately. This is the most critical issue.\",\n    \"CRITICAL: Enforce HTTPS/TLS. Configure SSL certificates and redirect HTTP to HTTPS.\",\n    \"CRITICAL: Fix CORS configuration: Change allow_origins from '*' to a whitelist of trusted domains. Set allow_credentials=False if not needed.\",\n    \"HIGH: Add rate limiting to WebSocket endpoint using middleware (e.g., slowapi or similar).\",\n    \"HIGH: Implement authorization checks to ensure users can only access their own data.\",\n    \"HIGH: Validate and sanitize all user inputs (query_text, limit parameters, feedback comments).\",\n    \"HIGH: Add security headers: HSTS, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, CSP policy.\",\n    \"MEDIUM: Implement proper error handling without exposing exception details to clients.\",\n    \"MEDIUM: Add input length limits to WebSocket query_text (e.g., max 5000 chars).\",\n    \"MEDIUM: Rotate GEMINI_API_KEY periodically and ensure it never appears in logs or error messages.\",\n    \"MEDIUM: Add comprehensive logging and monitoring for security events.\",\n    \"MEDIUM: Implement request signing/validation for critical operations.\",\n    \"LOW: Standardize model name configuration between code and YAML.\",\n    \"Conduct a full security audit including penetration testing before production deployment.\"\n  ],\n  \"dependencyRisks\": [\n    {\n      \"package\": \"fastapi\",\n      \"note\": \"Framework is secure by default, but misconfiguration (as seen here) overrides protections.\"\n    },\n    {\n      \"package\": \"google-generativeai\",\n      \"note\": \"API key exposure risk if not properly protected. Regularly check for compromised keys.\"\n    },\n    {\n      \"package\": \"aiosqlite\",\n      \"note\": \"Properly using parameterized queries (no SQL injection detected), but ensure never to build SQL dynamically.\"\n    }\n  ]\n}\n```\n\n## Key Findings\n\n**Critical Issues:**\n1. **Zero Authentication** — Anyone can access all REST and WebSocket endpoints with no credentials required\n2. **CORS + Credentials Vulnerability** — CSRF attacks are possible via browsers from any origin\n3. **No HTTPS** — All data in transit is unencrypted (critical for HR data)\n4. **Unvalidated Input** — WebSocket queries have no validation or length limits\n\n**Recommendation**: This application **should not be deployed to production** until authentication, authorization, and HTTPS are implemented. For a DND HR system handling sensitive employee data, these security controls are mandatory.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 34,
+        "type": "CORS Misconfiguration",
+        "description": "CORS middleware allows all origins (allow_origins=['*']) combined with allow_credentials=True. This enables CSRF attacks where malicious websites can make authenticated requests on behalf of users."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 64,
+        "type": "Missing Authentication/Authorization",
+        "description": "REST API endpoints (/health, /agents, /queries, /feedback, /feedback/export) have NO authentication. Sensitive HR policy data and queries are publicly accessible to any user."
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 76,
+        "type": "Missing Authentication/Authorization",
+        "description": "WebSocket endpoint has NO authentication or authorization checks. Any client can submit policy queries, access results, and submit feedback on sensitive HR matters."
+      },
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 27,
+        "type": "Missing TLS/HTTPS",
+        "description": "Application listens on 0.0.0.0:8000 with no TLS enforcement. All data transmitted between client and server is unencrypted, allowing MITM attacks on sensitive HR policy data."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 130,
+        "type": "Information Disclosure (Error Messages)",
+        "description": "HTTP error responses include raw exception messages via str(e). Could leak sensitive information about system internals, database structure, or file paths."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 100,
+        "type": "Unvalidated User Input",
+        "description": "query_text from WebSocket receive_json() is not validated. No length limits, input sanitization, or type validation. Could enable buffer overflow or injection attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 76,
+        "type": "Missing Rate Limiting",
+        "description": "WebSocket endpoint has no rate limiting. Unauthenticated users could establish many connections and submit high-volume queries for DoS attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 36,
+        "type": "Overly Permissive CORS",
+        "description": "CORS allows all HTTP methods (allow_methods=['*']) and headers (allow_headers=['*']). Enables attackers to use any HTTP method from cross-origin requests."
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 27,
+        "type": "Missing Security Headers",
+        "description": "No HSTS, X-Frame-Options, X-Content-Type-Options, or Content-Security-Policy headers configured. Application vulnerable to clickjacking, MIME-sniffing, and other header-based attacks."
+      },
+      {
+        "severity": "medium",
+        "file": "src/llm/client.py",
+        "line": 35,
+        "type": "API Key Exposure Risk",
+        "description": "GEMINI_API_KEY loaded from environment variable. While excluded from git, if exposed in logs, error tracebacks, or error messages, the key could be compromised."
+      },
+      {
+        "severity": "low",
+        "file": "src/config.py",
+        "line": 12,
+        "type": "Configuration Inconsistency",
+        "description": "Default model name in code is 'gemma4:26b' but config.yaml specifies 'gemini-3-flash-preview'. Creates confusion and potential inconsistency in deployments."
+      },
+      {
+        "severity": "low",
+        "file": "src/api/websocket.py",
+        "line": 99,
+        "type": "Unvalidated JSON",
+        "description": "WebSocket receive_json() will raise JSONDecodeError if client sends invalid JSON, but this exception is only caught at the top level. Malformed messages could crash the handler."
+      }
+    ],
+    "riskScore": 82,
+    "summary": "The application has critical security vulnerabilities. Most concerning: (1) NO AUTHENTICATION/AUTHORIZATION on any endpoint, allowing unrestricted access to sensitive HR policy data; (2) CORS misconfiguration enabling CSRF attacks; (3) No HTTPS/TLS encryption; (4) Unvalidated user input on WebSocket; (5) Missing security headers.",
+    "recommendations": [
+      "CRITICAL: Implement authentication (JWT, OAuth2, or API keys) on ALL endpoints immediately. This is the most critical issue.",
+      "CRITICAL: Enforce HTTPS/TLS. Configure SSL certificates and redirect HTTP to HTTPS.",
+      "CRITICAL: Fix CORS configuration: Change allow_origins from '*' to a whitelist of trusted domains. Set allow_credentials=False if not needed.",
+      "HIGH: Add rate limiting to WebSocket endpoint using middleware (e.g., slowapi or similar).",
+      "HIGH: Implement authorization checks to ensure users can only access their own data.",
+      "HIGH: Validate and sanitize all user inputs (query_text, limit parameters, feedback comments).",
+      "HIGH: Add security headers: HSTS, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, CSP policy.",
+      "MEDIUM: Implement proper error handling without exposing exception details to clients.",
+      "MEDIUM: Add input length limits to WebSocket query_text (e.g., max 5000 chars).",
+      "MEDIUM: Rotate GEMINI_API_KEY periodically and ensure it never appears in logs or error messages.",
+      "MEDIUM: Add comprehensive logging and monitoring for security events.",
+      "MEDIUM: Implement request signing/validation for critical operations.",
+      "LOW: Standardize model name configuration between code and YAML.",
+      "Conduct a full security audit including penetration testing before production deployment."
+    ],
+    "dependencyRisks": [
+      {
+        "package": "fastapi",
+        "note": "Framework is secure by default, but misconfiguration (as seen here) overrides protections."
+      },
+      {
+        "package": "google-generativeai",
+        "note": "API key exposure risk if not properly protected. Regularly check for compromised keys."
+      },
+      {
+        "package": "aiosqlite",
+        "note": "Properly using parameterized queries (no SQL injection detected), but ensure never to build SQL dynamically."
+      }
+    ]
+  },
+  "durationMs": 56368,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-01T00:47:42.374Z",
+  "executionId": "audit_1777596406006_vy9s2k"
+}

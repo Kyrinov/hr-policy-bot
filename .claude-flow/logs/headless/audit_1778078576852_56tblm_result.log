@@ -1,0 +1,104 @@
+[2026-05-06T14:43:55.577Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "I've completed a comprehensive security analysis of your HR policy bot codebase. Here's the JSON report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"CORS misconfiguration - allow_origins=['*'] allows any origin to make requests. Enables CSRF attacks.\",\n      \"category\": \"CORS/CSRF\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 662,\n      \"description\": \"SQL Injection via string interpolation: f\\\"SELECT COUNT(*) FROM {table_name}\\\"\",\n      \"category\": \"SQL Injection\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 650,\n      \"description\": \"Missing import: hashlib module used but not imported. Will cause NameError at runtime.\",\n      \"category\": \"Code Error\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 130,\n      \"description\": \"Error message disclosure - Full exception messages returned to clients leak internal details\",\n      \"category\": \"Information Disclosure\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 98,\n      \"description\": \"Unvalidated WebSocket input - No schema validation on receive_json()\",\n      \"category\": \"Input Validation\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/config.yaml\",\n      \"line\": 8,\n      \"description\": \"Server listens on 0.0.0.0 - exposed to all network interfaces\",\n      \"category\": \"Network Exposure\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 129,\n      \"description\": \"Stale cache fallback without age verification or user notification\",\n      \"category\": \"Data Integrity\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 176,\n      \"description\": \"Unauthenticated data export endpoint - /feedback/export publicly accessible\",\n      \"category\": \"Authentication/Authorization\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 59,\n      \"description\": \"Hardcoded User-Agent - easily identifiable and blockable by target sites\",\n      \"category\": \"Bot Detection Evasion\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 121,\n      \"description\": \"Missing rate limiting on public endpoints - enables DoS/scraping\",\n      \"category\": \"Rate Limiting\"\n    }\n  ],\n  \"riskScore\": 68,\n  \"riskLevel\": \"MEDIUM-HIGH\",\n  \"recommendations\": [\n    \"IMMEDIATE: Add 'import hashlib' to src/data/db.py to fix runtime error\",\n    \"IMMEDIATE: Fix CORS - change allow_origins=['*'] to specific trusted domains\",\n    \"IMMEDIATE: Add authentication to public endpoints (especially /feedback/export)\",\n    \"URGENT: Implement input validation for WebSocket payloads using Pydantic schemas\",\n    \"URGENT: Sanitize error messages - return generic messages to clients, log details server-side\",\n    \"URGENT: Fix SQL interpolation in _count() to use parameterized queries\",\n    \"HIGH: Add rate limiting middleware to all public endpoints\",\n    \"HIGH: Bind server to 127.0.0.1 or specific trusted IP instead of 0.0.0.0\",\n    \"HIGH: Implement authentication framework (OAuth2, API keys, or bearer tokens)\",\n    \"MEDIUM: Add max_length constraints to Pydantic models (query_text, comments)\",\n    \"MEDIUM: Add cache age warnings when using stale data\",\n    \"MEDIUM: Randomize User-Agent headers in HTTP requests\",\n    \"RECOMMENDED: Add security headers middleware (CSP, X-Content-Type-Options)\",\n    \"RECOMMENDED: Implement audit logging for all data access\"\n  ]\n}\n```\n\n**Key Findings:**\n\n1. **Critical Issues:**\n   - Missing `hashlib` import (will crash at runtime)\n   - CORS allows all origins (CSRF vulnerability)\n   - SQL injection via string interpolation in db.py:662\n\n2. **Major Issues:**\n   - No authentication on any endpoints (including data export)\n   - Unvalidated WebSocket input\n   - Error messages leak internal details\n   - Server exposed on 0.0.0.0\n\n3. **Immediate Actions:**\n   - Add `import hashlib` to src/data/db.py\n   - Restrict CORS origins\n   - Add input validation using Pydantic schema validation on WebSocket\n   - Implement basic authentication (API keys minimum)\n\nWould you like me to create fixes for any of these vulnerabilities?\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "CORS misconfiguration - allow_origins=['*'] allows any origin to make requests. Enables CSRF attacks.",
+        "category": "CORS/CSRF"
+      },
+      {
+        "severity": "high",
+        "file": "src/data/db.py",
+        "line": 662,
+        "description": "SQL Injection via string interpolation: f\"SELECT COUNT(*) FROM {table_name}\"",
+        "category": "SQL Injection"
+      },
+      {
+        "severity": "high",
+        "file": "src/data/db.py",
+        "line": 650,
+        "description": "Missing import: hashlib module used but not imported. Will cause NameError at runtime.",
+        "category": "Code Error"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 130,
+        "description": "Error message disclosure - Full exception messages returned to clients leak internal details",
+        "category": "Information Disclosure"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 98,
+        "description": "Unvalidated WebSocket input - No schema validation on receive_json()",
+        "category": "Input Validation"
+      },
+      {
+        "severity": "medium",
+        "file": "src/config.yaml",
+        "line": 8,
+        "description": "Server listens on 0.0.0.0 - exposed to all network interfaces",
+        "category": "Network Exposure"
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 129,
+        "description": "Stale cache fallback without age verification or user notification",
+        "category": "Data Integrity"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 176,
+        "description": "Unauthenticated data export endpoint - /feedback/export publicly accessible",
+        "category": "Authentication/Authorization"
+      },
+      {
+        "severity": "low",
+        "file": "src/fetch/engine.py",
+        "line": 59,
+        "description": "Hardcoded User-Agent - easily identifiable and blockable by target sites",
+        "category": "Bot Detection Evasion"
+      },
+      {
+        "severity": "low",
+        "file": "src/api/routes.py",
+        "line": 121,
+        "description": "Missing rate limiting on public endpoints - enables DoS/scraping",
+        "category": "Rate Limiting"
+      }
+    ],
+    "riskScore": 68,
+    "riskLevel": "MEDIUM-HIGH",
+    "recommendations": [
+      "IMMEDIATE: Add 'import hashlib' to src/data/db.py to fix runtime error",
+      "IMMEDIATE: Fix CORS - change allow_origins=['*'] to specific trusted domains",
+      "IMMEDIATE: Add authentication to public endpoints (especially /feedback/export)",
+      "URGENT: Implement input validation for WebSocket payloads using Pydantic schemas",
+      "URGENT: Sanitize error messages - return generic messages to clients, log details server-side",
+      "URGENT: Fix SQL interpolation in _count() to use parameterized queries",
+      "HIGH: Add rate limiting middleware to all public endpoints",
+      "HIGH: Bind server to 127.0.0.1 or specific trusted IP instead of 0.0.0.0",
+      "HIGH: Implement authentication framework (OAuth2, API keys, or bearer tokens)",
+      "MEDIUM: Add max_length constraints to Pydantic models (query_text, comments)",
+      "MEDIUM: Add cache age warnings when using stale data",
+      "MEDIUM: Randomize User-Agent headers in HTTP requests",
+      "RECOMMENDED: Add security headers middleware (CSP, X-Content-Type-Options)",
+      "RECOMMENDED: Implement audit logging for all data access"
+    ]
+  },
+  "durationMs": 58725,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-06T14:43:55.577Z",
+  "executionId": "audit_1778078576852_56tblm"
+}

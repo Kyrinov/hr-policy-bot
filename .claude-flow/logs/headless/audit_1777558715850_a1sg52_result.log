@@ -1,0 +1,17 @@
+[2026-04-30T14:18:40.556Z] RESULT
+============================================================
+{
+  "success": false,
+  "output": "You're out of extra usage · resets 11:20am (America/Halifax)\n",
+  "parsedOutput": {
+    "parseError": true,
+    "rawOutput": "You're out of extra usage · resets 11:20am (America/Halifax)\n"
+  },
+  "durationMs": 4706,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T14:18:40.556Z",
+  "executionId": "audit_1777558715850_a1sg52",
+  "error": "Process exited with code 1"
+}

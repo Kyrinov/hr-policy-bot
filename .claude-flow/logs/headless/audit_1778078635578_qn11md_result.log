@@ -1,0 +1,16 @@
+[2026-05-06T14:44:07.124Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "I notice the codebase context provided consists almost entirely of **Playwright driver library files** (third-party npm package), not your actual HR policy bot project source code.\n\nThe files shown are from `.venv/lib/python3.10/site-packages/playwright/` — these are dependencies, not your code to review.\n\nBased on your `git status`, the actual project files that should be reviewed are:\n- `src/agents/orchestrator.py`\n- `src/agents/specialist.py`\n- `src/config.py`\n- `src/data/db.py`\n- `src/fetch/engine.py`\n- `src/models/schemas.py`\n- `src/llm/client.py`\n- `src/main.py`\n- `config.yaml`\n- `requirements.txt`\n\n**Please provide the actual source code** from these files, and I'll perform a comprehensive security audit for:\n- Hardcoded secrets (API keys, passwords)\n- SQL injection risks\n- XSS vulnerabilities\n- Insecure dependencies\n- Authentication/authorization issues\n- Command injection risks\n- Unsafe deserialization\n- Path traversal vulnerabilities\n- Configuration exposure\n\nOnce you share the actual project files, I'll generate the security report in the JSON format you specified.\n",
+  "parsedOutput": {
+    "parseError": true,
+    "rawOutput": "I notice the codebase context provided consists almost entirely of **Playwright driver library files** (third-party npm package), not your actual HR policy bot project source code.\n\nThe files shown are from `.venv/lib/python3.10/site-packages/playwright/` — these are dependencies, not your code to review.\n\nBased on your `git status`, the actual project files that should be reviewed are:\n- `src/agents/orchestrator.py`\n- `src/agents/specialist.py`\n- `src/config.py`\n- `src/data/db.py`\n- `src/fetch/engine.py`\n- `src/models/schemas.py`\n- `src/llm/client.py`\n- `src/main.py`\n- `config.yaml`\n- `requirements.txt`\n\n**Please provide the actual source code** from these files, and I'll perform a comprehensive security audit for:\n- Hardcoded secrets (API keys, passwords)\n- SQL injection risks\n- XSS vulnerabilities\n- Insecure dependencies\n- Authentication/authorization issues\n- Command injection risks\n- Unsafe deserialization\n- Path traversal vulnerabilities\n- Configuration exposure\n\nOnce you share the actual project files, I'll generate the security report in the JSON format you specified.\n"
+  },
+  "durationMs": 11546,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-06T14:44:07.124Z",
+  "executionId": "audit_1778078635578_qn11md"
+}

@@ -1,0 +1,133 @@
+[2026-04-30T14:29:24.642Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Now I have a comprehensive view of the codebase. Let me generate the security report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"critical\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"Unrestricted CORS configuration with wildcard origins and credentials enabled (allow_origins=['*'] with allow_credentials=True). This enables CSRF attacks and allows any website to access the API.\",\n      \"type\": \"CORS Misconfiguration\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 100,\n      \"description\": \"No input validation on user-supplied query_text parameter. Query is directly passed to LLM without sanitization, potentially allowing prompt injection attacks.\",\n      \"type\": \"Prompt Injection / Input Validation\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/data/db.py\",\n      \"line\": 316,\n      \"description\": \"SQL query uses string concatenation for TTL hours in WHERE clause: \\\"datetime(fetched_at, '+' || ttl_hours || ' hours')\\\". While ttl_hours comes from the schema, this pattern could be vulnerable if ttl_hours becomes user-controlled in future.\",\n      \"type\": \"Potential SQL Injection\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 134,\n      \"description\": \"No authentication or authorization on /queries/{query_id} endpoint. Any user can query any query_id (which are UUIDs but enumerable). Sensitive policy queries and responses are exposed.\",\n      \"type\": \"Missing Authentication\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 176,\n      \"description\": \"No authentication on /feedback/export endpoint. All user feedback (which may contain sensitive comments about HR policy) can be downloaded by anyone.\",\n      \"type\": \"Information Disclosure\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 130,\n      \"description\": \"Error messages expose raw exception details to clients (raise HTTPException(status_code=500, detail=str(e))). This leaks internal system information and stack traces.\",\n      \"type\": \"Information Disclosure\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 101,\n      \"description\": \"LLM response parsing errors are exposed in API responses with raw error details ({'_raw': raw, '_parse_error': str(e)}). This could leak sensitive LLM responses.\",\n      \"type\": \"Information Disclosure\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 96,\n      \"description\": \"No rate limiting on WebSocket endpoint. Clients can send unlimited queries, causing DoS via resource exhaustion.\",\n      \"type\": \"Denial of Service\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 121,\n      \"description\": \"No request size limits enforced. Large query lists or feedback exports could cause memory exhaustion.\",\n      \"type\": \"Denial of Service\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/main.py\",\n      \"line\": 70,\n      \"description\": \"API key check only logs warning; system continues with degraded capability instead of failing hard. This masks misconfiguration.\",\n      \"type\": \"Configuration Management\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 19,\n      \"description\": \"Server binds to 0.0.0.0 (all interfaces) by default. Should be restricted to localhost or specific IPs in development.\",\n      \"type\": \"Network Configuration\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 122,\n      \"description\": \"Broad exception handling (except Exception) could mask programming errors and security issues. Errors are broadcast to all clients which could leak information.\",\n      \"type\": \"Error Handling\"\n    }\n  ],\n  \"riskScore\": 78,\n  \"recommendations\": [\n    \"🔴 CRITICAL: Fix CORS configuration - change `allow_origins=['*']` to explicit list of trusted origins. Remove `allow_credentials=True` if using wildcard origins.\",\n    \"🔴 CRITICAL: Add authentication layer - implement JWT or API key authentication for all endpoints. Require authorization tokens for /queries, /feedback endpoints.\",\n    \"🔴 CRITICAL: Add input validation - sanitize/validate all user inputs (query_text, feedback). Use Pydantic models with constraints. Validate query_id format (UUID).\",\n    \"🟠 HIGH: Implement rate limiting - add rate limit middleware on API endpoints and WebSocket. Use slowapi or similar library. Limit queries per IP/session.\",\n    \"🟠 HIGH: Hide error details - return generic error messages to clients. Log full errors server-side. Use custom exception handlers.\",\n    \"🟠 HIGH: Audit SQL patterns - review all database queries for injection risks. Consider using SQLAlchemy ORM. Test with SQL injection payloads.\",\n    \"🟡 MEDIUM: Add HTTPS enforcement - require TLS in production. Use HSTS headers. Disable HTTP or redirect to HTTPS.\",\n    \"🟡 MEDIUM: Implement request size limits - set max_size on FastAPI to prevent memory exhaustion.\",\n    \"🟡 MEDIUM: Add CSRF protection - implement CSRF tokens if allowing credentials. Use SameSite cookie attributes.\",\n    \"🟡 MEDIUM: Secure LLM responses - catch and log LLM errors without exposing raw responses. Validate JSON output before returning.\",\n    \"🟢 LOW: Add security headers - implement CSP, X-Frame-Options, X-Content-Type-Options headers.\",\n    \"🟢 LOW: Restrict server binding - use SERVER_HOST env var to bind to localhost in dev, specific IP in production.\",\n    \"🟢 LOW: Add request ID tracking - implement correlation IDs for audit logging without exposing request details.\",\n    \"🟢 LOW: Review dependencies - run `pip-audit` and `safety check` for known vulnerabilities in dependencies.\"\n  ],\n  \"summary\": {\n    \"total_vulnerabilities\": 12,\n    \"critical\": 3,\n    \"high\": 4,\n    \"medium\": 4,\n    \"low\": 1,\n    \"owasp_top_10_hits\": [\n      \"A01:2021 - Broken Access Control (no auth on all endpoints)\",\n      \"A02:2021 - Cryptographic Failures (no HTTPS, secrets in logs)\",\n      \"A03:2021 - Injection (prompt injection, potential SQL injection)\",\n      \"A05:2021 - Broken Access Control (CORS misconfiguration)\",\n      \"A07:2021 - Identification and Authentication Failures\",\n      \"A09:2021 - Logging and Monitoring Failures (error details exposed)\"\n    ],\n    \"data_at_risk\": \"HR policy queries, user feedback, system configuration details, LLM responses\"\n  }\n}\n```\n\n## Key Findings\n\n**Critical Issues (Fix Immediately):**\n\n1. **Unrestricted CORS** (line 36, src/main.py) - Any website can call your API\n2. **No Authentication** (all endpoints) - Anyone can access all queries and feedback  \n3. **No Input Validation** (line 100, src/api/websocket.py) - Vulnerable to prompt injection\n\n**High Priority:**\n\n4. **Exposed Error Details** - Exceptions leak system information\n5. **No Rate Limiting** - DDoS vulnerability\n6. **Unprotected Sensitive Data** - Query history and feedback publicly accessible\n\n**Timeline:** Address critical issues before any production deployment. The system currently exposes all HR policy queries and user feedback to the internet.\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "critical",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "Unrestricted CORS configuration with wildcard origins and credentials enabled (allow_origins=['*'] with allow_credentials=True). This enables CSRF attacks and allows any website to access the API.",
+        "type": "CORS Misconfiguration"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/websocket.py",
+        "line": 100,
+        "description": "No input validation on user-supplied query_text parameter. Query is directly passed to LLM without sanitization, potentially allowing prompt injection attacks.",
+        "type": "Prompt Injection / Input Validation"
+      },
+      {
+        "severity": "high",
+        "file": "src/data/db.py",
+        "line": 316,
+        "description": "SQL query uses string concatenation for TTL hours in WHERE clause: \"datetime(fetched_at, '+' || ttl_hours || ' hours')\". While ttl_hours comes from the schema, this pattern could be vulnerable if ttl_hours becomes user-controlled in future.",
+        "type": "Potential SQL Injection"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 134,
+        "description": "No authentication or authorization on /queries/{query_id} endpoint. Any user can query any query_id (which are UUIDs but enumerable). Sensitive policy queries and responses are exposed.",
+        "type": "Missing Authentication"
+      },
+      {
+        "severity": "high",
+        "file": "src/api/routes.py",
+        "line": 176,
+        "description": "No authentication on /feedback/export endpoint. All user feedback (which may contain sensitive comments about HR policy) can be downloaded by anyone.",
+        "type": "Information Disclosure"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 130,
+        "description": "Error messages expose raw exception details to clients (raise HTTPException(status_code=500, detail=str(e))). This leaks internal system information and stack traces.",
+        "type": "Information Disclosure"
+      },
+      {
+        "severity": "medium",
+        "file": "src/llm/client.py",
+        "line": 101,
+        "description": "LLM response parsing errors are exposed in API responses with raw error details ({'_raw': raw, '_parse_error': str(e)}). This could leak sensitive LLM responses.",
+        "type": "Information Disclosure"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 96,
+        "description": "No rate limiting on WebSocket endpoint. Clients can send unlimited queries, causing DoS via resource exhaustion.",
+        "type": "Denial of Service"
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 121,
+        "description": "No request size limits enforced. Large query lists or feedback exports could cause memory exhaustion.",
+        "type": "Denial of Service"
+      },
+      {
+        "severity": "medium",
+        "file": "src/main.py",
+        "line": 70,
+        "description": "API key check only logs warning; system continues with degraded capability instead of failing hard. This masks misconfiguration.",
+        "type": "Configuration Management"
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 19,
+        "description": "Server binds to 0.0.0.0 (all interfaces) by default. Should be restricted to localhost or specific IPs in development.",
+        "type": "Network Configuration"
+      },
+      {
+        "severity": "low",
+        "file": "src/api/websocket.py",
+        "line": 122,
+        "description": "Broad exception handling (except Exception) could mask programming errors and security issues. Errors are broadcast to all clients which could leak information.",
+        "type": "Error Handling"
+      }
+    ],
+    "riskScore": 78,
+    "recommendations": [
+      "🔴 CRITICAL: Fix CORS configuration - change `allow_origins=['*']` to explicit list of trusted origins. Remove `allow_credentials=True` if using wildcard origins.",
+      "🔴 CRITICAL: Add authentication layer - implement JWT or API key authentication for all endpoints. Require authorization tokens for /queries, /feedback endpoints.",
+      "🔴 CRITICAL: Add input validation - sanitize/validate all user inputs (query_text, feedback). Use Pydantic models with constraints. Validate query_id format (UUID).",
+      "🟠 HIGH: Implement rate limiting - add rate limit middleware on API endpoints and WebSocket. Use slowapi or similar library. Limit queries per IP/session.",
+      "🟠 HIGH: Hide error details - return generic error messages to clients. Log full errors server-side. Use custom exception handlers.",
+      "🟠 HIGH: Audit SQL patterns - review all database queries for injection risks. Consider using SQLAlchemy ORM. Test with SQL injection payloads.",
+      "🟡 MEDIUM: Add HTTPS enforcement - require TLS in production. Use HSTS headers. Disable HTTP or redirect to HTTPS.",
+      "🟡 MEDIUM: Implement request size limits - set max_size on FastAPI to prevent memory exhaustion.",
+      "🟡 MEDIUM: Add CSRF protection - implement CSRF tokens if allowing credentials. Use SameSite cookie attributes.",
+      "🟡 MEDIUM: Secure LLM responses - catch and log LLM errors without exposing raw responses. Validate JSON output before returning.",
+      "🟢 LOW: Add security headers - implement CSP, X-Frame-Options, X-Content-Type-Options headers.",
+      "🟢 LOW: Restrict server binding - use SERVER_HOST env var to bind to localhost in dev, specific IP in production.",
+      "🟢 LOW: Add request ID tracking - implement correlation IDs for audit logging without exposing request details.",
+      "🟢 LOW: Review dependencies - run `pip-audit` and `safety check` for known vulnerabilities in dependencies."
+    ],
+    "summary": {
+      "total_vulnerabilities": 12,
+      "critical": 3,
+      "high": 4,
+      "medium": 4,
+      "low": 1,
+      "owasp_top_10_hits": [
+        "A01:2021 - Broken Access Control (no auth on all endpoints)",
+        "A02:2021 - Cryptographic Failures (no HTTPS, secrets in logs)",
+        "A03:2021 - Injection (prompt injection, potential SQL injection)",
+        "A05:2021 - Broken Access Control (CORS misconfiguration)",
+        "A07:2021 - Identification and Authentication Failures",
+        "A09:2021 - Logging and Monitoring Failures (error details exposed)"
+      ],
+      "data_at_risk": "HR policy queries, user feedback, system configuration details, LLM responses"
+    }
+  },
+  "durationMs": 44084,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-04-30T14:29:24.642Z",
+  "executionId": "audit_1777559320558_597crd"
+}

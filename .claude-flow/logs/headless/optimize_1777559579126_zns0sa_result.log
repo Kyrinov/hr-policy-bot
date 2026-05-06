@@ -1,0 +1,115 @@
+[2026-04-30T14:34:58.202Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Here's the full performance analysis of the HR Policy Bot codebase. I found **12 significant issues** across the backend and frontend:\n\n---\n\n## Performance Analysis — HR Policy Bot\n\n### Critical Issues\n\n#### 1. N+1 Database Connections (`src/api/routes.py:121-187`)\nEvery API endpoint creates a fresh `DatabaseManager()` instance instead of reusing one. Under concurrent load, SQLite's write lock serializes all requests.\n\n```python\n# BEFORE — new connection per request\nasync def list_queries(...):\n    db = DatabaseManager()  # new connection every time\n    ...\n\n# FIX — singleton at module level\n_db: DatabaseManager | None = None\n\ndef get_db() -> DatabaseManager:\n    global _db\n    if _db is None:\n        _db = DatabaseManager()\n    return _db\n```\n\n#### 2. Unclosed DB Connections / Memory Leak (`src/data/db.py`)\nEvery method opens `aiosqlite.connect()` as a one-shot call. Under high concurrency this can exhaust file descriptors. Add a persistent connection with explicit close in the FastAPI shutdown hook.\n\n---\n\n### High Severity\n\n#### 3. Event Listener Accumulation (`static/js/app.js:391-417`)\n`showFeedbackControls()` wires new click listeners on every query response without removing old ones. After 10 queries, 10 copies of each listener fire per click.\n\n```javascript\n// FIX — clone node to strip old listeners before re-wiring\nconst oldBtn = document.getElementById('submitFeedback');\nconst newBtn = oldBtn.cloneNode(true);\noldBtn.replaceWith(newBtn);\nnewBtn.addEventListener('click', submitFeedback);\n```\n\n#### 4. JSON Parsed Per Row in Bulk Queries (`src/data/db.py:136-146`)\n`list_queries()` calls `json.loads()` for every row in a loop — O(n) repeated parsing. Pre-parse all rows in a batch comprehension, or normalize `agents_invoked` into a join table.\n\n---\n\n### Medium Severity\n\n#### 5. Unbounded Domain Semaphore Dict (`src/fetch/engine.py:42-47`)\n`_domain_semaphores` uses `defaultdict` and grows indefinitely. Use `cachetools.TTLCache(maxsize=500, ttl=3600)` to evict stale entries.\n\n#### 6. Unclosed `httpx.AsyncClient` on SIGKILL (`src/fetch/engine.py:49-59`)\nThe HTTP client leaks if the shutdown hook doesn't fire. Register an `atexit` handler as a safety net alongside the existing `shutdown_event`.\n\n#### 7. DOM Query Repeated Per Click (`static/js/app.js:391-401`)\nFeedback button handlers re-query all buttons on every click. Cache references in a `const buttons = Array.from(...)` and use event delegation on the parent instead.\n\n#### 8. WebSocket Reconnection Thundering Herd (`static/js/app.js:90-92`)\nFixed 3-second reconnect fires for all clients simultaneously on server restart. Add exponential backoff with jitter:\n\n```javascript\nlet delay = 1000;\nws.onclose = () => {\n    const jitter = Math.random() * 0.2 * delay;\n    setTimeout(connectWebSocket, delay + jitter);\n    delay = Math.min(delay * 1.5 + Math.random() * 1000, 30000);\n};\nws.onopen = () => { delay = 1000; };  // reset on success\n```\n\n#### 9. O(n²) Citation String Wrapping (`static/js/app.js:482-493`)\n`wrapWithCitations()` compiles a new `RegExp` and runs `replace()` over the full response text for each citation. With 8 agents × 4 instruments = 32 passes over a 10KB response. Pre-build a term→marker map and do a single-pass token scan instead.\n\n#### 10. Duplicate Specialist Metadata (`specialist.py:23-56` vs `api/routes.py:18-59`)\n`_SPECIALIST_METADATA` and `_AGENT_CONFIG` contain the same data. Extract to a shared module and import from one source of truth.\n\n---\n\n### Summary Table\n\n| # | Issue | Severity | File | Lines |\n|---|-------|----------|------|-------|\n| 1 | N+1 DB connections | Critical | routes.py | 121-187 |\n| 2 | Unclosed DB connections | Critical | db.py | all methods |\n| 3 | JS event listener leak | High | app.js | 391-417 |\n| 4 | JSON parsed per row in loop | High | db.py | 136-146 |\n| 5 | DB init race condition | High | main.py | 58-66 |\n| 6 | Unbounded domain semaphore dict | Medium | engine.py | 42-47 |\n| 7 | Unclosed HTTP client on SIGKILL | Medium | engine.py | 49-164 |\n| 8 | DOM re-query per click | Medium | app.js | 391-401 |\n| 9 | WS reconnection thundering herd | Medium | app.js | 90-92 |\n| 10 | O(n²) citation string wrapping | Medium | app.js | 482-493 |\n| 11 | Duplicate specialist metadata | Medium | specialist.py/routes.py | 23-59 |\n| 12 | Citation dedup inefficiency | Low | orchestrator.py | 203-223 |\n\nThe two most impactful fixes are **#1** (DB connection reuse) and **#3** (JS listener cleanup) — both are simple changes with immediate, measurable effect. Want me to implement any of these?\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis — HR Policy Bot",
+        "content": "\n",
+        "level": 2
+      },
+      {
+        "title": "Critical Issues",
+        "content": "\n",
+        "level": 3
+      },
+      {
+        "title": "1. N+1 Database Connections (`src/api/routes.py:121-187`)",
+        "content": "Every API endpoint creates a fresh `DatabaseManager()` instance instead of reusing one. Under concurrent load, SQLite's write lock serializes all requests.\n\n```python\n",
+        "level": 4
+      },
+      {
+        "title": "BEFORE — new connection per request",
+        "content": "async def list_queries(...):\n    db = DatabaseManager()  # new connection every time\n    ...\n\n",
+        "level": 1
+      },
+      {
+        "title": "FIX — singleton at module level",
+        "content": "_db: DatabaseManager | None = None\n\ndef get_db() -> DatabaseManager:\n    global _db\n    if _db is None:\n        _db = DatabaseManager()\n    return _db\n```\n\n",
+        "level": 1
+      },
+      {
+        "title": "2. Unclosed DB Connections / Memory Leak (`src/data/db.py`)",
+        "content": "Every method opens `aiosqlite.connect()` as a one-shot call. Under high concurrency this can exhaust file descriptors. Add a persistent connection with explicit close in the FastAPI shutdown hook.\n\n---\n\n",
+        "level": 4
+      },
+      {
+        "title": "High Severity",
+        "content": "\n",
+        "level": 3
+      },
+      {
+        "title": "3. Event Listener Accumulation (`static/js/app.js:391-417`)",
+        "content": "`showFeedbackControls()` wires new click listeners on every query response without removing old ones. After 10 queries, 10 copies of each listener fire per click.\n\n```javascript\n// FIX — clone node to strip old listeners before re-wiring\nconst oldBtn = document.getElementById('submitFeedback');\nconst newBtn = oldBtn.cloneNode(true);\noldBtn.replaceWith(newBtn);\nnewBtn.addEventListener('click', submitFeedback);\n```\n\n",
+        "level": 4
+      },
+      {
+        "title": "4. JSON Parsed Per Row in Bulk Queries (`src/data/db.py:136-146`)",
+        "content": "`list_queries()` calls `json.loads()` for every row in a loop — O(n) repeated parsing. Pre-parse all rows in a batch comprehension, or normalize `agents_invoked` into a join table.\n\n---\n\n",
+        "level": 4
+      },
+      {
+        "title": "Medium Severity",
+        "content": "\n",
+        "level": 3
+      },
+      {
+        "title": "5. Unbounded Domain Semaphore Dict (`src/fetch/engine.py:42-47`)",
+        "content": "`_domain_semaphores` uses `defaultdict` and grows indefinitely. Use `cachetools.TTLCache(maxsize=500, ttl=3600)` to evict stale entries.\n\n",
+        "level": 4
+      },
+      {
+        "title": "6. Unclosed `httpx.AsyncClient` on SIGKILL (`src/fetch/engine.py:49-59`)",
+        "content": "The HTTP client leaks if the shutdown hook doesn't fire. Register an `atexit` handler as a safety net alongside the existing `shutdown_event`.\n\n",
+        "level": 4
+      },
+      {
+        "title": "7. DOM Query Repeated Per Click (`static/js/app.js:391-401`)",
+        "content": "Feedback button handlers re-query all buttons on every click. Cache references in a `const buttons = Array.from(...)` and use event delegation on the parent instead.\n\n",
+        "level": 4
+      },
+      {
+        "title": "8. WebSocket Reconnection Thundering Herd (`static/js/app.js:90-92`)",
+        "content": "Fixed 3-second reconnect fires for all clients simultaneously on server restart. Add exponential backoff with jitter:\n\n```javascript\nlet delay = 1000;\nws.onclose = () => {\n    const jitter = Math.random() * 0.2 * delay;\n    setTimeout(connectWebSocket, delay + jitter);\n    delay = Math.min(delay * 1.5 + Math.random() * 1000, 30000);\n};\nws.onopen = () => { delay = 1000; };  // reset on success\n```\n\n",
+        "level": 4
+      },
+      {
+        "title": "9. O(n²) Citation String Wrapping (`static/js/app.js:482-493`)",
+        "content": "`wrapWithCitations()` compiles a new `RegExp` and runs `replace()` over the full response text for each citation. With 8 agents × 4 instruments = 32 passes over a 10KB response. Pre-build a term→marker map and do a single-pass token scan instead.\n\n",
+        "level": 4
+      },
+      {
+        "title": "10. Duplicate Specialist Metadata (`specialist.py:23-56` vs `api/routes.py:18-59`)",
+        "content": "`_SPECIALIST_METADATA` and `_AGENT_CONFIG` contain the same data. Extract to a shared module and import from one source of truth.\n\n---\n\n",
+        "level": 4
+      },
+      {
+        "title": "Summary Table",
+        "content": "| # | Issue | Severity | File | Lines |\n|---|-------|----------|------|-------|\n| 1 | N+1 DB connections | Critical | routes.py | 121-187 |\n| 2 | Unclosed DB connections | Critical | db.py | all methods |\n| 3 | JS event listener leak | High | app.js | 391-417 |\n| 4 | JSON parsed per row in loop | High | db.py | 136-146 |\n| 5 | DB init race condition | High | main.py | 58-66 |\n| 6 | Unbounded domain semaphore dict | Medium | engine.py | 42-47 |\n| 7 | Unclosed HTTP client on SIGKILL | Medium | engine.py | 49-164 |\n| 8 | DOM re-query per click | Medium | app.js | 391-401 |\n| 9 | WS reconnection thundering herd | Medium | app.js | 90-92 |\n| 10 | O(n²) citation string wrapping | Medium | app.js | 482-493 |\n| 11 | Duplicate specialist metadata | Medium | specialist.py/routes.py | 23-59 |\n| 12 | Citation dedup inefficiency | Low | orchestrator.py | 203-223 |\n\nThe two most impactful fixes are **#1** (DB connection reuse) and **#3** (JS listener cleanup) — both are simple changes with immediate, measurable effect. Want me to implement any of these?",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "# BEFORE — new connection per request\nasync def list_queries(...):\n    db = DatabaseManager()  # new connection every time\n    ...\n\n# FIX — singleton at module level\n_db: DatabaseManager | None = None\n\ndef get_db() -> DatabaseManager:\n    global _db\n    if _db is None:\n        _db = DatabaseManager()\n    return _db"
+      },
+      {
+        "language": "javascript",
+        "code": "// FIX — clone node to strip old listeners before re-wiring\nconst oldBtn = document.getElementById('submitFeedback');\nconst newBtn = oldBtn.cloneNode(true);\noldBtn.replaceWith(newBtn);\nnewBtn.addEventListener('click', submitFeedback);"
+      },
+      {
+        "language": "javascript",
+        "code": "let delay = 1000;\nws.onclose = () => {\n    const jitter = Math.random() * 0.2 * delay;\n    setTimeout(connectWebSocket, delay + jitter);\n    delay = Math.min(delay * 1.5 + Math.random() * 1000, 30000);\n};\nws.onopen = () => { delay = 1000; };  // reset on success"
+      }
+    ]
+  },
+  "durationMs": 119076,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-04-30T14:34:58.202Z",
+  "executionId": "optimize_1777559579126_zns0sa"
+}

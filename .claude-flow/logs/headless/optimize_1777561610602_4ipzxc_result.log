@@ -1,0 +1,137 @@
+[2026-04-30T15:08:38.730Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Here is the full performance analysis for this codebase:\n\n---\n\n## Performance Analysis: HR Policy Bot\n\n**13 issues identified** across database, networking, LLM calls, and frontend layers.\n\n---\n\n### CRITICAL\n\n**1. New DB connection per operation** — `src/data/db.py`\n\nEvery method calls `aiosqlite.connect()` fresh. No pooling.\n\n```python\n# Current (every call opens a new connection)\nasync def save_query(self, record):\n    async with aiosqlite.connect(self._db_path) as db:\n        await db.execute(...)\n\n# Fix: persistent connection as a class attribute\nclass DatabaseManager:\n    async def _conn(self):\n        if not hasattr(self, \"_db\"):\n            self._db = await aiosqlite.connect(self._db_path)\n        return self._db\n```\n\nOr promote `DatabaseManager` to a true singleton and open the connection once in `startup`.\n\n---\n\n**2. Policy registry loaded from disk per agent** — `src/agents/specialist.py:72`\n\nEight specialist agents each read `policy_registry.json` synchronously at init time.\n\n```python\n# Current — 8 blocking reads\ndef _load_instruments(self, agent_id):\n    with open(_REGISTRY_PATH) as f:\n        registry = json.load(f)\n\n# Fix — module-level cache\n_REGISTRY_CACHE: list[dict] | None = None\n\ndef _load_instruments(self, agent_id):\n    global _REGISTRY_CACHE\n    if _REGISTRY_CACHE is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY_CACHE = json.load(f)\n    return [r for r in _REGISTRY_CACHE if agent_id in r[\"agent_ids\"]]\n```\n\n---\n\n**3. No LLM routing cache** — `src/agents/orchestrator.py`\n\n`_route()` calls Gemini on every query. Identical or near-identical questions re-pay the full 2–5 s routing round-trip.\n\n```python\nimport hashlib, functools\n\n@functools.lru_cache(maxsize=256)\ndef _routing_cache_key(query_text: str) -> str:\n    return hashlib.sha256(query_text.strip().lower().encode()).hexdigest()\n\n_route_cache: dict[str, dict] = {}\n\nasync def _route(self, query_text: str) -> dict:\n    key = _routing_cache_key(query_text)\n    if key in _route_cache:\n        return _route_cache[key]\n    result = await self._llm_client.chat(...)\n    _route_cache[key] = result\n    return result\n```\n\n---\n\n**4. WebSocket memory leak** — `src/api/websocket.py`\n\nIf an exception fires before `disconnect()` is called, the entry stays in `_connections` forever.\n\n```python\n# Fix: wrap handler in try/finally\nasync def handle_query(self, websocket, query_id, query_text):\n    await self.connect(websocket, query_id)\n    try:\n        await self._process(websocket, query_id, query_text)\n    finally:\n        await self.disconnect(query_id)   # always runs\n```\n\n---\n\n### MEDIUM\n\n**5. N+1 pattern: list_queries returns bare records** — `src/api/routes.py:120`\n\n`GET /queries` returns 50 records. Any client needing full details makes 50 more individual calls.\n\n```python\n# Fix: add a joined query in db.py that returns responses inline\nasync def list_queries_with_responses(self, limit=50) -> list[dict]:\n    async with aiosqlite.connect(self._db_path) as db:\n        async with db.execute(\"\"\"\n            SELECT q.*, r.content FROM queries q\n            LEFT JOIN responses r ON r.query_id = q.id\n            LIMIT ?\n        \"\"\", (limit,)) as cur:\n            return await cur.fetchall()\n```\n\n---\n\n**6. No URL deduplication in `fetch_batch()`** — `src/fetch/engine.py`\n\nTwo specialists requesting the same policy URL both fire a real HTTP request.\n\n```python\nasync def fetch_batch(self, urls: list[str]) -> dict[str, str]:\n    unique = list(dict.fromkeys(urls))          # deduplicate, preserve order\n    tasks = [fetch_one(u) for u in unique]\n    results = dict(zip(unique, await asyncio.gather(*tasks, ...)))\n    return {u: results[u] for u in urls}        # re-expand for callers\n```\n\n---\n\n**7. Browser context created per fetch** — `src/fetch/browser.py:69`\n\nBrowser is a singleton (good) but a new `context` + `page` is spawned for every URL.\n\n```python\n# Fix: maintain a small pool of idle pages\n_page_pool: asyncio.Queue  # size 3-5, pre-allocated at startup\n\nasync def fetch(self, url):\n    page = await _page_pool.get()\n    try:\n        await page.goto(url, ...)\n        return await page.content()\n    finally:\n        await _page_pool.put(page)   # return to pool\n```\n\n---\n\n**8. Health check leaks a `DatabaseManager`** — `src/main.py:100`\n\n```python\n# Current — no cleanup\ndb = DatabaseManager()\nhealth[\"database\"] = \"ok\"\n\n# Fix\ntry:\n    db = DatabaseManager()\n    await db.close()      # or use async with if you add __aenter__\n    health[\"database\"] = \"ok\"\nexcept Exception as e:\n    health[\"database\"] = f\"error: {e}\"\n```\n\n---\n\n**9. No cache hit/miss counters** — `src/fetch/engine.py`\n\nCache hits are only logged at DEBUG level; nothing is tracked.\n\n```python\nfrom dataclasses import dataclass, field\n\n@dataclass\nclass FetchMetrics:\n    hits: int = 0\n    misses: int = 0\n    errors: int = 0\n\n# Increment in _do_fetch:\nif cached:\n    self.metrics.hits += 1\nelse:\n    self.metrics.misses += 1\n```\n\nExpose via `GET /health` so you can tune TTL.\n\n---\n\n**10. Nested DOM queries in feedback handler** — `static/js/app.js`\n\n```javascript\n// Current — inner querySelectorAll inside forEach\ndocument.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n    btn.addEventListener('click', () => {\n        document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(b => {\n            b.classList.remove('active');\n        });\n    });\n});\n\n// Fix — cache the NodeList, use event delegation\nconst container = document.querySelector('.feedback-buttons');\ncontainer?.addEventListener('click', e => {\n    const btn = e.target.closest('.btn-feedback');\n    if (!btn) return;\n    container.querySelectorAll('.btn-feedback').forEach(b => b.classList.remove('active'));\n    btn.classList.add('active');\n});\n```\n\n---\n\n### LOW\n\n**11. HTML re-parsed on every `extractor.extract()` call** — `src/fetch/extractors.py`\n\nBeautifulSoup parse is O(n) in HTML size. If the same URL hits the extractor twice (retry, two callers), it re-parses.\n\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef _parse(html: str) -> BeautifulSoup:\n    return BeautifulSoup(html, \"html.parser\")\n```\n\nCache key is the raw HTML string so stale content is never returned after a fetch refresh.\n\n---\n\n### Summary Table\n\n| # | Issue | File | Severity |\n|---|-------|------|----------|\n| 1 | New DB connection per op | `db.py` | Critical |\n| 2 | Policy registry loaded per agent | `specialist.py` | Critical |\n| 3 | No LLM routing cache | `orchestrator.py` | Critical |\n| 4 | WebSocket orphan on exception | `websocket.py` | Critical |\n| 5 | N+1 on list_queries | `routes.py` | Medium |\n| 6 | No URL dedup in fetch_batch | `engine.py` | Medium |\n| 7 | Browser context per fetch | `browser.py` | Medium |\n| 8 | DB leak in health check | `main.py` | Medium |\n| 9 | No cache metrics | `engine.py` | Medium |\n| 10 | Nested DOM selectors | `app.js` | Medium |\n| 11 | HTML re-parsed per call | `extractors.py` | Low |\n\nThe highest-leverage fixes are **#1** (DB pooling), **#3** (LLM routing cache), and **#4** (WebSocket cleanup) — those three address the latency, API cost, and slow memory leak problems simultaneously.\n",
+  "parsedOutput": {
+    "sections": [
+      {
+        "title": "Performance Analysis: HR Policy Bot",
+        "content": "\n**13 issues identified** across database, networking, LLM calls, and frontend layers.\n\n---\n\n",
+        "level": 2
+      },
+      {
+        "title": "CRITICAL",
+        "content": "\n**1. New DB connection per operation** — `src/data/db.py`\n\nEvery method calls `aiosqlite.connect()` fresh. No pooling.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "Current (every call opens a new connection)",
+        "content": "async def save_query(self, record):\n    async with aiosqlite.connect(self._db_path) as db:\n        await db.execute(...)\n\n",
+        "level": 1
+      },
+      {
+        "title": "Fix: persistent connection as a class attribute",
+        "content": "class DatabaseManager:\n    async def _conn(self):\n        if not hasattr(self, \"_db\"):\n            self._db = await aiosqlite.connect(self._db_path)\n        return self._db\n```\n\nOr promote `DatabaseManager` to a true singleton and open the connection once in `startup`.\n\n---\n\n**2. Policy registry loaded from disk per agent** — `src/agents/specialist.py:72`\n\nEight specialist agents each read `policy_registry.json` synchronously at init time.\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "Current — 8 blocking reads",
+        "content": "def _load_instruments(self, agent_id):\n    with open(_REGISTRY_PATH) as f:\n        registry = json.load(f)\n\n",
+        "level": 1
+      },
+      {
+        "title": "Fix — module-level cache",
+        "content": "_REGISTRY_CACHE: list[dict] | None = None\n\ndef _load_instruments(self, agent_id):\n    global _REGISTRY_CACHE\n    if _REGISTRY_CACHE is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY_CACHE = json.load(f)\n    return [r for r in _REGISTRY_CACHE if agent_id in r[\"agent_ids\"]]\n```\n\n---\n\n**3. No LLM routing cache** — `src/agents/orchestrator.py`\n\n`_route()` calls Gemini on every query. Identical or near-identical questions re-pay the full 2–5 s routing round-trip.\n\n```python\nimport hashlib, functools\n\n@functools.lru_cache(maxsize=256)\ndef _routing_cache_key(query_text: str) -> str:\n    return hashlib.sha256(query_text.strip().lower().encode()).hexdigest()\n\n_route_cache: dict[str, dict] = {}\n\nasync def _route(self, query_text: str) -> dict:\n    key = _routing_cache_key(query_text)\n    if key in _route_cache:\n        return _route_cache[key]\n    result = await self._llm_client.chat(...)\n    _route_cache[key] = result\n    return result\n```\n\n---\n\n**4. WebSocket memory leak** — `src/api/websocket.py`\n\nIf an exception fires before `disconnect()` is called, the entry stays in `_connections` forever.\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "Fix: wrap handler in try/finally",
+        "content": "async def handle_query(self, websocket, query_id, query_text):\n    await self.connect(websocket, query_id)\n    try:\n        await self._process(websocket, query_id, query_text)\n    finally:\n        await self.disconnect(query_id)   # always runs\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "MEDIUM",
+        "content": "\n**5. N+1 pattern: list_queries returns bare records** — `src/api/routes.py:120`\n\n`GET /queries` returns 50 records. Any client needing full details makes 50 more individual calls.\n\n```python\n",
+        "level": 3
+      },
+      {
+        "title": "Fix: add a joined query in db.py that returns responses inline",
+        "content": "async def list_queries_with_responses(self, limit=50) -> list[dict]:\n    async with aiosqlite.connect(self._db_path) as db:\n        async with db.execute(\"\"\"\n            SELECT q.*, r.content FROM queries q\n            LEFT JOIN responses r ON r.query_id = q.id\n            LIMIT ?\n        \"\"\", (limit,)) as cur:\n            return await cur.fetchall()\n```\n\n---\n\n**6. No URL deduplication in `fetch_batch()`** — `src/fetch/engine.py`\n\nTwo specialists requesting the same policy URL both fire a real HTTP request.\n\n```python\nasync def fetch_batch(self, urls: list[str]) -> dict[str, str]:\n    unique = list(dict.fromkeys(urls))          # deduplicate, preserve order\n    tasks = [fetch_one(u) for u in unique]\n    results = dict(zip(unique, await asyncio.gather(*tasks, ...)))\n    return {u: results[u] for u in urls}        # re-expand for callers\n```\n\n---\n\n**7. Browser context created per fetch** — `src/fetch/browser.py:69`\n\nBrowser is a singleton (good) but a new `context` + `page` is spawned for every URL.\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "Fix: maintain a small pool of idle pages",
+        "content": "_page_pool: asyncio.Queue  # size 3-5, pre-allocated at startup\n\nasync def fetch(self, url):\n    page = await _page_pool.get()\n    try:\n        await page.goto(url, ...)\n        return await page.content()\n    finally:\n        await _page_pool.put(page)   # return to pool\n```\n\n---\n\n**8. Health check leaks a `DatabaseManager`** — `src/main.py:100`\n\n```python\n",
+        "level": 1
+      },
+      {
+        "title": "Current — no cleanup",
+        "content": "db = DatabaseManager()\nhealth[\"database\"] = \"ok\"\n\n",
+        "level": 1
+      },
+      {
+        "title": "Fix",
+        "content": "try:\n    db = DatabaseManager()\n    await db.close()      # or use async with if you add __aenter__\n    health[\"database\"] = \"ok\"\nexcept Exception as e:\n    health[\"database\"] = f\"error: {e}\"\n```\n\n---\n\n**9. No cache hit/miss counters** — `src/fetch/engine.py`\n\nCache hits are only logged at DEBUG level; nothing is tracked.\n\n```python\nfrom dataclasses import dataclass, field\n\n@dataclass\nclass FetchMetrics:\n    hits: int = 0\n    misses: int = 0\n    errors: int = 0\n\n",
+        "level": 1
+      },
+      {
+        "title": "Increment in _do_fetch:",
+        "content": "if cached:\n    self.metrics.hits += 1\nelse:\n    self.metrics.misses += 1\n```\n\nExpose via `GET /health` so you can tune TTL.\n\n---\n\n**10. Nested DOM queries in feedback handler** — `static/js/app.js`\n\n```javascript\n// Current — inner querySelectorAll inside forEach\ndocument.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n    btn.addEventListener('click', () => {\n        document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(b => {\n            b.classList.remove('active');\n        });\n    });\n});\n\n// Fix — cache the NodeList, use event delegation\nconst container = document.querySelector('.feedback-buttons');\ncontainer?.addEventListener('click', e => {\n    const btn = e.target.closest('.btn-feedback');\n    if (!btn) return;\n    container.querySelectorAll('.btn-feedback').forEach(b => b.classList.remove('active'));\n    btn.classList.add('active');\n});\n```\n\n---\n\n",
+        "level": 1
+      },
+      {
+        "title": "LOW",
+        "content": "\n**11. HTML re-parsed on every `extractor.extract()` call** — `src/fetch/extractors.py`\n\nBeautifulSoup parse is O(n) in HTML size. If the same URL hits the extractor twice (retry, two callers), it re-parses.\n\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef _parse(html: str) -> BeautifulSoup:\n    return BeautifulSoup(html, \"html.parser\")\n```\n\nCache key is the raw HTML string so stale content is never returned after a fetch refresh.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "Summary Table",
+        "content": "| # | Issue | File | Severity |\n|---|-------|------|----------|\n| 1 | New DB connection per op | `db.py` | Critical |\n| 2 | Policy registry loaded per agent | `specialist.py` | Critical |\n| 3 | No LLM routing cache | `orchestrator.py` | Critical |\n| 4 | WebSocket orphan on exception | `websocket.py` | Critical |\n| 5 | N+1 on list_queries | `routes.py` | Medium |\n| 6 | No URL dedup in fetch_batch | `engine.py` | Medium |\n| 7 | Browser context per fetch | `browser.py` | Medium |\n| 8 | DB leak in health check | `main.py` | Medium |\n| 9 | No cache metrics | `engine.py` | Medium |\n| 10 | Nested DOM selectors | `app.js` | Medium |\n| 11 | HTML re-parsed per call | `extractors.py` | Low |\n\nThe highest-leverage fixes are **#1** (DB pooling), **#3** (LLM routing cache), and **#4** (WebSocket cleanup) — those three address the latency, API cost, and slow memory leak problems simultaneously.",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "python",
+        "code": "# Current (every call opens a new connection)\nasync def save_query(self, record):\n    async with aiosqlite.connect(self._db_path) as db:\n        await db.execute(...)\n\n# Fix: persistent connection as a class attribute\nclass DatabaseManager:\n    async def _conn(self):\n        if not hasattr(self, \"_db\"):\n            self._db = await aiosqlite.connect(self._db_path)\n        return self._db"
+      },
+      {
+        "language": "python",
+        "code": "# Current — 8 blocking reads\ndef _load_instruments(self, agent_id):\n    with open(_REGISTRY_PATH) as f:\n        registry = json.load(f)\n\n# Fix — module-level cache\n_REGISTRY_CACHE: list[dict] | None = None\n\ndef _load_instruments(self, agent_id):\n    global _REGISTRY_CACHE\n    if _REGISTRY_CACHE is None:\n        with open(_REGISTRY_PATH) as f:\n            _REGISTRY_CACHE = json.load(f)\n    return [r for r in _REGISTRY_CACHE if agent_id in r[\"agent_ids\"]]"
+      },
+      {
+        "language": "python",
+        "code": "import hashlib, functools\n\n@functools.lru_cache(maxsize=256)\ndef _routing_cache_key(query_text: str) -> str:\n    return hashlib.sha256(query_text.strip().lower().encode()).hexdigest()\n\n_route_cache: dict[str, dict] = {}\n\nasync def _route(self, query_text: str) -> dict:\n    key = _routing_cache_key(query_text)\n    if key in _route_cache:\n        return _route_cache[key]\n    result = await self._llm_client.chat(...)\n    _route_cache[key] = result\n    return result"
+      },
+      {
+        "language": "python",
+        "code": "# Fix: wrap handler in try/finally\nasync def handle_query(self, websocket, query_id, query_text):\n    await self.connect(websocket, query_id)\n    try:\n        await self._process(websocket, query_id, query_text)\n    finally:\n        await self.disconnect(query_id)   # always runs"
+      },
+      {
+        "language": "python",
+        "code": "# Fix: add a joined query in db.py that returns responses inline\nasync def list_queries_with_responses(self, limit=50) -> list[dict]:\n    async with aiosqlite.connect(self._db_path) as db:\n        async with db.execute(\"\"\"\n            SELECT q.*, r.content FROM queries q\n            LEFT JOIN responses r ON r.query_id = q.id\n            LIMIT ?\n        \"\"\", (limit,)) as cur:\n            return await cur.fetchall()"
+      },
+      {
+        "language": "python",
+        "code": "async def fetch_batch(self, urls: list[str]) -> dict[str, str]:\n    unique = list(dict.fromkeys(urls))          # deduplicate, preserve order\n    tasks = [fetch_one(u) for u in unique]\n    results = dict(zip(unique, await asyncio.gather(*tasks, ...)))\n    return {u: results[u] for u in urls}        # re-expand for callers"
+      },
+      {
+        "language": "python",
+        "code": "# Fix: maintain a small pool of idle pages\n_page_pool: asyncio.Queue  # size 3-5, pre-allocated at startup\n\nasync def fetch(self, url):\n    page = await _page_pool.get()\n    try:\n        await page.goto(url, ...)\n        return await page.content()\n    finally:\n        await _page_pool.put(page)   # return to pool"
+      },
+      {
+        "language": "python",
+        "code": "# Current — no cleanup\ndb = DatabaseManager()\nhealth[\"database\"] = \"ok\"\n\n# Fix\ntry:\n    db = DatabaseManager()\n    await db.close()      # or use async with if you add __aenter__\n    health[\"database\"] = \"ok\"\nexcept Exception as e:\n    health[\"database\"] = f\"error: {e}\""
+      },
+      {
+        "language": "python",
+        "code": "from dataclasses import dataclass, field\n\n@dataclass\nclass FetchMetrics:\n    hits: int = 0\n    misses: int = 0\n    errors: int = 0\n\n# Increment in _do_fetch:\nif cached:\n    self.metrics.hits += 1\nelse:\n    self.metrics.misses += 1"
+      },
+      {
+        "language": "javascript",
+        "code": "// Current — inner querySelectorAll inside forEach\ndocument.querySelectorAll('.feedback-buttons .btn-feedback').forEach(btn => {\n    btn.addEventListener('click', () => {\n        document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(b => {\n            b.classList.remove('active');\n        });\n    });\n});\n\n// Fix — cache the NodeList, use event delegation\nconst container = document.querySelector('.feedback-buttons');\ncontainer?.addEventListener('click', e => {\n    const btn = e.target.closest('.btn-feedback');\n    if (!btn) return;\n    container.querySelectorAll('.btn-feedback').forEach(b => b.classList.remove('active'));\n    btn.classList.add('active');\n});"
+      },
+      {
+        "language": "python",
+        "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef _parse(html: str) -> BeautifulSoup:\n    return BeautifulSoup(html, \"html.parser\")"
+      }
+    ]
+  },
+  "durationMs": 108127,
+  "model": "sonnet",
+  "sandboxMode": "permissive",
+  "workerType": "optimize",
+  "timestamp": "2026-04-30T15:08:38.729Z",
+  "executionId": "optimize_1777561610602_4ipzxc"
+}

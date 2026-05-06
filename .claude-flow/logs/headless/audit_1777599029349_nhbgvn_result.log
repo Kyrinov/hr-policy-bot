@@ -1,0 +1,92 @@
+[2026-05-01T01:31:16.771Z] RESULT
+============================================================
+{
+  "success": true,
+  "output": "Based on my analysis of the HR Policy Bot codebase, here is the comprehensive security report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"Overly permissive CORS configuration: allow_origins=['*'] combined with allow_credentials=True creates a CORS vulnerability. Any website can make authenticated requests to this API. This is especially critical for a government HR policy system that may handle sensitive data.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \"src/llm/client.py\",\n      \"line\": 35,\n      \"description\": \"Hardcoded API key requirement with runtime error exposure. While environment variables are correctly used, the RuntimeError on missing GEMINI_API_KEY could expose configuration expectations. Additionally, no fallback mechanism if API key is invalid.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 97,\n      \"description\": \"Unvalidated WebSocket JSON input. WebSocket receives arbitrary JSON without schema validation. Malformed or oversized messages could cause DoS or memory exhaustion. Missing Content-Type validation and message size limits.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 134,\n      \"description\": \"Insufficient input validation on query_id parameter. No verification that query_id matches UUID format or belongs to requesting user. Could allow enumeration of all query IDs in the database.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/routes.py\",\n      \"line\": 160,\n      \"description\": \"Exception details leaked to client via detail=str(e). Full exception messages expose internal implementation details, database paths, and system architecture to potential attackers.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 63,\n      \"description\": \"Insufficient URL validation before fetching. While _normalize_url exists, there's no protection against SSRF attacks. An attacker could request internal URLs (127.0.0.1, 10.0.0.0/8, metadata services, etc.). No URL whitelist enforcement.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \"src/api/websocket.py\",\n      \"line\": 100,\n      \"description\": \"User query text passed unsanitized to LLM. query_text is stored directly in database and sent to Gemini without sanitization. Could be exploited for prompt injection or to extract model training data.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/main.py\",\n      \"line\": 36,\n      \"description\": \"No HTTPS enforcement. Server binds to 0.0.0.0:8000 without HTTPS. No redirect to HTTPS or HSTS headers configured. Government HR data should be encrypted in transit.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/fetch/engine.py\",\n      \"line\": 54,\n      \"description\": \"Chrome User-Agent spoofing. The hardcoded Mozilla User-Agent could violate website Terms of Service and may get requests blocked or rate-limited. Should respect robots.txt and crawl directives.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \"src/config.yaml\",\n      \"line\": 11,\n      \"description\": \"Long cache TTL (7 days) for government policy documents. Federal HR policies may be updated more frequently. Stale policy could lead to incorrect guidance. No mechanism to invalidate cache on policy updates.\"\n    }\n  ],\n  \"riskScore\": 72,\n  \"recommendations\": [\n    \"CRITICAL: Fix CORS configuration - Remove wildcard origin. Specify only allowed origins (e.g., your frontend domain). Change to: allow_origins=['https://yourdomain.ca'], allow_credentials=False for public API or separate internal/external configs.\",\n    \"CRITICAL: Implement request-level authentication. Add Bearer token validation to all /api/* routes. Use FastAPI SecurityScopes or dependency injection. WebSocket connections need per-session tokens, not just query_id.\",\n    \"HIGH: Add comprehensive input validation. Implement Pydantic validators for all user input (query_text, query_id). Use UUID validation for query_id. Limit query_text length (max 5000 chars). Strip/sanitize all user inputs before LLM calls.\",\n    \"HIGH: Implement SSRF protection. Create URL whitelist for allowed domains (justice.gc.ca, tbs-sct.canada.ca, etc.). Reject private IP ranges (127.0.0.1, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, metadata endpoints).\",\n    \"HIGH: Reduce error information disclosure. Wrap exceptions in try-catch blocks. Return generic error messages to clients ('An error occurred processing your request'). Log full exceptions server-side only. Implement structured logging.\",\n    \"MEDIUM: Add message size limits to WebSocket. Implement max_size parameter in WebSocket config. Limit query_text to reasonable length (5000 chars max). Add rate limiting per connection (e.g., max 10 requests per minute per client).\",\n    \"MEDIUM: Implement request authentication/authorization. Add API key authentication or OAuth2 for all routes. Verify user can only access their own query data. Add audit logging of all data access.\",\n    \"MEDIUM: Enable HTTPS and HSTS. Deploy behind reverse proxy (Nginx) with SSL/TLS. Configure HSTS headers: 'Strict-Transport-Security: max-age=31536000; includeSubDomains'. Enforce HTTPS redirect in production.\",\n    \"MEDIUM: Update cache TTL policy. Reduce to 24-48 hours for HR policies. Implement manual cache invalidation endpoint (requires authentication). Add cache versioning when policies are updated.\",\n    \"MEDIUM: Validate WebSocket origin. Add Origin header checking to WebSocket connections. Reject connections from unauthorized domains. Implement CORS-like validation for WebSocket.\",\n    \"LOW: Respect robots.txt and crawl directives. Check robots.txt before fetching. Implement proper User-Agent. Add configurable request headers to comply with site policies.\",\n    \"LOW: Add security headers. Implement X-Content-Type-Options, Content-Security-Policy, X-Frame-Options headers. Use FastAPI middleware or reverse proxy to enforce.\",\n    \"DEPENDENCY RISK: Review google-generativeai for CVEs. Run `pip audit` regularly. Pin exact versions in requirements.txt instead of >= constraints. Implement dependency scanning in CI/CD pipeline.\"\n  ]\n}\n```\n\n## Key Findings\n\n**Risk Score: 72/100 (High Risk)**\n\nThe system has multiple security gaps typical of early-stage prototypes that need hardening before production:\n\n1. **Authentication/Authorization Missing** - No access control on any endpoint; any user can view all queries and feedback\n2. **CORS Vulnerability** - Allows cross-origin requests with credentials from any domain\n3. **Input Validation Gaps** - User queries not validated; could enable prompt injection or data exfiltration via LLM\n4. **SSRF Risk** - Fetch engine could be exploited to access internal network resources\n5. **Error Leakage** - System exposes implementation details to attackers\n\n**Before Production Deployment:**\n- Implement authentication/authorization (Bearer token or API key)\n- Fix CORS to specific allowed origins\n- Add input validation with Pydantic validators\n- Implement SSRF protection with domain whitelist\n- Reduce exception detail leakage in API responses\n- Deploy behind HTTPS reverse proxy with security headers\n",
+  "parsedOutput": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "Overly permissive CORS configuration: allow_origins=['*'] combined with allow_credentials=True creates a CORS vulnerability. Any website can make authenticated requests to this API. This is especially critical for a government HR policy system that may handle sensitive data."
+      },
+      {
+        "severity": "high",
+        "file": "src/llm/client.py",
+        "line": 35,
+        "description": "Hardcoded API key requirement with runtime error exposure. While environment variables are correctly used, the RuntimeError on missing GEMINI_API_KEY could expose configuration expectations. Additionally, no fallback mechanism if API key is invalid."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 97,
+        "description": "Unvalidated WebSocket JSON input. WebSocket receives arbitrary JSON without schema validation. Malformed or oversized messages could cause DoS or memory exhaustion. Missing Content-Type validation and message size limits."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 134,
+        "description": "Insufficient input validation on query_id parameter. No verification that query_id matches UUID format or belongs to requesting user. Could allow enumeration of all query IDs in the database."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/routes.py",
+        "line": 160,
+        "description": "Exception details leaked to client via detail=str(e). Full exception messages expose internal implementation details, database paths, and system architecture to potential attackers."
+      },
+      {
+        "severity": "medium",
+        "file": "src/fetch/engine.py",
+        "line": 63,
+        "description": "Insufficient URL validation before fetching. While _normalize_url exists, there's no protection against SSRF attacks. An attacker could request internal URLs (127.0.0.1, 10.0.0.0/8, metadata services, etc.). No URL whitelist enforcement."
+      },
+      {
+        "severity": "medium",
+        "file": "src/api/websocket.py",
+        "line": 100,
+        "description": "User query text passed unsanitized to LLM. query_text is stored directly in database and sent to Gemini without sanitization. Could be exploited for prompt injection or to extract model training data."
+      },
+      {
+        "severity": "low",
+        "file": "src/main.py",
+        "line": 36,
+        "description": "No HTTPS enforcement. Server binds to 0.0.0.0:8000 without HTTPS. No redirect to HTTPS or HSTS headers configured. Government HR data should be encrypted in transit."
+      },
+      {
+        "severity": "low",
+        "file": "src/fetch/engine.py",
+        "line": 54,
+        "description": "Chrome User-Agent spoofing. The hardcoded Mozilla User-Agent could violate website Terms of Service and may get requests blocked or rate-limited. Should respect robots.txt and crawl directives."
+      },
+      {
+        "severity": "low",
+        "file": "src/config.yaml",
+        "line": 11,
+        "description": "Long cache TTL (7 days) for government policy documents. Federal HR policies may be updated more frequently. Stale policy could lead to incorrect guidance. No mechanism to invalidate cache on policy updates."
+      }
+    ],
+    "riskScore": 72,
+    "recommendations": [
+      "CRITICAL: Fix CORS configuration - Remove wildcard origin. Specify only allowed origins (e.g., your frontend domain). Change to: allow_origins=['https://yourdomain.ca'], allow_credentials=False for public API or separate internal/external configs.",
+      "CRITICAL: Implement request-level authentication. Add Bearer token validation to all /api/* routes. Use FastAPI SecurityScopes or dependency injection. WebSocket connections need per-session tokens, not just query_id.",
+      "HIGH: Add comprehensive input validation. Implement Pydantic validators for all user input (query_text, query_id). Use UUID validation for query_id. Limit query_text length (max 5000 chars). Strip/sanitize all user inputs before LLM calls.",
+      "HIGH: Implement SSRF protection. Create URL whitelist for allowed domains (justice.gc.ca, tbs-sct.canada.ca, etc.). Reject private IP ranges (127.0.0.1, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, metadata endpoints).",
+      "HIGH: Reduce error information disclosure. Wrap exceptions in try-catch blocks. Return generic error messages to clients ('An error occurred processing your request'). Log full exceptions server-side only. Implement structured logging.",
+      "MEDIUM: Add message size limits to WebSocket. Implement max_size parameter in WebSocket config. Limit query_text to reasonable length (5000 chars max). Add rate limiting per connection (e.g., max 10 requests per minute per client).",
+      "MEDIUM: Implement request authentication/authorization. Add API key authentication or OAuth2 for all routes. Verify user can only access their own query data. Add audit logging of all data access.",
+      "MEDIUM: Enable HTTPS and HSTS. Deploy behind reverse proxy (Nginx) with SSL/TLS. Configure HSTS headers: 'Strict-Transport-Security: max-age=31536000; includeSubDomains'. Enforce HTTPS redirect in production.",
+      "MEDIUM: Update cache TTL policy. Reduce to 24-48 hours for HR policies. Implement manual cache invalidation endpoint (requires authentication). Add cache versioning when policies are updated.",
+      "MEDIUM: Validate WebSocket origin. Add Origin header checking to WebSocket connections. Reject connections from unauthorized domains. Implement CORS-like validation for WebSocket.",
+      "LOW: Respect robots.txt and crawl directives. Check robots.txt before fetching. Implement proper User-Agent. Add configurable request headers to comply with site policies.",
+      "LOW: Add security headers. Implement X-Content-Type-Options, Content-Security-Policy, X-Frame-Options headers. Use FastAPI middleware or reverse proxy to enforce.",
+      "DEPENDENCY RISK: Review google-generativeai for CVEs. Run `pip audit` regularly. Pin exact versions in requirements.txt instead of >= constraints. Implement dependency scanning in CI/CD pipeline."
+    ]
+  },
+  "durationMs": 47421,
+  "model": "haiku",
+  "sandboxMode": "strict",
+  "workerType": "audit",
+  "timestamp": "2026-05-01T01:31:16.770Z",
+  "executionId": "audit_1777599029349_nhbgvn"
+}
