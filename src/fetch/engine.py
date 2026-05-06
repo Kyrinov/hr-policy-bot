@@ -9,10 +9,12 @@ from pathlib import Path
 from typing import Any
 
 import httpx
+
 from src.config import get_config
 from src.fetch.browser import BrowserFetchError, get_browser_fetcher
 from src.fetch.cache import CacheEntry, FetchCache, get_cache
 from src.fetch.extractors import ContentExtractor, get_extractor
+from src.parsing.sage_extractor import get_sage_pipeline
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +97,7 @@ class FetchEngine:
         cached = await self._cache.get(url)
         if cached is not None:
             logger.debug("Cache hit for %s", url)
+            self._schedule_deterministic_parsing(url, cached.content)
             return cached.content
 
         # Attempt fetch
@@ -116,6 +119,7 @@ class FetchEngine:
             )
 
             logger.info("Successfully fetched %s (%d bytes)", url, len(content))
+            self._schedule_deterministic_parsing(url, content)
             return content
 
         except (httpx.RequestError, httpx.HTTPStatusError) as e:
@@ -142,6 +146,7 @@ class FetchEngine:
                     )
                 )
                 logger.info("Browser fallback succeeded for %s (%d bytes)", url, len(content))
+                self._schedule_deterministic_parsing(url, content)
                 return content
             except BrowserFetchError as browser_err:
                 logger.warning("Browser fallback failed for %s: %s", url, browser_err)
@@ -176,6 +181,21 @@ class FetchEngine:
             return url.split("//")[-1].split("/")[0]
         except Exception:
             return "default"
+
+    def _schedule_deterministic_parsing(self, url: str, content: str) -> None:
+        if not self._config.parsing.enabled:
+            return
+
+        async def run_parser() -> None:
+            try:
+                await get_sage_pipeline().process_document_for_url(url, content)
+            except Exception as e:
+                logger.warning("Deterministic parsing failed for %s: %s", url, e)
+
+        try:
+            asyncio.create_task(run_parser())
+        except RuntimeError as e:
+            logger.debug("No running event loop for deterministic parsing of %s: %s", url, e)
 
     async def close(self) -> None:
         """Close the HTTP client."""

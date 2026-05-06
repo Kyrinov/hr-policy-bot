@@ -10,7 +10,9 @@ from src.models.schemas import (
     AgentResponseRecord,
     FeedbackRecord,
     FetchCacheEntry,
+    KISSDocument,
     OrchestratorResponseRecord,
+    PolicyTriple,
     QueryRecord,
 )
 
@@ -69,6 +71,73 @@ CREATE TABLE IF NOT EXISTS fetch_cache (
     status_code INTEGER,
     content_length INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS kiss_documents (
+    doc_id TEXT PRIMARY KEY,
+    source_url TEXT NOT NULL,
+    instrument_title TEXT NOT NULL,
+    agent_id TEXT NOT NULL,
+    sentence_count INTEGER,
+    token_count INTEGER,
+    model_version TEXT NOT NULL,
+    parsed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fetch_cache_url TEXT REFERENCES fetch_cache(url)
+);
+
+CREATE TABLE IF NOT EXISTS policy_triples (
+    triple_id TEXT PRIMARY KEY,
+    doc_id TEXT NOT NULL REFERENCES kiss_documents(doc_id),
+    source_url TEXT NOT NULL,
+    instrument_title TEXT NOT NULL,
+    agent_id TEXT NOT NULL,
+    section_heading TEXT,
+    sentence_text TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    predicate TEXT NOT NULL,
+    predicate_lemma TEXT NOT NULL,
+    is_deontic BOOLEAN NOT NULL DEFAULT FALSE,
+    deontic_type TEXT,
+    object_ TEXT NOT NULL,
+    modifier TEXT,
+    validation_flags TEXT,
+    llm_validated BOOLEAN DEFAULT FALSE,
+    llm_validation_note TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS graph_nodes (
+    node_id TEXT PRIMARY KEY,
+    entity_text TEXT NOT NULL,
+    entity_type TEXT,
+    mention_count INTEGER DEFAULT 1,
+    first_seen_url TEXT,
+    UNIQUE(entity_text)
+);
+
+CREATE TABLE IF NOT EXISTS graph_edges (
+    edge_id TEXT PRIMARY KEY,
+    subject_node_id TEXT NOT NULL REFERENCES graph_nodes(node_id),
+    predicate TEXT NOT NULL,
+    object_node_id TEXT NOT NULL REFERENCES graph_nodes(node_id),
+    triple_id TEXT NOT NULL REFERENCES policy_triples(triple_id),
+    weight REAL DEFAULT 1.0
+);
+
+CREATE TABLE IF NOT EXISTS rule_refinements (
+    refinement_id TEXT PRIMARY KEY,
+    triple_id TEXT REFERENCES policy_triples(triple_id),
+    validation_flag TEXT,
+    llm_correction TEXT NOT NULL,
+    correction_type TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    applied_to_rule TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_triples_url ON policy_triples(source_url);
+CREATE INDEX IF NOT EXISTS idx_triples_subject ON policy_triples(subject);
+CREATE INDEX IF NOT EXISTS idx_triples_predicate ON policy_triples(predicate_lemma);
+CREATE INDEX IF NOT EXISTS idx_triples_agent ON policy_triples(agent_id);
+CREATE INDEX IF NOT EXISTS idx_nodes_text ON graph_nodes(entity_text);
 """
 
 
@@ -366,3 +435,230 @@ class DatabaseManager:
             )
             await db.commit()
             return cursor.rowcount
+
+    # ------------------------------------------------------------------
+    # Deterministic parsing graph
+    # ------------------------------------------------------------------
+
+    async def save_kiss_document(self, doc_id: str, document: KISSDocument) -> None:
+        async with aiosqlite.connect(self._db_path) as db:
+            await db.execute(
+                """
+                INSERT OR REPLACE INTO kiss_documents
+                  (doc_id, source_url, instrument_title, agent_id, sentence_count,
+                   token_count, model_version, parsed_at, fetch_cache_url)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    doc_id,
+                    document.source_url,
+                    document.instrument_title,
+                    document.agent_id,
+                    document.sentence_count,
+                    document.token_count,
+                    document.model_version,
+                    document.parsed_at,
+                    document.source_url,
+                ),
+            )
+            await db.commit()
+
+    async def save_policy_triples(self, triples: list[PolicyTriple]) -> None:
+        async with aiosqlite.connect(self._db_path) as db:
+            for triple in triples:
+                await db.execute(
+                    """
+                    INSERT OR REPLACE INTO policy_triples
+                      (triple_id, doc_id, source_url, instrument_title, agent_id,
+                       section_heading, sentence_text, subject, predicate,
+                       predicate_lemma, is_deontic, deontic_type, object_, modifier,
+                       validation_flags, llm_validated, llm_validation_note)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    self._triple_params(triple),
+                )
+                subject_node_id = await self._upsert_node(
+                    db, triple.subject, None, triple.source_url
+                )
+                object_node_id = await self._upsert_node(
+                    db, triple.object_, None, triple.source_url
+                )
+                weight = 2.0 if "CROSS_INSTRUMENT_CORROBORATION" in triple.validation_flags else 1.0
+                await db.execute(
+                    """
+                    INSERT OR REPLACE INTO graph_edges
+                      (edge_id, subject_node_id, predicate, object_node_id, triple_id, weight)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        f"{triple.triple_id}:edge",
+                        subject_node_id,
+                        triple.predicate_lemma,
+                        object_node_id,
+                        triple.triple_id,
+                        weight,
+                    ),
+                )
+            await db.commit()
+
+    async def query_triples_by_url(self, source_url: str) -> list[PolicyTriple]:
+        return await self._load_triples(
+            "SELECT * FROM policy_triples WHERE source_url = ?",
+            (source_url,),
+        )
+
+    async def search_policy_triples(
+        self,
+        query_entities: list[str],
+        query_verbs: list[str],
+        agent_id: str | None,
+        limit: int,
+    ) -> list[PolicyTriple]:
+        params: list[str] = []
+        clauses: list[str] = []
+        for entity in query_entities:
+            pattern = f"%{entity.lower()}%"
+            clauses.append("(lower(subject) LIKE ? OR lower(object_) LIKE ?)")
+            params.extend([pattern, pattern])
+        for verb in query_verbs:
+            clauses.append("lower(predicate_lemma) = ?")
+            params.append(verb.lower())
+        where = " OR ".join(clauses) if clauses else "1 = 0"
+        if agent_id is not None:
+            where = f"({where}) AND agent_id = ?"
+            params.append(agent_id)
+        triples = await self._load_triples(
+            f"SELECT * FROM policy_triples WHERE {where} LIMIT ?",
+            tuple([*params, str(limit * 4)]),
+        )
+        return triples
+
+    async def find_conflicting_triples(
+        self, subject: str, predicate: str
+    ) -> list[PolicyTriple]:
+        return await self._load_triples(
+            """
+            SELECT * FROM policy_triples
+            WHERE lower(subject) = lower(?) AND lower(predicate_lemma) = lower(?)
+            ORDER BY object_
+            """,
+            (subject, predicate),
+        )
+
+    async def is_document_parsed(self, source_url: str) -> bool:
+        async with aiosqlite.connect(self._db_path) as db:
+            async with db.execute(
+                "SELECT 1 FROM kiss_documents WHERE source_url = ? LIMIT 1",
+                (source_url,),
+            ) as cursor:
+                row = await cursor.fetchone()
+        return row is not None
+
+    async def get_coverage_stats(self) -> dict:
+        async with aiosqlite.connect(self._db_path) as db:
+            doc_count = await self._count(db, "kiss_documents")
+            triple_count = await self._count(db, "policy_triples")
+            node_count = await self._count(db, "graph_nodes")
+            edge_count = await self._count(db, "graph_edges")
+        return {
+            "documents": doc_count,
+            "triples": triple_count,
+            "nodes": node_count,
+            "edges": edge_count,
+        }
+
+    async def save_rule_refinement(
+        self,
+        refinement_id: str,
+        triple_id: str,
+        validation_flag: str,
+        llm_correction: str,
+        correction_type: str,
+        applied_to_rule: str | None = None,
+    ) -> None:
+        async with aiosqlite.connect(self._db_path) as db:
+            await db.execute(
+                """
+                INSERT OR REPLACE INTO rule_refinements
+                  (refinement_id, triple_id, validation_flag, llm_correction,
+                   correction_type, applied_to_rule)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    refinement_id,
+                    triple_id,
+                    validation_flag,
+                    llm_correction,
+                    correction_type,
+                    applied_to_rule,
+                ),
+            )
+            await db.commit()
+
+    def _triple_params(self, triple: PolicyTriple) -> tuple:
+        return (
+            triple.triple_id,
+            triple.doc_id,
+            triple.source_url,
+            triple.instrument_title,
+            triple.agent_id,
+            triple.section_heading,
+            triple.sentence_text,
+            triple.subject,
+            triple.predicate,
+            triple.predicate_lemma,
+            triple.is_deontic,
+            triple.deontic_type,
+            triple.object_,
+            triple.modifier,
+            json.dumps(triple.validation_flags),
+            triple.llm_validated,
+            triple.llm_validation_note,
+        )
+
+    async def _load_triples(self, sql: str, params: tuple) -> list[PolicyTriple]:
+        async with aiosqlite.connect(self._db_path) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute(sql, params) as cursor:
+                rows = await cursor.fetchall()
+        return [self._row_to_triple(row) for row in rows]
+
+    def _row_to_triple(self, row: aiosqlite.Row) -> PolicyTriple:
+        return PolicyTriple(
+            triple_id=row["triple_id"],
+            doc_id=row["doc_id"],
+            source_url=row["source_url"],
+            instrument_title=row["instrument_title"],
+            agent_id=row["agent_id"],
+            section_heading=row["section_heading"],
+            sentence_text=row["sentence_text"],
+            subject=row["subject"],
+            predicate=row["predicate"],
+            predicate_lemma=row["predicate_lemma"],
+            is_deontic=bool(row["is_deontic"]),
+            deontic_type=row["deontic_type"],
+            object_=row["object_"],
+            modifier=row["modifier"],
+            validation_flags=json.loads(row["validation_flags"] or "[]"),
+            llm_validated=bool(row["llm_validated"]),
+            llm_validation_note=row["llm_validation_note"],
+        )
+
+    async def _upsert_node(
+        self, db: aiosqlite.Connection, entity_text: str, entity_type: str | None, url: str
+    ) -> str:
+        node_id = hashlib.sha256(entity_text.lower().encode("utf-8")).hexdigest()
+        await db.execute(
+            """
+            INSERT INTO graph_nodes (node_id, entity_text, entity_type, first_seen_url)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(entity_text) DO UPDATE SET mention_count = mention_count + 1
+            """,
+            (node_id, entity_text, entity_type, url),
+        )
+        return node_id
+
+    async def _count(self, db: aiosqlite.Connection, table_name: str) -> int:
+        async with db.execute(f"SELECT COUNT(*) FROM {table_name}") as cursor:
+            row = await cursor.fetchone()
+        return int(row[0])

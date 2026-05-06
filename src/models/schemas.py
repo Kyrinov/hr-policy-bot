@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
@@ -69,6 +70,7 @@ class SpecialistResponse(BaseModel):
     scope_flags: list[str] = Field(default_factory=list)
     confidence: str  # "high" | "medium" | "low"
     retrieval_status: RetrievalStatus
+    grounding_mode: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -99,6 +101,78 @@ class OrchestratorResponse(BaseModel):
     recommended_consultation: Optional[str] = None
     agents_consulted: list[str] = Field(default_factory=list)
     overall_confidence: str  # "high" | "medium" | "low"
+    deterministic_grounding: Optional["DeterministicGrounding"] = None
+
+
+@dataclass(frozen=True)
+class KISSToken:
+    text: str
+    lemma: str
+    pos: str
+    kiss_category: str
+    is_deontic: bool
+    deontic_type: Optional[str]
+    char_start: int
+    char_end: int
+    sentence_idx: int
+    token_idx: int
+
+
+@dataclass(frozen=True)
+class KISSDocument:
+    source_url: str
+    instrument_title: str
+    agent_id: str
+    tokens: list[KISSToken]
+    sentence_count: int
+    token_count: int
+    parsed_at: str
+    model_version: str
+
+
+@dataclass(frozen=True)
+class QueryKISSResult:
+    raw_query: str
+    entities: list[str]
+    entity_types: dict[str, str]
+    verbs: list[str]
+    deontic_verbs: list[str]
+    sentence_count: int
+    entity_count: int
+    fallback_triggered: bool
+    model_version: str
+
+
+@dataclass(frozen=True)
+class PolicyTriple:
+    triple_id: str
+    doc_id: str
+    source_url: str
+    instrument_title: str
+    agent_id: str
+    section_heading: Optional[str]
+    sentence_text: str
+    subject: str
+    predicate: str
+    predicate_lemma: str
+    is_deontic: bool
+    deontic_type: Optional[str]
+    object_: str
+    modifier: Optional[str]
+    validation_flags: list[str]
+    llm_validated: bool = False
+    llm_validation_note: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class DeterministicGrounding:
+    graph_coverage: str
+    triples_used: int
+    documents_parsed_from_graph: int
+    graph_hits: list[str]
+    graph_misses_fetched: list[str]
+    validation_flags_raised: list[str]
+    llm_mode: str
 
 
 # ---------------------------------------------------------------------------

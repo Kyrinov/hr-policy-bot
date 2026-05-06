@@ -30,11 +30,38 @@ class LoggingConfig(BaseModel):
     file: str = "logs/system.log"
 
 
+class ParsingRuleConfig(BaseModel):
+    enabled: bool = True
+    section_ref_regex: str | None = None
+
+
+class ParsingConfig(BaseModel):
+    enabled: bool = True
+    spacy_model: str = "en_core_web_sm"
+    spacy_model_version: str = "3.7.1"
+    query_entity_threshold: int = 2
+    validate_mode_threshold: int = 5
+    max_graph_results: int = 20
+    warmup_on_startup: bool = False
+    teacher_loop_enabled: bool = True
+    validation_rules: dict[str, ParsingRuleConfig] = {
+        "RULE-01": ParsingRuleConfig(enabled=True),
+        "RULE-02": ParsingRuleConfig(enabled=True),
+        "RULE-03": ParsingRuleConfig(
+            enabled=True,
+            section_ref_regex=r"(s\.\s*\d+(\.\d+)*|[Ss]ection\s+\d+(\.\d+)*|[Aa]rticle\s+\d+)",
+        ),
+        "RULE-04": ParsingRuleConfig(enabled=True),
+        "RULE-05": ParsingRuleConfig(enabled=True),
+    }
+
+
 class AppConfig(BaseModel):
     model: ModelConfig = ModelConfig()
     server: ServerConfig = ServerConfig()
     cache: CacheConfig = CacheConfig()
     logging: LoggingConfig = LoggingConfig()
+    parsing: ParsingConfig = ParsingConfig()
 
 
 def _load_config(path: Path) -> AppConfig:

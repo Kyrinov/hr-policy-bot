@@ -15,3 +15,25 @@ cache:
 logging:
   level: "INFO"
   file: "logs/system.log"
+
+parsing:
+  enabled: true
+  spacy_model: "en_core_web_sm"
+  spacy_model_version: "3.7.1"
+  query_entity_threshold: 2
+  validate_mode_threshold: 5
+  max_graph_results: 20
+  warmup_on_startup: false
+  teacher_loop_enabled: true
+  validation_rules:
+    RULE-01:
+      enabled: true
+    RULE-02:
+      enabled: true
+    RULE-03:
+      enabled: true
+      section_ref_regex: '(s\.\s*\d+(\.\d+)*|[Ss]ection\s+\d+(\.\d+)*|[Aa]rticle\s+\d+)'
+    RULE-04:
+      enabled: true
+    RULE-05:
+      enabled: true

@@ -11,11 +11,13 @@ from src.agents.prompts.specialist_prompts import get_specialist_prompt
 from src.config import get_config
 from src.llm.client import get_client
 from src.models.schemas import (
+    DeterministicGrounding,
     OrchestratorCitation,
     OrchestratorResponse,
     RetrievalStatus,
     WSAgentStatusUpdate,
 )
+from src.parsing.query_kiss_parser import QueryKISSParser
 
 if TYPE_CHECKING:
     from src.fetch.engine import FetchEngine
@@ -154,6 +156,9 @@ class OrchestratorAgent(GenericAgent):
             parsed = json.loads(text)
             orch_response = OrchestratorResponse(**parsed)
             orch_response.citations = self._aggregate_citations(specialist_responses)
+            orch_response.deterministic_grounding = self._deterministic_grounding(
+                specialist_responses
+            )
             return orch_response
         except (json.JSONDecodeError, Exception) as e:
             logger.warning("Failed to parse orchestrator response: %s — raw: %r", e, response_text[:200])
@@ -163,6 +168,7 @@ class OrchestratorAgent(GenericAgent):
                 citations=self._aggregate_citations(specialist_responses),
                 agents_consulted=[],
                 overall_confidence="low",
+                deterministic_grounding=self._deterministic_grounding(specialist_responses),
             )
 
     def _build_synthesis_prompt(
@@ -242,6 +248,7 @@ class OrchestratorAgent(GenericAgent):
         specialists = get_specialists()
 
         await status_callback(WSAgentStatusUpdate(agent_id="orchestrator", status="working"))
+        query_kiss_result = QueryKISSParser().parse(query_text)
 
         # Phase 1: routing
         routing = await self._route(query_text)
@@ -263,7 +270,9 @@ class OrchestratorAgent(GenericAgent):
             await status_callback(WSAgentStatusUpdate(agent_id=agent_id, status="working"))
             try:
                 sub_query = sub_queries.get(agent_id, query_text)
-                response = await agent.process_with_fetch(sub_query, fetch_engine)
+                response = await agent.process_with_fetch(
+                    sub_query, fetch_engine, query_kiss_result
+                )
                 await status_callback(
                     WSAgentStatusUpdate(agent_id=agent_id, status="complete")
                 )
@@ -286,6 +295,49 @@ class OrchestratorAgent(GenericAgent):
         result = await self.process(query_text, list(specialist_responses))
         await status_callback(WSAgentStatusUpdate(agent_id="orchestrator", status="complete"))
         return result
+
+    def _deterministic_grounding(
+        self, specialist_responses: list[dict[str, Any]]
+    ) -> DeterministicGrounding:
+        validate_responses = [
+            response
+            for response in specialist_responses
+            if response.get("grounding_mode") == "validate"
+        ]
+        graph_hits = [
+            citation.get("url")
+            for response in validate_responses
+            for citation in response.get("citations", [])
+            if citation.get("url")
+        ]
+        live_fetches = [
+            citation.get("url")
+            for response in specialist_responses
+            if response.get("grounding_mode") != "validate"
+            for citation in response.get("citations", [])
+            if citation.get("url")
+        ]
+        if validate_responses and len(validate_responses) == len(specialist_responses):
+            coverage = "full"
+            mode = "validate"
+        elif validate_responses:
+            coverage = "partial"
+            mode = "mixed"
+        else:
+            coverage = "none"
+            mode = "extract"
+        return DeterministicGrounding(
+            graph_coverage=coverage,
+            triples_used=sum(
+                response.get("retrieval_status", {}).get("instruments_successfully_retrieved", 0)
+                for response in validate_responses
+            ),
+            documents_parsed_from_graph=len(set(graph_hits)),
+            graph_hits=sorted(set(graph_hits)),
+            graph_misses_fetched=sorted(set(live_fetches)),
+            validation_flags_raised=[],
+            llm_mode=mode,
+        )
 
     async def _route(self, query_text: str) -> dict[str, Any]:
         """Ask the LLM which specialist agents to invoke for this query."""
