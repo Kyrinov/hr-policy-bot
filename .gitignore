@@ -20,3 +20,8 @@ Thumbs.db
 # Secrets
 .env
 .env.*
+
+# Claude Code / Claude Flow internal
+.claude-flow/
+.claude/
+.agents/
