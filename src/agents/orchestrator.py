@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any, Callable
 from src.agents.base import GenericAgent
 from src.agents.prompts.specialist_prompts import get_specialist_prompt
 from src.config import get_config
-from src.llm.client import get_client
+from src.llm.client import get_orchestrator_client, get_specialist_client
 from src.models.schemas import (
     DeterministicGrounding,
     OrchestratorCitation,
@@ -103,7 +103,7 @@ class OrchestratorAgent(GenericAgent):
 
     def __init__(self) -> None:
         self._config = get_config()
-        self._llm_client = get_client()
+        self._llm_client = get_orchestrator_client()
 
         super().__init__(
             agent_id="orchestrator",
@@ -252,6 +252,7 @@ class OrchestratorAgent(GenericAgent):
 
         # Phase 1: routing
         routing = await self._route(query_text)
+        await self._unload_orchestrator()
         selected_ids: list[str] = routing.get("selected_agents", self._specialist_agent_ids)
         sub_queries: dict[str, str] = routing.get(
             "sub_queries", {aid: query_text for aid in selected_ids}
@@ -290,11 +291,25 @@ class OrchestratorAgent(GenericAgent):
                 }
 
         specialist_responses = await asyncio.gather(*[run_one(aid) for aid in selected_ids])
+        await self._unload_specialists()
 
         # Phase 3: synthesize
         result = await self.process(query_text, list(specialist_responses))
+        await self._unload_orchestrator()
         await status_callback(WSAgentStatusUpdate(agent_id="orchestrator", status="complete"))
         return result
+
+    async def _unload_orchestrator(self) -> None:
+        try:
+            await self._llm_client.unload()
+        except Exception as e:
+            logger.warning("Failed to unload orchestrator model: %s", e)
+
+    async def _unload_specialists(self) -> None:
+        try:
+            await get_specialist_client().unload()
+        except Exception as e:
+            logger.warning("Failed to unload specialist model: %s", e)
 
     def _deterministic_grounding(
         self, specialist_responses: list[dict[str, Any]]

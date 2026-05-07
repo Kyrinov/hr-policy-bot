@@ -11,7 +11,7 @@ from src.agents.base import GenericAgent
 from src.agents.prompts.specialist_prompts import get_specialist_prompt, get_validate_mode_prompt
 from src.config import get_config
 from src.data.db import DatabaseManager
-from src.llm.client import get_client
+from src.llm.client import get_specialist_client
 from src.models.schemas import CitationItem, PolicyTriple, QueryKISSResult, RetrievalStatus, SpecialistResponse
 from src.parsing.graph_query import get_graph_query
 
@@ -70,7 +70,7 @@ class SpecialistAgent(GenericAgent):
             domain_description=domain_description,
             system_prompt=get_specialist_prompt(agent_id),
         )
-        self._llm_client = get_client()
+        self._llm_client = get_specialist_client()
         self._config = get_config()
         self._db = DatabaseManager()
         self._instruments = self._load_instruments(agent_id)

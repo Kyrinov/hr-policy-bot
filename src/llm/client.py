@@ -12,10 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 class OllamaClient:
-    def __init__(self) -> None:
+    def __init__(self, model: str | None = None, host: str | None = None) -> None:
         self._config = get_config()
-        self._model = self._config.model.name
-        self._client = ollama.AsyncClient()
+        self._model = model or self._config.model.name
+        self._host = host
+        self._client = ollama.AsyncClient(host=host)
 
     def _options(self) -> dict[str, float | int]:
         return {
@@ -37,6 +38,14 @@ class OllamaClient:
             options=self._options(),
         )
         return response.message.content or ""
+
+    async def unload(self, model: str | None = None) -> None:
+        """Ask Ollama to unload the model used by this client."""
+        await self._client.generate(
+            model=model or self._model,
+            prompt="",
+            keep_alive=0,
+        )
 
     async def stream_chat(
         self, system_prompt: str, user_message: str, model: str | None = None
@@ -76,17 +85,40 @@ class OllamaClient:
         return {
             "status": "ok" if model_available else "missing_model",
             "configured_model": self._model,
+            "host": self._host or "default",
             "model_available": model_available,
             "models": model_names,
         }
 
 
-_client: OllamaClient | None = None
+_orchestrator_client: OllamaClient | None = None
+_specialist_client: OllamaClient | None = None
 
 
 def get_client() -> OllamaClient:
-    """Return the singleton Ollama client."""
-    global _client
-    if _client is None:
-        _client = OllamaClient()
-    return _client
+    """Return the singleton orchestrator Ollama client."""
+    return get_orchestrator_client()
+
+
+def get_orchestrator_client() -> OllamaClient:
+    """Return the singleton client for the 31B orchestrator runtime."""
+    global _orchestrator_client
+    if _orchestrator_client is None:
+        config = get_config()
+        _orchestrator_client = OllamaClient(
+            model=config.model.name,
+            host=config.model.orchestrator_host,
+        )
+    return _orchestrator_client
+
+
+def get_specialist_client() -> OllamaClient:
+    """Return the singleton client for the E4B specialist runtime."""
+    global _specialist_client
+    if _specialist_client is None:
+        config = get_config()
+        _specialist_client = OllamaClient(
+            model=config.model.specialist_name,
+            host=config.model.specialist_host,
+        )
+    return _specialist_client

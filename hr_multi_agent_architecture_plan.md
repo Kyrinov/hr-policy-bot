@@ -56,10 +56,25 @@ The implementation must strictly manage the model lifecycle to ensure only one m
 ---
 
 ## 4. Infrastructure & Environment Setup
-The following environment variables must be configured on the host to support this architecture:
+The orchestrator and specialist tiers must run on separate Ollama endpoints
+because `OLLAMA_NUM_PARALLEL` is server-wide rather than model-specific:
 
-* `OLLAMA_MAX_LOADED_MODELS=1`: Prevents memory fragmentation by ensuring Tier 1 and Tier 2 do not overlap.
-* `OLLAMA_NUM_PARALLEL=8`: Enables concurrent processing of multiple E4B streams.
+```bash
+OLLAMA_HOST=127.0.0.1:11436 \
+OLLAMA_MAX_LOADED_MODELS=1 \
+OLLAMA_NUM_PARALLEL=1 \
+ollama serve
+
+OLLAMA_HOST=127.0.0.1:11435 \
+OLLAMA_MAX_LOADED_MODELS=1 \
+OLLAMA_NUM_PARALLEL=8 \
+ollama serve
+```
+
+The application must unload the `gemma4:31b` orchestrator model before
+dispatching E4B specialists, then unload `gemma4:e4b` before final synthesis.
+This prevents the two tiers from overlapping in memory even though they are
+served by separate Ollama processes.
 
 Benchmarking on the target Jetson environment selected `8` as the best measured
 value for E4B swarm throughput. With `gemma4:e4b`, `num_ctx=32768`, JSON mode,
@@ -76,7 +91,8 @@ were materially slower for broad specialist batches:
 | 8 | 10.2s | 12.4s | 14.9s |
 
 The application-level specialist concurrency should therefore default to 8,
-capped by the number of selected specialists.
+capped by the number of selected specialists, while the orchestrator endpoint
+remains capped at 1.
 
 ---
 

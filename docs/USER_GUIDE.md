@@ -80,7 +80,10 @@ Open `config.yaml` to review or adjust settings:
 
 ```yaml
 model:
-  name: "gemma4:31b"    # Model name as it appears in Ollama
+  name: "gemma4:31b"    # Orchestrator model name as it appears in Ollama
+  specialist_name: "gemma4:e4b"
+  orchestrator_host: "http://127.0.0.1:11436"
+  specialist_host: "http://127.0.0.1:11435"
   temperature: 0.2       # Lower = more conservative, policy-appropriate responses
   num_ctx: 32768         # Context window size
   top_p: 0.9
@@ -94,7 +97,7 @@ cache:
   max_size_mb: 500
 ```
 
-To switch models without editing code, change the `model.name` value in `config.yaml` to any model you have available in Ollama, or set `OLLAMA_MODEL` in the environment.
+To switch models without editing code, change the `model.name` or `model.specialist_name` values in `config.yaml`, or set `OLLAMA_ORCHESTRATOR_MODEL` and `OLLAMA_SPECIALIST_MODEL` in the environment.
 
 ---
 
@@ -102,22 +105,33 @@ To switch models without editing code, change the `model.name` value in `config.
 
 ### Step 1 — Ensure Ollama is running
 
+Run separate Ollama endpoints in separate terminals so the 31B orchestrator is
+capped at one request while the E4B specialists can run up to eight concurrent
+requests:
+
 ```bash
-export OLLAMA_MAX_LOADED_MODELS=1
-export OLLAMA_NUM_PARALLEL=8
+OLLAMA_HOST=127.0.0.1:11436 \
+OLLAMA_MAX_LOADED_MODELS=1 \
+OLLAMA_NUM_PARALLEL=1 \
+ollama serve
+
+OLLAMA_HOST=127.0.0.1:11435 \
+OLLAMA_MAX_LOADED_MODELS=1 \
+OLLAMA_NUM_PARALLEL=8 \
 ollama serve
 ```
 
-If Ollama is already running as a service, skip this step. Verify the model is available:
+Verify both models are available:
 
 ```bash
 ollama list
 ```
 
-You should see `gemma4:31b` in the list. If not:
+You should see `gemma4:31b` and `gemma4:e4b` in the list. If not:
 
 ```bash
 ollama pull gemma4:31b
+ollama pull gemma4:e4b
 ```
 
 ### Step 2 — Start the application
@@ -384,8 +398,8 @@ This system is designed for single-user or small-group pilot use. It has not bee
 ### "Ollama connection failed" warning at startup
 
 - Run `ollama serve` to start the Ollama server.
-- Verify the model is available: `ollama list`. If `gemma4:31b` is not listed, run `ollama pull gemma4:31b`.
-- Verify Ollama is listening: `curl http://localhost:11434/api/tags` should return a JSON response.
+- Verify the models are available: `ollama list`. If `gemma4:31b` or `gemma4:e4b` is not listed, pull the missing model.
+- Verify both configured Ollama endpoints are listening: `curl http://127.0.0.1:11436/api/tags` and `curl http://127.0.0.1:11435/api/tags` should return JSON responses.
 
 ### The response takes very long or never arrives
 

@@ -67,14 +67,16 @@ async def startup_event() -> None:
 
     # Check Ollama connectivity
     try:
-        from src.llm.client import get_client
+        from src.llm.client import get_orchestrator_client, get_specialist_client
 
-        ollama_health = await get_client().health_check()
+        orchestrator_health = await get_orchestrator_client().health_check()
+        specialist_health = await get_specialist_client().health_check()
         logger.info(
-            "Ollama health: status=%s configured_model=%s model_available=%s",
-            ollama_health["status"],
-            ollama_health["configured_model"],
-            ollama_health["model_available"],
+            "Ollama health: orchestrator=%s/%s specialist=%s/%s",
+            orchestrator_health["status"],
+            orchestrator_health["configured_model"],
+            specialist_health["status"],
+            specialist_health["configured_model"],
         )
     except Exception as e:
         logger.warning("Ollama connection failed: %s", e)

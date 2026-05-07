@@ -69,14 +69,21 @@ async def health_check() -> dict:
         "status": "healthy",
         "components": {},
         "model": get_config().model.name,
+        "specialist_model": get_config().model.specialist_name,
         "timestamp": datetime.utcnow().isoformat(),
     }
 
     try:
-        from src.llm.client import get_client
+        from src.llm.client import get_orchestrator_client, get_specialist_client
 
-        result["components"]["ollama"] = await get_client().health_check()
-        if result["components"]["ollama"]["status"] != "ok":
+        result["components"]["ollama"] = {
+            "orchestrator": await get_orchestrator_client().health_check(),
+            "specialist": await get_specialist_client().health_check(),
+        }
+        if any(
+            component["status"] != "ok"
+            for component in result["components"]["ollama"].values()
+        ):
             result["status"] = "degraded"
     except Exception as e:
         result["components"]["ollama"] = {"status": "error", "error": str(e)}

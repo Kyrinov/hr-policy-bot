@@ -1,5 +1,8 @@
 model:
   name: "gemma4:31b"
+  specialist_name: "gemma4:e4b"
+  orchestrator_host: "http://127.0.0.1:11436"
+  specialist_host: "http://127.0.0.1:11435"
   temperature: 0.2    # Low temperature for policy accuracy
   num_ctx: 32768      # Gives specialists room for full policy content
   top_p: 0.9

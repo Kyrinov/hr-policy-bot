@@ -10,6 +10,9 @@ from pydantic import BaseModel
 
 class ModelConfig(BaseModel):
     name: str = "gemma4:31b"
+    specialist_name: str = "gemma4:e4b"
+    orchestrator_host: str = "http://127.0.0.1:11436"
+    specialist_host: str = "http://127.0.0.1:11435"
     temperature: float = 0.2
     num_ctx: int = 32768
     top_p: float = 0.9
@@ -71,6 +74,14 @@ def _load_config(path: Path) -> AppConfig:
     # Environment variable overrides for sensitive/deployment values
     if model_name := os.environ.get("OLLAMA_MODEL"):
         data.setdefault("model", {})["name"] = model_name
+    if model_name := os.environ.get("OLLAMA_ORCHESTRATOR_MODEL"):
+        data.setdefault("model", {})["name"] = model_name
+    if model_name := os.environ.get("OLLAMA_SPECIALIST_MODEL"):
+        data.setdefault("model", {})["specialist_name"] = model_name
+    if host := os.environ.get("OLLAMA_ORCHESTRATOR_HOST"):
+        data.setdefault("model", {})["orchestrator_host"] = host
+    if host := os.environ.get("OLLAMA_SPECIALIST_HOST"):
+        data.setdefault("model", {})["specialist_host"] = host
     if host := os.environ.get("SERVER_HOST"):
         data.setdefault("server", {})["host"] = host
     if port := os.environ.get("SERVER_PORT"):

@@ -50,6 +50,9 @@ class TestConfig:
         assert hasattr(config, "model")
         assert hasattr(config, "server")
         assert config.model.name == "gemma4:31b"
+        assert config.model.specialist_name == "gemma4:e4b"
+        assert config.model.orchestrator_host == "http://127.0.0.1:11436"
+        assert config.model.specialist_host == "http://127.0.0.1:11435"
 
     def test_ollama_model_env_override(self, monkeypatch):
         """Test OLLAMA_MODEL overrides the configured model."""
@@ -72,6 +75,22 @@ class TestConfig:
         assert config.model.name == "gemma4:31b"
         get_config.cache_clear()
 
+    def test_split_ollama_env_overrides(self, monkeypatch):
+        """Test role-specific Ollama runtime environment overrides."""
+        from src.config import get_config
+
+        get_config.cache_clear()
+        monkeypatch.setenv("OLLAMA_ORCHESTRATOR_MODEL", "orchestrator:test")
+        monkeypatch.setenv("OLLAMA_SPECIALIST_MODEL", "specialist:test")
+        monkeypatch.setenv("OLLAMA_ORCHESTRATOR_HOST", "http://127.0.0.1:12001")
+        monkeypatch.setenv("OLLAMA_SPECIALIST_HOST", "http://127.0.0.1:12002")
+        config = get_config()
+        assert config.model.name == "orchestrator:test"
+        assert config.model.specialist_name == "specialist:test"
+        assert config.model.orchestrator_host == "http://127.0.0.1:12001"
+        assert config.model.specialist_host == "http://127.0.0.1:12002"
+        get_config.cache_clear()
+
 
 class TestOllamaClient:
     """Test Ollama client wrapper behavior."""
@@ -83,8 +102,12 @@ class TestOllamaClient:
         import src.llm.client as llm_client
 
         calls = []
+        hosts = []
 
         class FakeAsyncClient:
+            def __init__(self, host=None):
+                hosts.append(host)
+
             async def chat(self, **kwargs):
                 calls.append(kwargs)
                 if kwargs.get("stream"):
@@ -105,16 +128,27 @@ class TestOllamaClient:
                 return SimpleNamespace(
                     models=[
                         SimpleNamespace(model="gemma4:31b"),
+                        SimpleNamespace(model="gemma4:e4b"),
                         SimpleNamespace(model="other-model"),
                     ]
                 )
 
+            async def generate(self, **kwargs):
+                calls.append(kwargs)
+                return SimpleNamespace(response="")
+
         get_config.cache_clear()
-        llm_client._client = None
+        llm_client._orchestrator_client = None
+        llm_client._specialist_client = None
         monkeypatch.delenv("OLLAMA_MODEL", raising=False)
+        monkeypatch.delenv("OLLAMA_ORCHESTRATOR_MODEL", raising=False)
+        monkeypatch.delenv("OLLAMA_SPECIALIST_MODEL", raising=False)
+        monkeypatch.delenv("OLLAMA_ORCHESTRATOR_HOST", raising=False)
+        monkeypatch.delenv("OLLAMA_SPECIALIST_HOST", raising=False)
         monkeypatch.setattr(llm_client.ollama, "AsyncClient", FakeAsyncClient)
-        yield calls
-        llm_client._client = None
+        yield calls, hosts
+        llm_client._orchestrator_client = None
+        llm_client._specialist_client = None
         get_config.cache_clear()
 
     @pytest.mark.asyncio
@@ -128,8 +162,9 @@ class TestOllamaClient:
         response = await client.chat("system", "user")
 
         assert response == '{"status": "ok"}'
-        assert fake_async_client[0]["model"] == "gemma4:31b"
-        assert fake_async_client[0]["options"] == {
+        calls, _hosts = fake_async_client
+        assert calls[0]["model"] == "gemma4:31b"
+        assert calls[0]["options"] == {
             "num_ctx": 32768,
             "temperature": 0.2,
             "top_p": 0.9,
@@ -144,7 +179,8 @@ class TestOllamaClient:
         chunks = [chunk async for chunk in client.stream_chat("system", "user")]
 
         assert chunks == ["hello", " world"]
-        assert fake_async_client[0]["stream"] is True
+        calls, _hosts = fake_async_client
+        assert calls[0]["stream"] is True
 
     @pytest.mark.asyncio
     async def test_chat_parsed_preserves_json_parsing_behavior(
@@ -168,7 +204,36 @@ class TestOllamaClient:
 
         assert health["status"] == "ok"
         assert health["configured_model"] == "gemma4:31b"
+        assert health["host"] == "default"
         assert health["model_available"] is True
+
+    @pytest.mark.asyncio
+    async def test_unload_uses_keep_alive_zero(self, fake_async_client):
+        """Test unload asks Ollama to release the configured model."""
+        from src.llm.client import OllamaClient
+
+        client = OllamaClient()
+        await client.unload()
+        calls, _hosts = fake_async_client
+
+        assert calls[0] == {
+            "model": "gemma4:31b",
+            "prompt": "",
+            "keep_alive": 0,
+        }
+
+    def test_role_clients_use_separate_hosts_and_models(self, fake_async_client):
+        """Test role-specific client factories separate orchestrator and specialists."""
+        from src.llm.client import get_orchestrator_client, get_specialist_client
+
+        orchestrator = get_orchestrator_client()
+        specialist = get_specialist_client()
+        _calls, hosts = fake_async_client
+
+        assert orchestrator is not specialist
+        assert hosts == ["http://127.0.0.1:11436", "http://127.0.0.1:11435"]
+        assert orchestrator._model == "gemma4:31b"
+        assert specialist._model == "gemma4:e4b"
 
 
 class TestDatabase:
