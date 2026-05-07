@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import time
 import uuid
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -248,11 +249,30 @@ class OrchestratorAgent(GenericAgent):
         specialists = get_specialists()
 
         await status_callback(WSAgentStatusUpdate(agent_id="orchestrator", status="working"))
+        total_started = time.perf_counter()
         query_kiss_result = QueryKISSParser().parse(query_text)
 
         # Phase 1: routing
-        routing = await self._route(query_text)
-        await self._unload_orchestrator()
+        routing_started = time.perf_counter()
+        if self._config.model.route_with_llm:
+            routing = await self._route(query_text)
+            await self._unload_orchestrator()
+            logger.info(
+                "Routing phase completed in %.2fs with agents=%s",
+                time.perf_counter() - routing_started,
+                routing.get("selected_agents"),
+            )
+        else:
+            routing = {
+                "selected_agents": self._specialist_agent_ids,
+                "sub_queries": {
+                    aid: query_text for aid in self._specialist_agent_ids
+                },
+            }
+            logger.info(
+                "Routing phase skipped; dispatching all %d specialists",
+                len(self._specialist_agent_ids),
+            )
         selected_ids: list[str] = routing.get("selected_agents", self._specialist_agent_ids)
         sub_queries: dict[str, str] = routing.get(
             "sub_queries", {aid: query_text for aid in selected_ids}
@@ -260,6 +280,7 @@ class OrchestratorAgent(GenericAgent):
 
         # Phase 2: run specialists in parallel
         async def run_one(agent_id: str) -> dict[str, Any]:
+            specialist_started = time.perf_counter()
             agent = specialists.get(agent_id)
             if agent is None:
                 return {
@@ -277,6 +298,11 @@ class OrchestratorAgent(GenericAgent):
                 await status_callback(
                     WSAgentStatusUpdate(agent_id=agent_id, status="complete")
                 )
+                logger.info(
+                    "Specialist %s completed in %.2fs",
+                    agent_id,
+                    time.perf_counter() - specialist_started,
+                )
                 return response.model_dump()
             except Exception as e:
                 logger.error("Specialist %s failed: %s", agent_id, e)
@@ -290,12 +316,24 @@ class OrchestratorAgent(GenericAgent):
                     "citations": [],
                 }
 
+        specialists_started = time.perf_counter()
         specialist_responses = await asyncio.gather(*[run_one(aid) for aid in selected_ids])
         await self._unload_specialists()
+        logger.info(
+            "Specialist phase completed in %.2fs for %d specialists",
+            time.perf_counter() - specialists_started,
+            len(selected_ids),
+        )
 
         # Phase 3: synthesize
+        synthesis_started = time.perf_counter()
         result = await self.process(query_text, list(specialist_responses))
         await self._unload_orchestrator()
+        logger.info(
+            "Synthesis phase completed in %.2fs; total orchestrator workflow %.2fs",
+            time.perf_counter() - synthesis_started,
+            time.perf_counter() - total_started,
+        )
         await status_callback(WSAgentStatusUpdate(agent_id="orchestrator", status="complete"))
         return result
 

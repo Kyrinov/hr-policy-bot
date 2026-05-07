@@ -53,6 +53,10 @@ class TestConfig:
         assert config.model.specialist_name == "gemma4:e4b"
         assert config.model.orchestrator_host == "http://127.0.0.1:11436"
         assert config.model.specialist_host == "http://127.0.0.1:11435"
+        assert config.model.think is False
+        assert config.model.orchestrator_num_predict == 1800
+        assert config.model.specialist_num_predict == 1000
+        assert config.model.route_with_llm is False
 
     def test_ollama_model_env_override(self, monkeypatch):
         """Test OLLAMA_MODEL overrides the configured model."""
@@ -169,6 +173,7 @@ class TestOllamaClient:
             "temperature": 0.2,
             "top_p": 0.9,
         }
+        assert calls[0]["think"] is False
 
     @pytest.mark.asyncio
     async def test_stream_chat_yields_message_content(self, fake_async_client):
@@ -181,6 +186,7 @@ class TestOllamaClient:
         assert chunks == ["hello", " world"]
         calls, _hosts = fake_async_client
         assert calls[0]["stream"] is True
+        assert calls[0]["think"] is False
 
     @pytest.mark.asyncio
     async def test_chat_parsed_preserves_json_parsing_behavior(
@@ -234,6 +240,8 @@ class TestOllamaClient:
         assert hosts == ["http://127.0.0.1:11436", "http://127.0.0.1:11435"]
         assert orchestrator._model == "gemma4:31b"
         assert specialist._model == "gemma4:e4b"
+        assert orchestrator._num_predict == 1800
+        assert specialist._num_predict == 1000
 
 
 class TestDatabase:

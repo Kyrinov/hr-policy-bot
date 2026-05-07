@@ -16,6 +16,10 @@ class ModelConfig(BaseModel):
     temperature: float = 0.2
     num_ctx: int = 32768
     top_p: float = 0.9
+    think: bool = False
+    orchestrator_num_predict: int = 1800
+    specialist_num_predict: int = 1000
+    route_with_llm: bool = False
 
 
 class ServerConfig(BaseModel):

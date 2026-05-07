@@ -12,18 +12,27 @@ logger = logging.getLogger(__name__)
 
 
 class OllamaClient:
-    def __init__(self, model: str | None = None, host: str | None = None) -> None:
+    def __init__(
+        self,
+        model: str | None = None,
+        host: str | None = None,
+        num_predict: int | None = None,
+    ) -> None:
         self._config = get_config()
         self._model = model or self._config.model.name
         self._host = host
+        self._num_predict = num_predict
         self._client = ollama.AsyncClient(host=host)
 
     def _options(self) -> dict[str, float | int]:
-        return {
+        options: dict[str, float | int] = {
             "temperature": self._config.model.temperature,
             "top_p": self._config.model.top_p,
             "num_ctx": self._config.model.num_ctx,
         }
+        if self._num_predict is not None:
+            options["num_predict"] = self._num_predict
+        return options
 
     async def chat(
         self, system_prompt: str, user_message: str, model: str | None = None
@@ -36,6 +45,7 @@ class OllamaClient:
                 {"role": "user", "content": user_message},
             ],
             options=self._options(),
+            think=self._config.model.think,
         )
         return response.message.content or ""
 
@@ -58,6 +68,7 @@ class OllamaClient:
                 {"role": "user", "content": user_message},
             ],
             options=self._options(),
+            think=self._config.model.think,
             stream=True,
         )
         async for chunk in stream:
@@ -108,6 +119,7 @@ def get_orchestrator_client() -> OllamaClient:
         _orchestrator_client = OllamaClient(
             model=config.model.name,
             host=config.model.orchestrator_host,
+            num_predict=config.model.orchestrator_num_predict,
         )
     return _orchestrator_client
 
@@ -120,5 +132,6 @@ def get_specialist_client() -> OllamaClient:
         _specialist_client = OllamaClient(
             model=config.model.specialist_name,
             host=config.model.specialist_host,
+            num_predict=config.model.specialist_num_predict,
         )
     return _specialist_client

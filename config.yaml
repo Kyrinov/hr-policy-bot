@@ -6,6 +6,10 @@ model:
   temperature: 0.2    # Low temperature for policy accuracy
   num_ctx: 32768      # Gives specialists room for full policy content
   top_p: 0.9
+  think: false
+  orchestrator_num_predict: 1800
+  specialist_num_predict: 1000
+  route_with_llm: false
 
 server:
   host: "0.0.0.0"
