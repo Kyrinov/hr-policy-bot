@@ -20,8 +20,6 @@ class ModelConfig(BaseModel):
     orchestrator_num_predict: int = 1800
     specialist_num_predict: int = 1000
     route_with_llm: bool = False
-    final_gate_enabled: bool = True
-    final_gate_findings_chars: int = 900
 
 
 class ServerConfig(BaseModel):

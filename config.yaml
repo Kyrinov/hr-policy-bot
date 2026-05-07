@@ -10,8 +10,6 @@ model:
   orchestrator_num_predict: 1800
   specialist_num_predict: 1000
   route_with_llm: false
-  final_gate_enabled: true
-  final_gate_findings_chars: 900
 
 server:
   host: "0.0.0.0"
