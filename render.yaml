@@ -12,6 +12,8 @@ services:
       mountPath: /var/data
       sizeGB: 1
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: APP_DATA_DIR
         value: /var/data
       - key: OLLAMA_ORCHESTRATOR_MODEL

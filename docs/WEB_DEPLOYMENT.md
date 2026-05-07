@@ -18,6 +18,7 @@ Set these in Render. `render.yaml` includes the ngrok host values for the single
 
 ```text
 APP_DATA_DIR=/var/data
+PYTHON_VERSION=3.11.9
 OLLAMA_ORCHESTRATOR_MODEL=gemma4:31b
 OLLAMA_SPECIALIST_MODEL=gemma4:e4b
 OLLAMA_ORCHESTRATOR_HOST=https://veto-faceless-grime.ngrok-free.dev/orchestrator
