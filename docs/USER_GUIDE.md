@@ -103,6 +103,8 @@ To switch models without editing code, change the `model.name` value in `config.
 ### Step 1 — Ensure Ollama is running
 
 ```bash
+export OLLAMA_MAX_LOADED_MODELS=1
+export OLLAMA_NUM_PARALLEL=8
 ollama serve
 ```
 

@@ -61,6 +61,23 @@ The following environment variables must be configured on the host to support th
 * `OLLAMA_MAX_LOADED_MODELS=1`: Prevents memory fragmentation by ensuring Tier 1 and Tier 2 do not overlap.
 * `OLLAMA_NUM_PARALLEL=8`: Enables concurrent processing of multiple E4B streams.
 
+Benchmarking on the target Jetson environment selected `8` as the best measured
+value for E4B swarm throughput. With `gemma4:e4b`, `num_ctx=32768`, JSON mode,
+and compact extraction prompts, an 8-request batch completed in approximately
+14.9 seconds with no request errors and no observed swap growth. Lower settings
+were materially slower for broad specialist batches:
+
+| `OLLAMA_NUM_PARALLEL` | 4 requests | 6 requests | 8 requests |
+| ---: | ---: | ---: | ---: |
+| default/effective 1 | 22.0s | 32.9s | 43.7s |
+| 2 | 13.5s | 20.2s | 26.9s |
+| 4 | 10.2s | 16.9s | 20.0s |
+| 6 | 10.3s | 12.5s | 18.8s |
+| 8 | 10.2s | 12.4s | 14.9s |
+
+The application-level specialist concurrency should therefore default to 8,
+capped by the number of selected specialists.
+
 ---
 
 ## 5. Implementation Guidelines for Refactoring
