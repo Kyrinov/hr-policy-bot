@@ -36,8 +36,6 @@ class TestPydanticModels:
         )
         assert response.agent_id == "staffing"
         assert response.confidence == "high"
-        assert response.relevant_to_query is True
-        assert response.relevance_rationale is None
 
 
 class TestConfig:
@@ -59,7 +57,6 @@ class TestConfig:
         assert config.model.orchestrator_num_predict == 1800
         assert config.model.specialist_num_predict == 1000
         assert config.model.route_with_llm is False
-        assert config.model.specialist_self_filter_enabled is True
 
     def test_ollama_model_env_override(self, monkeypatch):
         """Test OLLAMA_MODEL overrides the configured model."""
@@ -245,91 +242,6 @@ class TestOllamaClient:
         assert specialist._model == "gemma4:e4b"
         assert orchestrator._num_predict == 1800
         assert specialist._num_predict == 1000
-
-
-class TestSpecialistSelfRelevance:
-    """Test specialist self-relevance parsing."""
-
-    def test_parse_response_reads_relevance_fields(self):
-        from src.agents.specialist import SpecialistAgent
-
-        agent = SpecialistAgent("staffing", "Staffing", "Staffing")
-        response = agent._parse_response(
-            """
-            {
-              "agent_id": "staffing",
-              "findings": "No staffing issue found.",
-              "relevant_to_query": false,
-              "relevance_rationale": "The query is not about staffing.",
-              "citations": [],
-              "caveats": null,
-              "scope_flags": [],
-              "confidence": "medium"
-            }
-            """,
-            attempted=0,
-            retrieved=0,
-            failed=[],
-        )
-
-        assert response.relevant_to_query is False
-        assert response.relevance_rationale == "The query is not about staffing."
-
-    def test_parse_response_defaults_missing_relevance_to_true(self):
-        from src.agents.specialist import SpecialistAgent
-
-        agent = SpecialistAgent("staffing", "Staffing", "Staffing")
-        response = agent._parse_response(
-            """
-            {
-              "agent_id": "staffing",
-              "findings": "Staffing issue found.",
-              "citations": [],
-              "caveats": null,
-              "scope_flags": [],
-              "confidence": "medium"
-            }
-            """,
-            attempted=0,
-            retrieved=0,
-            failed=[],
-        )
-
-        assert response.relevant_to_query is True
-
-
-class TestOrchestratorSelfRelevanceFilter:
-    """Test self-relevance filtering before synthesis."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        from src.agents.orchestrator import OrchestratorAgent
-
-        return OrchestratorAgent()
-
-    def test_self_relevance_filter_excludes_irrelevant_agents(self, orchestrator):
-        responses = [
-            {"agent_id": "staffing", "relevant_to_query": True},
-            {"agent_id": "learning", "relevant_to_query": False},
-            {"agent_id": "labour"},
-        ]
-
-        filtered = orchestrator._filter_self_relevant_responses(responses)
-
-        assert [response["agent_id"] for response in filtered] == [
-            "staffing",
-            "labour",
-        ]
-
-    def test_self_relevance_filter_fails_open_if_all_irrelevant(self, orchestrator):
-        responses = [
-            {"agent_id": "staffing", "relevant_to_query": False},
-            {"agent_id": "learning", "relevant_to_query": False},
-        ]
-
-        filtered = orchestrator._filter_self_relevant_responses(responses)
-
-        assert filtered == responses
 
 
 class TestDatabase:
