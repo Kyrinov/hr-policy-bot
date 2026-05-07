@@ -92,6 +92,20 @@ CRITICAL — OUTPUT FORMAT: Respond with ONLY a valid JSON object. Do not write 
 Begin your synthesis directly with the JSON object. Do not include any preface, introductory text, or text outside the JSON.
 """
 
+FINAL_EVIDENCE_GATE_PROMPT = """You are selecting evidence for final HR policy synthesis.
+
+You will receive compact summaries from all consulted specialist agents. Select only the agents whose findings are materially relevant to answering the user's original query. Exclude agents that report no direct policy relevance, only generic caveats, failed retrieval with no useful findings, or citations unrelated to the final answer.
+
+Respond with ONLY a valid JSON object:
+{
+  "selected_agents": ["agent_id"],
+  "excluded_agents": ["agent_id"],
+  "rationale": {
+    "agent_id": "short reason for inclusion or exclusion"
+  }
+}
+"""
+
 
 class OrchestratorAgent(GenericAgent):
     """
@@ -155,8 +169,14 @@ class OrchestratorAgent(GenericAgent):
             if end >= 0:
                 text = text[:end + 1]
             parsed = json.loads(text)
+            used_agents = self._valid_agents_consulted(parsed, specialist_responses)
+            parsed["agents_consulted"] = used_agents
+            final_citations = parsed.get("citations", [])
+            parsed["citations"] = []
             orch_response = OrchestratorResponse(**parsed)
-            orch_response.citations = self._aggregate_citations(specialist_responses)
+            orch_response.citations = self._filtered_citations(
+                final_citations, specialist_responses, set(used_agents)
+            )
             orch_response.deterministic_grounding = self._deterministic_grounding(
                 specialist_responses
             )
@@ -167,7 +187,7 @@ class OrchestratorAgent(GenericAgent):
                 summary="The system encountered an error processing your query.",
                 detailed_analysis=str(e),
                 citations=self._aggregate_citations(specialist_responses),
-                agents_consulted=[],
+                agents_consulted=self._agent_ids(specialist_responses),
                 overall_confidence="low",
                 deterministic_grounding=self._deterministic_grounding(specialist_responses),
             )
@@ -204,20 +224,23 @@ class OrchestratorAgent(GenericAgent):
                     parts.append(line + "\n")
 
         parts.append(
-            "\n\nSynthesize these responses into a comprehensive answer. Respond with ONLY the JSON object described in your system prompt — no preamble, no explanation outside the JSON."
+            "\n\nSynthesize these responses into a comprehensive answer. The agents_consulted field must include only agents whose findings you used in the final analysis. The citations field must include only citations from those used agents. Respond with ONLY the JSON object described in your system prompt — no preamble, no explanation outside the JSON."
         )
 
         return "".join(parts)
 
-
     def _aggregate_citations(
-        self, specialist_responses: list[dict[str, Any]]
+        self,
+        specialist_responses: list[dict[str, Any]],
+        allowed_agents: set[str] | None = None,
     ) -> list[OrchestratorCitation]:
         """Collect citations from specialist responses, preserving registry URLs."""
         seen: set[tuple[str, str]] = set()
         result: list[OrchestratorCitation] = []
         for resp in specialist_responses:
             agent_id = resp.get("agent_id", "unknown")
+            if allowed_agents is not None and agent_id not in allowed_agents:
+                continue
             for c in resp.get("citations", []):
                 key = (c.get("instrument_title", ""), c.get("url", ""))
                 if key in seen:
@@ -231,6 +254,147 @@ class OrchestratorAgent(GenericAgent):
                     sourced_from_agent=agent_id,
                 ))
         return result
+
+    def _filtered_citations(
+        self,
+        final_citations: list[dict[str, Any]],
+        specialist_responses: list[dict[str, Any]],
+        used_agents: set[str],
+    ) -> list[OrchestratorCitation]:
+        """Keep final citations only if they come from used agents and known sources."""
+        known = {
+            (
+                resp.get("agent_id", "unknown"),
+                c.get("instrument_title", ""),
+                c.get("url", ""),
+            )
+            for resp in specialist_responses
+            if resp.get("agent_id", "unknown") in used_agents
+            for c in resp.get("citations", [])
+        }
+        result: list[OrchestratorCitation] = []
+        seen: set[tuple[str, str]] = set()
+        for citation in final_citations:
+            agent_id = citation.get("sourced_from_agent", "")
+            title = citation.get("instrument_title", "")
+            url = citation.get("url", "")
+            if agent_id not in used_agents or (agent_id, title, url) not in known:
+                continue
+            key = (title, url)
+            if key in seen:
+                continue
+            seen.add(key)
+            result.append(OrchestratorCitation(
+                instrument_title=title,
+                instrument_type=citation.get("instrument_type", ""),
+                url=url,
+                relevant_section=citation.get("relevant_section"),
+                sourced_from_agent=agent_id,
+            ))
+        if result:
+            return result
+        return self._aggregate_citations(specialist_responses, used_agents)
+
+    def _valid_agents_consulted(
+        self,
+        parsed: dict[str, Any],
+        specialist_responses: list[dict[str, Any]],
+    ) -> list[str]:
+        available = set(self._agent_ids(specialist_responses))
+        used = [
+            agent_id
+            for agent_id in parsed.get("agents_consulted", [])
+            if agent_id in available
+        ]
+        return used or self._agent_ids(specialist_responses)
+
+    def _agent_ids(self, specialist_responses: list[dict[str, Any]]) -> list[str]:
+        return [
+            response.get("agent_id", "unknown")
+            for response in specialist_responses
+        ]
+
+    async def _gate_final_responses(
+        self,
+        query_text: str,
+        specialist_responses: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        if not self._config.model.final_gate_enabled or len(specialist_responses) <= 1:
+            return specialist_responses
+        try:
+            raw = await self._llm_client.chat(
+                system_prompt=FINAL_EVIDENCE_GATE_PROMPT,
+                user_message=self._build_final_gate_prompt(query_text, specialist_responses),
+            )
+            text = raw.strip()
+            start = text.find("{")
+            if start > 0:
+                text = text[start:]
+            end = text.rfind("}")
+            if end >= 0:
+                text = text[:end + 1]
+            parsed = json.loads(text)
+            available = set(self._agent_ids(specialist_responses))
+            selected = [
+                agent_id
+                for agent_id in parsed.get("selected_agents", [])
+                if agent_id in available
+            ]
+            if not selected:
+                logger.warning("Final evidence gate selected no valid agents; using all")
+                return specialist_responses
+            selected_set = set(selected)
+            excluded = sorted(available - selected_set)
+            logger.info(
+                "Final evidence gate selected=%s excluded=%s",
+                selected,
+                excluded,
+            )
+            return [
+                response
+                for response in specialist_responses
+                if response.get("agent_id", "unknown") in selected_set
+            ]
+        except Exception as e:
+            logger.warning("Final evidence gate failed; using all specialists: %s", e)
+            return specialist_responses
+
+    def _build_final_gate_prompt(
+        self,
+        query_text: str,
+        specialist_responses: list[dict[str, Any]],
+    ) -> str:
+        parts = [
+            f"ORIGINAL USER QUERY: {query_text}\n",
+            "CONSULTED SPECIALIST SUMMARIES:\n",
+        ]
+        max_chars = self._config.model.final_gate_findings_chars
+        for response in specialist_responses:
+            agent_id = response.get("agent_id", "unknown")
+            findings = response.get("findings", "")[:max_chars]
+            confidence = response.get("confidence", "unknown")
+            caveats = response.get("caveats")
+            scope_flags = response.get("scope_flags", [])
+            retrieval = response.get("retrieval_status", {})
+            citations = response.get("citations", [])
+            citation_lines = [
+                f"{c.get('instrument_title', '')} | {c.get('url', '')}"
+                for c in citations
+            ]
+            parts.append(
+                f"\n[{agent_id}]\n"
+                f"confidence: {confidence}\n"
+                f"retrieval_status: {json.dumps(retrieval)}\n"
+                f"scope_flags: {json.dumps(scope_flags)}\n"
+                f"caveats: {caveats or ''}\n"
+                f"citations: {json.dumps(citation_lines)}\n"
+                f"findings_excerpt: {findings}\n"
+            )
+        parts.append(
+            "\nSelect the agents whose findings should be used in final synthesis. "
+            "Exclude agents whose findings are not materially relevant to the original query."
+        )
+        return "".join(parts)
 
     async def process_with_streaming(
         self,
@@ -325,9 +489,19 @@ class OrchestratorAgent(GenericAgent):
             len(selected_ids),
         )
 
-        # Phase 3: synthesize
+        # Phase 3: gate and synthesize
+        gate_started = time.perf_counter()
+        final_responses = await self._gate_final_responses(
+            query_text, list(specialist_responses)
+        )
+        logger.info(
+            "Final evidence gate completed in %.2fs; using %d/%d specialists",
+            time.perf_counter() - gate_started,
+            len(final_responses),
+            len(specialist_responses),
+        )
         synthesis_started = time.perf_counter()
-        result = await self.process(query_text, list(specialist_responses))
+        result = await self.process(query_text, final_responses)
         await self._unload_orchestrator()
         logger.info(
             "Synthesis phase completed in %.2fs; total orchestrator workflow %.2fs",

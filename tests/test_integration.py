@@ -57,6 +57,8 @@ class TestConfig:
         assert config.model.orchestrator_num_predict == 1800
         assert config.model.specialist_num_predict == 1000
         assert config.model.route_with_llm is False
+        assert config.model.final_gate_enabled is True
+        assert config.model.final_gate_findings_chars == 900
 
     def test_ollama_model_env_override(self, monkeypatch):
         """Test OLLAMA_MODEL overrides the configured model."""
@@ -242,6 +244,126 @@ class TestOllamaClient:
         assert specialist._model == "gemma4:e4b"
         assert orchestrator._num_predict == 1800
         assert specialist._num_predict == 1000
+
+
+class TestOrchestratorEvidenceGate:
+    """Test final evidence gating and citation pruning."""
+
+    @pytest.fixture
+    def orchestrator(self):
+        from src.agents.orchestrator import OrchestratorAgent
+
+        return OrchestratorAgent()
+
+    @pytest.fixture
+    def specialist_responses(self):
+        return [
+            {
+                "agent_id": "staffing",
+                "findings": "Staffing finding",
+                "citations": [
+                    {
+                        "instrument_title": "Staffing Policy",
+                        "instrument_type": "Policy / Directive",
+                        "url": "https://example.com/staffing",
+                        "relevant_section": "1",
+                    }
+                ],
+                "confidence": "high",
+                "retrieval_status": {
+                    "instruments_attempted": 1,
+                    "instruments_successfully_retrieved": 1,
+                    "instruments_failed": [],
+                },
+            },
+            {
+                "agent_id": "learning",
+                "findings": "Learning not relevant",
+                "citations": [
+                    {
+                        "instrument_title": "Learning Policy",
+                        "instrument_type": "Policy / Directive",
+                        "url": "https://example.com/learning",
+                        "relevant_section": "2",
+                    }
+                ],
+                "confidence": "low",
+                "retrieval_status": {
+                    "instruments_attempted": 1,
+                    "instruments_successfully_retrieved": 1,
+                    "instruments_failed": [],
+                },
+            },
+        ]
+
+    def test_filtered_citations_excludes_unused_agents(
+        self, orchestrator, specialist_responses
+    ):
+        final_citations = [
+            {
+                "instrument_title": "Staffing Policy",
+                "instrument_type": "Policy / Directive",
+                "url": "https://example.com/staffing",
+                "relevant_section": "1",
+                "sourced_from_agent": "staffing",
+            },
+            {
+                "instrument_title": "Learning Policy",
+                "instrument_type": "Policy / Directive",
+                "url": "https://example.com/learning",
+                "relevant_section": "2",
+                "sourced_from_agent": "learning",
+            },
+        ]
+
+        citations = orchestrator._filtered_citations(
+            final_citations, specialist_responses, {"staffing"}
+        )
+
+        assert [c.sourced_from_agent for c in citations] == ["staffing"]
+        assert citations[0].instrument_title == "Staffing Policy"
+
+    def test_filtered_citations_falls_back_to_used_agent_sources(
+        self, orchestrator, specialist_responses
+    ):
+        citations = orchestrator._filtered_citations(
+            [], specialist_responses, {"staffing"}
+        )
+
+        assert [c.sourced_from_agent for c in citations] == ["staffing"]
+        assert citations[0].instrument_title == "Staffing Policy"
+
+    @pytest.mark.asyncio
+    async def test_final_gate_selects_valid_agents(
+        self, orchestrator, specialist_responses
+    ):
+        class FakeClient:
+            async def chat(self, **kwargs):
+                return '{"selected_agents": ["staffing"], "excluded_agents": ["learning"], "rationale": {"staffing": "relevant", "learning": "not relevant"}}'
+
+        orchestrator._llm_client = FakeClient()
+
+        gated = await orchestrator._gate_final_responses(
+            "Can I staff this position?", specialist_responses
+        )
+
+        assert [response["agent_id"] for response in gated] == ["staffing"]
+
+    @pytest.mark.asyncio
+    async def test_final_gate_failure_uses_all_specialists(
+        self, orchestrator, specialist_responses
+    ):
+        class FakeClient:
+            async def chat(self, **kwargs):
+                return "not json"
+
+        orchestrator._llm_client = FakeClient()
+
+        gated = await orchestrator._gate_final_responses(
+            "Can I staff this position?", specialist_responses
+        )
+
+        assert gated == specialist_responses
 
 
 class TestDatabase:
