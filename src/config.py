@@ -20,6 +20,7 @@ class ModelConfig(BaseModel):
     orchestrator_num_predict: int = 1800
     specialist_num_predict: int = 1000
     route_with_llm: bool = False
+    specialist_self_filter_enabled: bool = True
 
 
 class ServerConfig(BaseModel):

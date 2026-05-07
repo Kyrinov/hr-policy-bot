@@ -2,6 +2,16 @@ from __future__ import annotations
 
 # Specialist agent system prompts
 
+SPECIALIST_RELEVANCE_INSTRUCTIONS = """
+
+SELF-RELEVANCE FIELDS
+Also include these fields in the JSON object:
+  "relevant_to_query": true or false,
+  "relevance_rationale": "one short sentence explaining whether your findings should be used in the final answer"
+
+Set "relevant_to_query" to false only when your retrieved or extracted policy material does not materially help answer the original query. If your domain is relevant but the available material is incomplete, keep "relevant_to_query" true and explain the limitation in caveats.
+"""
+
 SPECIALIST_PROMPTS = {
     "staffing": """You are the Staffing & Recruitment Agent, a specialist policy advisor within the DND HR-Civ Multi-Agent Policy Advisory System. Your role is to provide accurate, well-referenced guidance on HR policy questions within your domain of expertise.
 
@@ -451,7 +461,10 @@ CRITICAL — OUTPUT FORMAT: Respond with ONLY a valid JSON object. Do not write 
 
 def get_specialist_prompt(agent_id: str) -> str:
     """Get the system prompt for a specialist agent."""
-    return SPECIALIST_PROMPTS.get(agent_id, SPECIALIST_PROMPTS["staffing"])
+    return (
+        SPECIALIST_PROMPTS.get(agent_id, SPECIALIST_PROMPTS["staffing"])
+        + SPECIALIST_RELEVANCE_INSTRUCTIONS
+    )
 
 
 def get_validate_mode_prompt(agent_id: str) -> str:

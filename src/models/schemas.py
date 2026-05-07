@@ -65,6 +65,8 @@ class RetrievalStatus(BaseModel):
 class SpecialistResponse(BaseModel):
     agent_id: str
     findings: str
+    relevant_to_query: bool = True
+    relevance_rationale: Optional[str] = None
     citations: list[CitationItem] = Field(default_factory=list)
     caveats: Optional[str] = None
     scope_flags: list[str] = Field(default_factory=list)

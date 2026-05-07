@@ -185,8 +185,15 @@ class OrchestratorAgent(GenericAgent):
             agent_id = response.get("agent_id", "unknown")
             findings = response.get("findings", "No findings reported")
             confidence = response.get("confidence", "unknown")
+            relevant = response.get("relevant_to_query", True)
+            relevance_rationale = response.get("relevance_rationale")
 
-            parts.append(f"\n[{agent_id.upper()} Agent] (Confidence: {confidence})\n")
+            parts.append(
+                f"\n[{agent_id.upper()} Agent] "
+                f"(Confidence: {confidence}; Self-relevant: {relevant})\n"
+            )
+            if relevance_rationale:
+                parts.append(f"RELEVANCE RATIONALE: {relevance_rationale}\n")
             parts.append(f"{findings}\n")
 
             citations = response.get("citations", [])
@@ -231,6 +238,32 @@ class OrchestratorAgent(GenericAgent):
                     sourced_from_agent=agent_id,
                 ))
         return result
+
+    def _filter_self_relevant_responses(
+        self, specialist_responses: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        if not self._config.model.specialist_self_filter_enabled:
+            return specialist_responses
+        filtered = [
+            response
+            for response in specialist_responses
+            if response.get("relevant_to_query", True)
+        ]
+        if not filtered:
+            logger.warning("All specialists self-marked irrelevant; using all responses")
+            return specialist_responses
+        included = [response.get("agent_id", "unknown") for response in filtered]
+        excluded = [
+            response.get("agent_id", "unknown")
+            for response in specialist_responses
+            if not response.get("relevant_to_query", True)
+        ]
+        logger.info(
+            "Specialist self-filter included=%s excluded=%s",
+            included,
+            excluded,
+        )
+        return filtered
 
     async def process_with_streaming(
         self,
@@ -326,8 +359,16 @@ class OrchestratorAgent(GenericAgent):
         )
 
         # Phase 3: synthesize
+        final_responses = self._filter_self_relevant_responses(
+            list(specialist_responses)
+        )
+        logger.info(
+            "Self-relevance filter using %d/%d specialists for synthesis",
+            len(final_responses),
+            len(specialist_responses),
+        )
         synthesis_started = time.perf_counter()
-        result = await self.process(query_text, list(specialist_responses))
+        result = await self.process(query_text, final_responses)
         await self._unload_orchestrator()
         logger.info(
             "Synthesis phase completed in %.2fs; total orchestrator workflow %.2fs",

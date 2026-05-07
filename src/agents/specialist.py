@@ -237,6 +237,8 @@ class SpecialistAgent(GenericAgent):
             return SpecialistResponse(
                 agent_id=parsed.get("agent_id", self._agent_id),
                 findings=parsed.get("findings", raw),
+                relevant_to_query=self._relevant_to_query(parsed),
+                relevance_rationale=parsed.get("relevance_rationale"),
                 citations=citations,
                 caveats=parsed.get("caveats"),
                 scope_flags=parsed.get("scope_flags", []),
@@ -252,11 +254,21 @@ class SpecialistAgent(GenericAgent):
             return SpecialistResponse(
                 agent_id=self._agent_id,
                 findings=raw,
+                relevant_to_query=True,
+                relevance_rationale="Specialist response could not be parsed; retained for fail-open synthesis.",
                 citations=[],
                 confidence="low",
                 retrieval_status=retrieval_status,
                 grounding_mode=grounding_mode,
             )
+
+    def _relevant_to_query(self, parsed: dict) -> bool:
+        value = parsed.get("relevant_to_query", True)
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            return value.strip().lower() not in {"false", "no", "0", "none"}
+        return bool(value)
 
 
 _specialists: dict[str, SpecialistAgent] | None = None
