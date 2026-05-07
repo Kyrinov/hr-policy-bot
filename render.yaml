@@ -19,8 +19,8 @@ services:
       - key: OLLAMA_SPECIALIST_MODEL
         value: gemma4:e4b
       - key: OLLAMA_ORCHESTRATOR_HOST
-        sync: false
+        value: https://veto-faceless-grime.ngrok-free.dev/orchestrator
       - key: OLLAMA_SPECIALIST_HOST
-        sync: false
+        value: https://veto-faceless-grime.ngrok-free.dev/specialist
       - key: OLLAMA_AUTH_HEADER
         sync: false

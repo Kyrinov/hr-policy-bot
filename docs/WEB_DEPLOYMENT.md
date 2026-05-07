@@ -1,6 +1,6 @@
 # Web Deployment
 
-This branch is intended for Render hosting with inference served from the local AGX through two ngrok HTTPS endpoints.
+This branch is intended for Render hosting with inference served from the local AGX through one ngrok HTTPS endpoint.
 
 ## Runtime Shape
 
@@ -9,18 +9,19 @@ This branch is intended for Render hosting with inference served from the local 
 - The AGX runs two local Ollama servers:
   - `gemma4:31b` on `127.0.0.1:11436` for orchestration and synthesis.
   - `gemma4:e4b` on `127.0.0.1:11435` for all eight specialist agents running in parallel.
-- ngrok exposes each local Ollama server with a stable HTTPS endpoint.
+- A small AGX-side proxy exposes both local Ollama servers under one local HTTP port.
+- ngrok exposes that proxy with one stable HTTPS endpoint.
 
 ## Render Environment
 
-Set these in Render. `render.yaml` marks the ngrok values as manually supplied secrets.
+Set these in Render. `render.yaml` includes the ngrok host values for the single-domain proxy. The optional auth header remains a manually supplied secret.
 
 ```text
 APP_DATA_DIR=/var/data
 OLLAMA_ORCHESTRATOR_MODEL=gemma4:31b
 OLLAMA_SPECIALIST_MODEL=gemma4:e4b
-OLLAMA_ORCHESTRATOR_HOST=https://<your-31b-domain>.ngrok.app
-OLLAMA_SPECIALIST_HOST=https://<your-e4b-domain>.ngrok.app
+OLLAMA_ORCHESTRATOR_HOST=https://veto-faceless-grime.ngrok-free.dev/orchestrator
+OLLAMA_SPECIALIST_HOST=https://veto-faceless-grime.ngrok-free.dev/specialist
 ```
 
 If the ngrok endpoints use Basic Auth, set this too:
@@ -29,7 +30,7 @@ If the ngrok endpoints use Basic Auth, set this too:
 OLLAMA_AUTH_HEADER=Basic <base64(username:password)>
 ```
 
-Use role-specific values only if the two endpoints use different credentials:
+Use role-specific values only if you later split the endpoints again and use different credentials:
 
 ```text
 OLLAMA_ORCHESTRATOR_AUTH_HEADER=Basic <base64(username:password)>
@@ -62,6 +63,37 @@ OLLAMA_HOST=127.0.0.1:11436 ollama pull gemma4:31b
 OLLAMA_HOST=127.0.0.1:11435 ollama pull gemma4:e4b
 ```
 
+## AGX Proxy
+
+Start the local proxy after both Ollama servers are running:
+
+```bash
+uvicorn scripts.ollama_ngrok_proxy:app --host 127.0.0.1 --port 11500
+```
+
+The proxy routes:
+
+```text
+http://127.0.0.1:11500/orchestrator/* -> http://127.0.0.1:11436/*
+http://127.0.0.1:11500/specialist/* -> http://127.0.0.1:11435/*
+```
+
+Verify locally on the AGX:
+
+```bash
+curl http://127.0.0.1:11500/health
+curl http://127.0.0.1:11500/orchestrator/api/tags
+curl http://127.0.0.1:11500/specialist/api/tags
+```
+
+If you want to use different local ports, set these before starting the proxy:
+
+```bash
+ORCHESTRATOR_OLLAMA_UPSTREAM=http://127.0.0.1:11436 \
+SPECIALIST_OLLAMA_UPSTREAM=http://127.0.0.1:11435 \
+uvicorn scripts.ollama_ngrok_proxy:app --host 127.0.0.1 --port 11500
+```
+
 ## ngrok Setup
 
 Install ngrok on the AGX, then authenticate the agent:
@@ -70,7 +102,13 @@ Install ngrok on the AGX, then authenticate the agent:
 ngrok config add-authtoken <your-ngrok-authtoken>
 ```
 
-Create two stable ngrok domains in the ngrok dashboard, one for each Ollama server. Then add endpoints to the ngrok config.
+Create one stable ngrok domain in the ngrok dashboard. This deployment uses:
+
+```text
+https://veto-faceless-grime.ngrok-free.dev
+```
+
+Then add a single endpoint to the ngrok config that forwards to the AGX proxy.
 
 Example ngrok v3 config:
 
@@ -81,21 +119,16 @@ agent:
   authtoken: <your-ngrok-authtoken>
 
 endpoints:
-  - name: ollama-orchestrator
-    url: https://<your-31b-domain>.ngrok.app
+  - name: ollama-proxy
+    url: https://veto-faceless-grime.ngrok-free.dev
     upstream:
-      url: http://127.0.0.1:11436
-
-  - name: ollama-specialists
-    url: https://<your-e4b-domain>.ngrok.app
-    upstream:
-      url: http://127.0.0.1:11435
+      url: http://127.0.0.1:11500
 ```
 
-Start both endpoints:
+Start the endpoint:
 
 ```bash
-ngrok start ollama-orchestrator ollama-specialists
+ngrok start ollama-proxy
 ```
 
 Or:
@@ -107,13 +140,14 @@ ngrok start --all
 Verify from any machine that can reach the public internet:
 
 ```bash
-curl https://<your-31b-domain>.ngrok.app/api/tags
-curl https://<your-e4b-domain>.ngrok.app/api/tags
+curl https://veto-faceless-grime.ngrok-free.dev/health
+curl https://veto-faceless-grime.ngrok-free.dev/orchestrator/api/tags
+curl https://veto-faceless-grime.ngrok-free.dev/specialist/api/tags
 ```
 
 ## Optional Basic Auth
 
-Because ngrok endpoints are public unless protected, Basic Auth is recommended for the Ollama endpoints.
+Because ngrok endpoints are public unless protected, Basic Auth is recommended for the Ollama proxy endpoint.
 
 Create a traffic policy:
 
@@ -128,7 +162,7 @@ on_http_request:
           enforce: true
 ```
 
-Attach that policy to both ngrok endpoints. Then base64 encode the credential and set Render's `OLLAMA_AUTH_HEADER`:
+Attach that policy to the ngrok endpoint. Then base64 encode the credential and set Render's `OLLAMA_AUTH_HEADER`:
 
 ```bash
 printf 'render:<long-random-password>' | base64 -w 0
@@ -141,8 +175,9 @@ OLLAMA_AUTH_HEADER=Basic <encoded-value>
 Verify:
 
 ```bash
-curl -H 'Authorization: Basic <encoded-value>' https://<your-31b-domain>.ngrok.app/api/tags
-curl -H 'Authorization: Basic <encoded-value>' https://<your-e4b-domain>.ngrok.app/api/tags
+curl -H 'Authorization: Basic <encoded-value>' https://veto-faceless-grime.ngrok-free.dev/health
+curl -H 'Authorization: Basic <encoded-value>' https://veto-faceless-grime.ngrok-free.dev/orchestrator/api/tags
+curl -H 'Authorization: Basic <encoded-value>' https://veto-faceless-grime.ngrok-free.dev/specialist/api/tags
 ```
 
 ## Render Deploy
