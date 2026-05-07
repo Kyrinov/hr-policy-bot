@@ -91,9 +91,10 @@ async def health_check() -> dict:
 
     try:
         import aiosqlite
-        from pathlib import Path
 
-        db_path = Path(__file__).parent.parent.parent / "data" / "hr_policy_agent.db"
+        from src.data.db import DatabaseManager
+
+        db_path = DatabaseManager().db_path
         if db_path.exists():
             async with aiosqlite.connect(db_path) as db:
                 async with db.execute("SELECT COUNT(*) FROM queries") as cursor:

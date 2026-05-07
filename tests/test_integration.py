@@ -53,10 +53,14 @@ class TestConfig:
         assert config.model.specialist_name == "gemma4:e4b"
         assert config.model.orchestrator_host == "http://127.0.0.1:11436"
         assert config.model.specialist_host == "http://127.0.0.1:11435"
+        assert config.model.orchestrator_auth_header is None
+        assert config.model.specialist_auth_header is None
         assert config.model.think is False
         assert config.model.orchestrator_num_predict == 1800
         assert config.model.specialist_num_predict == 1000
         assert config.model.route_with_llm is False
+        assert config.storage.data_dir == "data"
+        assert config.storage.db_path is None
 
     def test_ollama_model_env_override(self, monkeypatch):
         """Test OLLAMA_MODEL overrides the configured model."""
@@ -88,11 +92,29 @@ class TestConfig:
         monkeypatch.setenv("OLLAMA_SPECIALIST_MODEL", "specialist:test")
         monkeypatch.setenv("OLLAMA_ORCHESTRATOR_HOST", "http://127.0.0.1:12001")
         monkeypatch.setenv("OLLAMA_SPECIALIST_HOST", "http://127.0.0.1:12002")
+        monkeypatch.setenv("OLLAMA_ORCHESTRATOR_AUTH_HEADER", "Bearer orch")
+        monkeypatch.setenv("OLLAMA_SPECIALIST_AUTH_HEADER", "Bearer spec")
         config = get_config()
         assert config.model.name == "orchestrator:test"
         assert config.model.specialist_name == "specialist:test"
         assert config.model.orchestrator_host == "http://127.0.0.1:12001"
         assert config.model.specialist_host == "http://127.0.0.1:12002"
+        assert config.model.orchestrator_auth_header == "Bearer orch"
+        assert config.model.specialist_auth_header == "Bearer spec"
+        get_config.cache_clear()
+
+    def test_render_env_overrides(self, monkeypatch):
+        """Test Render-style environment overrides."""
+        from src.config import get_config
+
+        get_config.cache_clear()
+        monkeypatch.setenv("PORT", "10000")
+        monkeypatch.setenv("APP_DATA_DIR", "/var/data")
+        monkeypatch.setenv("APP_DB_PATH", "/var/data/custom.db")
+        config = get_config()
+        assert config.server.port == 10000
+        assert config.storage.data_dir == "/var/data"
+        assert config.storage.db_path == "/var/data/custom.db"
         get_config.cache_clear()
 
 
@@ -107,10 +129,12 @@ class TestOllamaClient:
 
         calls = []
         hosts = []
+        client_kwargs = []
 
         class FakeAsyncClient:
-            def __init__(self, host=None):
+            def __init__(self, host=None, **kwargs):
                 hosts.append(host)
+                client_kwargs.append(kwargs)
 
             async def chat(self, **kwargs):
                 calls.append(kwargs)
@@ -149,8 +173,11 @@ class TestOllamaClient:
         monkeypatch.delenv("OLLAMA_SPECIALIST_MODEL", raising=False)
         monkeypatch.delenv("OLLAMA_ORCHESTRATOR_HOST", raising=False)
         monkeypatch.delenv("OLLAMA_SPECIALIST_HOST", raising=False)
+        monkeypatch.delenv("OLLAMA_AUTH_HEADER", raising=False)
+        monkeypatch.delenv("OLLAMA_ORCHESTRATOR_AUTH_HEADER", raising=False)
+        monkeypatch.delenv("OLLAMA_SPECIALIST_AUTH_HEADER", raising=False)
         monkeypatch.setattr(llm_client.ollama, "AsyncClient", FakeAsyncClient)
-        yield calls, hosts
+        yield calls, hosts, client_kwargs
         llm_client._orchestrator_client = None
         llm_client._specialist_client = None
         get_config.cache_clear()
@@ -166,7 +193,7 @@ class TestOllamaClient:
         response = await client.chat("system", "user")
 
         assert response == '{"status": "ok"}'
-        calls, _hosts = fake_async_client
+        calls, _hosts, _client_kwargs = fake_async_client
         assert calls[0]["model"] == "gemma4:31b"
         assert calls[0]["options"] == {
             "num_ctx": 32768,
@@ -184,7 +211,7 @@ class TestOllamaClient:
         chunks = [chunk async for chunk in client.stream_chat("system", "user")]
 
         assert chunks == ["hello", " world"]
-        calls, _hosts = fake_async_client
+        calls, _hosts, _client_kwargs = fake_async_client
         assert calls[0]["stream"] is True
         assert calls[0]["think"] is False
 
@@ -220,7 +247,7 @@ class TestOllamaClient:
 
         client = OllamaClient()
         await client.unload()
-        calls, _hosts = fake_async_client
+        calls, _hosts, _client_kwargs = fake_async_client
 
         assert calls[0] == {
             "model": "gemma4:31b",
@@ -234,10 +261,11 @@ class TestOllamaClient:
 
         orchestrator = get_orchestrator_client()
         specialist = get_specialist_client()
-        _calls, hosts = fake_async_client
+        _calls, hosts, client_kwargs = fake_async_client
 
         assert orchestrator is not specialist
         assert hosts == ["http://127.0.0.1:11436", "http://127.0.0.1:11435"]
+        assert client_kwargs == [{"headers": None}, {"headers": None}]
         assert orchestrator._model == "gemma4:31b"
         assert specialist._model == "gemma4:e4b"
         assert orchestrator._num_predict == 1800

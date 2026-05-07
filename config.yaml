@@ -3,6 +3,8 @@ model:
   specialist_name: "gemma4:e4b"
   orchestrator_host: "http://127.0.0.1:11436"
   specialist_host: "http://127.0.0.1:11435"
+  orchestrator_auth_header: null
+  specialist_auth_header: null
   temperature: 0.2    # Low temperature for policy accuracy
   num_ctx: 32768      # Gives specialists room for full policy content
   top_p: 0.9
@@ -18,6 +20,10 @@ server:
 cache:
   ttl_hours: 168       # 7 days default cache TTL
   max_size_mb: 500
+
+storage:
+  data_dir: "data"
+  db_path: null
 
 logging:
   level: "INFO"

@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: hr-policy-bot-web-app
+    runtime: python
+    branch: web-app
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python -m playwright install chromium
+    startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: hr-policy-bot-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: APP_DATA_DIR
+        value: /var/data
+      - key: OLLAMA_ORCHESTRATOR_MODEL
+        value: gemma4:31b
+      - key: OLLAMA_SPECIALIST_MODEL
+        value: gemma4:e4b
+      - key: OLLAMA_ORCHESTRATOR_HOST
+        sync: false
+      - key: OLLAMA_SPECIALIST_HOST
+        sync: false
+      - key: OLLAMA_AUTH_HEADER
+        sync: false

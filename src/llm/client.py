@@ -17,12 +17,14 @@ class OllamaClient:
         model: str | None = None,
         host: str | None = None,
         num_predict: int | None = None,
+        auth_header: str | None = None,
     ) -> None:
         self._config = get_config()
         self._model = model or self._config.model.name
         self._host = host
         self._num_predict = num_predict
-        self._client = ollama.AsyncClient(host=host)
+        headers = {"Authorization": auth_header} if auth_header else None
+        self._client = ollama.AsyncClient(host=host, headers=headers)
 
     def _options(self) -> dict[str, float | int]:
         options: dict[str, float | int] = {
@@ -120,6 +122,7 @@ def get_orchestrator_client() -> OllamaClient:
             model=config.model.name,
             host=config.model.orchestrator_host,
             num_predict=config.model.orchestrator_num_predict,
+            auth_header=config.model.orchestrator_auth_header,
         )
     return _orchestrator_client
 
@@ -133,5 +136,6 @@ def get_specialist_client() -> OllamaClient:
             model=config.model.specialist_name,
             host=config.model.specialist_host,
             num_predict=config.model.specialist_num_predict,
+            auth_header=config.model.specialist_auth_header,
         )
     return _specialist_client

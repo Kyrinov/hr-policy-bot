@@ -13,6 +13,8 @@ class ModelConfig(BaseModel):
     specialist_name: str = "gemma4:e4b"
     orchestrator_host: str = "http://127.0.0.1:11436"
     specialist_host: str = "http://127.0.0.1:11435"
+    orchestrator_auth_header: str | None = None
+    specialist_auth_header: str | None = None
     temperature: float = 0.2
     num_ctx: int = 32768
     top_p: float = 0.9
@@ -30,6 +32,11 @@ class ServerConfig(BaseModel):
 class CacheConfig(BaseModel):
     ttl_hours: int = 168
     max_size_mb: int = 500
+
+
+class StorageConfig(BaseModel):
+    data_dir: str = "data"
+    db_path: str | None = None
 
 
 class LoggingConfig(BaseModel):
@@ -67,6 +74,7 @@ class AppConfig(BaseModel):
     model: ModelConfig = ModelConfig()
     server: ServerConfig = ServerConfig()
     cache: CacheConfig = CacheConfig()
+    storage: StorageConfig = StorageConfig()
     logging: LoggingConfig = LoggingConfig()
     parsing: ParsingConfig = ParsingConfig()
 
@@ -86,10 +94,21 @@ def _load_config(path: Path) -> AppConfig:
         data.setdefault("model", {})["orchestrator_host"] = host
     if host := os.environ.get("OLLAMA_SPECIALIST_HOST"):
         data.setdefault("model", {})["specialist_host"] = host
+    if auth_header := os.environ.get("OLLAMA_AUTH_HEADER"):
+        data.setdefault("model", {})["orchestrator_auth_header"] = auth_header
+        data.setdefault("model", {})["specialist_auth_header"] = auth_header
+    if auth_header := os.environ.get("OLLAMA_ORCHESTRATOR_AUTH_HEADER"):
+        data.setdefault("model", {})["orchestrator_auth_header"] = auth_header
+    if auth_header := os.environ.get("OLLAMA_SPECIALIST_AUTH_HEADER"):
+        data.setdefault("model", {})["specialist_auth_header"] = auth_header
     if host := os.environ.get("SERVER_HOST"):
         data.setdefault("server", {})["host"] = host
-    if port := os.environ.get("SERVER_PORT"):
+    if port := os.environ.get("SERVER_PORT") or os.environ.get("PORT"):
         data.setdefault("server", {})["port"] = int(port)
+    if data_dir := os.environ.get("APP_DATA_DIR"):
+        data.setdefault("storage", {})["data_dir"] = data_dir
+    if db_path := os.environ.get("APP_DB_PATH"):
+        data.setdefault("storage", {})["db_path"] = db_path
 
     return AppConfig.model_validate(data)
 

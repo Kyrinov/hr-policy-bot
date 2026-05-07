@@ -7,6 +7,7 @@ from pathlib import Path
 
 import aiosqlite
 
+from src.config import get_config
 from src.models.schemas import (
     AgentResponseRecord,
     FeedbackRecord,
@@ -19,7 +20,7 @@ from src.models.schemas import (
 
 logger = logging.getLogger(__name__)
 
-_DB_PATH = Path(__file__).parent.parent.parent / "data" / "hr_policy_agent.db"
+_PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS queries (
@@ -143,9 +144,24 @@ CREATE INDEX IF NOT EXISTS idx_nodes_text ON graph_nodes(entity_text);
 
 
 class DatabaseManager:
-    def __init__(self, db_path: Path = _DB_PATH) -> None:
-        self._db_path = db_path
+    def __init__(self, db_path: Path | None = None) -> None:
+        self._db_path = db_path or self._default_db_path()
         self._db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    @staticmethod
+    def _default_db_path() -> Path:
+        storage = get_config().storage
+        if storage.db_path:
+            path = Path(storage.db_path)
+        else:
+            path = Path(storage.data_dir) / "hr_policy_agent.db"
+        if not path.is_absolute():
+            path = _PROJECT_ROOT / path
+        return path
+
+    @property
+    def db_path(self) -> Path:
+        return self._db_path
 
     async def initialize(self) -> None:
         """Create tables if they do not exist."""
