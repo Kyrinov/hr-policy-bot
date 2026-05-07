@@ -2,58 +2,57 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from typing import AsyncGenerator
 
-from openai import AsyncOpenAI
+import ollama
 
 from src.config import get_config
 
 logger = logging.getLogger(__name__)
 
-_VLLM_BASE_URL = os.environ.get("VLLM_BASE_URL", "http://localhost:8001/v1")
-_VLLM_MODEL = os.environ.get("VLLM_MODEL", "solidrust/Gemma-4-31B-Instruct-AWQ")
 
-
-class VLLMClient:
+class OllamaClient:
     def __init__(self) -> None:
         self._config = get_config()
-        self._model = os.environ.get("VLLM_MODEL", _VLLM_MODEL)
-        self._client = AsyncOpenAI(base_url=_VLLM_BASE_URL, api_key="none")
+        self._model = self._config.model.name
+        self._client = ollama.AsyncClient()
+
+    def _options(self) -> dict[str, float | int]:
+        return {
+            "temperature": self._config.model.temperature,
+            "top_p": self._config.model.top_p,
+            "num_ctx": self._config.model.num_ctx,
+        }
 
     async def chat(
         self, system_prompt: str, user_message: str, model: str | None = None
     ) -> str:
-        """Send a chat request to vLLM and return the response text."""
-        response = await self._client.chat.completions.create(
+        """Send a chat request to Ollama and return the response text."""
+        response = await self._client.chat(
             model=model or self._model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},
             ],
-            temperature=self._config.model.temperature,
-            top_p=self._config.model.top_p,
-            max_tokens=4096,
+            options=self._options(),
         )
-        return response.choices[0].message.content or ""
+        return response.message.content or ""
 
     async def stream_chat(
         self, system_prompt: str, user_message: str, model: str | None = None
     ) -> AsyncGenerator[str, None]:
-        """Stream chat responses from vLLM. Yields text chunks as they arrive."""
-        stream = await self._client.chat.completions.create(
+        """Stream chat responses from Ollama. Yields text chunks as they arrive."""
+        stream = await self._client.chat(
             model=model or self._model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},
             ],
-            temperature=self._config.model.temperature,
-            top_p=self._config.model.top_p,
-            max_tokens=4096,
+            options=self._options(),
             stream=True,
         )
         async for chunk in stream:
-            content = chunk.choices[0].delta.content or ""
+            content = chunk.message.content or ""
             if content:
                 yield content
 
@@ -69,13 +68,25 @@ class VLLMClient:
             logger.debug("Raw response: %s", raw)
             return {"_raw": raw, "_parse_error": str(e)}
 
+    async def health_check(self) -> dict:
+        """Verify Ollama is reachable and the configured model is available."""
+        models = await self._client.list()
+        model_names = [m.model for m in models.models if m.model]
+        model_available = self._model in model_names
+        return {
+            "status": "ok" if model_available else "missing_model",
+            "configured_model": self._model,
+            "model_available": model_available,
+            "models": model_names,
+        }
 
-_client: VLLMClient | None = None
+
+_client: OllamaClient | None = None
 
 
-def get_client() -> VLLMClient:
-    """Return the singleton vLLM client."""
+def get_client() -> OllamaClient:
+    """Return the singleton Ollama client."""
     global _client
     if _client is None:
-        _client = VLLMClient()
+        _client = OllamaClient()
     return _client

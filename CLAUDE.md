@@ -70,4 +70,4 @@ Access GUI at http://localhost:8000.
 
 - NVIDIA Jetson Orin AGX, 64GB VRAM
 - Inference: Ollama (local)
-- Default model: qwen3.5:35b (configurable in config.yaml)
+- Default model: gemma4:31b (configurable in config.yaml or `OLLAMA_MODEL`)

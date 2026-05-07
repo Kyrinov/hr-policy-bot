@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import logging
 import re
-import uuid
 from collections import defaultdict
 from pathlib import Path
 
@@ -48,12 +48,21 @@ class SageExtractor:
             logger.debug("Skipping deterministic parsing for unknown URL %s", source_url)
             return []
         agent_ids = instrument.get("agent_ids", ["unknown"])
-        return await self.process_document(
-            source_url=source_url,
-            text=text,
-            instrument_title=instrument.get("title", source_url),
-            agent_id=agent_ids[0] if agent_ids else "unknown",
+        results = await asyncio.gather(
+            *(
+                self.process_document(
+                    source_url=source_url,
+                    text=text,
+                    instrument_title=instrument.get("title", source_url),
+                    agent_id=agent_id,
+                )
+                for agent_id in agent_ids or ["unknown"]
+            )
         )
+        triples: list[PolicyTriple] = []
+        for agent_triples in results:
+            triples.extend(agent_triples)
+        return triples
 
     async def _parse_in_thread(
         self, text: str, source_url: str, instrument_title: str, agent_id: str
@@ -99,7 +108,7 @@ class SageExtractor:
         sentence_text = self._sentence_text(tokens)
         flags = self._validation_flags(subject.text, predicate, object_token.text, sentence_text)
         return PolicyTriple(
-            triple_id=str(uuid.uuid4()),
+            triple_id=self._triple_id(doc_id, subject, predicate, object_token, sentence_text),
             doc_id=doc_id,
             source_url=document.source_url,
             instrument_title=document.instrument_title,
@@ -179,7 +188,28 @@ class SageExtractor:
         return " ".join(connectors[:6]) or None
 
     def _doc_id(self, document: KISSDocument) -> str:
-        payload = f"{document.source_url}:{document.parsed_at}:{document.token_count}"
+        token_payload = "|".join(
+            f"{token.text}:{token.lemma}:{token.char_start}:{token.char_end}"
+            for token in document.tokens
+        )
+        payload = (
+            f"{document.source_url}:{document.instrument_title}:{document.agent_id}:"
+            f"{document.model_version}:{token_payload}"
+        )
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+    def _triple_id(
+        self,
+        doc_id: str,
+        subject: KISSToken,
+        predicate: KISSToken,
+        object_token: KISSToken,
+        sentence_text: str,
+    ) -> str:
+        payload = (
+            f"{doc_id}:{subject.char_start}:{predicate.char_start}:{object_token.char_start}:"
+            f"{sentence_text}:{subject.text}:{predicate.lemma}:{object_token.text}"
+        )
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
     def _instrument_for_url(self, source_url: str) -> dict | None:

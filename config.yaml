@@ -1,7 +1,7 @@
 model:
   name: "gemma4:31b"
   temperature: 0.2    # Low temperature for policy accuracy
-  num_ctx: 32768      # Qwen3.5 MoE handles this comfortably; gives specialists room for full policy content
+  num_ctx: 32768      # Gives specialists room for full policy content
   top_p: 0.9
 
 server:

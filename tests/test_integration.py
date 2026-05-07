@@ -1,5 +1,7 @@
 """Integration tests for the DND HR-Civ Policy Advisory System."""
 
+from types import SimpleNamespace
+
 import pytest
 from src.models.schemas import PolicyInstrument, SpecialistResponse, RetrievalStatus
 
@@ -47,6 +49,126 @@ class TestConfig:
         assert config is not None
         assert hasattr(config, "model")
         assert hasattr(config, "server")
+        assert config.model.name == "gemma4:31b"
+
+    def test_ollama_model_env_override(self, monkeypatch):
+        """Test OLLAMA_MODEL overrides the configured model."""
+        from src.config import get_config
+
+        get_config.cache_clear()
+        monkeypatch.setenv("OLLAMA_MODEL", "test-model:latest")
+        config = get_config()
+        assert config.model.name == "test-model:latest"
+        get_config.cache_clear()
+
+    def test_unrelated_model_env_var_does_not_override_model(self, monkeypatch):
+        """Test unrelated model environment variables are ignored."""
+        from src.config import get_config
+
+        get_config.cache_clear()
+        monkeypatch.delenv("OLLAMA_MODEL", raising=False)
+        monkeypatch.setenv("MODEL_NAME", "unrelated-model")
+        config = get_config()
+        assert config.model.name == "gemma4:31b"
+        get_config.cache_clear()
+
+
+class TestOllamaClient:
+    """Test Ollama client wrapper behavior."""
+
+    @pytest.fixture
+    def fake_async_client(self, monkeypatch):
+        """Patch ollama.AsyncClient with a fake client."""
+        from src.config import get_config
+        import src.llm.client as llm_client
+
+        calls = []
+
+        class FakeAsyncClient:
+            async def chat(self, **kwargs):
+                calls.append(kwargs)
+                if kwargs.get("stream"):
+                    async def stream():
+                        yield SimpleNamespace(
+                            message=SimpleNamespace(content="hello")
+                        )
+                        yield SimpleNamespace(
+                            message=SimpleNamespace(content=" world")
+                        )
+
+                    return stream()
+                return SimpleNamespace(
+                    message=SimpleNamespace(content='{"status": "ok"}')
+                )
+
+            async def list(self):
+                return SimpleNamespace(
+                    models=[
+                        SimpleNamespace(model="gemma4:31b"),
+                        SimpleNamespace(model="other-model"),
+                    ]
+                )
+
+        get_config.cache_clear()
+        llm_client._client = None
+        monkeypatch.delenv("OLLAMA_MODEL", raising=False)
+        monkeypatch.setattr(llm_client.ollama, "AsyncClient", FakeAsyncClient)
+        yield calls
+        llm_client._client = None
+        get_config.cache_clear()
+
+    @pytest.mark.asyncio
+    async def test_chat_uses_configured_ollama_model_and_options(
+        self, fake_async_client
+    ):
+        """Test chat calls Ollama with configured model and options."""
+        from src.llm.client import OllamaClient
+
+        client = OllamaClient()
+        response = await client.chat("system", "user")
+
+        assert response == '{"status": "ok"}'
+        assert fake_async_client[0]["model"] == "gemma4:31b"
+        assert fake_async_client[0]["options"] == {
+            "num_ctx": 32768,
+            "temperature": 0.2,
+            "top_p": 0.9,
+        }
+
+    @pytest.mark.asyncio
+    async def test_stream_chat_yields_message_content(self, fake_async_client):
+        """Test stream_chat yields streamed content chunks."""
+        from src.llm.client import OllamaClient
+
+        client = OllamaClient()
+        chunks = [chunk async for chunk in client.stream_chat("system", "user")]
+
+        assert chunks == ["hello", " world"]
+        assert fake_async_client[0]["stream"] is True
+
+    @pytest.mark.asyncio
+    async def test_chat_parsed_preserves_json_parsing_behavior(
+        self, fake_async_client
+    ):
+        """Test chat_parsed returns parsed JSON."""
+        from src.llm.client import OllamaClient
+
+        client = OllamaClient()
+        parsed = await client.chat_parsed("system", "user")
+
+        assert parsed == {"status": "ok"}
+
+    @pytest.mark.asyncio
+    async def test_health_check_reports_configured_model(self, fake_async_client):
+        """Test health check verifies the configured Ollama model."""
+        from src.llm.client import OllamaClient
+
+        client = OllamaClient()
+        health = await client.health_check()
+
+        assert health["status"] == "ok"
+        assert health["configured_model"] == "gemma4:31b"
+        assert health["model_available"] is True
 
 
 class TestDatabase:

@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 
 
 class ModelConfig(BaseModel):
-    name: str = "gemma4:26b"
+    name: str = "gemma4:31b"
     temperature: float = 0.2
     num_ctx: int = 32768
     top_p: float = 0.9

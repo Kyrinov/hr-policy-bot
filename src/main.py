@@ -67,12 +67,14 @@ async def startup_event() -> None:
 
     # Check Ollama connectivity
     try:
-        import ollama
+        from src.llm.client import get_client
 
-        client = ollama.AsyncClient()
-        models = await client.list()
+        ollama_health = await get_client().health_check()
         logger.info(
-            "Ollama connected, available models: %s", [m.model for m in models.models]
+            "Ollama health: status=%s configured_model=%s model_available=%s",
+            ollama_health["status"],
+            ollama_health["configured_model"],
+            ollama_health["model_available"],
         )
     except Exception as e:
         logger.warning("Ollama connection failed: %s", e)

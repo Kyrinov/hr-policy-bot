@@ -60,7 +60,7 @@ The organizational environment is the **federal public service**, specifically t
 - **VRAM:** 64GB
 - **OS:** Linux (Ubuntu-based)
 - **Inference:** Ollama
-- **Models (local):** Gemma4:26b or Qwen3.5:35b (to be determined by performance testing; the operator will select)
+- **Models (local):** Gemma4:31b
 - **Language:** Python
 
 ---
@@ -150,7 +150,7 @@ The organizational environment is the **federal public service**, specifically t
 
 **Why local inference:**
 - This is a proof of concept. Cloud API costs are not justified at this stage.
-- The Jetson Orin AGX with 64GB VRAM can run Gemma4:26b or Qwen3.5:35b with acceptable latency for a pilot.
+- The Jetson Orin AGX with 64GB VRAM can run Gemma4:31b with acceptable latency for a pilot.
 - Data remains entirely local — no classification concerns arise from transmitting query content to external APIs.
 
 **Why SQLite (not PostgreSQL, not a vector DB):**
@@ -169,7 +169,7 @@ The organizational environment is the **federal public service**, specifically t
 | Language | Python 3.11+ | Operator preference; ecosystem maturity |
 | Web framework | FastAPI | Async support, WebSocket native, lightweight |
 | LLM inference | Ollama (local) | Operator's existing infrastructure |
-| Models | Gemma4:26b or Qwen3.5:35b | Fits in 64GB VRAM; operator selects based on performance |
+| Models | Gemma4:31b | Fits in 64GB VRAM for pilot use |
 | Web fetching | httpx (async) + BeautifulSoup4 | Async HTTP client + robust HTML parsing |
 | Cache/storage | SQLite via aiosqlite | Zero-config, sufficient for pilot scale |
 | Frontend | HTML/CSS/JS (single-page application) | No build toolchain required; served by FastAPI |
@@ -198,7 +198,7 @@ The system must support hot-swapping between models via configuration (not code 
 ```yaml
 # config.yaml
 model:
-  name: "gemma4:26b"  # or "qwen3.5:35b"
+  name: "gemma4:31b"
   temperature: 0.2  # Low temperature for policy accuracy
   num_ctx: 32768  # Context window
   top_p: 0.9

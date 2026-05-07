@@ -166,6 +166,7 @@ class KISSParser:
     ) -> list[KISSToken]:
         tokens: list[KISSToken] = []
         token_idx = 0
+        raw_idx = 0
         match_by_start = {match.char_start: match for match in matches}
         covered = {
             pos
@@ -173,7 +174,8 @@ class KISSParser:
             for pos in range(match.char_start, match.char_end)
         }
 
-        for raw in raw_tokens:
+        while raw_idx < len(raw_tokens):
+            raw = raw_tokens[raw_idx]
             start = raw["start"]
             if start in match_by_start:
                 match = match_by_start[start]
@@ -193,8 +195,33 @@ class KISSParser:
                     )
                 )
                 token_idx += 1
+                raw_idx += 1
                 continue
             if start in covered:
+                raw_idx += 1
+                continue
+            phrase = self._multi_word_deontic(text, raw_tokens, raw_idx, covered)
+            if phrase is not None:
+                phrase_text, phrase_lemma, phrase_start, phrase_end = phrase
+                category, is_deontic, deontic_type = self.classify_token(
+                    phrase_text, phrase_lemma, raw["pos"]
+                )
+                tokens.append(
+                    KISSToken(
+                        text=phrase_text,
+                        lemma=phrase_lemma,
+                        pos=raw["pos"],
+                        kiss_category=category,
+                        is_deontic=is_deontic,
+                        deontic_type=deontic_type,
+                        char_start=phrase_start,
+                        char_end=phrase_end,
+                        sentence_idx=self._sentence_idx(phrase_start, sentence_spans),
+                        token_idx=token_idx,
+                    )
+                )
+                token_idx += 1
+                raw_idx += 2
                 continue
             category, is_deontic, deontic_type = self.classify_token(
                 raw["text"], raw["lemma"], raw["pos"]
@@ -214,7 +241,28 @@ class KISSParser:
                 )
             )
             token_idx += 1
+            raw_idx += 1
         return tokens
+
+    def _multi_word_deontic(
+        self, text: str, raw_tokens: list[dict[str, Any]], raw_idx: int, covered: set[int]
+    ) -> tuple[str, str, int, int] | None:
+        if raw_idx + 1 >= len(raw_tokens):
+            return None
+        first = raw_tokens[raw_idx]
+        second = raw_tokens[raw_idx + 1]
+        if second["start"] in covered:
+            return None
+        phrase = f"{first['text']} {second['text']}".lower()
+        lemma_phrase = f"{first['lemma']} {second['lemma']}".lower()
+        if phrase not in DEONTIC_VERBS and lemma_phrase not in DEONTIC_VERBS:
+            return None
+        return (
+            text[first["start"]:second["end"]],
+            lemma_phrase if lemma_phrase in DEONTIC_VERBS else phrase,
+            first["start"],
+            second["end"],
+        )
 
     def _sentence_idx(self, char_start: int, sentence_spans: list[tuple[int, int]]) -> int:
         for idx, (start, end) in enumerate(sentence_spans):

@@ -6,6 +6,7 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
+from src.config import get_config
 from src.models.schemas import (
     FeedbackRecord,
     WSAgentStatusUpdate,
@@ -67,19 +68,16 @@ async def health_check() -> dict:
     result = {
         "status": "healthy",
         "components": {},
+        "model": get_config().model.name,
         "timestamp": datetime.utcnow().isoformat(),
     }
 
-    # Fix 2: use AsyncClient, not module-level sync ollama.list()
     try:
-        import ollama
+        from src.llm.client import get_client
 
-        client = ollama.AsyncClient()
-        models = await client.list()
-        result["components"]["ollama"] = {
-            "status": "ok",
-            "models": [m.model for m in models.models],
-        }
+        result["components"]["ollama"] = await get_client().health_check()
+        if result["components"]["ollama"]["status"] != "ok":
+            result["status"] = "degraded"
     except Exception as e:
         result["components"]["ollama"] = {"status": "error", "error": str(e)}
         result["status"] = "degraded"

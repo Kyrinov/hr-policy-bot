@@ -56,7 +56,7 @@ Every factual claim in the response is grounded in content actually retrieved fr
 |-------------|-------|
 | Python 3.11 or later | Check with `python3 --version` |
 | Ollama | Must be running locally. Download from ollama.com |
-| Qwen3.5:35b model | Pull with `ollama pull qwen3.5:35b` |
+| Gemma4:31b model | Pull with `ollama pull gemma4:31b` |
 | ~40 GB free VRAM | System is sized for the Jetson Orin AGX (64 GB) |
 | Internet access | Required to fetch policy content from GC websites |
 
@@ -80,7 +80,7 @@ Open `config.yaml` to review or adjust settings:
 
 ```yaml
 model:
-  name: "qwen3.5:35b"   # Model name as it appears in Ollama
+  name: "gemma4:31b"    # Model name as it appears in Ollama
   temperature: 0.2       # Lower = more conservative, policy-appropriate responses
   num_ctx: 32768         # Context window size
   top_p: 0.9
@@ -94,7 +94,7 @@ cache:
   max_size_mb: 500
 ```
 
-To switch models without editing code, change the `model.name` value in `config.yaml` to any model you have available in Ollama (e.g., `gemma4:26b`).
+To switch models without editing code, change the `model.name` value in `config.yaml` to any model you have available in Ollama, or set `OLLAMA_MODEL` in the environment.
 
 ---
 
@@ -112,10 +112,10 @@ If Ollama is already running as a service, skip this step. Verify the model is a
 ollama list
 ```
 
-You should see `qwen3.5:35b` in the list. If not:
+You should see `gemma4:31b` in the list. If not:
 
 ```bash
-ollama pull qwen3.5:35b
+ollama pull gemma4:31b
 ```
 
 ### Step 2 — Start the application
@@ -131,7 +131,7 @@ You will see startup output similar to:
 ```
 INFO: Starting DND HR-Civ Policy Advisory System
 INFO: Database initialized
-INFO: Ollama connected, available models: ['qwen3.5:35b']
+INFO: Ollama health: status=ok configured_model=gemma4:31b model_available=True
 INFO: Uvicorn running on http://0.0.0.0:8000
 ```
 
@@ -358,7 +358,7 @@ The system covers 117 deduplicated instruments across eight HR policy domains. I
 
 ### Response quality
 
-- The model (Qwen3.5:35b) produces policy analysis that is generally coherent and well-cited, but it can:
+- The model (Gemma4:31b) produces policy analysis that is generally coherent and well-cited, but it can:
   - Misattribute a provision to the wrong section of an instrument
   - Conflate similar provisions across different instruments
   - Miss a conflict or exception that a trained HR advisor would recognize
@@ -382,7 +382,7 @@ This system is designed for single-user or small-group pilot use. It has not bee
 ### "Ollama connection failed" warning at startup
 
 - Run `ollama serve` to start the Ollama server.
-- Verify the model is available: `ollama list`. If `qwen3.5:35b` is not listed, run `ollama pull qwen3.5:35b`.
+- Verify the model is available: `ollama list`. If `gemma4:31b` is not listed, run `ollama pull gemma4:31b`.
 - Verify Ollama is listening: `curl http://localhost:11434/api/tags` should return a JSON response.
 
 ### The response takes very long or never arrives
