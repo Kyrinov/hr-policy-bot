@@ -403,6 +403,68 @@ class TestOrchestrator:
         get_config.cache_clear()
 
 
+class TestPollingQueryApi:
+    """Test HTTPS polling fallback behavior."""
+
+    @pytest.mark.asyncio
+    async def test_polling_query_job_completes(self, monkeypatch):
+        """Test polling job stores status updates and final response."""
+        import src.api.routes as routes
+        from src.models.schemas import OrchestratorResponse, WSAgentStatusUpdate
+
+        query_id = "polling-test-query"
+
+        class FakeOrchestrator:
+            async def process_with_streaming(
+                self,
+                query_text,
+                fetch_engine,
+                status_callback,
+            ):
+                await status_callback(
+                    WSAgentStatusUpdate(agent_id="orchestrator", status="working")
+                )
+                await status_callback(
+                    WSAgentStatusUpdate(agent_id="staffing", status="complete")
+                )
+                return OrchestratorResponse(
+                    summary="Polling response",
+                    detailed_analysis="Polling analysis",
+                    citations=[],
+                    agents_consulted=["staffing"],
+                    overall_confidence="high",
+                )
+
+        class FakeDatabaseManager:
+            async def save_query(self, record):
+                pass
+
+            async def save_orchestrator_response(self, record):
+                pass
+
+        monkeypatch.setattr(routes, "get_orchestrator", lambda: FakeOrchestrator())
+        monkeypatch.setattr(routes, "get_fetch_engine", lambda: object())
+        monkeypatch.setattr(routes, "DatabaseManager", FakeDatabaseManager)
+
+        routes._POLLING_JOBS[query_id] = {
+            "query_id": query_id,
+            "query_text": "test",
+            "status": "queued",
+            "agent_statuses": {},
+            "orchestrator_response": None,
+            "processing_time_ms": None,
+            "error": None,
+            "started_at": "now",
+        }
+        await routes._run_polling_query(query_id, "test")
+
+        job = routes._POLLING_JOBS[query_id]
+        assert job["status"] == "complete"
+        assert job["orchestrator_response"]["summary"] == "Polling response"
+        assert job["agent_statuses"]["orchestrator"]["status"] == "working"
+        assert job["agent_statuses"]["staffing"]["status"] == "complete"
+
+
 class TestDatabase:
     """Test database operations."""
 

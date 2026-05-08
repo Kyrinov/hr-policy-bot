@@ -1,19 +1,27 @@
 from __future__ import annotations
 
+import asyncio
 import uuid
 from datetime import datetime
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
+from src.agents.orchestrator import get_orchestrator
 from src.config import get_config
+from src.data.db import DatabaseManager
+from src.fetch.engine import get_fetch_engine
 from src.models.schemas import (
     FeedbackRecord,
+    OrchestratorResponseRecord,
+    QueryRecord,
     WSAgentStatusUpdate,
-    WSError,
 )
 
 router = APIRouter()
+
+_POLLING_JOBS: dict[str, dict[str, Any]] = {}
 
 
 _AGENT_CONFIG = [
@@ -148,6 +156,90 @@ async def list_queries(limit: int = Query(50, ge=1, le=100)) -> list[dict]:
         return [q.model_dump() for q in queries]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/query/start")
+async def start_query(payload: dict[str, str]) -> dict:
+    """Start a query over ordinary HTTPS for networks that block WebSockets."""
+    query_text = payload.get("query_text", "").strip()
+    if not query_text:
+        raise HTTPException(status_code=400, detail="query_text is required")
+
+    query_id = str(uuid.uuid4())
+    _POLLING_JOBS[query_id] = {
+        "query_id": query_id,
+        "query_text": query_text,
+        "status": "queued",
+        "agent_statuses": {},
+        "orchestrator_response": None,
+        "processing_time_ms": None,
+        "error": None,
+        "started_at": datetime.utcnow().isoformat(),
+    }
+    asyncio.create_task(_run_polling_query(query_id, query_text))
+    return {"query_id": query_id, "status": "queued"}
+
+
+@router.get("/query/{query_id}/status")
+async def get_query_status(query_id: str) -> dict:
+    """Return status/result for an HTTPS polling query."""
+    job = _POLLING_JOBS.get(query_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="Query job not found")
+    return job
+
+
+async def _run_polling_query(query_id: str, query_text: str) -> None:
+    job = _POLLING_JOBS[query_id]
+    job["status"] = "running"
+    start_time = datetime.utcnow()
+
+    db = DatabaseManager()
+    query_record = QueryRecord(
+        query_id=query_id,
+        query_text=query_text,
+        agents_invoked=[],
+    )
+    await db.save_query(query_record)
+
+    async def record_status(status: WSAgentStatusUpdate) -> None:
+        job["agent_statuses"][status.agent_id] = status.model_dump()
+
+    try:
+        response = await get_orchestrator().process_with_streaming(
+            query_text,
+            get_fetch_engine(),
+            record_status,
+        )
+        processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+
+        query_record.processing_time_ms = processing_time
+        query_record.agents_invoked = response.agents_consulted
+        query_record.overall_confidence = response.overall_confidence
+        await db.save_query(query_record)
+
+        await db.save_orchestrator_response(
+            OrchestratorResponseRecord(
+                response_id=str(uuid.uuid4()),
+                query_id=query_id,
+                summary=response.summary,
+                detailed_analysis=response.detailed_analysis,
+                policy_tensions=response.policy_tensions,
+                citations=response.citations,
+                gaps_and_limitations=response.gaps_and_limitations,
+                recommended_consultation=response.recommended_consultation,
+                overall_confidence=response.overall_confidence,
+            )
+        )
+
+        job["status"] = "complete"
+        job["orchestrator_response"] = response.model_dump()
+        job["processing_time_ms"] = processing_time
+        job["completed_at"] = datetime.utcnow().isoformat()
+    except Exception as e:
+        job["status"] = "error"
+        job["error"] = str(e)
+        job["completed_at"] = datetime.utcnow().isoformat()
 
 
 @router.get("/queries/{query_id}")

@@ -5,7 +5,12 @@
     'use strict';
 
     const API_BASE = '';
+    const ENABLE_WEBSOCKET = false;
     let ws = null;
+    let wsReady = false;
+    let preferPolling = true;
+    let reconnectTimer = null;
+    let pollingTimer = null;
     let currentQueryId = null;
     let pendingFeedback = null;
 
@@ -46,7 +51,9 @@
 
     function init() {
         setupEventListeners();
-        connectWebSocket();
+        if (ENABLE_WEBSOCKET) {
+            connectWebSocket();
+        }
     }
 
     function setupEventListeners() {
@@ -88,12 +95,21 @@
         };
 
         ws.onclose = () => {
-            console.log('WebSocket disconnected, reconnecting...');
-            setTimeout(connectWebSocket, 3000);
+            console.log('WebSocket disconnected');
+            wsReady = false;
+            preferPolling = true;
+            if (!reconnectTimer) {
+                reconnectTimer = setTimeout(() => {
+                    reconnectTimer = null;
+                    connectWebSocket();
+                }, 10000);
+            }
         };
 
         ws.onerror = (error) => {
             console.error('WebSocket error:', error);
+            wsReady = false;
+            preferPolling = true;
         };
     }
 
@@ -121,6 +137,7 @@
                 handleError(data);
                 break;
             case 'session_welcome':
+                wsReady = true;
                 console.log('Session initialized');
                 break;
         }
@@ -237,13 +254,100 @@
             dot.setAttribute('data-status', 'idle');
         });
 
-        // Send directly via WebSocket — the server assigns a query_id per connection
-        ws.send(JSON.stringify({
-            type: 'query_start',
-            query_text: queryText,
-        }));
-
+        if (canUseWebSocket()) {
+            ws.send(JSON.stringify({
+                type: 'query_start',
+                query_text: queryText,
+            }));
+        } else {
+            startPollingQuery(queryText);
+        }
         showProgress('Routing query to specialist agents\u2026');
+    }
+
+    function canUseWebSocket() {
+        return !preferPolling && wsReady && ws && ws.readyState === WebSocket.OPEN;
+    }
+
+    function startPollingQuery(queryText) {
+        fetch(`${API_BASE}/api/query/start`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query_text: queryText }),
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`Query start failed with HTTP ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            currentQueryId = data.query_id;
+            handleUserQueryMessage({
+                type: 'user_query',
+                query_id: data.query_id,
+                query_text: queryText,
+            });
+            pollQueryStatus(data.query_id);
+        })
+        .catch(err => {
+            handleError({
+                query_id: currentQueryId,
+                message: err.message || 'Unable to start query.',
+            });
+        });
+    }
+
+    function pollQueryStatus(queryId) {
+        clearPollingTimer();
+        fetch(`${API_BASE}/api/query/${queryId}/status`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`Query status failed with HTTP ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(job => {
+            Object.values(job.agent_statuses || {}).forEach(handleAgentStatusUpdate);
+
+            if (job.status === 'complete') {
+                handleResponseComplete({
+                    type: 'response_complete',
+                    query_id: queryId,
+                    orchestrator_response: job.orchestrator_response,
+                    processing_time_ms: job.processing_time_ms,
+                });
+                return;
+            }
+
+            if (job.status === 'error') {
+                handleError({
+                    query_id: queryId,
+                    message: job.error || 'Query failed.',
+                });
+                return;
+            }
+
+            pollingTimer = setTimeout(() => pollQueryStatus(queryId), 2500);
+        })
+        .catch(err => {
+            pollingTimer = setTimeout(() => pollQueryStatus(queryId), 5000);
+            console.error('Polling query status failed:', err);
+        });
+    }
+
+    function clearPollingTimer() {
+        if (pollingTimer) {
+            clearTimeout(pollingTimer);
+            pollingTimer = null;
+        }
     }
 
     function createMessage(type, text = '', queryId = null) {
@@ -472,6 +576,7 @@
     }
 
     function resetProcessingState() {
+        clearPollingTimer();
         currentQueryId = null;
         queryInput.disabled = false;
         queryInput.focus();
