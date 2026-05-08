@@ -19,6 +19,9 @@ Set these in Render. `render.yaml` includes the ngrok host values for the single
 ```text
 APP_DATA_DIR=/var/data
 PYTHON_VERSION=3.11.9
+PLAYWRIGHT_BROWSERS_PATH=0
+PARSING_ENABLED=false
+PARSING_TEACHER_LOOP_ENABLED=false
 OLLAMA_ORCHESTRATOR_MODEL=gemma4:31b
 OLLAMA_SPECIALIST_MODEL=gemma4:e4b
 OLLAMA_ORCHESTRATOR_HOST=https://veto-faceless-grime.ngrok-free.dev/orchestrator
@@ -186,10 +189,11 @@ curl -H 'Authorization: Basic <encoded-value>' https://veto-faceless-grime.ngrok
 Create a Render Blueprint from `render.yaml` or create a Python web service manually:
 
 - Branch: `web-app`
-- Build command: `pip install -r requirements.txt && python -m playwright install chromium`
+- Build command: `pip install -r requirements.txt && PLAYWRIGHT_BROWSERS_PATH=0 python -m playwright install chromium`
 - Start command: `uvicorn src.main:app --host 0.0.0.0 --port $PORT`
 - Health check path: `/health`
 - Persistent disk mount path: `/var/data`
+- Runtime env var: `PLAYWRIGHT_BROWSERS_PATH=0`
 
 After deploy, check:
 

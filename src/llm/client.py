@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 from typing import AsyncGenerator
 
+import httpx
 import ollama
 
 from src.config import get_config
@@ -12,6 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 class OllamaClient:
+    _CHAT_RETRY_ATTEMPTS = 3
+    _CHAT_RETRY_BASE_SECONDS = 1.0
+
     def __init__(
         self,
         model: str | None = None,
@@ -41,16 +46,61 @@ class OllamaClient:
         self, system_prompt: str, user_message: str, model: str | None = None
     ) -> str:
         """Send a chat request to Ollama and return the response text."""
-        response = await self._client.chat(
-            model=model or self._model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message},
-            ],
-            options=self._options(),
-            think=self._config.model.think,
+        target_model = model or self._model
+        for attempt in range(1, self._CHAT_RETRY_ATTEMPTS + 1):
+            try:
+                response = await self._client.chat(
+                    model=target_model,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_message},
+                    ],
+                    options=self._options(),
+                    think=self._config.model.think,
+                )
+                return response.message.content or ""
+            except Exception as exc:
+                if (
+                    attempt >= self._CHAT_RETRY_ATTEMPTS
+                    or not self._is_retryable_chat_error(exc)
+                ):
+                    raise
+                delay = self._CHAT_RETRY_BASE_SECONDS * attempt
+                logger.warning(
+                    "Retrying Ollama chat for %s after transient error on attempt %d/%d: %s",
+                    target_model,
+                    attempt,
+                    self._CHAT_RETRY_ATTEMPTS,
+                    exc,
+                )
+                await asyncio.sleep(delay)
+
+        raise RuntimeError("Ollama chat retry loop exited unexpectedly")
+
+    def _is_retryable_chat_error(self, exc: Exception) -> bool:
+        if isinstance(
+            exc,
+            (
+                ConnectionError,
+                httpx.ConnectError,
+                httpx.ConnectTimeout,
+                httpx.ReadError,
+                httpx.ReadTimeout,
+                httpx.RemoteProtocolError,
+                httpx.WriteError,
+            ),
+        ):
+            return True
+        if isinstance(exc, ollama.ResponseError):
+            status_code = getattr(exc, "status_code", None)
+            return isinstance(status_code, int) and status_code >= 500
+
+        message = str(exc).lower()
+        return (
+            "server disconnected without sending a response" in message
+            or "connection reset" in message
+            or "connection aborted" in message
         )
-        return response.message.content or ""
 
     async def unload(self, model: str | None = None) -> None:
         """Ask Ollama to unload the model used by this client."""

@@ -79,6 +79,13 @@ class AppConfig(BaseModel):
     parsing: ParsingConfig = ParsingConfig()
 
 
+def _env_bool(name: str) -> bool | None:
+    value = os.environ.get(name)
+    if value is None:
+        return None
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _load_config(path: Path) -> AppConfig:
     with open(path) as f:
         data = yaml.safe_load(f)
@@ -109,6 +116,10 @@ def _load_config(path: Path) -> AppConfig:
         data.setdefault("storage", {})["data_dir"] = data_dir
     if db_path := os.environ.get("APP_DB_PATH"):
         data.setdefault("storage", {})["db_path"] = db_path
+    if (enabled := _env_bool("PARSING_ENABLED")) is not None:
+        data.setdefault("parsing", {})["enabled"] = enabled
+    if (enabled := _env_bool("PARSING_TEACHER_LOOP_ENABLED")) is not None:
+        data.setdefault("parsing", {})["teacher_loop_enabled"] = enabled
 
     return AppConfig.model_validate(data)
 

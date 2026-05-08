@@ -2,6 +2,7 @@
 
 from types import SimpleNamespace
 
+import httpx
 import pytest
 from src.models.schemas import PolicyInstrument, SpecialistResponse, RetrievalStatus
 
@@ -111,10 +112,14 @@ class TestConfig:
         monkeypatch.setenv("PORT", "10000")
         monkeypatch.setenv("APP_DATA_DIR", "/var/data")
         monkeypatch.setenv("APP_DB_PATH", "/var/data/custom.db")
+        monkeypatch.setenv("PARSING_ENABLED", "false")
+        monkeypatch.setenv("PARSING_TEACHER_LOOP_ENABLED", "false")
         config = get_config()
         assert config.server.port == 10000
         assert config.storage.data_dir == "/var/data"
         assert config.storage.db_path == "/var/data/custom.db"
+        assert config.parsing.enabled is False
+        assert config.parsing.teacher_loop_enabled is False
         get_config.cache_clear()
 
 
@@ -176,6 +181,8 @@ class TestOllamaClient:
         monkeypatch.delenv("OLLAMA_AUTH_HEADER", raising=False)
         monkeypatch.delenv("OLLAMA_ORCHESTRATOR_AUTH_HEADER", raising=False)
         monkeypatch.delenv("OLLAMA_SPECIALIST_AUTH_HEADER", raising=False)
+        monkeypatch.delenv("PARSING_ENABLED", raising=False)
+        monkeypatch.delenv("PARSING_TEACHER_LOOP_ENABLED", raising=False)
         monkeypatch.setattr(llm_client.ollama, "AsyncClient", FakeAsyncClient)
         yield calls, hosts, client_kwargs
         llm_client._orchestrator_client = None
@@ -201,6 +208,38 @@ class TestOllamaClient:
             "top_p": 0.9,
         }
         assert calls[0]["think"] is False
+
+    @pytest.mark.asyncio
+    async def test_chat_retries_transient_transport_error(self, monkeypatch):
+        """Test chat retries one transient Ollama transport failure."""
+        from src.config import get_config
+        import src.llm.client as llm_client
+        from src.llm.client import OllamaClient
+
+        calls = []
+
+        class FlakyAsyncClient:
+            def __init__(self, host=None, **kwargs):
+                pass
+
+            async def chat(self, **kwargs):
+                calls.append(kwargs)
+                if len(calls) == 1:
+                    raise httpx.RemoteProtocolError(
+                        "Server disconnected without sending a response."
+                    )
+                return SimpleNamespace(message=SimpleNamespace(content="ok"))
+
+        get_config.cache_clear()
+        monkeypatch.setattr(llm_client.ollama, "AsyncClient", FlakyAsyncClient)
+        monkeypatch.setattr(OllamaClient, "_CHAT_RETRY_BASE_SECONDS", 0)
+
+        client = OllamaClient()
+        response = await client.chat("system", "user")
+
+        assert response == "ok"
+        assert len(calls) == 2
+        get_config.cache_clear()
 
     @pytest.mark.asyncio
     async def test_stream_chat_yields_message_content(self, fake_async_client):
