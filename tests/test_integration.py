@@ -402,6 +402,70 @@ class TestOrchestrator:
         assert response.citations[0].relevant_section == "Section 4"
         get_config.cache_clear()
 
+    @pytest.mark.asyncio
+    async def test_orchestrator_fills_missing_sourced_from_agent(
+        self, monkeypatch
+    ):
+        """Test synthesis citations do not fail when sourced_from_agent is omitted."""
+        import json
+
+        import src.agents.orchestrator as orchestrator_module
+        from src.config import get_config
+        from src.agents.orchestrator import OrchestratorAgent
+
+        class FakeOllamaClient:
+            async def chat(self, system_prompt, user_message, model=None):
+                return json.dumps(
+                    {
+                        "summary": "Official languages requirements apply.",
+                        "detailed_analysis": "The answer relies on official languages staffing rules.",
+                        "policy_tensions": None,
+                        "citations": [
+                            {
+                                "instrument_title": "Official Languages Act",
+                                "instrument_type": "Legislation",
+                                "url": "https://example.test/official-languages",
+                                "relevant_section": "Part IV",
+                            }
+                        ],
+                        "gaps_and_limitations": None,
+                        "recommended_consultation": None,
+                        "agents_consulted": ["languages"],
+                        "overall_confidence": "high",
+                    }
+                )
+
+        get_config.cache_clear()
+        monkeypatch.setattr(
+            orchestrator_module,
+            "get_orchestrator_client",
+            lambda: FakeOllamaClient(),
+        )
+
+        agent = OrchestratorAgent()
+        response = await agent.process(
+            "Can this be bilingual imperative?",
+            [
+                {
+                    "agent_id": "languages",
+                    "findings": "Relevant official languages finding.",
+                    "confidence": "high",
+                    "citations": [
+                        {
+                            "instrument_title": "Official Languages Act",
+                            "instrument_type": "Legislation",
+                            "url": "https://example.test/official-languages",
+                            "relevant_section": "Part IV",
+                        }
+                    ],
+                },
+            ],
+        )
+
+        assert response.summary == "Official languages requirements apply."
+        assert response.citations[0].sourced_from_agent == "languages"
+        get_config.cache_clear()
+
 
 class TestPollingQueryApi:
     """Test HTTPS polling fallback behavior."""

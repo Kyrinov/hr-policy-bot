@@ -155,13 +155,16 @@ class OrchestratorAgent(GenericAgent):
             if end >= 0:
                 text = text[:end + 1]
             parsed = json.loads(text)
+            parsed["citations"] = [
+                citation.model_dump()
+                for citation in self._normalize_synthesis_citations(
+                    parsed.get("citations", []),
+                    specialist_responses,
+                )
+            ]
             orch_response = OrchestratorResponse(**parsed)
-            orch_response.citations = self._normalize_synthesis_citations(
-                orch_response.citations,
-                specialist_responses,
-            )
             orch_response.deterministic_grounding = self._deterministic_grounding(
-                specialist_responses
+                specialist_responses,
             )
             logger.info(
                 "Synthesis selected %d citations from %d specialist citations",
@@ -219,7 +222,7 @@ class OrchestratorAgent(GenericAgent):
 
     def _normalize_synthesis_citations(
         self,
-        citations: list[OrchestratorCitation],
+        citations: list[OrchestratorCitation | dict[str, Any]],
         specialist_responses: list[dict[str, Any]],
     ) -> list[OrchestratorCitation]:
         """Preserve orchestrator-selected citations while filling known metadata."""
@@ -227,7 +230,8 @@ class OrchestratorAgent(GenericAgent):
         seen: set[tuple[str, str, str]] = set()
         result: list[OrchestratorCitation] = []
 
-        for citation in citations:
+        for raw_citation in citations:
+            citation = self._coerce_orchestrator_citation(raw_citation)
             match = self._find_matching_specialist_citation(citation, specialist_lookup)
             normalized = citation
             if match is not None:
@@ -260,6 +264,20 @@ class OrchestratorAgent(GenericAgent):
             result.append(normalized)
 
         return result
+
+    def _coerce_orchestrator_citation(
+        self,
+        citation: OrchestratorCitation | dict[str, Any],
+    ) -> OrchestratorCitation:
+        if isinstance(citation, OrchestratorCitation):
+            return citation
+        return OrchestratorCitation(
+            instrument_title=citation.get("instrument_title", ""),
+            instrument_type=citation.get("instrument_type", ""),
+            url=citation.get("url"),
+            relevant_section=citation.get("relevant_section"),
+            sourced_from_agent=citation.get("sourced_from_agent", ""),
+        )
 
     def _specialist_citation_lookup(
         self,
