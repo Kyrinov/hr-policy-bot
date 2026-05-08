@@ -1,0 +1,29 @@
+the main content
+
+
+Archived [2020-04-01]  - Policy Framework for People Management
+
+
+Provides an approach to people management that builds on past changes and further enables organizations to manage people in a way that best accomplishes their business objectives.
+
+Date modified: 2010-07-15
+
+
+This page has been archived on the Web
+
+
+Information identified as archived is provided for reference, research or recordkeeping purposes. It is not subject to the Government of Canada Web Standards and has not been altered or updated since it was archived. Please contact us to request a format other than those available.
+
+This page has been archived on the Web.
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09896-8
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

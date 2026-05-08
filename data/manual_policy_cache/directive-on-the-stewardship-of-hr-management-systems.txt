@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on the Stewardship of Human Resources Management Systems
+
+
+This directive articulates how the authorities of the Chief Human Resources Officer apply to the management and oversight of human resources (HR) management systems. This directive must be read in conjunction with other related policies and directives listed in the reference section.
+
+Date modified: 2024-07-25
+
+googleoff: all
+
+googleon: all
+
+ISBN data not available
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

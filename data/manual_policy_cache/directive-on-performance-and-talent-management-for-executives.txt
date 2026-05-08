@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Performance and Talent Management for Executives
+
+
+The directive explains the responsibilities of heads of human resources and managers for effective performance management and talent management of executives across the core public administration. The directive includes standards for performance agreements, learning and development plans, mid-year performance reviews, performance assessments and talent assessments.
+
+Date modified: 2021-10-29
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

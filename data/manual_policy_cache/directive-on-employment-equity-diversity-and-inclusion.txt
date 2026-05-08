@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Employment Equity, Diversity and Inclusion
+
+
+Provides guidance to managers and designated senior officials on the implementation of the employment equity programs and processes to comply with the Employment Equity Act and its Regulations.
+
+Date modified: 2020-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

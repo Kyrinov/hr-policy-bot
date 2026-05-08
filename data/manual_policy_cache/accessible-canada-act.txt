@@ -1,0 +1,944 @@
+MAIN CONT DIV START
+
+Assented to 2019-06-21
+
+An Act to ensure a barrier-free Canada
+
+
+Preamble
+
+
+Whereas the Canadian Charter of Rights and Freedoms guarantees the right to the equal protection and equal benefit of the law without discrimination and, in particular, discrimination on the basis of disability;
+
+Whereas the Canadian Human Rights Act recognizes that all individuals should have an opportunity equal with other individuals to make for themselves the lives that they are able and wish to have and to have their needs accommodated without discrimination and, in particular, discrimination on the basis of disability;
+
+Whereas a proactive and systemic approach for identifying, removing and preventing barriers to accessibility without delay complements the rights of persons with disabilities under the Canadian Human Rights Act;
+
+Whereas Canada is a State Party to the United Nations Convention on the Rights of Persons with Disabilities and Canada has agreed to take appropriate measures respecting accessibility and to develop and monitor minimum accessibility standards;
+
+Whereas barriers to accessibility can impact all persons in Canada, in particular those with disabilities and their families, and can prevent persons with disabilities from achieving their full and equal participation in society;
+
+And whereas Parliament considers that it is essential to ensure the economic, social and civic participation of all persons in Canada, regardless of their disabilities, and to allow them to fully exercise their rights and responsibilities in a barrier-free Canada;
+
+Now, therefore, Her Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows:
+
+
+Short Title
+
+
+Marginal note:Short title
+
+1 This Act may be cited as the Accessible Canada Act.
+
+
+Interpretation
+
+
+Marginal note:Definitions
+
+2 The following definitions apply in this Act.
+
+
+Her Majesty
+
+
+Marginal note:Binding on Her Majesty
+
+3 This Act is binding on Her Majesty in right of Canada.
+
+
+Designation
+
+
+Marginal note:Designation of Minister
+
+4 The Governor in Council may, by order, designate a member of the Queen’s Privy Council for Canada as the Minister for the purposes of this Act.
+
+
+Purpose of Act
+
+
+Marginal note:Purpose
+
+5 The purpose of this Act is to benefit all persons, especially persons with disabilities, through the realization, within the purview of matters coming within the legislative authority of Parliament, of a Canada without barriers, on or before January 1, 2040, particularly by the identification and removal of barriers, and the prevention of new barriers, in the following areas:
+
+Marginal note:Clarification
+
+Marginal note:Interpretation
+
+5.2 Nothing in this Act, including its purpose of the realization of a Canada without barriers, should be construed as requiring or authorizing any delay in the removal of barriers or the implementation of measures to prevent new barriers as soon as is reasonably possible.
+
+
+Principles
+
+
+Marginal note:Principles
+
+6 This Act is to be carried out in recognition of, and in accordance with, the following principles:
+
+
+Application
+
+
+Marginal note:Application
+
+Marginal note:Non-application
+
+8 Nothing in this Act applies to the Yukon Government, the Government of the Northwest Territories or the Government of Nunavut or a corporation established to perform any function or duty on behalf of any of those Governments.
+
+Marginal note:Canadian Forces
+
+9 Nothing in this Act is to be construed as affecting the principle of universality of service under which members of the Canadian Forces must at all times and under any circumstances perform any functions that they may be required to perform.
+
+Marginal note:Royal Canadian Mounted Police
+
+10 Nothing in this Act is to be construed as affecting the principle that certain physical and other qualifications are necessary for appointment under the Royal Canadian Mounted Police Act or to prevent the establishment of requirements that are necessary to carry out functions and duties within the Royal Canadian Mounted Police.
+
+
+PART 1Minister’s Powers, Duties and Functions
+
+
+Marginal note:Mandate
+
+Marginal note:Minister’s powers, duties and functions
+
+12 The Minister’s powers, duties and functions extend to and include all matters relating to accessibility over which Parliament has jurisdiction and that are not by law assigned to any other Minister or to any department, board or agency of the Government of Canada.
+
+Marginal note:Policies, programs and projects
+
+13 The Minister may initiate, recommend, implement and promote policies, programs and projects in relation to matters relating to accessibility.
+
+Marginal note:Grants and contributions
+
+14 The Minister may make grants and contributions in support of the Minister’s programs and projects in relation to matters relating to accessibility.
+
+Marginal note:Information
+
+15 Subject to the Statistics Act, the Minister may collect, analyse, interpret, publish and distribute information in relation to matters relating to accessibility.
+
+Marginal note:Coordination with provincial and territorial authorities
+
+16 The Minister must make every reasonable effort to collaborate with provincial or territorial authorities with a view to coordinating efforts in relation to matters relating to accessibility.
+
+
+PART 2Canadian Accessibility Standards Development Organization
+
+
+
+Establishment
+
+
+Marginal note:Canadian Accessibility Standards Development Organization
+
+
+Mandate
+
+
+Marginal note:Mandate
+
+18 The Standards Organization’s mandate is to contribute to the realization of a Canada without barriers, on or before January 1, 2040, through, among other things,
+
+
+Powers
+
+
+Marginal note:Powers
+
+19 The Standards Organization, in carrying out its mandate, may
+
+Marginal note:Other powers
+
+20 The Standards Organization may develop accessibility standards for — or provide any information, product or service related to accessibility standards to — any person or entity, including any government in Canada or elsewhere.
+
+
+Minister
+
+
+Marginal note:Ministerial directions
+
+
+Board of Directors
+
+
+Marginal note:Establishment and composition
+
+22 The Standards Organization is to have a board of directors consisting of not more than 11 directors, including a Chair and a Vice-Chair.
+
+Marginal note:Appointment and tenure
+
+Marginal note:Remuneration and expenses
+
+24 A director is to be paid the remuneration that is fixed by the Governor in Council and is entitled to be paid reasonable travel and living expenses incurred while absent from their ordinary place of residence in the course of performing their duties under this Act.
+
+Marginal note:Benefits
+
+25 A director is deemed to be an employee for the purposes of the Government Employees Compensation Act and employed in the federal public administration for the purposes of regulations made under section 9 of the Aeronautics Act.
+
+Marginal note:Role of board of directors
+
+26 The board of directors is responsible for
+
+Marginal note:By-laws
+
+Marginal note:Advisory and other committees
+
+28 The board of directors may, in accordance with the by-laws, appoint advisory or other committees.
+
+
+Chair
+
+
+Marginal note:Role of Chair
+
+
+Chief Executive Officer
+
+
+Marginal note:Appointment
+
+Marginal note:Role of Chief Executive Officer
+
+Marginal note:Committees
+
+
+Human Resources
+
+
+Marginal note:Officers and employees
+
+33 Officers and employees necessary for the proper conduct of the work of the Standards Organization are to be appointed in accordance with the Public Service Employment Act.
+
+
+General
+
+
+Marginal note:Recommended standards to be made public
+
+34 The Standards Organization must make available to the public every accessibility standard that it recommends to the Minister under paragraph 18(b).
+
+Marginal note:Inventions
+
+35 Despite section 9 of the Public Servants Inventions Act, the administration and control of any invention made by an employee of the Standards Organization and vested in Her Majesty by that Act, and any patent issued with respect to the invention, are vested in the Standards Organization.
+
+
+Annual Report
+
+
+Marginal note:Duty to submit
+
+
+PART 3Accessibility Commissioner
+
+
+Marginal note:Provision of information or advice
+
+37 The Accessibility Commissioner may provide information or advice to the Minister in respect of issues arising from the administration and enforcement of this Act.
+
+Marginal note:Special report
+
+Marginal note:Annual report
+
+Marginal note:Delegation to any person
+
+Marginal note:Immunity
+
+41 No action or other proceeding of a civil nature lies against the Accessibility Commissioner, or any person acting on behalf or under the direction of the Accessibility Commissioner, in respect of anything that is done or omitted to be done in good faith while exercising their powers or performing their duties and functions under this Act.
+
+
+PART 4Duties of Regulated Entities
+
+
+
+Regulated Entities That Carry On Broadcasting Undertakings
+
+
+
+Accessibility Plans — Requirements Under the Broadcasting Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Regulations
+
+
+Marginal note:Regulations
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+Accessibility Plans — Regulations Under This Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+Regulated Entities That Are Canadian Carriers or Telecommunications Service Providers
+
+
+
+Accessibility Plans — Requirements Under the Telecommunications Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Regulations
+
+
+Marginal note:Regulations
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+Accessibility Plans — Regulations Under This Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+Regulated Entities in the Transportation Network
+
+
+
+Accessibility Plans — Regulations Under the Canada Transportation Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Regulations
+
+
+Marginal note:Regulations
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+Accessibility Plans — Regulations Under This Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+Other Regulated Entities
+
+
+
+Accessibility Plans — Regulations Under This Act
+
+
+Marginal note:Initial accessibility plan
+
+
+Feedback
+
+
+Marginal note:Establishment of process
+
+
+Progress Reports
+
+
+Marginal note:Obligation
+
+
+Exemptions
+
+
+Marginal note:Power to exempt
+
+
+PART 5Administration and Enforcement
+
+
+
+Inspections
+
+
+Marginal note:Power to enter
+
+
+Production Order
+
+
+Marginal note:Power to order production
+
+
+Compliance Order
+
+
+Marginal note:Power to order termination of contravention
+
+Marginal note:Request for review
+
+
+Administrative Monetary Penalties
+
+
+Marginal note:Commission — regulated entity
+
+Marginal note:Purpose of penalty
+
+78 The purpose of a penalty is to promote compliance with this Act and not to punish.
+
+Marginal note:Issuance of notice of violation
+
+Marginal note:Warning — right to request review
+
+Marginal note:Notices with penalty — payment
+
+Marginal note:Entering into compliance agreements
+
+Marginal note:Refusal to enter into compliance agreement
+
+Marginal note:Review — with respect to facts
+
+Marginal note:Certain defences not available
+
+Marginal note:Party to violation
+
+86 If a regulated entity commits a violation, any of the following persons that directed, authorized, assented to, acquiesced in or participated in the commission of the violation is a party to and liable for the violation whether or not the regulated entity is proceeded against under this Act:
+
+Marginal note:Employees or agents or mandataries
+
+87 A regulated entity is liable for a violation that is committed by any of their employees or agents or mandataries acting in the course of their employment or the scope of their authority as agent or mandatary, whether or not the employee or agent or mandatary that actually committed the violation is identified.
+
+Marginal note:Continuing violation
+
+88 A violation that is committed or continued on more than one day constitutes a separate violation in respect of each day on which it is committed or continued.
+
+Marginal note:Evidence
+
+89 In any proceeding in respect of a violation, a notice of violation purporting to be issued under this Act is admissible in evidence without proof of the signature or official character of the individual purporting to have signed the notice of violation.
+
+Marginal note:Limitation period or prescription
+
+90 No proceedings in respect of a violation may be commenced after the expiry of two years after the day on which the subject matter of the proceedings arose.
+
+Marginal note:Regulations
+
+Marginal note:Powers regarding notices of violation
+
+92 The Accessibility Commissioner may establish the form of notices of violation and establish, in respect of each violation, a short-form description to be used in notices of violation.
+
+Marginal note:Publication
+
+93 The Accessibility Commissioner may make public
+
+
+PART 6Remedies
+
+
+
+Filing of Complaint
+
+
+Marginal note:Right to file complaint
+
+
+Investigation
+
+
+Marginal note:Power to conduct investigation
+
+95 The Accessibility Commissioner may conduct an investigation into a complaint filed under subsection 94(1) unless it appears to him or her that
+
+Marginal note:Notice
+
+Marginal note:Joint investigation
+
+97 If the Accessibility Commissioner is of the opinion that two or more complaints involve substantially the same issues of fact, he or she may conduct a joint investigation into the complaints.
+
+Marginal note:Powers of Accessibility Commissioner
+
+98 In the conduct of an investigation of a complaint, the Accessibility Commissioner may
+
+Marginal note:Dispute resolution mechanisms
+
+99 The Accessibility Commissioner may attempt to resolve complaints by means of a dispute resolution mechanism.
+
+Marginal note:Discontinuance of investigation
+
+Marginal note:Complaint dismissed
+
+Marginal note:Complaint substantiated
+
+Marginal note:Review by Accessibility Commissioner
+
+Marginal note:Appeal
+
+Marginal note:Assignment of member
+
+Marginal note:Decision
+
+Marginal note:Report of activities
+
+107 The Canadian Human Rights Tribunal must include in its annual report referred to in subsection 61(3) of the Canadian Human Rights Act a report of its activities under this Act during the year.
+
+Marginal note:Regulations
+
+108 The Governor in Council may make regulations
+
+
+General
+
+
+Marginal note:Duty to act informally and expeditiously
+
+109 The Accessibility Commissioner must deal with complaints filed under subsection 94(1) and applications made under subsection 103(1) as informally and expeditiously as the circumstances and considerations of fairness and natural justice permit.
+
+Marginal note:Disclosure of personal information
+
+110 For the purpose of the administration of Part III of the Canadian Human Rights Act, the Accessibility Commissioner may disclose to any officer or employee of the Canadian Human Rights Commission any personal information that is contained in a complaint filed with the Accessibility Commissioner.
+
+
+PART 7Chief Accessibility Officer
+
+
+
+Appointment
+
+
+Marginal note:Special advisor
+
+
+Remuneration and Expenses
+
+
+Marginal note:Remuneration and expenses
+
+
+Duties and Functions
+
+
+Marginal note:Advice
+
+113 The Chief Accessibility Officer may — or, if requested to do so by the Minister, must — provide information or advice to the Minister in respect of systemic or emerging accessibility issues.
+
+Marginal note:Special report
+
+Marginal note:Assistance
+
+115 The Accessibility Commissioner, the Canadian Transportation Agency, the Canadian Radio-television and Telecommunications Commission, the Canadian Human Rights Commission, the Federal Public Sector Labour Relations and Employment Board and the Standards Organization must take all reasonable steps to assist the Chief Accessibility Officer in the performance of his or her duties and functions.
+
+Marginal note:Annual report
+
+
+PART 8General
+
+
+
+Regulations
+
+
+Marginal note:Regulations
+
+Marginal note:Limited application — broadcasting
+
+Marginal note:Limited application — telecommunications
+
+Marginal note:Limited application — transportation
+
+120 The only regulations made under subsection 117(1) that apply in respect of a regulated entity that is required to comply with any provision of regulations made under subsection 170(1) of the Canada Transportation Act are those that relate to the identification and removal of barriers, and the prevention of new barriers, in the following areas:
+
+Marginal note:Exemption
+
+Marginal note:For greater certainty
+
+121.1 For greater certainty, nothing in any provision of this Act or the regulations limits a regulated entity’s duty to accommodate under any other Act of Parliament.
+
+
+Miscellaneous
+
+
+Marginal note:Collaboration — complaints, applications and grievances
+
+Marginal note:Collaboration — policies and practices
+
+123 The Accessibility Commissioner, the Canadian Transportation Agency, the Canadian Radio-television and Telecommunications Commission, the Canadian Human Rights Commission and the Federal Public Sector Labour Relations and Employment Board must work together to foster complementary policies and practices in relation to accessibility-related matters.
+
+Marginal note:Obstruction
+
+124 It is prohibited to obstruct, by act or omission, the Accessibility Commissioner or his or her delegate while they are engaged in the exercise of powers or the performance of duties or functions under this Act.
+
+Marginal note:False statements — Accessibility Commissioner
+
+125 It is prohibited to knowingly make any false or misleading statement verbally or in writing to the Accessibility Commissioner, or to his or her delegate, while they are engaged in the exercise of powers or the performance of duties or functions under this Act.
+
+Marginal note:False statements — records, reports, etc.
+
+126 It is prohibited for a regulated entity to knowingly make, or participate in, assent to or acquiesce in the making of a false or misleading statement in any record, report, electronic data or other document that it is required to prepare, retain or provide under this Act.
+
+Marginal note:Section 126 of Criminal Code
+
+127 Section 126 of the Criminal Code does not apply to or in respect of any contravention of any provision of this Act or of regulations made under subsection 117(1).
+
+Marginal note:Debts to Her Majesty
+
+Marginal note:Certificate of default
+
+Marginal note:Enforcement of order
+
+130 An order made under subsection 75(1) or amended under subsection 76(4) and an order made under subsection 102(1) or section 106 may, for the purpose of enforcement, be made an order of the Federal Court by following the usual procedure or by the Accessibility Commissioner filing in the Registry of the Court a copy of the order certified by the Accessibility Commissioner to be a true copy.
+
+Marginal note:Review by Senate and House of Commons
+
+Marginal note:Independent review
+
+
+National AccessAbility Week
+
+
+Marginal note:Designation
+
+133 Throughout Canada, in each year, the week starting on the last Sunday in May is to be known as National AccessAbility Week.
+
+
+PART 9Parliamentary Entities
+
+
+
+Definition and Application
+
+
+Marginal note:Definition of parliamentary entity
+
+134 In this Part, parliamentary entity means
+
+Marginal note:Application of other Parts
+
+135 Parts 4 to 6 and 8 apply in respect of parliamentary entities only to the extent provided for in this Part.
+
+Marginal note:Constituency offices
+
+136 For greater certainty, this Part applies with respect to the constituency offices of members of the House of Commons.
+
+
+Parliamentary Powers, Privileges and Immunities
+
+
+Marginal note:Powers, privileges and immunities
+
+137 For greater certainty, nothing in this Act or in any regulations made under it is to be construed as limiting in any way the powers, privileges and immunities of the Senate and the House of Commons and their members or as authorizing the exercise of a power or the performance of a function or duty under this Act if the exercise of that power or the performance of that function or duty would interfere, directly or indirectly, with the business of the Senate or the House of Commons.
+
+
+Application
+
+
+Marginal note:Application of Part 4
+
+Marginal note:Application of Part 5 — inspection
+
+Marginal note:Contravention — parliamentary entity
+
+Marginal note:Application of Part 6
+
+Marginal note:Application of Part 8 — regulations
+
+
+Notification of Speakers
+
+
+Marginal note:Notification — entrance into place
+
+Marginal note:Notification — appeal under subsection 104(1)
+
+Marginal note:Non-compliance with compliance order
+
+Marginal note:Tabling by Speaker
+
+146 The Speaker of the Senate or the Speaker of the House of Commons, or both, must, within a reasonable time after receiving it, table every notice of default received under paragraph 143(2)(h) and every order received under section 145 in the House over which the Speaker presides.
+
+
+PART 10Related Amendments
+
+
+
+R.S., c. C-22Canadian Radio-television and Telecommunications Commission Act
+
+
+147 [Amendments]
+
+
+R.S., c. H-6Canadian Human Rights Act
+
+
+148 [Amendments]
+
+149 [Amendments]
+
+150 [Amendments]
+
+151 [Amendments]
+
+152 [Amendments]
+
+153 [Amendments]
+
+
+R.S., c. 33 (2nd Supp.)Parliamentary Employment and Staff Relations Act
+
+
+154 [Amendments]
+
+155 [Amendments]
+
+156 [Amendments]
+
+157 [Amendments]
+
+158 [Amendments]
+
+159 [Amendments]
+
+160 [Amendments]
+
+
+1991, c. 11Broadcasting Act
+
+
+161 [Amendments]
+
+
+1993, c. 38Telecommunications Act
+
+
+162 [Amendments]
+
+163 [Amendments]
+
+164 [Amendments]
+
+165 [Amendments]
+
+
+1996, c. 10Canada Transportation Act
+
+
+166 [Amendments]
+
+167 [Amendments]
+
+168 [Amendments]
+
+169 [Amendments]
+
+170 [Amendments]
+
+171 [Amendments]
+
+172 [Amendments]
+
+173 [Amendments]
+
+174 [Amendments]
+
+175 [Amendments]
+
+176 [Amendments]
+
+177 [Amendments]
+
+178 [Amendments]
+
+179 [Amendments]
+
+180 [Amendments]
+
+181 [Amendments]
+
+182 [Amendments]
+
+183 [Amendments]
+
+
+2003, c. 22, s. 2; 2017 c. 9, s. 2Federal Public Sector Labour Relations Act
+
+
+184 [Amendments]
+
+185 [Amendments]
+
+186 [Amendments]
+
+187 [Amendments]
+
+188 [Amendments]
+
+189 [Amendments]
+
+190 [Amendments]
+
+191 [Amendments]
+
+192 [Amendments]
+
+193 [Amendments]
+
+
+2003, c. 22, ss. 12 and 13Public Service Employment Act
+
+
+194 [Amendments]
+
+195 [Amendments]
+
+196 [Amendments]
+
+197 [Amendments]
+
+198 [Amendments]
+
+199 [Amendments]
+
+
+PART 11Consequential and Coordinating Amendments
+
+
+
+Consequential Amendments
+
+
+
+R.S., c. A-1Access to Information Act
+
+
+200 [Amendments]
+
+
+R.S., c. F-11Financial Administration Act
+
+
+201 [Amendments]
+
+202 [Amendments]
+
+203 [Amendments]
+
+
+R.S., c. P-21Privacy Act
+
+
+204 [Amendments]
+
+
+Coordinating Amendments
+
+
+205 [Amendments]
+
+
+PART 12Coming into Force
+
+
+Marginal note:Order in council
+
+Footnote *206 The provisions of this Act, other than section 205, come into force on a day to be fixed by order of the Governor in Council.
+
+MAIN CONT DIV END
+
+
+Page Details

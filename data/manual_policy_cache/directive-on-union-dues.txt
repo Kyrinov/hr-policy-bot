@@ -1,0 +1,29 @@
+the main content
+
+
+Directive on Union Dues
+
+
+This directive outlines the responsibilities of organizations within the core public administration (CPA) to ensure the accurate, consistent and effective administration of union dues.
+
+Date modified: 2025-09-01
+
+googleoff: all
+
+googleon: all
+
+
+Note to reader
+
+
+This directive was updated on September 1, 2025. The changes take effect on that date.
+
+The previous version of the directive has been archived.
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09716-9
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

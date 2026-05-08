@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on the Duty to Accommodate
+
+
+Provides direction to managers and heads of HR on their obligations with respect to duty to accommodate, with the objective of developing an inclusive, barrier-free workplace in which all persons have equal access to opportunities in the core public administration.
+
+Date modified: 2021-07-16
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

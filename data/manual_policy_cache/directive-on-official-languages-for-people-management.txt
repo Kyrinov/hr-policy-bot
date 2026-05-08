@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Official Languages for People Management
+
+
+Outlines the requirements related to the linguistic identification of a position, the staffing of bilingual positions, and the equal participation of English-speaking Canadians and French-speaking Canadians in federal institutions.
+
+Date modified: 2025-06-20
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09662-9
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Occupational Health Evaluations
+
+
+The Directive aims to prevent or mitigate injuries, illnesses and fatalities in the workplace and to improve the overall health and productivity of employees. It streamlines the planning and use of fit-to-work assessments and periodic health evaluations linked to staffing requirements.
+
+Date modified: 2020-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

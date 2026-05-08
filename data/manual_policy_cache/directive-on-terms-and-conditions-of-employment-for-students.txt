@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Terms and Conditions of Employment for Students
+
+
+This directive outlines the responsibilities of organizations within the core public administration (CPA) to ensure accurate, consistent, effective and equitable administration of the terms and conditions of employment for students.
+
+Date modified: 2024-03-21
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-20433-8
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

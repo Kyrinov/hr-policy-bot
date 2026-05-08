@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Terms and Conditions of Employment for Executives
+
+
+The directive sets out the terms and conditions of employment for executives across the core public administration and the associated responsibilities of heads of human resources, delegated managers and executives.  The directive covers salary and non-salary elements, performance pay, special deployments and career transition agreements.
+
+Date modified: 2025-11-03
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

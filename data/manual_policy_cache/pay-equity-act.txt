@@ -1,0 +1,790 @@
+MAIN CONT DIV START
+
+Assented to 2018-12-13
+
+An Act to establish a proactive pay equity regime within the federal public and private sectors
+
+[Enacted by section 416 of chapter 27 of the Statutes of Canada, 2018, sections 1 to 171, 172, 173 and 174 to 184 in force August 31, 2021, see SI/2021-36.]
+
+
+Short Title
+
+
+Marginal note:Short title
+
+1 This Act may be cited as the Pay Equity Act.
+
+
+Purpose
+
+
+Marginal note:Purpose
+
+2 The purpose of this Act is to achieve pay equity through proactive means by redressing the systemic gender-based discrimination in the compensation practices and systems of employers that is experienced by employees who occupy positions in predominantly female job classes so that they receive equal compensation for work of equal value, while taking into account the diverse needs of employers, and then to maintain pay equity through proactive means.
+
+
+Interpretation
+
+
+Marginal note:Definitions
+
+Marginal note:Group of employers
+
+
+Designation of Minister
+
+
+Marginal note:Designation of Minister
+
+5 The Governor in Council may, by order, designate a member of the Queen’s Privy Council for Canada as the Minister for the purposes of this Act.
+
+
+Application
+
+
+Marginal note:Employers subject to Act on coming into force
+
+6 The following employers become subject to this Act on the date on which this section comes into force:
+
+Marginal note:Later date in public sector — 10 to 99 employees
+
+Marginal note:Determination of number of employees — public sector
+
+8 For the purpose of sections 6 and 7
+
+Marginal note:Determination of number of employees — private sector and territorial governments
+
+9 For the purpose of sections 6 and 7
+
+Marginal note:Exemption
+
+10 The governments of Yukon, the Northwest Territories and Nunavut are exempt from the application of this Act until the date that the Governor in Council may, by order, specify in respect of that government.
+
+Marginal note:Exemption
+
+
+PART 1Pay Equity Plan
+
+
+Marginal note:Requirement to establish plan
+
+12 Every employer must establish a pay equity plan in accordance with this Act in respect of its employees.
+
+Marginal note:Requirement to establish plan — group of employers
+
+13 Every group of employers must establish a pay equity plan in accordance with this Act in respect of the employees of the employers in the group.
+
+Marginal note:Notice — employers referred to in subsection 16(1)
+
+Marginal note:Notice — group of employers referred to in subsection 17(1)
+
+Marginal note:Requirement to establish pay equity committee
+
+Marginal note:Requirement to establish pay equity committee — group of employers
+
+Marginal note:Number of employees — group of employers
+
+18 For the purpose of section 17,
+
+Marginal note:Composition of committee
+
+Marginal note:Vote
+
+Marginal note:Directions from employer
+
+Marginal note:Measures to facilitate the selection of members
+
+Marginal note:Requirement to provide information — employer
+
+Marginal note:Requirement to keep information confidential — committee members
+
+Marginal note:Notice of establishment of plan without committee
+
+25 If an employer, despite having made all reasonable efforts, is unable to establish a pay equity committee, the employer must apply to the Pay Equity Commissioner for authorization to establish the pay equity plan without a pay equity committee. If that authorization is granted, the employer must post a notice informing the employees to whom the pay equity plan relates that the employer will establish the pay equity plan without a pay equity committee.
+
+Marginal note:Notice of establishment of plan without committee — group of employers
+
+26 If a group of employers, despite having made all reasonable efforts, is unable to establish a pay equity committee, the group must apply to the Pay Equity Commissioner for authorization to establish the pay equity plan without a committee. If that authorization is granted, each employer in the group must post a notice informing its employees to whom the pay equity plan relates that the group of employers will establish the pay equity plan without a committee.
+
+Marginal note:Committee does not meet requirement after establishment
+
+27 If a pay equity committee established by an employer does not, at any time after it has been established, meet the requirements set out in any of paragraphs 19(1)(a), (b), (d) and (e), the employer must apply to the Pay Equity Commissioner for authorization for the continuation of the committee with different requirements than the ones set out in that paragraph.
+
+Marginal note:Committee cannot perform work
+
+28 If, at any time after establishing a pay equity committee, an employer is of the opinion that the committee is unable to perform its work, the employer may apply to the Pay Equity Commissioner for authorization to establish the pay equity plan without a committee. If that authorization is granted, the employer must post a notice informing the employees to whom the pay equity plan relates that the employer will establish the pay equity plan without a committee.
+
+Marginal note:Committee cannot perform work — group of employers
+
+29 If, at any time after establishing a pay equity committee, a group of employers is of the opinion that the committee is unable to perform its work, the group may apply to the Pay Equity Commissioner for authorization to establish the pay equity plan without a committee. If that authorization is granted, each employer in the group must post a notice informing its employees to whom the pay equity plan relates that the group of employers will establish the pay equity plan without a committee.
+
+Marginal note:Multiple plans
+
+
+PART 2Process for Establishment of Pay Equity Plan
+
+
+
+Purpose
+
+
+Marginal note:Steps to be followed
+
+31 The purpose of this Part is to set out the steps leading to the establishment of a pay equity plan.
+
+
+Identification of Job Classes
+
+
+Marginal note:Job classes
+
+32 An employer — or, if a pay equity committee has been established, that committee — must start by identifying the job class of positions occupied or that may be occupied by employees to whom the pay equity plan relates. Subject to section 34, positions are considered to be in the same job class if
+
+Marginal note:One-position job classes
+
+33 A job class may consist of only one position.
+
+Marginal note:Job classes in core public administration
+
+34 Positions in the core public administration that are at the same group and level comprise a single job class.
+
+
+Determination of Predominantly Female and Predominantly Male Job Classes
+
+
+Marginal note:Determination
+
+35 Once an employer — or, if a pay equity committee has been established, that committee — has identified all of the job classes under section 32, it must determine which of them are predominantly female job classes and which of them are predominantly male job classes.
+
+Marginal note:Predominantly female job classes
+
+36 A job class is considered to be a predominantly female job class if
+
+Marginal note:Predominantly male job classes
+
+37 A job class is considered to be a predominantly male job class if
+
+Marginal note:Group of job classes
+
+Marginal note:Notice to Pay Equity Commissioner
+
+39 If an employer — or, if a pay equity committee has been established, that committee — determines under section 35 that there is at least one predominantly female job class but that there are no predominantly male job classes, and no regulations have been made under paragraph 181(1)(c), the employer must notify the Pay Equity Commissioner of that determination.
+
+Marginal note:Application of regulations
+
+40 If regulations have been made under paragraph 181(1)(c), those regulations apply in place of sections 41 to 50.
+
+
+Determination of Value of Work
+
+
+Marginal note:Determination
+
+Marginal note:Criterion
+
+42 The criterion to be applied in determining the value of the work performed is the composite of the skill required to perform the work, the effort required to perform the work, the responsibility required in the performance of the work and the conditions under which the work is performed.
+
+Marginal note:Method
+
+43 In addition, an employer — or, if a pay equity committee has been established, that committee — must, to determine the value of the work performed, use a method that
+
+
+Calculation of Compensation
+
+
+Marginal note:Calculation
+
+Marginal note:Exclusions from compensation
+
+45 An employer — or, if a pay equity committee has been established, that committee — may exclude from the calculation of compensation, with respect to each job class in respect of which compensation is required to be calculated, any form of compensation that is equally available, and provided without discrimination on the basis of gender, in respect of all of those job classes.
+
+Marginal note:Differences in compensation excluded
+
+46 An employer — or, if a pay equity committee has been established, that committee — must exclude from the calculation of compensation associated with a job class any differences in compensation that either increase or decrease compensation in any or all positions in that job class as compared with the compensation that would otherwise be associated with the position, if the differences are based on any one or more of the following factors and those factors have been designed and are applied so as not to discriminate on the basis of gender:
+
+
+Comparison of Compensation
+
+
+Marginal note:Comparison
+
+47 An employer — or, if a pay equity committee has been established, that committee — that has calculated under section 44 the compensation associated with each job class must, using the compensation so calculated, compare, in accordance with sections 48 to 50, the compensation associated with the predominantly female job classes with the compensation associated with the predominantly male job classes, for the purpose of determining whether there is any difference in compensation between those job classes.
+
+Marginal note:Compensation comparison methods
+
+Marginal note:Equal average method
+
+Marginal note:Equal line method
+
+
+Contents and Posting
+
+
+Marginal note:Contents of plan
+
+51 A pay equity plan must
+
+Marginal note:Draft pay equity plan and notice
+
+52 Once an employer — or, if a pay equity committee has been established, that committee — has prepared a draft of the pay equity plan, the employer must post the draft as well as a notice informing employees to whom it relates of their right to provide the employer or committee, as the case may be, with comments on the draft and the time within which and the manner in which they may exercise that right.
+
+Marginal note:Draft pay equity plan and notice — group of employers
+
+Marginal note:Written comments
+
+Marginal note:Final version — three-year maximum
+
+Marginal note:Notice of increases
+
+Marginal note:Extension of time limit for posting
+
+Marginal note:Establishment of pay equity plan
+
+58 An employer is deemed to have established a pay equity plan on the day on which it posts the pay equity plan in accordance with subsection 55(1) or 57(2) or paragraph 94(1)(b), as the case may be.
+
+Marginal note:Establishment of pay equity plan — group of employers
+
+59 A group of employers is deemed to have established a pay equity plan on the day on which each employer in the group posts the pay equity plan in accordance with subsections 55(1) and (2) or 57(2) and (3), as the case may be.
+
+
+Increases in Compensation
+
+
+Marginal note:Obligation to increase compensation
+
+60 If a pay equity plan posted by an employer in accordance with section 55, subsection 57(2) or paragraph 94(1)(b), as the case may be, discloses differences in compensation between predominantly female job classes and predominantly male job classes or, if there are no predominantly male job classes, differences in compensation that are determined in accordance with regulations made under paragraph 181(1)(c), the employer must increase — in accordance with the provisions of the pay equity plan that meet the requirements set out in paragraph 51(k) — the compensation that is payable to its employees who occupy positions in the predominantly female job classes for which an increase in compensation is required to be made under that pay equity plan.
+
+Marginal note:Date payable — plan posted under section 55 or paragraph 94(1)(b)
+
+Marginal note:Date payable — plan posted under subsection 57(2)
+
+Marginal note:Longer phase-in period
+
+
+PART 3Pay Equity Maintenance Review
+
+
+
+Updated Pay Equity Plan
+
+
+Marginal note:Requirement to update plan
+
+64 An employer that has established a pay equity plan must update the version of the pay equity plan most recently posted in accordance with section 55, subsection 57(2), section 83, subsection 85(2) or paragraph 94(1)(b), as the case may be, in accordance with this Act.
+
+Marginal note:Notice — employers referred to in subsection 67(1)
+
+Marginal note:Notice — group of employers referred to in subsection 68(1)
+
+Marginal note:Requirement to establish pay equity committee
+
+Marginal note:Requirement to establish pay equity committee — group of employers
+
+Marginal note:Determination of number of employees — public sector
+
+69 For the purpose of section 67,
+
+Marginal note:Determination of number of employees — private sector and territorial governments
+
+70 For the purpose of section 67,
+
+Marginal note:Determination of number of employees — group of employers
+
+71 For the purpose of section 68,
+
+Marginal note:Application of sections 20 to 24
+
+72 Sections 20 to 24 apply in respect of a pay equity committee established under this Part, except that “establishment” is to be read as “updating”.
+
+Marginal note:Notice of update of plan without committee
+
+73 If an employer, despite having made all reasonable efforts, is unable to establish a pay equity committee in respect of a pay equity plan that it is required to update, the employer must apply to the Pay Equity Commissioner for authorization to update the pay equity plan without a committee. If that authorization is granted, the employer must post a notice informing the employees to whom the pay equity plan relates that the employer will update the pay equity plan without a committee.
+
+Marginal note:Notice of update of plan without committee — group of employers
+
+74 If a group of employers, despite having made all reasonable efforts, is unable to establish a pay equity committee in respect of a pay equity plan that it is required to update, the group must apply to the Pay Equity Commissioner for authorization to update the pay equity plan without a committee. If that authorization is granted, each employer in the group must post a notice informing its employees to whom the pay equity plan relates that the group of employers will update the pay equity plan without a committee.
+
+Marginal note:Committee does not meet requirement after establishment
+
+75 If a pay equity committee established by an employer does not, at any time after it has been established, meet the requirements set out in any of paragraphs 19(1)(a), (b), (d) and (e), the employer must apply to the Pay Equity Commissioner for authorization for the continuation of the committee with different requirements than the ones set out in that paragraph.
+
+Marginal note:Committee cannot perform work
+
+76 If, at any time after establishing a pay equity committee, an employer is of the opinion that the committee is unable to perform its work, the employer may apply to the Pay Equity Commissioner for authorization to update the pay equity plan without a committee. If that authorization is granted, the employer must post a notice informing the employees to whom the pay equity plan relates that the employer will update the pay equity plan without a committee.
+
+Marginal note:Committee cannot perform work — group of employers
+
+77 If, at any time after establishing a pay equity committee, a group of employers is of the opinion that the committee is unable to perform its work, it may apply to the Pay Equity Commissioner for authorization to update the pay equity plan without a committee. If that authorization is granted, each employer in the group must post a notice informing its employees to whom the pay equity plan relates that the group of employers will update the pay equity plan without a committee.
+
+
+Process for Updating Pay Equity Plan
+
+
+Marginal note:Identification of new differences in compensation
+
+Marginal note:Revision of pay equity plan
+
+
+Posting
+
+
+Marginal note:Revised pay equity plan and notice
+
+80 Once a pay equity plan is revised, the employer must post, close together and all at once, the following documents:
+
+Marginal note:Revised pay equity plan and notice — group of employers
+
+Marginal note:Written comments
+
+Marginal note:Final version — five-year maximum
+
+Marginal note:Notice of increases
+
+84 An employer must post, before the date on which an increase in compensation — and any lump sum — is payable under subsection 88(4), a notice indicating that date.
+
+Marginal note:Extension of time limit for posting
+
+Marginal note:Updated pay equity plan
+
+86 An employer is deemed to have updated a pay equity plan on the day on which it posts the revised pay equity plan in accordance with subsection 83(1) or 85(2), as the case may be.
+
+Marginal note:Updated pay equity plan — group of employers
+
+87 A group of employers is deemed to have updated a pay equity plan on the day on which each employer in the group posts the revised pay equity plan in accordance with subsections 83(1) and (2), or subsection 85(2), as the case may be.
+
+
+Increases in Compensation
+
+
+Marginal note:Obligation to increase compensation
+
+
+PART 4General Provisions — Pay Equity Plans
+
+
+
+Annual Statement
+
+
+Marginal note:Contents
+
+
+Record Keeping
+
+
+Marginal note:Private sector and territorial governments — establishment of pay equity plan
+
+Marginal note:Extension of time for retaining documents
+
+
+Transfers or Leases
+
+
+Marginal note:Federal private sector — transfer or lease
+
+92 If a federal work, undertaking or business, as defined in section 2 of the Canada Labour Code, or any part of it — or a corporation established to perform any duty or function on behalf of the Government of Canada, or any part of the corporation, other than a corporation named in Schedule IV or V of the Financial Administration Act — is leased or transferred by sale, merger or other­wise from one employer, in this section referred to as the “former employer”, to another employer, in this section referred to as the “new employer”, and the former employer had posted, or is deemed to be the employer that had posted, as the case may be, a pay equity plan in accordance with section 55, subsection 57(2), section 83 or subsection 85(2),
+
+Marginal note:Federal private sector — re-tendering
+
+93 If, by reason of a contract being awarded through a re-tendering process, an employer, in this section referred to as the “new employer”, becomes responsible for the carrying out or the operation of a federal work, undertaking or business, as defined in section 2 of the Canada Labour Code, or any part of it, that was previously carried out or operated by another employer, in this section referred to as the “former employer”, and the former employer had posted, or is deemed to be the employer that had posted, as the case may be, a pay equity plan in accordance with section 55, subsection 57(2), section 83 or subsection 85(2),
+
+Marginal note:Provincial business
+
+
+Collective Agreements
+
+
+Marginal note:Effect on collective agreements
+
+95 In the event of an inconsistency between the version of a pay equity plan most recently posted in accordance with section 55, 57, 83 or 85 or paragraph 94(1)(b), as the case may be, and any collective agreement governing the employees to whom the pay equity plan relates, that pay equity plan prevails to the extent of the inconsistency. Any increase in compensation payable by an employer to employees under this Act is deemed to be incorporated into and form part of the collective agreements governing those employees.
+
+
+Implementation
+
+
+Marginal note:90-day period
+
+96 Despite any other provision of this Act, an employer may not be the subject of a complaint under this Act, or be served with a notice of violation under this Act, where the subject-matter of the complaint or alleged violation is the failure of the employer to pay the amount of any increase in compensation — or any lump sum — payable under this Act within the first 90 days after the day on which that amount is payable.
+
+
+Interest
+
+
+Marginal note:Failure to pay amount due
+
+
+Prohibitions
+
+
+Marginal note:Reduction of compensation
+
+98 An employer must not reduce the compensation payable to any of its employees in order to achieve pay equity.
+
+Marginal note:Obstruction
+
+99 It is prohibited to obstruct, by act or omission, the Pay Equity Commissioner or his or her delegate while they are engaged in the exercise of powers or the performance of duties or functions under this Act.
+
+Marginal note:False or misleading statements — Pay Equity Commissioner
+
+100 It is prohibited to knowingly make any false or misleading statement verbally or in writing to the Pay Equity Commissioner, or to his or her delegate, while they are engaged in the exercise of powers or the performance of duties or functions under this Act.
+
+Marginal note:False or misleading statements — records, reports, etc.
+
+101 It is prohibited for any person to knowingly make, or participate in, assent to or acquiesce in the making of a false or misleading statement in any record, report, electronic data or other document that the person is required to prepare, retain or provide under this Act.
+
+Marginal note:Reprisal by employer
+
+102 No employer and no person acting on an employer’s behalf is to take reprisal against a person, including by refusing to employ or to continue to employ the person, or suspending or laying off the person or otherwise discriminating against the person with respect to employment, pay or any other term of employment or intimidating, threatening or disciplining the person, because the person has
+
+Marginal note:Reprisal by bargaining agent
+
+103 No bargaining agent or person acting on behalf of a bargaining agent is to take reprisal against a person, including by
+
+
+PART 5Pay Equity Commissioner
+
+
+
+Pay Equity Commissioner’s Role
+
+
+Marginal note:Mandate — Pay Equity Commissioner
+
+Marginal note:Delegation
+
+
+Authorizations by Pay Equity Commissioner
+
+
+Marginal note:Recognition of group as single employer
+
+Marginal note:Authority — multiple pay equity plans
+
+107 On receipt of an application referred to in subsection 30(1) or (2) and after giving an opportunity to make representations under subsection 30(4), the Pay Equity Commissioner may, if the application has not been denied under subsection 30(5) and if he or she is of the opinion that it is appropriate in the circumstances, authorize the establishment of more than one pay equity plan.
+
+Marginal note:Authority — plan without committee
+
+108 On receipt of an application referred to in section 25, 26, 73 or 74, the Pay Equity Commissioner may, if he or she is of the opinion that it is appropriate in the circumstances and in accordance with any regulations made under paragraph 181(1)(o), authorize the establishment or update, as the case may be, of a pay equity plan without a pay equity committee.
+
+Marginal note:Authority — different committee membership
+
+109 On receipt of an application referred to in subsection 19(3), section 27, subsection 67(6) or 68(6) or section 75, the Pay Equity Commissioner may, if he or she is of the opinion that it is appropriate in the circumstances and in accordance with any regulations made under paragraph 181(1)(o), authorize the establishment or continuation, as the case may be, of a pay equity committee that does not comply with the requirements set out in any of paragraphs 19(1)(a), (b), (d) and (e).
+
+Marginal note:Authority — Committee cannot perform work
+
+110 On receipt of an application referred to in section 28, 29, 76 or 77, the Pay Equity Commissioner must
+
+Marginal note:Authority — other compensation comparison method
+
+111 On receipt of an application referred to in subparagraph 48(2)(a)(i), the Pay Equity Commissioner may, if he or she is of the opinion that it is appropriate in the circumstances, authorize the use of a method for the comparison of compensation that is prescribed by regulation or, if no such method is prescribed or the employer is of the opinion that a method prescribed by regulation cannot be used, the method proposed by the employer.
+
+Marginal note:Authority — extension for posting final plan
+
+Marginal note:Authority — longer phase-in period
+
+113 On receipt of an application referred to in subsection 63(1), the Pay Equity Commissioner may, if he or she is of the opinion that it is justified on the basis that the employer has demonstrated extreme financial hardship, authorize the employer to phase in increases in compensation that are required to be made under a pay equity plan over a longer phase-in period than the one set out in paragraph 61(2)(c) or (d) or 62(4)(e) or (f).
+
+
+Information and Reports
+
+
+Marginal note:Provision of information or advice
+
+114 The Pay Equity Commissioner may — or, if requested to do so by the Minister, must — provide the Minister with information or advice in respect of systemic or emerging pay equity issues.
+
+Marginal note:Special reports
+
+Marginal note:Provision of data to Minister
+
+116 The Pay Equity Commissioner must provide the Minister, on the request of and in the form specified by the Minister, with any data that the Minister requires to evaluate whether the purpose of the Act is being met.
+
+Marginal note:Annual report
+
+
+PART 6Investigations and Audits
+
+
+Marginal note:Compliance audit
+
+Marginal note:Power to order termination of contravention
+
+119 If the Pay Equity Commissioner has reasonable grounds to believe that an employer, employee or bargaining agent is contravening or has contravened a provision of this Act or the regulations, or an order of the Pay Equity Commissioner or the Tribunal issued under this Act, he or she may, subject to subsections 118(7) and (8), make an order in writing requiring the employer, employee or bargaining agent to terminate the contravention within the time specified in the order or to take any measures specified in the order, within the time specified in the order, to ensure that the contravention does not continue or reoccur. The order must specify the time within which and the manner in which it may be appealed.
+
+Marginal note:Internal audit order
+
+Marginal note:Powers — investigation or application
+
+121 In the conduct of an investigation under this Act or the consideration of an application submitted under this Act, the Pay Equity Commissioner may
+
+Marginal note:Means of telecommunication
+
+Marginal note:Accompanying individual
+
+123 The Pay Equity Commissioner may be accompanied by any other individual the Pay Equity Commissioner believes is necessary to help him or her exercise his or her powers or perform his or her duties or functions under section 118 or 121.
+
+Marginal note:Assistance
+
+124 The owner or other person in charge of a place entered by the Pay Equity Commissioner or his or her delegate under section 118 or 121 and every individual found in the place must give the Pay Equity Commissioner or the delegate, as the case may be, all reasonable assistance and provide the Pay Equity Commissioner or delegate with any information that the Pay Equity Commissioner or delegate may reasonably require.
+
+
+PART 7Administrative Monetary Penalties
+
+
+
+Definition
+
+
+Marginal note:Meaning of penalty
+
+125 In this Part, penalty means an administrative monetary penalty imposed under this Part for a violation.
+
+
+Purpose
+
+
+Marginal note:Purpose of penalty
+
+126 The purpose of a penalty is to promote compliance with this Act and not to punish.
+
+
+Regulations
+
+
+Marginal note:Regulations
+
+
+Pay Equity Commissioner’s Powers, Duties and Functions
+
+
+Marginal note:Powers regarding notices of violation
+
+128 The Pay Equity Commissioner may
+
+
+Commission of Violations
+
+
+Marginal note:Violations
+
+129 Every employer, group of employers, bargaining agent or other person that contravenes a provision or order designated by regulations made under paragraph 127(1)(a) commits a violation and is liable to a penalty of an amount to be determined in accordance with regulations made under paragraph 127(1)(c).
+
+Marginal note:Liability of parties to violation
+
+130 If an employer or bargaining agent commits a violation, any of the following persons who directed, authorized, assented to, acquiesced in or participated in the commission of the violation is a party to the violation and is liable to a penalty of an amount to be determined in accordance with the regulations, whether or not the employer or bargaining agent has been proceeded against in accordance with this Part:
+
+Marginal note:Employees or agents or mandataries
+
+131 An employer or bargaining agent is liable for a violation that is committed by any of their employees or agents or mandataries acting in the course of their employment or the scope of their authority as agent or mandatary, whether or not the employee or agent or mandatary that actually committed the violation is identified.
+
+Marginal note:Notice of violation
+
+
+Rules About Violations
+
+
+Marginal note:Certain defences not available
+
+Marginal note:Continuing violation
+
+134 A violation that is committed or continued on more than one day constitutes a separate violation for each day on which it is committed or continued.
+
+Marginal note:For greater certainty
+
+135 For greater certainty, a violation is not an offence and, accordingly, section 126 of the Criminal Code does not apply in respect of a violation.
+
+Marginal note:Limitation period
+
+
+Responsibility
+
+
+Marginal note:Notices with penalty — payment
+
+137 If a notice of violation sets out a penalty and the employer, group of employers, bargaining agent or other person named in the notice pays, within the time and in the manner specified in the notice, the amount of the penalty or the lesser amount set out in the notice,
+
+Marginal note:Failure to act
+
+
+Review
+
+
+Marginal note:Request for review
+
+Marginal note:Variation or cancellation of notice of violation
+
+140 At any time before a request for review is filed in accordance with section 139, the Pay Equity Commissioner may cancel the notice of violation or correct an error in it.
+
+Marginal note:Review
+
+141 On receipt of a request for review made under section 139, the Pay Equity Commissioner must review the facts of the alleged violation, the penalty or both, as the case may be.
+
+Marginal note:Completion of review
+
+
+Recovery of Penalties
+
+
+Marginal note:Debt to Her Majesty
+
+Marginal note:Certificate
+
+
+General
+
+
+Marginal note:Admissibility of documents
+
+145 In the absence of evidence to the contrary, a document that appears to be a notice of violation served under subsection 132(1) is presumed to be authentic and is proof of its contents in any proceeding in respect of a violation.
+
+Marginal note:Publication
+
+146 The Pay Equity Commissioner may make public
+
+
+PART 8Dispute Resolution
+
+
+
+Matters in Dispute, Objections and Complaints
+
+
+Marginal note:Notice of matters in dispute
+
+147 If a pay equity committee is established under this Act in respect of a pay equity plan, and if the members of the committee who represent employees and the members of the committee who represent the employer do not agree in respect of a matter at any step leading to the establishment or updating, as the case may be, of the pay equity plan, the employer, a bargaining agent or a member who represents non-unionized employees may notify the Pay Equity Commissioner of the particulars of the matters in dispute and if they do so, they must, as soon as feasible, notify the members of the committee that they have notified the Pay Equity Commissioner.
+
+Marginal note:Notice of objection
+
+148 If an employer, as opposed to a pay equity committee, carries out, in respect of a pay equity plan, all or any of the requirements, including as adapted by regulation, set out in sections 32 to 38 and 41 to 50, subsection 54(2) or any regulations that apply in respect of or in place of those sections, any employee to whom the pay equity plan relates — or, if any of those employees are unionized employees, any bargaining agent that represents any of those unionized employees — may, within 60 days after the day on which the pay equity plan is posted in accordance with section 55, subsection 57(2), section 83, subsection 85(2) or paragraph 94(1)(b), as the case may be, file a notice of objection with the Pay Equity Commissioner in respect of the pay equity plan that sets out the particulars of the objection.
+
+Marginal note:Complaints — employees
+
+Marginal note:Complaints — bargaining agents
+
+Marginal note:Complaints — employer
+
+Marginal note:Complaint to Pay Equity Commissioner
+
+Marginal note:Extension of time
+
+153 If the Pay Equity Commissioner considers it appropriate in the circumstances, he or she may extend the period within which a notice of objection or a complaint may be filed under any of sections 148 to 152.
+
+
+Resolution by Pay Equity Commissioner
+
+
+Marginal note:Role of Pay Equity Commissioner
+
+Marginal note:Voluntary settlement
+
+Marginal note:Investigation
+
+Marginal note:Determination of matter in dispute
+
+Marginal note:Determination of objection
+
+Marginal note:Determination of complaint
+
+Marginal note:Determination — complaint about reprisal
+
+
+Review
+
+
+Marginal note:Review
+
+
+Referral to Tribunal
+
+
+Marginal note:Referral to Tribunal
+
+162 At any stage after a notice of a matter in dispute is received under section 147, or a notice of objection or a complaint is filed under any of sections 148 to 152, the Pay Equity Commissioner may refer to the Chairperson of the Tribunal an important question of law or a question of jurisdiction which would, in the Pay Equity Commissioner’s opinion, be more appropriate for the Tribunal to determine.
+
+Marginal note:Chairperson to institute inquiry
+
+Marginal note:Conduct of inquiry
+
+Marginal note:Duty of Pay Equity Commissioner on appearing
+
+165 The Pay Equity Commissioner may participate in any inquiry before the member or panel conducting the inquiry if he or she receives notice under subsection 164(1). If he or she participates at an inquiry, then the Pay Equity Commissioner must adopt a position that, in his or her opinion, is in the public interest.
+
+Marginal note:Hearing in public subject to confidentiality order
+
+Marginal note:Determination
+
+
+Appeal
+
+
+Marginal note:Appeal — decision or order
+
+Marginal note:Assignment of member
+
+Marginal note:Decision
+
+Marginal note:Decision final
+
+171 Every decision made under section 170 is final and is not to be questioned or reviewed in any court.
+
+
+PART 9Ministerial Staff
+
+
+Marginal note:Definition of Minister
+
+172 In section 173, minister has the same meaning as in subsection 2(1) of the Public Service Employment Act.
+
+Marginal note:Application
+
+
+PART 10Miscellaneous Provisions
+
+
+Marginal note:Wages
+
+174 An employee who is party to, or has been summoned to attend at, a proceeding before the Tribunal under this Act and who attends is entitled to be paid by the employer at the employee’s regular rate of wages for the time spent at the proceeding that would otherwise have been time at work.
+
+Marginal note:Manner and form
+
+175 The Pay Equity Commissioner may establish the manner and form for submitting or filing notices, applications and complaints that are to be submitted to or filed with the Pay Equity Commissioner.
+
+Marginal note:Posting of documents
+
+176 The Pay Equity Commissioner may require an employer — or, if applicable, each employer in a group of employers — to post any decision, order, notice of violation or other document issued by that Commissioner.
+
+Marginal note:Copies as evidence
+
+177 Any document purporting to be certified by the Pay Equity Commissioner to be a copy of or extract from a document, or to be a printout of or extract from electronic data, made under paragraph 118(3)(e) or subsection 118(5) is evidence of the nature and content of the original document or data and has the same probative force as the original document or data would have if it were proven in the ordinary way.
+
+Marginal note:Immunity
+
+178 No action or other proceeding of a civil nature lies against the Pay Equity Commissioner, or any person acting on behalf or under the direction of that Commissioner, in respect of anything that is done or omitted to be done in good faith while exercising or purporting to exercise their powers or performing or purporting to perform their duties and functions under this Act.
+
+Marginal note:Evidence in civil suits precluded
+
+179 The Pay Equity Commissioner, his or her delegate, any person who has accompanied or assisted the Pay Equity Commissioner in carrying out his or her duties and functions, and any member of the Tribunal is not competent or compellable to appear as a witness in any civil action, suit or other proceeding between private parties respecting information obtained in the exercise of their powers or the performance of their duties and functions.
+
+Marginal note:Enforcement of order
+
+180 An order made under subsection 91(1) or 118(4), section 119, subsection 120(1) or 157(2), paragraph 158(1)(b), subsection 158(3), subparagraph 159(1)(b)(ii), paragraph 160(1)(b) or (c) or subsection 170(1) or (2) may, for the purpose of enforcement, be made an order of the Federal Court by following the usual procedure or by the Pay Equity Commissioner filing in the Registry of that court a copy of the order certified by the Pay Equity Commissioner to be a true copy.
+
+Marginal note:Regulations
+
+Marginal note:Regulations
+
+182 The Pay Equity Commissioner may, with the approval of the Governor in Council, make regulations
+
+Marginal note:Non-application of Statutory Instruments Act
+
+183 The Statutory Instruments Act does not apply in respect of orders made under subsection 91(1) or 118(4), section 119, subsection 120(1) or 157(2), paragraph 158(1)(b), subsection 158(3), subparagraph 159(1)(b)(ii), or paragraph 160(1)(b) or (c).
+
+Marginal note:Review by Senate and House of Commons
+
+
+RELATED PROVISIONS
+
+
+MAIN CONT DIV END
+
+
+Page Details

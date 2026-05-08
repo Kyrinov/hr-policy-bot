@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Interchange Canada
+
+
+This directive details key stakeholders’ responsibilities regarding fair and consistent management of Interchange Canada assignments.
+
+Date modified: 2020-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-26345-8
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

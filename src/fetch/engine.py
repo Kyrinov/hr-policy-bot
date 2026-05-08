@@ -13,6 +13,7 @@ import httpx
 from src.config import get_config
 from src.fetch.cache import CacheEntry, FetchCache, get_cache
 from src.fetch.extractors import ContentExtractor, get_extractor
+from src.fetch.manual_cache import ManualPolicyCache, get_manual_policy_cache
 from src.parsing.sage_extractor import get_sage_pipeline
 
 logger = logging.getLogger(__name__)
@@ -35,10 +36,12 @@ class FetchEngine:
         self,
         cache: FetchCache | None = None,
         extractor: ContentExtractor | None = None,
+        manual_policy_cache: ManualPolicyCache | None = None,
         timeout: float = 30.0,
     ) -> None:
         self._cache = cache or get_cache()
         self._extractor = extractor or get_extractor()
+        self._manual_policy_cache = manual_policy_cache or get_manual_policy_cache()
         self._timeout = timeout
         self._config = get_config()
 
@@ -92,6 +95,11 @@ class FetchEngine:
 
     async def _do_fetch(self, url: str) -> str:
         """Perform the actual fetch with cache fallback."""
+        manual = self._manual_policy_cache.get(url)
+        if manual is not None:
+            logger.info("Manual policy cache hit for %s (%d bytes)", url, len(manual))
+            return manual
+
         # Check fresh cache first
         cached = await self._cache.get(url)
         if cached is not None:

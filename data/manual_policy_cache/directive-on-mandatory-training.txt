@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Mandatory Training
+
+
+This directive details key stakeholders’ roles and responsibilities in ensuring the training deemed mandatory by the Treasury Board (e.g. orientation for newly appointed employees; leadership skills for first-time managers; knowledge validation for managers and executives who exercise delegated authorities; and competencies required of certain functional specialists) is carried out.
+
+Date modified: 2020-10-28
+
+googleoff: all
+
+googleon: all
+
+ISBN data not available
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

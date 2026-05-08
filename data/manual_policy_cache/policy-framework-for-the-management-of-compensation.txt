@@ -1,0 +1,21 @@
+the main content
+
+
+Policy Framework for the Management of Compensation
+
+
+This framework sets out specific principles and an approach to managing compensation within the federal public administration. The framework guides Treasury Board ministers in their role as financial and human resources managers, set out in section 7 of the Financial Administration Act (FAA).
+
+Date modified: 2007-05-23
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09899-9
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

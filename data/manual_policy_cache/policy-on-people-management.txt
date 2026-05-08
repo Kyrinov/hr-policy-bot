@@ -1,0 +1,21 @@
+the main content
+
+
+Policy on People Management
+
+
+The policy provides Deputies with foundational support in developing and sustaining a high-performing workforce that ensures good governance and service to Canadians, and an inclusive, safe, barrier-free workplace that embodies public service values including respect for people, respect for democracy, integrity, stewardship and excellence in its actions and decisions.
+
+Date modified: 2025-03-28
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

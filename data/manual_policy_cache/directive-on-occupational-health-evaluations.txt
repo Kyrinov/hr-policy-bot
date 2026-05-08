@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Telework
+
+
+This Directive provides the framework for the management of telework for persons in the core public administration. It lists the key stakeholders’ roles and responsibilities and suggests a template for drafting a comprehensive telework agreement.
+
+Date modified: 2025-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2025,ISBN: 978-0-660-76821-2
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

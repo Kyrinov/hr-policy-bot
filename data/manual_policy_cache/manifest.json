@@ -1,0 +1,703 @@
+{
+  "generated_at": "2026-05-08T18:23:35.437240",
+  "entry_count": 55,
+  "entries": [
+    {
+      "id": "accessible-canada-act",
+      "title": "Accessible Canada Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/a-0.6/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/a-0.6/FullText.html",
+      "path": "data/manual_policy_cache/accessible-canada-act.txt",
+      "chars": 23449
+    },
+    {
+      "id": "canada-labour-code-part-ii",
+      "title": "Canada Labour Code, Part II",
+      "type": "Legislation",
+      "agent_ids": [
+        "labour",
+        "ohs"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/l-2/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/l-2/FullText.html",
+      "path": "data/manual_policy_cache/canada-labour-code-part-ii.txt",
+      "chars": 48000
+    },
+    {
+      "id": "canada-school-of-public-service-act",
+      "title": "Canada School of Public Service Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/c-10.13/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/c-10.13/FullText.html",
+      "path": "data/manual_policy_cache/canada-school-of-public-service-act.txt",
+      "chars": 2224
+    },
+    {
+      "id": "canadian-human-rights-act",
+      "title": "Canadian Human Rights Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/h-6/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/h-6/FullText.html",
+      "path": "data/manual_policy_cache/canadian-human-rights-act.txt",
+      "chars": 13189
+    },
+    {
+      "id": "conflict-of-interest-act",
+      "title": "Conflict of Interest Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/c-36.65/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/c-36.65/FullText.html",
+      "path": "data/manual_policy_cache/conflict-of-interest-act.txt",
+      "chars": 11326
+    },
+    {
+      "id": "directive-on-conflict-of-interest",
+      "title": "Directive on Conflict of Interest",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32627",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32627",
+      "path": "data/manual_policy_cache/directive-on-conflict-of-interest.txt",
+      "chars": 568
+    },
+    {
+      "id": "directive-on-employment-equity-diversity-and-inclusion",
+      "title": "Directive on Employment Equity, Diversity and Inclusion",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "equity",
+        "ohs"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32635",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32635",
+      "path": "data/manual_policy_cache/directive-on-employment-equity-diversity-and-inclusion.txt",
+      "chars": 514
+    },
+    {
+      "id": "directive-on-executive-group-organization-and-classification",
+      "title": "Directive on Executive (EX) Group Organization and Classification",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "classification",
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32641",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32641",
+      "path": "data/manual_policy_cache/directive-on-executive-group-organization-and-classification.txt",
+      "chars": 841
+    },
+    {
+      "id": "directive-on-interchange-canada",
+      "title": "Directive on Interchange Canada",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=12553",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=12553",
+      "path": "data/manual_policy_cache/directive-on-interchange-canada.txt",
+      "chars": 448
+    },
+    {
+      "id": "directive-on-leave-and-special-working-arrangements",
+      "title": "Directive on Leave and Special Working Arrangements",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=15774",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=15774",
+      "path": "data/manual_policy_cache/directive-on-leave-and-special-working-arrangements.txt",
+      "chars": 532
+    },
+    {
+      "id": "directive-on-mandatory-training",
+      "title": "Directive on Mandatory Training",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32628",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32628",
+      "path": "data/manual_policy_cache/directive-on-mandatory-training.txt",
+      "chars": 600
+    },
+    {
+      "id": "directive-on-occupational-health-evaluations",
+      "title": "Directive on Occupational Health Evaluations",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32636",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32636",
+      "path": "data/manual_policy_cache/directive-on-occupational-health-evaluations.txt",
+      "chars": 551
+    },
+    {
+      "id": "directive-on-official-languages-for-communications-and-services",
+      "title": "Directive on Official Languages for Communications and Services",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=26164",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=26164",
+      "path": "data/manual_policy_cache/directive-on-official-languages-for-communications-and-services.txt",
+      "chars": 539
+    },
+    {
+      "id": "directive-on-official-languages-for-people-management",
+      "title": "Directive on Official Languages for People Management",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=26168",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=26168",
+      "path": "data/manual_policy_cache/directive-on-official-languages-for-people-management.txt",
+      "chars": 568
+    },
+    {
+      "id": "directive-on-organization-and-classification",
+      "title": "Directive on Organization and Classification",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32632",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32632",
+      "path": "data/manual_policy_cache/directive-on-organization-and-classification.txt",
+      "chars": 596
+    },
+    {
+      "id": "directive-on-performance-and-talent-management-for-executives",
+      "title": "Directive on Performance and Talent Management for Executives",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "learning",
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32637",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32637",
+      "path": "data/manual_policy_cache/directive-on-performance-and-talent-management-for-executives.txt",
+      "chars": 694
+    },
+    {
+      "id": "directive-on-performance-management",
+      "title": "Directive on Performance Management",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=27146",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=27146",
+      "path": "data/manual_policy_cache/directive-on-performance-management.txt",
+      "chars": 469
+    },
+    {
+      "id": "directive-on-performance-pay-administration",
+      "title": "Directive on Performance Pay Administration for Certain Senior Excluded/Unrepresented Groups",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32623",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32623",
+      "path": "data/manual_policy_cache/directive-on-performance-pay-administration.txt",
+      "chars": 617
+    },
+    {
+      "id": "directive-on-prevention-and-resolution-of-workplace-harassment-and-violence",
+      "title": "Directive on the Prevention and Resolution of Workplace Harassment and Violence",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32671",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32671",
+      "path": "data/manual_policy_cache/directive-on-prevention-and-resolution-of-workplace-harassment-and-violence.txt",
+      "chars": 379
+    },
+    {
+      "id": "directive-on-student-employment",
+      "title": "Directive on Student Employment",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32630",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32630",
+      "path": "data/manual_policy_cache/directive-on-student-employment.txt",
+      "chars": 586
+    },
+    {
+      "id": "directive-on-term-employment",
+      "title": "Directive on Term Employment",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32629",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32629",
+      "path": "data/manual_policy_cache/directive-on-term-employment.txt",
+      "chars": 471
+    },
+    {
+      "id": "directive-on-terms-and-conditions-excluded-unrepresented",
+      "title": "Directive on Terms and Conditions of Employment for Certain Excluded/Unrepresented Groups",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=15773",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=15773",
+      "path": "data/manual_policy_cache/directive-on-terms-and-conditions-excluded-unrepresented.txt",
+      "chars": 906
+    },
+    {
+      "id": "directive-on-terms-and-conditions-of-employment",
+      "title": "Directive on Terms and Conditions of Employment",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "classification",
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=15772",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=15772",
+      "path": "data/manual_policy_cache/directive-on-terms-and-conditions-of-employment.txt",
+      "chars": 898
+    },
+    {
+      "id": "directive-on-terms-and-conditions-of-employment-for-executives",
+      "title": "Directive on Terms and Conditions of Employment for Executives",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "classification",
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32625",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32625",
+      "path": "data/manual_policy_cache/directive-on-terms-and-conditions-of-employment-for-executives.txt",
+      "chars": 667
+    },
+    {
+      "id": "directive-on-terms-and-conditions-of-employment-for-students",
+      "title": "Directive on Terms and Conditions of Employment for Students",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "staffing",
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=12583",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=12583",
+      "path": "data/manual_policy_cache/directive-on-terms-and-conditions-of-employment-for-students.txt",
+      "chars": 576
+    },
+    {
+      "id": "directive-on-the-duty-to-accommodate",
+      "title": "Directive on the Duty to Accommodate",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32634",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32634",
+      "path": "data/manual_policy_cache/directive-on-the-duty-to-accommodate.txt",
+      "chars": 567
+    },
+    {
+      "id": "directive-on-the-stewardship-of-hr-management-systems",
+      "title": "Directive on the Stewardship of HR Management Systems",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32802",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32802",
+      "path": "data/manual_policy_cache/directive-on-the-stewardship-of-hr-management-systems.txt",
+      "chars": 534
+    },
+    {
+      "id": "directive-on-union-dues",
+      "title": "Directive on Union Dues",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=21104",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=21104",
+      "path": "data/manual_policy_cache/directive-on-union-dues.txt",
+      "chars": 655
+    },
+    {
+      "id": "employment-equity-act",
+      "title": "Employment Equity Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/E-5.401/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/E-5.401/FullText.html",
+      "path": "data/manual_policy_cache/employment-equity-act.txt",
+      "chars": 6821
+    },
+    {
+      "id": "federal-public-sector-labour-relations-act",
+      "title": "Federal Public Sector Labour Relations Act (FPSLRA)",
+      "type": "Legislation",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/p-33.3/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/p-33.3/FullText.html",
+      "path": "data/manual_policy_cache/federal-public-sector-labour-relations-act.txt",
+      "chars": 48000
+    },
+    {
+      "id": "federal-public-sector-labour-relations-and-employment-board-act",
+      "title": "Federal Public Sector Labour Relations and Employment Board Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/P-33.35/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/P-33.35/FullText.html",
+      "path": "data/manual_policy_cache/federal-public-sector-labour-relations-and-employment-board-act.txt",
+      "chars": 6747
+    },
+    {
+      "id": "financial-administration-act",
+      "title": "Financial Administration Act (FAA)",
+      "type": "Legislation",
+      "agent_ids": [
+        "staffing",
+        "classification"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/f-11/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/f-11/FullText.html",
+      "path": "data/manual_policy_cache/financial-administration-act.txt",
+      "chars": 32380
+    },
+    {
+      "id": "government-employees-compensation-act",
+      "title": "Government Employees Compensation Act (GECA)",
+      "type": "Legislation",
+      "agent_ids": [
+        "classification",
+        "ohs"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/g-5/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/g-5/FullText.html",
+      "path": "data/manual_policy_cache/government-employees-compensation-act.txt",
+      "chars": 3414
+    },
+    {
+      "id": "njc-bilingualism-bonus-directive",
+      "title": "NJC Bilingualism Bonus Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification",
+        "languages"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d1/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d1/en",
+      "path": "data/manual_policy_cache/njc-bilingualism-bonus-directive.txt",
+      "chars": 16987
+    },
+    {
+      "id": "njc-commuting-assistance-directive",
+      "title": "NJC Commuting Assistance Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d2/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d2/en",
+      "path": "data/manual_policy_cache/njc-commuting-assistance-directive.txt",
+      "chars": 269
+    },
+    {
+      "id": "njc-disability-insurance-plan",
+      "title": "NJC Disability Insurance Plan",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/s14/s85/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/s14/s85/en",
+      "path": "data/manual_policy_cache/njc-disability-insurance-plan.txt",
+      "chars": 100
+    },
+    {
+      "id": "njc-first-aid-to-the-general-public",
+      "title": "NJC First Aid to the General Public",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d13/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d13/en",
+      "path": "data/manual_policy_cache/njc-first-aid-to-the-general-public.txt",
+      "chars": 4165
+    },
+    {
+      "id": "njc-grievance-process-and-procedures",
+      "title": "NJC Grievance Process and Procedures",
+      "type": "Reference",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/s2/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/s2/en",
+      "path": "data/manual_policy_cache/njc-grievance-process-and-procedures.txt",
+      "chars": 1215
+    },
+    {
+      "id": "njc-isolated-posts-and-government-housing-directive",
+      "title": "NJC Isolated Posts and Government Housing Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "staffing",
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d4/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d4/en",
+      "path": "data/manual_policy_cache/njc-isolated-posts-and-government-housing-directive.txt",
+      "chars": 264
+    },
+    {
+      "id": "njc-relocation-directive",
+      "title": "NJC Relocation Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "staffing",
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d6/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d6/en",
+      "path": "data/manual_policy_cache/njc-relocation-directive.txt",
+      "chars": 200
+    },
+    {
+      "id": "njc-travel-directive",
+      "title": "NJC Travel Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d10/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d10/en",
+      "path": "data/manual_policy_cache/njc-travel-directive.txt",
+      "chars": 369
+    },
+    {
+      "id": "njc-work-force-adjustment-directive",
+      "title": "Work Force Adjustment Directive (WFAD)",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d12/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d12/en",
+      "path": "data/manual_policy_cache/njc-work-force-adjustment-directive.txt",
+      "chars": 194
+    },
+    {
+      "id": "official-languages-act",
+      "title": "Official Languages Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/o-3.01/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/o-3.01/FullText.html",
+      "path": "data/manual_policy_cache/official-languages-act.txt",
+      "chars": 28069
+    },
+    {
+      "id": "pay-equity-act",
+      "title": "Pay Equity Act",
+      "type": "Legislation",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/P-4.2/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/P-4.2/FullText.html",
+      "path": "data/manual_policy_cache/pay-equity-act.txt",
+      "chars": 38273
+    },
+    {
+      "id": "policy-framework-for-people-management",
+      "title": "Policy Framework for People Management",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=19134",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=19134",
+      "path": "data/manual_policy_cache/policy-framework-for-people-management.txt",
+      "chars": 893
+    },
+    {
+      "id": "policy-framework-for-the-management-of-compensation",
+      "title": "Policy Framework for the Management of Compensation",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=12084",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=12084",
+      "path": "data/manual_policy_cache/policy-framework-for-the-management-of-compensation.txt",
+      "chars": 628
+    },
+    {
+      "id": "policy-on-official-languages",
+      "title": "Policy on Official Languages",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=26160",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=26160",
+      "path": "data/manual_policy_cache/policy-on-official-languages.txt",
+      "chars": 441
+    },
+    {
+      "id": "policy-on-people-management",
+      "title": "Policy on People Management",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "staffing",
+        "classification",
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32621",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32621",
+      "path": "data/manual_policy_cache/policy-on-people-management.txt",
+      "chars": 663
+    },
+    {
+      "id": "policy-on-the-management-of-executives",
+      "title": "Policy on the Management of Executives",
+      "type": "Policy / Directive",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=25583",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=25583",
+      "path": "data/manual_policy_cache/policy-on-the-management-of-executives.txt",
+      "chars": 580
+    },
+    {
+      "id": "public-servants-disclosure-protection-act",
+      "title": "Public Servants Disclosure Protection Act (PSDPA)",
+      "type": "Legislation",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/p-31.9/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/p-31.9/FullText.html",
+      "path": "data/manual_policy_cache/public-servants-disclosure-protection-act.txt",
+      "chars": 17249
+    },
+    {
+      "id": "public-service-dental-care-plan",
+      "title": "Public Service Dental Care Plan (PSDCP)",
+      "type": "Collective Agreement / Plan",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/s14/s84/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/s14/s84/en",
+      "path": "data/manual_policy_cache/public-service-dental-care-plan.txt",
+      "chars": 106
+    },
+    {
+      "id": "public-service-employment-act",
+      "title": "Public Service Employment Act (PSEA)",
+      "type": "Legislation",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/p-33.01/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/p-33.01/FullText.html",
+      "path": "data/manual_policy_cache/public-service-employment-act.txt",
+      "chars": 27677
+    },
+    {
+      "id": "public-service-employment-regulations",
+      "title": "Public Service Employment Regulations (PSER)",
+      "type": "Legislation",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2005-334/FullText.html",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2005-334/FullText.html",
+      "path": "data/manual_policy_cache/public-service-employment-regulations.txt",
+      "chars": 4428
+    },
+    {
+      "id": "public-service-superannuation-act",
+      "title": "Public Service Superannuation Act (PSSA)",
+      "type": "Legislation",
+      "agent_ids": [
+        "classification",
+        "governance"
+      ],
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/p-36/",
+      "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/p-36/FullText.html",
+      "path": "data/manual_policy_cache/public-service-superannuation-act.txt",
+      "chars": 19887
+    },
+    {
+      "id": "values-and-ethics-code-for-the-public-sector",
+      "title": "Values and Ethics Code for the Public Sector",
+      "type": "Code",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=25049",
+      "normalized_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=25049",
+      "path": "data/manual_policy_cache/values-and-ethics-code-for-the-public-sector.txt",
+      "chars": 1362
+    }
+  ],
+  "failures": [
+    {
+      "id": "njc-foreign-service-directives",
+      "title": "NJC Foreign Service Directives",
+      "error": "thin content (45 chars)"
+    },
+    {
+      "id": "njc-occupational-health-and-safety-directive",
+      "title": "NJC Occupational Health and Safety Directive",
+      "error": "thin content (42 chars)"
+    },
+    {
+      "id": "njc-public-service-health-care-plan-directive",
+      "title": "Public Service Health Care Plan (PSHCP) Directive",
+      "error": "thin content (43 chars)"
+    },
+    {
+      "id": "njc-uniforms-directive",
+      "title": "NJC Uniforms Directive",
+      "error": "thin content (20 chars)"
+    }
+  ]
+}

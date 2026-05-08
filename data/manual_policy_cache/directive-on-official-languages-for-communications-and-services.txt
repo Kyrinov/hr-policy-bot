@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Official Languages for Communications and Services
+
+
+Gives sound and consistent practices and procedures for deputy heads (or their delegates) in the area of communications with the public and employees, as well as the services provided to them.
+
+Date modified: 2012-10-15
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09660-5
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

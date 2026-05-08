@@ -1,0 +1,29 @@
+the main content
+
+
+Directive on Terms and Conditions of Employment
+
+
+Directs departments and agencies that will ensure the equitable, accurate, consistent, transparent and timely application of terms and conditions of employment across the core public administration.
+
+Date modified: 2020-01-23
+
+googleoff: all
+
+googleon: all
+
+
+Note to reader
+
+
+As per the Info Bulletin dated November 7, 2019,  the relevant collective agreement for the Personnel Administration (PE) group is the collective agreement that applies to the Economics and Social Science Services (EC) group, effective July 31, 2019.
+
+Footnote **  Asterisks denote an amendment to this directive which takes effect on April 1, 2012.
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09690-2
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Building Emergency and Evacuation Teams
+
+
+Provides direction to all employees with information and support in the event of an emergency and/or an evacuation. Clarifies responsibilities and the accountabilities of all parties and facilitates dealing with a broader spectrum of potential threats and emergencies.
+
+Date modified: 2020-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

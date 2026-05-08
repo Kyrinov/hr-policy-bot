@@ -1,0 +1,31 @@
+the main content
+
+
+Values and Ethics Code for the Public Sector
+
+
+Describes the values and expected behaviours that guide public servants in all activities related to their professional duties.
+
+Date modified: 2011-12-15
+
+googleoff: all
+
+googleon: all
+
+notetoreader>
+<div><em>Please note that the <a href="/pol/doc-eng.aspx?id=25049">Values and Ethics Code for the Public Sector</a>, 
+tabled in Parliament on December 21, 2011 will be tabled in both Houses of Parliament for at 
+least 30 days, before it comes into force.  In light of this parliamentary process, we aim to have the Code come into force on April 2, 2012. 
+Once the Code is in force, all federal public sector employees will be required to adhere to the Code as a term and condition of employment. In the 
+meantime, the <a href="/pubs_pol/hrpubs/tb_851/vec-cve-eng.asp">current Values and Ethics Code for the Public Service</a> is still in 
+effect and will continue to support Public Service employees in their day-to-day work.</em><br /><br />
+For more details, please consult the <a href="/faq/pdaf2-eng.asp">FAQs on the Values and Ethics Code for the Public Sector</a>.</div>
+</notetoreader
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-1-100-20021-7
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

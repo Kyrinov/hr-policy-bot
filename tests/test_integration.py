@@ -1,5 +1,6 @@
 """Integration tests for the DND HR-Civ Policy Advisory System."""
 
+import json
 from types import SimpleNamespace
 
 import httpx
@@ -595,6 +596,42 @@ class TestFetchEngine:
     def test_fetch_engine_creation(self, fetch_engine):
         """Test fetch engine can be created."""
         assert fetch_engine is not None
+
+    @pytest.mark.asyncio
+    async def test_fetch_engine_prefers_manual_policy_cache(self, tmp_path):
+        """Test manual policy cache is read before network/cache fetches."""
+        from src.fetch.engine import FetchEngine
+        from src.fetch.manual_cache import ManualPolicyCache
+
+        text_path = tmp_path / "policy.txt"
+        text_path.write_text("manual policy text", encoding="utf-8")
+        manifest_path = tmp_path / "manifest.json"
+        manifest_path.write_text(
+            json.dumps(
+                {
+                    "entries": [
+                        {
+                            "url": "https://example.test/policy",
+                            "normalized_url": "https://example.test/policy",
+                            "path": str(text_path),
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        class FakeCache:
+            async def get(self, url):
+                raise AssertionError("database cache should not be used")
+
+        engine = FetchEngine(
+            cache=FakeCache(),
+            manual_policy_cache=ManualPolicyCache(manifest_path),
+        )
+        content = await engine._do_fetch("https://example.test/policy")
+
+        assert content == "manual policy text"
 
     @pytest.mark.asyncio
     async def test_fetch_health_check(self, fetch_engine):

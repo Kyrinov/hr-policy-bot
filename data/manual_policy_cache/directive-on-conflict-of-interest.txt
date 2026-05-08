@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Conflict of Interest
+
+
+Provides direction to persons employed and designated senior officials to enable them to minimize risks associated with conflict of interest and conflict of duties situations with the goal of upholding the values and ethics of the public sector and the public interest.
+
+Date modified: 2020-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

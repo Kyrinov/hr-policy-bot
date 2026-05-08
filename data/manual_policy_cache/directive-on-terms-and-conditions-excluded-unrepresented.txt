@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Terms and Conditions of Employment for Certain Excluded and Unrepresented Groups and Levels
+
+
+The directive provides direction to managers and designated senior officials to ensure the sound, consistent, effective, and equitable administration of the terms and conditions of employment for persons occupying certain excluded and unrepresented positions across the core public administration, where the terms and conditions of employment of such positions differ from those provided in the relevant collective agreement, or in any other Treasury Board policy instrument related to employment terms and conditions.
+
+Date modified: 2021-11-15
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09694-0
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

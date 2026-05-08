@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Leave and Special Working Arrangements
+
+
+Ensures that departments and agencies within the core public administration soundly, consistently and effectively manage paid and unpaid absences from work, as well as special working arrangements.
+
+Date modified: 2013-11-28
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2017,ISBN: 978-0-660-09656-8
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

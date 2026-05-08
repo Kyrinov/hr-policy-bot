@@ -1,0 +1,29 @@
+the main content
+
+
+Archived [2020-04-01]  - Directive on Executive (EX) Group Organization and Classification
+
+
+Describes the requirements for the organization and classification of positions in the Executive Group, and provides instructions for increasing the departmental baseline of EX-04 and EX-05 positions.
+
+Date modified: 2012-04-01
+
+
+This page has been archived on the Web
+
+
+Information identified as archived is provided for reference, research or recordkeeping purposes. It is not subject to the Government of Canada Web Standards and has not been altered or updated since it was archived. Please contact us to request a format other than those available.
+
+This page has been archived on the Web.
+
+googleoff: all
+
+googleon: all
+
+ISBN data not available
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template

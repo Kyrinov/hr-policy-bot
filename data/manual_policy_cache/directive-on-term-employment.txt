@@ -1,0 +1,21 @@
+the main content
+
+
+Directive on Term Employment
+
+
+This directive provides direction to heads of human resources and managers to ensure the consistent and fair administration of term employment in the core public administration.
+
+Date modified: 2020-04-01
+
+googleoff: all
+
+googleon: all
+
+© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2020,ISBN:
+
+end main content
+
+Write closure fall-back static file
+
+Write closure template
