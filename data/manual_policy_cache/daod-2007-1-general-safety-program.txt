@@ -1,0 +1,319 @@
+Skip to main content
+Skip to "About government"
+Switch to basic HTML version
+Language selection
+Français
+/ Gouvernement du Canada
+Search
+Search National Defence
+Search
+Menu
+MAIN
+MENU
+You are here:
+Canada.ca National Defence Policies and standards Defence Administrative Orders and Directives Defence Administrative Orders and Directives (DAOD) - 2000 DAOD 2007 - Table of Contents
+DAOD 2007-1, General Safety Program
+Table of Contents
+Introduction
+Definitions
+Overview
+General Responsibilities
+Councils and Committees
+Reporting of Accidents
+Safety Surveys
+References
+1. Introduction
+
+Date of Issue: 2002-12-06
+
+Application: This is a directive that applies to employees of the Department of National Defence (DND) and an order that applies to officers and non-commissioned members of the Canadian Armed Forces (CAF members).
+
+Supersession: CFAO 66-1, General Safety Program.
+
+Approval Authority: This DAOD is issued under the authority of the Director of General Safety (D Safe G).
+
+Enquiries: Director of General Safety (D Safe G).
+
+2. Definitions
+
+disabling injury (blessure invalidante)
+
+A disabling injury is a duty-related illness or injury which:
+
+prevents a DND employee or CAF member from reporting for duty, or from effectively performing all the regular duties of the employee or member on any day subsequent to the day on which the injury or disease occurred, whether or not that subsequent day is a working day for that employee or member;
+results in the loss by a DND employee or CAF member of a bodily member or part thereof, or in the complete loss of the usefulness of a bodily member or part thereof; or
+results in the permanent impairment of a bodily function of a DND employee or CAF member.
+
+non-disabling injury (blessure non invalidante)
+
+A non-disabling injury is a duty-related illness or injury to a DND employee or CAF member which results in medical attention beyond first-aid, but involves no lost time beyond the day, shift or watch on which the illness or injury occurred.
+
+3. Overview
+General
+
+3.1 The General Safety Program consists of occupational safety policies and guidelines aimed at preventing accidents in operations, training and support activities, including shipboard tasks and ship repair, and the maintenance of equipment, vehicles and aircraft; construction; supply and food services; medical and dental services; and sports.
+
+3.2 The General Safety Program provides the framework and policies upon which subordinate organizations formulate and implement their own specific safety programs.
+
+3.3 In accomplishing its aim, the General Safety Program:
+
+minimizes personal suffering and financial losses;
+adds to the efficiency of DND and the operational effectiveness of the CAF;
+meets legislative requirements; and
+contributes to the morale and well-being of all DND employees and CAF members.
+Application:
+
+3.4 The General Safety Program ensures the safety of:
+
+DND employees and CAF members;
+non-public fund employees when on duty or on defence establishments;
+military and civilian personnel of foreign countries assigned for duty with DND or the CAF, or when on defence establishments;
+the Canadian cadet organizations; and
+members of the public when on defence establishments.
+Scope
+
+3.5 The General Safety Program applies to, but is not limited to, such functions and activities as:
+
+sea and land operations and training, excluding actual combat;
+maintenance of ships, land equipment and aircraft;
+research and development;
+engineering testing and quality assurance;
+construction, works and buildings;
+supply and warehousing;
+food services;
+medical and dental services;
+administration and communications services;
+leadership, management and supervisory functions;
+on-duty sports and recreation;
+safety committees and councils;
+occupational safety;
+early reintegration of DND employees in the workplace after an injury or illness;
+occupational health of DND employees;
+hazardous material training related to personnel safety; and
+certain off-duty activities involving CAF members that could result in departmental costs.
+Exclusions
+
+3.6 The General Safety Program does not deal with specialist fields that have their own safety programs as set out in DAOD 2007-0, Safety. However, the General Safety Program does deal with the safety of DND employees and CAF members in specialized fields in circumstances not covered by their specialist safety programs.
+
+General Safety Program Principles
+
+3.7 The General Safety Program is based on the principles that:
+
+safety is everyone's responsibility; and
+the effectiveness of safety programs is directly proportional to the level of leadership and support they receive from commanding officers (COs), other CAF members and their civilian equivalents at all levels.
+
+Note - Safety is a specific responsibility of COs under QR&O 4.20, General Responsibilities of a Commanding Officer.
+
+Safety Culture
+
+3.8 The success of the General Safety Program is based on the attitude that people have toward safety. A positive attitude towards safety can only exist in an environment in which:
+
+safety is achieved through the direct and personal involvement of all persons in the organization;
+accidents are considered to be preventable;
+protective measures are taken to reduce the occurrence of hazards and injuries;
+personnel and materiel losses are prevented through safety precautions - with or without legal obligations to do so; and
+DND employees and CAF members are familiar with and trained in all aspects of safety in the workplace.
+Requirements
+
+3.9 All DND and CAF organizations shall have a General Safety Program.
+
+3.10 All DND employees and CAF members shall participate in and support the General Safety Program.
+
+CF Operations
+
+3.11 The General Safety Program provides COs with a tool to assist them during CAF operations in reducing their loss of resources.
+
+3.12 Although mission accomplishment is of the utmost importance, COs shall incorporate safety considerations in every aspect of CAF operations. This will ensure that human and materiel resources are not needlessly depleted by accidents.
+
+Top of Page
+
+General Responsibilities
+Responsibility
+
+CF levels of command and DND levels of authority share responsibility and accountability for safety.
+
+Individual DND employees and CF members are responsible for their own safety and that of those around them.
+
+Responsibility Table
+
+The following table identifies responsibilities for the General Safety Program.
+
+The ...	has/have responsibility for ...
+
+
+Vice Chief of the Defence Staff (VCDS)
+
+
+
+overseeing general safety in DND and the CF.
+
+
+
+
+Level 1 Advisors as set out in A-FN-100-002/AG-006
+
+
+providing general safety leadership and direction; and
+implementing the General Safety Program in response to the needs of their organizations.
+
+
+
+D Safe G
+
+
+planning, developing, coordinating, promulgating and administering the General Safety Program; and
+acting as an advocate for the overall General Safety Program.
+
+
+
+COs
+
+
+
+implementing the General Safety Program in response to the needs of their organizations, including as a minimum:
+
+a signed safety policy statement;
+a safety organization and committee structure with prescribed responsibilities for all echelons in accordance with A-GG-040-001/AG-001, General Safety Program, Volume 1, Policy and Program, Chapters 2 and 3, and A-GG-040-005/AG-001, General Safety Program, Occupational Safety and Health Workplace Committee Guide;
+an effective local indoctrination and continuing program of safety, Workplace Hazardous Management Information System (WHMIS) and hazardous material training and safety education in accordance with A-GG-040-003/ AG-001, General Safety Program, General Safety Training, and A-GG-040-004/AG-001, General Safety Program, Hazardous Materials Safety;
+a system of periodic safety inspections and surveys by the line organization, safety staff and qualified DND employees and CF members in accordance with A-GG-040-001/AG-001, General Safety Program, Volume 1, Program and Policy, Chapter 9, and A-GG-040-007/AG-001, General Safety Program, Handbook on the Safety Program Development and Evaluation Techniques;
+an effective accident investigation and reporting system in accordance with A-GG-040-001/AG-001, General Safety Program, Volume 1, Program and Policy, Chapter 4, and A-GG-040-002/AG-001 General Safety Program, Form DND 663 Completion and Coding;
+a program to ensure awareness of, and compliance with, applicable safety directives, standards and precautions in accordance with C-02-040-009/AG-001, General Safety Program, Volume 2, General Safety Standards, C-02-040-007/ TS-001, General Safety Program, General Safety Precautions, and A-LG-040-000/QR-001, Canada Labour Code - Part II; and
+a set of procedures to determine requirements for provision of, training on, and controlled use of, protective equipment for personnel granted access to the workplace and materiel in accordance with A-GG-040-003/AG-001, General Safety Program, General Safety Training, Chapter 8, and C-02-040-009/AG-001,General Safety Program, Volume 2, General Safety Standards, Chapter 14.
+
+
+
+General Safety Officers (GSOs)
+
+
+
+providing advice on the delivery, management and other matters affecting the local General Safety Programs.
+
+Councils and Committees
+General
+
+Both management and labour in Canada participate in the formulation of safety and health legislation. This consultation process, known as the internal responsibility system, recognizes that both management and labour benefit from sharing an effective Occupational Health and Safety (OHS) program.
+
+A key element of the General Safety Program is the participation of DND/CF management, DND employees and CF members on general safety councils, general safety committees and OHS workplace committees.
+
+Responsibilities
+
+The responsibilities of Level 1 Advisors, commanders, commanding officers and equivalent civilian managers in respect of the establishment and conduct of general safety councils, general safety committees, general safety sub-committees and OHS workplace committees are set out in detail in A-GG-040-001/AG-001, General Safety Program, Volume 1, Policy and Program, Chapter 3.
+
+Reporting of Accidents
+General
+
+The long-term effectiveness of the General Safety Program within an organization can be measured by its Injury Frequency Rate (IFR) and Injury Severity Rate (ISR).
+
+The IFR is the number of disabling and non-disabling injuries per 100 personnel per year for any command, base, station, unit, etc.
+
+The ISR is the number of days off duty plus the number of days on light duties, as a result of disabling and non-disabling injuries, per 100 personnel per year for any command, base, station, unit, etc.
+
+In general, the higher its IFR or ISR, the greater the effort that an organization should devote to its General Safety Program. This effort can be measured by an organization by use of the Safety Program Development and Evaluation Technique (SPDET) (see the Safety Surveys map).
+
+IFRs and ISRs are determined using the Human Resource Management System, Health and Safety Module (HRMS-H&S), a database which is used to record data from form DND 663, General Safety Hazardous Occurrence Report.
+
+Note - IFRs and ISRs are calculated only for injuries incurred by DND employees and CF members.
+
+Form DND 663, General Safety Hazardous Occurrence Report
+
+A form DND 663 shall be completed in accordance with the instructions in A-GG-040-002/AG-001, General Safety Program, Form DND 663 Completion and Coding for each on-duty accident or incident involving any person identified in the "Application" block in the "Overview" map.
+
+Note - While the General Safety Program does not provide for the conduct of the investigation of accidents under the purview of other specialist safety programs as set out in DAOD 2007-0, Safety, all injuries from these accidents are reported with form DND 663. This allows the information on all injuries to DND employees and CF members to be recorded in one database for statistical purposes. In addition, for disabling injuries to DND employees, a copy of form DND 663 is sent to Human Resource Development Canada (HRDC) in accordance with the Canada Labour Code Part II. Additional details are available in A-GG-040-001/AG-001, General Safety Program, Volume 1, Policy and Program, Chapter 4, Section 3.
+
+Investigating and Reporting
+
+All accidents or incidents requiring the completion of a form DND 663 are investigated under the applicable unit or specialized safety program.
+
+Units shall report accidents and incidents requiring a form DND 663 by one of the following methods (in order of preference):
+
+using the HRMS-H&S program, record all accidents identified by DND 663s and sending an extracted update report to D Safe G via email or diskette (monthly or quarterly depending on the extent of accident activity as specified below); or
+sending a copy of the DND 663 to the GSO at a higher headquarters for inputting into their HRMS-H&S program.
+Minor Accidents Requiring First Aid Treatment
+
+A record shall be maintained of every duty-related injury or illness requiring first aid treatment. Details of the record content and retention period are included in A-GG-040-001/AG-001, General Safety Program, Volume 1, Policy and Program, Chapter 4, Section 3 and C-02-040-009/AG-000, General Safety Program, General Safety Standards, Chapter 11, Annex A.
+
+Reporting of Accidents that may be Significant Incidents
+
+For the responsibilities of DND employees and CF members to report accidents that may be significant incidents, see DAOD 2008-3, Issue and Crisis Management.
+
+Safety Surveys
+General
+
+General safety surveys evaluate and assess an organization's safety program. In identifying areas of deficiency or lack of development, general safety surveys allow for the better targeting of resources and effort. Persons completing surveys should make recommendations for corrective action as considered necessary.
+
+Safety Program Development and Evaluation Technique (SPDET)
+
+The SPDET survey is described in A-GG-040-001/AG-001, General Safety Program, Volume 1, Policy and Program, Chapter 9, and survey formats are provided in A-GG-040-007/AG-001, General Safety Program, Handbook on the Safety Program Development and Evaluation Technique. An abbreviated SPDET survey can be used by units and commands.
+
+Frequency of Use
+
+The Assistant Deputy Minister (Materiel) (ADM(Mat)), Assistant Deputy Minister (Information Management) (ADM(IM)), Chief of Military Personnel (CMP), naval formations, land areas, and the air division are responsible for conducting general safety surveys, including SPDETs, in accordance with A-GG-040-001/AG-001, General Safety Program, General Safety Policy, Volume 1, Policy and Program, Chapter 9. Copies of the finalized surveys are to be provided to D Safe G.
+
+References
+Source References
+Canada Labour Code
+QR&O 4.20, General Responsibilities of a Commanding Officer
+Occupational Health and Safety, Treasury Board Manual, Chapter 1-1
+DAOD 2007-0, Safety
+Related References
+DAOD 2008-3, Issue and Crisis Management
+CFAO 34-51, Radio Frequency Radiation Safety
+CFAO 34-53, DND Respiratory Protection Program
+CFAO 66-4, Laser Safety
+CFMO 40-1, DND/CF Hearing Conservation Program
+D Safe G website
+A-CR-CCP-030/PT-001, Watercraft Safety Orders For Cadets
+A-CR-CCP-951/PT-001, Cadet Adventure Training Activities - Safety Requirements
+A-FN-100-002/AG-006, Delegation of Authorities for Financial Administration for DND and the CF
+A-GG-040-001/AG-001, DND General Safety Program, Volume 1, Policy and Program
+A-GG-040-002/AG-001, DND General Safety Program, Form DND 663 Completion and Coding
+A-GG-040-003/AG-001, DND General Safety Program, General Safety Training
+A-GG-040-004/AG-001, DND General Safety Program, Hazardous Materials Safety
+A-GG-040-005/AG-001, DND General Safety Program, Occupational Safety and Health Workplace Committee Guide
+A-GG-040-007/AG-001, DND General Safety Program, Handbook on the Safety Program Development and Evaluation Technique
+A-GG-040-004/PT-001, DND General Safety Program, Safety Management Course
+A-GG-040-005/PT-001, DND General Safety Program, General Safety Officer Training Course
+A-GG-040-006/PT-001, DND General Safety Program, Safety Legislation Course
+A-GG-040-007/PT-001, DND General Safety Program, Safety Program Evaluators Course
+A-GG-040-008/AX-001, DND General Safety Program, DND Safety Video Library List
+A-JS-000-085/DA-000, DND General Safety Program, General Safety Posters
+A-LG-040-000/QR-001, Canada Labour Code - Canada
+C-02-040-007/TS-001, DND General Safety Program, General Safety Precautions
+C-02-040-009/AG-000, DND General Safety Program, General Safety Program, Volume 2,General Safety Standards
+C-55-040-001/TS-001, Non-ionizing Electromagnetic Radiation Safety - Technical Requirements and Precautions
+C-87-040-000/MS-001, DND Respiratory Protection Program
+Form DND 663, General Safety Hazardous Occurrence Report
+Human Resources Development Canada - Labour "Directions"
+Page details
+ 2018-12-13
+About this site
+National Defence
+Contact us
+News
+Jobs
+Government of Canada
+All contacts
+Departments and agencies
+About government
+Themes and topics
+Jobs
+Immigration and citizenship
+Travel and tourism
+Business
+Benefits
+Health
+Taxes
+Environment and natural resources
+National security and defence
+Culture, history and sport
+Policing, justice and emergencies
+Transport and infrastructure
+Canada and the world
+Money and finances
+Science and innovation
+Indigenous Peoples
+Veterans and military
+Youth
+Manage life events
+Government of Canada Corporate
+Social media Mobile applications About Canada.ca Terms and conditions Privacy

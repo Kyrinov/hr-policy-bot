@@ -1,7 +1,20 @@
 {
-  "generated_at": "2026-05-08T18:23:35.437240",
-  "entry_count": 55,
+  "generated_at": "2026-05-08T18:34:36.032495",
+  "entry_count": 115,
   "entries": [
+    {
+      "id": "accessibility-strategy-for-the-public-service",
+      "title": "\"Nothing Without Us\": Accessibility Strategy for the Public Service of Canada",
+      "type": "Strategy",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://www.canada.ca/en/government/publicservice/wellness-inclusion-diversity-public-service/diversity-inclusion-public-service/accessibility-public-service/accessibility-strategy-public-service-toc.html",
+      "normalized_url": "https://www.canada.ca/en/government/publicservice/wellness-inclusion-diversity-public-service/diversity-inclusion-public-service/accessibility-public-service/accessibility-strategy-public-service-toc.html",
+      "path": "data/manual_policy_cache/accessibility-strategy-for-the-public-service.txt",
+      "chars": 2153,
+      "capture_method": "playwright"
+    },
     {
       "id": "accessible-canada-act",
       "title": "Accessible Canada Act",
@@ -13,6 +26,19 @@
       "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/a-0.6/FullText.html",
       "path": "data/manual_policy_cache/accessible-canada-act.txt",
       "chars": 23449
+    },
+    {
+      "id": "appointment-delegation-and-accountability-instrument",
+      "title": "Appointment Delegation and Accountability Instrument (ADAI)",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/delegation-overview/appointment-delegation-accountability-instrument.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/delegation-overview/appointment-delegation-accountability-instrument.html",
+      "path": "data/manual_policy_cache/appointment-delegation-and-accountability-instrument.txt",
+      "chars": 17887,
+      "capture_method": "playwright"
     },
     {
       "id": "canada-labour-code-part-ii",
@@ -62,6 +88,396 @@
       "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/c-36.65/FullText.html",
       "path": "data/manual_policy_cache/conflict-of-interest-act.txt",
       "chars": 11326
+    },
+    {
+      "id": "cyclical-audit-of-dnd-civilian-staffing",
+      "title": "Cyclical Audit of DND Civilian Staffing",
+      "type": "Reference",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/reports-publications/audit-evaluation/cyclical-audit-civilian-staffing.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/reports-publications/audit-evaluation/cyclical-audit-civilian-staffing.html",
+      "path": "data/manual_policy_cache/cyclical-audit-of-dnd-civilian-staffing.txt",
+      "chars": 28814,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-2007-1-general-safety-program",
+      "title": "DAOD 2007-0/2007-1, Safety / General Safety Program",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/2000-series/2007/2007-1-general-safety-program.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/2000-series/2007/2007-1-general-safety-program.html",
+      "path": "data/manual_policy_cache/daod-2007-1-general-safety-program.txt",
+      "chars": 17665,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5005-0-civilian-human-resources-management",
+      "title": "DAOD 5005-0, Civilian Human Resources Management",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-0-civilian-human-resources-management.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-0-civilian-human-resources-management.html",
+      "path": "data/manual_policy_cache/daod-5005-0-civilian-human-resources-management.txt",
+      "chars": 5917,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5005-1-governance-of-civilian-hr-management",
+      "title": "DAOD 5005-1, Governance of Civilian HR Management",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-1-governance-of-civilian-human-resources-management.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-1-governance-of-civilian-human-resources-management.html",
+      "path": "data/manual_policy_cache/daod-5005-1-governance-of-civilian-hr-management.txt",
+      "chars": 8740,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5005-2-delegation-of-authorities",
+      "title": "DAOD 5005-2, Delegation of Authorities for Civilian HR Management",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-2-delegation-of-authorities-for-civilian-human-resources-management.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-2-delegation-of-authorities-for-civilian-human-resources-management.html",
+      "path": "data/manual_policy_cache/daod-5005-2-delegation-of-authorities.txt",
+      "chars": 16669,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5005-3-employee-assistance-program",
+      "title": "DAOD 5005-3, Employee Assistance Program",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-3-employee-assistance-program.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5005/5005-3-employee-assistance-program.html",
+      "path": "data/manual_policy_cache/daod-5005-3-employee-assistance-program.txt",
+      "chars": 12370,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5006-0-civilian-performance-planning-and-review",
+      "title": "DAOD 5006-0, Civilian Performance Planning and Review",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5006/5006-0-civilian-performance-planning-and-review.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5006/5006-0-civilian-performance-planning-and-review.html",
+      "path": "data/manual_policy_cache/daod-5006-0-civilian-performance-planning-and-review.txt",
+      "chars": 5759,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5006-1-performance-management-program",
+      "title": "DAOD 5006-1, Performance Management Program for DND Employees",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5006/5006-1-performance-management-program-for-dnd-employees.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5006/5006-1-performance-management-program-for-dnd-employees.html",
+      "path": "data/manual_policy_cache/daod-5006-1-performance-management-program.txt",
+      "chars": 29572,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5008-0-civilian-labour-management-relations",
+      "title": "DAOD 5008-0, Civilian Labour-Management Relations",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5008/5008-0-civilian-labour-management-relations.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5008/5008-0-civilian-labour-management-relations.html",
+      "path": "data/manual_policy_cache/daod-5008-0-civilian-labour-management-relations.txt",
+      "chars": 6325,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5008-1-use-of-departmental-premises",
+      "title": "DAOD 5008-1, Use of Departmental Premises for Bargaining Agent Business",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5008/5008-1-use-of-departmental-premises-and-equipment-and-electronic-networks-for-bargaining-agent-or-union-business.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5008/5008-1-use-of-departmental-premises-and-equipment-and-electronic-networks-for-bargaining-agent-or-union-business.html",
+      "path": "data/manual_policy_cache/daod-5008-1-use-of-departmental-premises.txt",
+      "chars": 11206,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5008-2-civilian-labour-management-consultation",
+      "title": "DAOD 5008-2, Civilian Labour-Management Consultation",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5008/5008-2-civilian-labour-management-consultation.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5008/5008-2-civilian-labour-management-consultation.html",
+      "path": "data/manual_policy_cache/daod-5008-2-civilian-labour-management-consultation.txt",
+      "chars": 14967,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5014-0-workplace-harassment-and-violence-prevention",
+      "title": "DAOD 5014-0, Workplace Harassment and Violence Prevention",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5014/5014-0-workplace-harassment-and-violence-prevention.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5014/5014-0-workplace-harassment-and-violence-prevention.html",
+      "path": "data/manual_policy_cache/daod-5014-0-workplace-harassment-and-violence-prevention.txt",
+      "chars": 10644,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5015-0-workplace-accommodation",
+      "title": "DAOD 5015-0, Workplace Accommodation",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5015/5015-0-workplace-accommodation.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5015/5015-0-workplace-accommodation.html",
+      "path": "data/manual_policy_cache/daod-5015-0-workplace-accommodation.txt",
+      "chars": 7458,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5017-0-mental-health-and-wellness",
+      "title": "DAOD 5017-0, Mental Health and Wellness",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5017/5017-0-mental-health.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5017/5017-0-mental-health.html",
+      "path": "data/manual_policy_cache/daod-5017-0-mental-health-and-wellness.txt",
+      "chars": 11789,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5025-0-classification-of-civilian-positions",
+      "title": "DAOD 5025-0, Classification of Civilian Positions",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5025/5025-0-classification-of-civilian-positions.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5025/5025-0-classification-of-civilian-positions.html",
+      "path": "data/manual_policy_cache/daod-5025-0-classification-of-civilian-positions.txt",
+      "chars": 7753,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5026-0-civilian-grievances",
+      "title": "DAOD 5026-0, Civilian Grievances",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5026/5026-0-civilian-grievances.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5026/5026-0-civilian-grievances.html",
+      "path": "data/manual_policy_cache/daod-5026-0-civilian-grievances.txt",
+      "chars": 4205,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5029-0-civilian-staffing",
+      "title": "DAOD 5029-0, Civilian Staffing",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5029/5029-0-civilian-staffing.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5029/5029-0-civilian-staffing.html",
+      "path": "data/manual_policy_cache/daod-5029-0-civilian-staffing.txt",
+      "chars": 7540,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5029-2-corrective-action-and-revocation",
+      "title": "DAOD 5029-2, Corrective Action and Revocation",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5029/5029-2-corrective-action-and-revocation.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5029/5029-2-corrective-action-and-revocation.html",
+      "path": "data/manual_policy_cache/daod-5029-2-corrective-action-and-revocation.txt",
+      "chars": 10730,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5031-0-learning-and-professional-development",
+      "title": "DAOD 5031-0, Learning and Professional Development",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5031/5031-0-learning-and-professional-development.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5031/5031-0-learning-and-professional-development.html",
+      "path": "data/manual_policy_cache/daod-5031-0-learning-and-professional-development.txt",
+      "chars": 7910,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5031-50-civilian-learning-and-professional-development",
+      "title": "DAOD 5031-50, Civilian Learning and Professional Development",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5031/5031-50-civilian-learning-and-professional-development.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5031/5031-50-civilian-learning-and-professional-development.html",
+      "path": "data/manual_policy_cache/daod-5031-50-civilian-learning-and-professional-development.txt",
+      "chars": 22454,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5039-0-official-languages",
+      "title": "DAOD 5039-0, Official Languages",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5039/5039-0-official-languages.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5039/5039-0-official-languages.html",
+      "path": "data/manual_policy_cache/daod-5039-0-official-languages.txt",
+      "chars": 9018,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5039-2-official-languages-in-the-workplace",
+      "title": "DAOD 5039-2, Official Languages in the Workplace",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5039/5039-2-official-languages-in-the-workplace.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5039/5039-2-official-languages-in-the-workplace.html",
+      "path": "data/manual_policy_cache/daod-5039-2-official-languages-in-the-workplace.txt",
+      "chars": 25468,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5039-3-advancement-of-english-and-french",
+      "title": "DAOD 5039-3, Advancement of English and French",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5039/5039-3-advancement-of-english-and-french.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5039/5039-3-advancement-of-english-and-french.html",
+      "path": "data/manual_policy_cache/daod-5039-3-advancement-of-english-and-french.txt",
+      "chars": 11170,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5046-0-alternative-dispute-resolution",
+      "title": "DAOD 5046-0, Alternative Dispute Resolution",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "labour"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5046/5046-0-alternative-dispute-resolution.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5046/5046-0-alternative-dispute-resolution.html",
+      "path": "data/manual_policy_cache/daod-5046-0-alternative-dispute-resolution.txt",
+      "chars": 7364,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5516-0-human-rights",
+      "title": "DAOD 5516-0, Human Rights",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5516/5516-0-human-rights.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5516/5516-0-human-rights.html",
+      "path": "data/manual_policy_cache/daod-5516-0-human-rights.txt",
+      "chars": 5414,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-5516-1-human-rights-complaints",
+      "title": "DAOD 5516-1, Human Rights Complaints",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "equity"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5516/5516-1-human-rights-complaints.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/5000-series/5516/5516-1-human-rights-complaints.html",
+      "path": "data/manual_policy_cache/daod-5516-1-human-rights-complaints.txt",
+      "chars": 15504,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-7021-0-conflict-of-interest-and-post-employment",
+      "title": "DAOD 7021-0, Conflict of Interest and Post-Employment",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7021/7021-0-conflict-of-interest-and-post-employment.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7021/7021-0-conflict-of-interest-and-post-employment.html",
+      "path": "data/manual_policy_cache/daod-7021-0-conflict-of-interest-and-post-employment.txt",
+      "chars": 14427,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-7021-1-conflict-of-interest",
+      "title": "DAOD 7021-1, Conflict of Interest",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7021/7021-1-conflict-of-interest.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7021/7021-1-conflict-of-interest.html",
+      "path": "data/manual_policy_cache/daod-7021-1-conflict-of-interest.txt",
+      "chars": 28985,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-7023-0-defence-ethics",
+      "title": "DAOD 7023-0, Defence Ethics",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7023/7023-0-defence-ethics.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7023/7023-0-defence-ethics.html",
+      "path": "data/manual_policy_cache/daod-7023-0-defence-ethics.txt",
+      "chars": 7161,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "daod-7023-1-defence-ethics-programme",
+      "title": "DAOD 7023-1, Defence Ethics Programme",
+      "type": "DND DAOD",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7023/7023-1-defence-ethics-programme.html",
+      "normalized_url": "https://www.canada.ca/en/department-national-defence/corporate/policies-standards/defence-administrative-orders-directives/7000-series/7023/7023-1-defence-ethics-programme.html",
+      "path": "data/manual_policy_cache/daod-7023-1-defence-ethics-programme.txt",
+      "chars": 15144,
+      "capture_method": "playwright"
     },
     {
       "id": "directive-on-conflict-of-interest",
@@ -346,6 +762,19 @@
       "chars": 655
     },
     {
+      "id": "ec-group-collective-agreement",
+      "title": "EC Group Collective Agreement",
+      "type": "Collective Agreement",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=4",
+      "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=4",
+      "path": "data/manual_policy_cache/ec-group-collective-agreement.txt",
+      "chars": 5649,
+      "capture_method": "playwright"
+    },
+    {
       "id": "employment-equity-act",
       "title": "Employment Equity Act",
       "type": "Legislation",
@@ -382,6 +811,19 @@
       "chars": 6747
     },
     {
+      "id": "federal-student-work-experience-program",
+      "title": "Federal Student Work Experience Program (FSWEP)",
+      "type": "PSC Program",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/jobs/services/recruitment/students/federal-student-work-program.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/jobs/services/recruitment/students/federal-student-work-program.html",
+      "path": "data/manual_policy_cache/federal-student-work-experience-program.txt",
+      "chars": 6144,
+      "capture_method": "playwright"
+    },
+    {
       "id": "financial-administration-act",
       "title": "Financial Administration Act (FAA)",
       "type": "Legislation",
@@ -406,6 +848,32 @@
       "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/g-5/FullText.html",
       "path": "data/manual_policy_cache/government-employees-compensation-act.txt",
       "chars": 3414
+    },
+    {
+      "id": "guide-on-priority-entitlements",
+      "title": "Guide on Priority Entitlements",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/information-priority-administration/public-service-commission-guide-priority-administration.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/information-priority-administration/public-service-commission-guide-priority-administration.html",
+      "path": "data/manual_policy_cache/guide-on-priority-entitlements.txt",
+      "chars": 2180,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "it-group-collective-agreement",
+      "title": "IT Group Collective Agreement",
+      "type": "Collective Agreement",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=1",
+      "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=1",
+      "path": "data/manual_policy_cache/it-group-collective-agreement.txt",
+      "chars": 5649,
+      "capture_method": "playwright"
     },
     {
       "id": "njc-bilingualism-bonus-directive",
@@ -457,6 +925,20 @@
       "chars": 4165
     },
     {
+      "id": "njc-foreign-service-directives",
+      "title": "NJC Foreign Service Directives",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification",
+        "governance"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/fsd-dse/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/fsd-dse/en",
+      "path": "data/manual_policy_cache/njc-foreign-service-directives.txt",
+      "chars": 2017,
+      "capture_method": "playwright"
+    },
+    {
       "id": "njc-grievance-process-and-procedures",
       "title": "NJC Grievance Process and Procedures",
       "type": "Reference",
@@ -480,6 +962,32 @@
       "normalized_url": "https://www.njc-cnm.gc.ca/directive/d4/en",
       "path": "data/manual_policy_cache/njc-isolated-posts-and-government-housing-directive.txt",
       "chars": 264
+    },
+    {
+      "id": "njc-occupational-health-and-safety-directive",
+      "title": "NJC Occupational Health and Safety Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "ohs"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d7/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d7/en",
+      "path": "data/manual_policy_cache/njc-occupational-health-and-safety-directive.txt",
+      "chars": 6180,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "njc-public-service-health-care-plan-directive",
+      "title": "Public Service Health Care Plan (PSHCP) Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d9/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d9/en",
+      "path": "data/manual_policy_cache/njc-public-service-health-care-plan-directive.txt",
+      "chars": 3626,
+      "capture_method": "playwright"
     },
     {
       "id": "njc-relocation-directive",
@@ -507,6 +1015,19 @@
       "chars": 369
     },
     {
+      "id": "njc-uniforms-directive",
+      "title": "NJC Uniforms Directive",
+      "type": "NJC Directive",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.njc-cnm.gc.ca/directive/d11/en",
+      "normalized_url": "https://www.njc-cnm.gc.ca/directive/d11/en",
+      "path": "data/manual_policy_cache/njc-uniforms-directive.txt",
+      "chars": 836,
+      "capture_method": "playwright"
+    },
+    {
       "id": "njc-work-force-adjustment-directive",
       "title": "Work Force Adjustment Directive (WFAD)",
       "type": "NJC Directive",
@@ -519,6 +1040,19 @@
       "chars": 194
     },
     {
+      "id": "occupational-groups-by-bargaining-agent-representation",
+      "title": "Occupational Groups by Bargaining Agent Representation",
+      "type": "Reference",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/occupational-groups/occupational-groups-bargaining-agent-representation.html",
+      "normalized_url": "https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/occupational-groups/occupational-groups-bargaining-agent-representation.html",
+      "path": "data/manual_policy_cache/occupational-groups-by-bargaining-agent-representation.txt",
+      "chars": 4951,
+      "capture_method": "playwright"
+    },
+    {
       "id": "official-languages-act",
       "title": "Official Languages Act",
       "type": "Legislation",
@@ -529,6 +1063,19 @@
       "normalized_url": "https://laws-lois.justice.gc.ca/eng/acts/o-3.01/FullText.html",
       "path": "data/manual_policy_cache/official-languages-act.txt",
       "chars": 28069
+    },
+    {
+      "id": "pa-group-collective-agreement",
+      "title": "PA Group Collective Agreement (AS, PM, CR, IS, etc.)",
+      "type": "Collective Agreement",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=15",
+      "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=15",
+      "path": "data/manual_policy_cache/pa-group-collective-agreement.txt",
+      "chars": 5649,
+      "capture_method": "playwright"
     },
     {
       "id": "pay-equity-act",
@@ -605,6 +1152,124 @@
       "chars": 580
     },
     {
+      "id": "post-secondary-coop-internship-program",
+      "title": "Post-Secondary Co-op/Internship Program",
+      "type": "PSC Program",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/jobs/services/recruitment/students/coop-internship.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/jobs/services/recruitment/students/coop-internship.html",
+      "path": "data/manual_policy_cache/post-secondary-coop-internship-program.txt",
+      "chars": 4075,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "priority-administration-directive",
+      "title": "Priority Administration Directive",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/information-priority-administration/priority-administration-directive.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/information-priority-administration/priority-administration-directive.html",
+      "path": "data/manual_policy_cache/priority-administration-directive.txt",
+      "chars": 36365,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-appointment-framework",
+      "title": "PSC Appointment Framework",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework.html",
+      "path": "data/manual_policy_cache/psc-appointment-framework.txt",
+      "chars": 2649,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-appointment-policy",
+      "title": "PSC Appointment Policy",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/appointment-policy.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/appointment-policy.html",
+      "path": "data/manual_policy_cache/psc-appointment-policy.txt",
+      "chars": 8248,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-assessment-of-official-languages",
+      "title": "PSC Assessment of Official Languages in the Appointment Process",
+      "type": "PSC Reference",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework/assessment-official-languages-appointment-process.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework/assessment-official-languages-appointment-process.html",
+      "path": "data/manual_policy_cache/psc-assessment-of-official-languages.txt",
+      "chars": 12282,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-guides-on-assessment-and-appointment",
+      "title": "PSC Guides on Assessment and Appointment (incl. Inclusive Appointment Lens, Employment Equity Staffing Guides, Self-Declaration Guides)",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing",
+        "equity"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework.html",
+      "path": "data/manual_policy_cache/psc-guides-on-assessment-and-appointment.txt",
+      "chars": 4044,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-political-activities-program",
+      "title": "PSC Political Activities Program",
+      "type": "PSC Reference",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/political-activities.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/political-activities.html",
+      "path": "data/manual_policy_cache/psc-political-activities-program.txt",
+      "chars": 1952,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-staffing-and-non-partisanship-survey",
+      "title": "PSC Staffing and Non-Partisanship Survey (SNPS)",
+      "type": "PSC Reference",
+      "agent_ids": [
+        "governance"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/staffing-and-non-partisanship-survey.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/staffing-and-non-partisanship-survey.html",
+      "path": "data/manual_policy_cache/psc-staffing-and-non-partisanship-survey.txt",
+      "chars": 3077,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "psc-staffing-interpretation-centre",
+      "title": "PSC Staffing Interpretation Centre",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework/psc-staffing-interpretation-centre.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework/psc-staffing-interpretation-centre.html",
+      "path": "data/manual_policy_cache/psc-staffing-interpretation-centre.txt",
+      "chars": 2499,
+      "capture_method": "playwright"
+    },
+    {
       "id": "public-servants-disclosure-protection-act",
       "title": "Public Servants Disclosure Protection Act (PSDPA)",
       "type": "Legislation",
@@ -666,6 +1331,124 @@
       "chars": 19887
     },
     {
+      "id": "qualification-standards",
+      "title": "Qualification Standards",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/overview.html",
+      "normalized_url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/overview.html",
+      "path": "data/manual_policy_cache/qualification-standards.txt",
+      "chars": 102655,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "qualification-standards-in-relation-to-official-languages",
+      "title": "Qualification Standards in Relation to Official Languages",
+      "type": "Reference",
+      "agent_ids": [
+        "languages"
+      ],
+      "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/relation-official-languages.html",
+      "normalized_url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/relation-official-languages.html",
+      "path": "data/manual_policy_cache/qualification-standards-in-relation-to-official-languages.txt",
+      "chars": 21821,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "research-affiliate-program",
+      "title": "Research Affiliate Program (RAP)",
+      "type": "PSC Program",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/jobs/services/recruitment/students/research-affiliate-program.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/jobs/services/recruitment/students/research-affiliate-program.html",
+      "path": "data/manual_policy_cache/research-affiliate-program.txt",
+      "chars": 2539,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "spotlight-on-area-of-selection",
+      "title": "Spotlight on Area of Selection",
+      "type": "PSC Instrument",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework/spotlight-on-area-of-selection.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/guides-tools-appointment-framework/spotlight-on-area-of-selection.html",
+      "path": "data/manual_policy_cache/spotlight-on-area-of-selection.txt",
+      "chars": 6605,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "student-bridging-guide",
+      "title": "Student Bridging Guide",
+      "type": "PSC Program",
+      "agent_ids": [
+        "staffing"
+      ],
+      "url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/student-bridging.html",
+      "normalized_url": "https://www.canada.ca/en/public-service-commission/services/appointment-framework/student-bridging.html",
+      "path": "data/manual_policy_cache/student-bridging-guide.txt",
+      "chars": 3499,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "sv-group-collective-agreement",
+      "title": "SV Group Collective Agreement (GL, GS, FR, etc.)",
+      "type": "Collective Agreement",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=19",
+      "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=19",
+      "path": "data/manual_policy_cache/sv-group-collective-agreement.txt",
+      "chars": 5649,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "tbs-collective-agreements-index",
+      "title": "TBS Collective Agreements Index",
+      "type": "Reference",
+      "agent_ids": [
+        "classification",
+        "governance"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/agreements-conventions/index-eng.aspx",
+      "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/index-eng.aspx",
+      "path": "data/manual_policy_cache/tbs-collective-agreements-index.txt",
+      "chars": 5649,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "tc-group-collective-agreement",
+      "title": "TC Group Collective Agreement (EG, GT, TI, etc.)",
+      "type": "Collective Agreement",
+      "agent_ids": [
+        "classification"
+      ],
+      "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=25",
+      "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=25",
+      "path": "data/manual_policy_cache/tc-group-collective-agreement.txt",
+      "chars": 5649,
+      "capture_method": "playwright"
+    },
+    {
+      "id": "treasury-board-mandatory-training-inventory",
+      "title": "Treasury Board Mandatory Training Inventory",
+      "type": "Reference",
+      "agent_ids": [
+        "learning"
+      ],
+      "url": "https://www.canada.ca/en/government/publicservice/workforce/learning/treasury-board-mandatory-training-inventory.html",
+      "normalized_url": "https://www.canada.ca/en/government/publicservice/workforce/learning/treasury-board-mandatory-training-inventory.html",
+      "path": "data/manual_policy_cache/treasury-board-mandatory-training-inventory.txt",
+      "chars": 5477,
+      "capture_method": "playwright"
+    },
+    {
       "id": "values-and-ethics-code-for-the-public-sector",
       "title": "Values and Ethics Code for the Public Sector",
       "type": "Code",
@@ -680,24 +1463,14 @@
   ],
   "failures": [
     {
-      "id": "njc-foreign-service-directives",
-      "title": "NJC Foreign Service Directives",
-      "error": "thin content (45 chars)"
+      "id": "fpslreb-decisions-database",
+      "title": "FPSLREB Decisions Database",
+      "error": "HTTP 404"
     },
     {
-      "id": "njc-occupational-health-and-safety-directive",
-      "title": "NJC Occupational Health and Safety Directive",
-      "error": "thin content (42 chars)"
-    },
-    {
-      "id": "njc-public-service-health-care-plan-directive",
-      "title": "Public Service Health Care Plan (PSHCP) Directive",
-      "error": "thin content (43 chars)"
-    },
-    {
-      "id": "njc-uniforms-directive",
-      "title": "NJC Uniforms Directive",
-      "error": "thin content (20 chars)"
+      "id": "qualification-standard-for-the-executive-group",
+      "title": "Qualification Standard for the Executive Group",
+      "error": "HTTP 404"
     }
   ]
 }

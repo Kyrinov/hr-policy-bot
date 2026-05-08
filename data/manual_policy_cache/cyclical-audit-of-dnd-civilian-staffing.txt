@@ -1,0 +1,475 @@
+Skip to main content
+Skip to "About government"
+Switch to basic HTML version
+Language selection
+Français
+/ Gouvernement du Canada
+Search
+Search National Defence
+Search
+Menu
+MAIN
+MENU
+You are here:
+Canada.ca National Defence Reports and Publications Audit and Evaluation Reports
+Cyclical Audit of Civilian Staffing
+
+March 2021
+
+1259-3-0052 - ADM(RS)
+
+Reviewed by ADM(RS) in accordance with the Access to Information Act.  Information UNCLASSIFIED.
+
+Table of Contents
+Acronyms and Abbreviations
+Results in Brief
+1.0 Introduction
+1.1 Background
+1.2 Rationale
+1.3 Objective and Criteria
+2.0 Findings and Recommendations
+2.1 Appointment processes
+2.2 Staffing data and reporting information
+3.0 General Conclusion
+Annex A—Management Action Plan
+Annex B—About the Audit
+Alternate Formats
+ PDF Version
+(1,008 KB, 18 pages)
+Assistant Deputy Minister (Review Services)
+About us
+Biography of ADM(RS)
+Boards of Inquiry
+Defence Ethics Programme
+Reports
+Whistleblowing - Submit a Disclosure of Wrongdoing
+Acronyms
+ADM(HR-Civ)
+Assistant Deputy Minister (Human Resources - Civilian)
+ADM(RS)
+Assistant Deputy Minister (Review Services)
+CAF
+Canadian Armed Forces
+DND
+Department of National Defence
+DSPP
+Director Strategic Planning and Performance
+FY
+Fiscal Year
+HR
+Human Resources
+HRMS
+Human Resource Management System
+NDS
+New Direction in Staffing
+NSL
+National Staffing Log
+PSEA
+Public Service Employment Act
+PSC
+Public Service Commission
+OPI
+Office of Primary Interest
+
+Back to Table of Contents
+
+Results in Brief
+Overall Assessment
+
+The Department generally complies with applicable legislation and policies regarding civilian staffing processes while succeeding in hiring quality candidates to meet requirements. There is an opportunity to better demonstrate compliance through improved information and records management while streamlining and simplifying documentation requirements. There is also an opportunity to further leverage flexibilities and innovative practices afforded by the NDS.
+
+In 2016, the Public Service Commission (PSC) launched a renewed policy framework intended to simplify staffing and provide greater scope to organizations to customize staffing to their particular needs. The New Direction in Staffing (NDS) aims to promote greater use of innovative staffing practices and solutions within organizations to achieve desired outcomes in staffing.
+
+Under the NDS, departments are required to perform cyclical assessments of their staffing processes at least once every five years. This is the first assessment of the civilian staffing process performed at the Department of National Defence (DND).
+
+Hiring the right person at the right time is critical to ensuring the Defence Team meets its mission. For that reason, and in compliance with the requirement to perform cyclical assessments once every five years, this audit was included as part of Assistant Deputy Minister (Review Services) (ADM(RS)) Risk-based Audit Plan for 2019-2021.
+
+Findings and Recommendation
+
+While the Department generally adheres to applicable legislation and policies, regarding civilian staffing processes, improvements to file documentation are needed, in particular relating to priority files, oath administration and merit, to consistently demonstrate compliance.
+
+It is recommended that Assistant Deputy Minister (Human Resources – Civilian) (ADM(HR-Civ)) strengthen its information and records management practices for staffing and appointment to ensure compliance with legislative and policy requirements is clearly evidenced across all areas of the staffing process.
+
+Note: Please refer to Annex A—Management Action Plan for the management response to the ADM(RS) recommendations.
+
+Back to Table of Contents
+
+1.0 Introduction
+1.1 Background
+
+In 2016, the PSC launched and implemented a renewed policy framework intended to simplify staffing and provide greater scope to organizations to customize staffing to their particular needs. The NDS aims to promote greater use of innovative staffing practices and solutions within organizations to achieve desired outcomes in staffing.
+
+The PSC requires organizations to carry out ongoing monitoring and cyclical assessments of their staffing systems at least once every five years, to assess staffing-related requirements based on an organization’s specific context and risks.
+
+1.1.1. Accountabilities, Responsibilities and Authorities
+
+The PSC has the exclusive authority to make appointments to and within the public service, as granted by the Public Service Employment Act (PSEA), the overarching legislation that governs employment in the public service. The PSC delegates many of its appointment and appointment-related authorities to deputy heads of federal organizations who, in turn, may sub-delegate the exercise of these authorities.
+
+Within DND, ADM(HR-Civ) is responsible for civilian human resources (HR) programs and services including the appointment and appointment-related authorities. As per the Instrument of Delegation of Human Resources Authorities for Civilian Public Service Employees of National Defence, these authorities may be sub-delegated to both DND civilian managers and Canadian Armed Forces (CAF) members who manage civilian employees. ADM(HR-Civ) also develops and issues departmental directives and guidelines to modernize staffing processes.
+
+Sub-delegated managers are accountable for appointment and appointment-related decisions, and for the proper exercise of their sub-delegated authorities including ensuring that decisions are fully documented.
+
+Staffing advisors play a vital role in upholding the integrity of DND’s staffing system. The role of a staffing advisor is to provide consistent and accurate advice and guidance to sub-delegated managers in line with the PSEA and other supporting instruments, policies and directives. Staffing advisors also serve as strategic advisors by identifying flexible, agile and innovative staffing solutions that are responsive to sub-delegated managers’ hiring needs.
+
+1.1.2. Appointment Processes
+
+To support Defence Team operations, thousands of appointment processes are performed each year. In Fiscal Year (FY) 2019/20, over 7,500 were completed. The following graph provides an overview of the number of appointments over the last three fiscal years showing increased use of one key staffing flexibility: non-advertised appointments.
+Footnote
+1
+
+Figure 1. Appointments by Process Type. This bar graph shows the number of appointments by process type for FYs 2017/18, 2018/19 and 2019/20.
+Figure 1 Details - Appointments by Process Type.
+1.1.3. Appointment process requirements
+
+The PSEA preamble indicates the importance of ensuring all appointments to and within the public service are based on merit and free from political influence with the expected results of hiring a non-partisan workforce that is representative of Canada’s diversity and its linguistic duality. The preamble also emphasizes the importance of flexibility in appointment processes that are conducted in a fair, respectful and transparent manner. Some key requirements stemming from the PSEA, employer requirements and the PSC’s Appointment Policy include:
+
+Merit – For an appointment to be meritorious
+the person to be appointed must meet the essential qualifications (qualifications that are required for the job);
+Consideration can also be given to the following:
+Asset qualifications (qualifications that could be beneficial for the job now or in the future);
+Operational requirements (requirements that could be beneficial now or in the future for the organization, such as willingness to relocate); and
+Organizational needs (a need that could be beneficial now or in the future for the organization, such as belonging to a specific employment equity group).
+Priority Entitlement – The right to be appointed to a position ahead of all other persons is key to helping medically-released members of the CAF or employees of the public service facing life or employment events/changes (e.g., relocation of spouse) obtain meaningful work.
+Articulation of selection decision – Given the increased flexibility and discretion in staffing processes, the articulation of selection decision is key to demonstrating manager accountability; it will outline key decisions such as the choice of processes, area of selection, justification for selection of candidate, etc.
+Notifications – The two-step notification process is key to transparency and to support the timely resolution of appointment issues.
+Oath or solemn affirmation – Person(s) appointed from outside of the public service shall make a commitment to fulfill their duties honestly and to not disclose, without authority, information gained from such duties.
+Security clearance – Person(s) appointed must meet the security requirements of the position(s) to be staffed at the time of appointment – this is an assessment of their reliability (for reliability clearance) as well as their loyalty to Canada (for secret or top secret clearance).
+1.2 Rationale
+
+Hiring the right person at the right time is critical to ensuring the Defence Team has the required resources to meets its mandate and mission. For that reason, and in compliance with the requirement to perform cyclical assessments once every five years, this audit was included as part of the ADM(RS) Risk-based Audit Plan for 2019-2021.
+
+1.3 Objective and Criteria
+
+The objective of this audit was to provide assurance that DND has an effective staffing system to appoint qualified individuals in line with policy direction.
+Footnote
+2
+
+The following audit criteria was developed following a risk-based assessment:
+
+Appointment and appointment-related authorities adhere to legislative and policy requirements.
+Staffing data is accessible, reliable and timely to support effective and efficient staffing.
+Staffing performance is measured and monitored to ensure compliance and support continuous improvement.
+
+Additional information concerning the scope and methodology can be found at Annex B.
+
+Back to Table of Contents
+
+2.0 Findings and Recommendations
+2.1 Appointment processes
+
+Civilian staffing appointments generally adhere to legislative and policy requirements. Improvements to file documentation are required to consistently demonstrate compliance, in particular regarding the consideration of priority entitlements, oath administration and fulfilment of merit criteria.
+
+Notable Practice
+
+A checklist structured by process type has been developed for quality control. When used, it provides an effective tool to verify file completeness.
+
+We expected to find:
+
+Appointment and appointment processes adhere to the PSEA and other applicable statutory or departmental instruments
+Sufficient documentation on file to demonstrate decisions made and actions taken
+Innovative staffing practices afforded by the NDS are applied
+2.1.1 Compliance with Legislative and Policy Requirements
+
+The audit examined 94 appointment files including internal and external advertised processes, as well as internal and external non-advertised processes. Files were reviewed to determine if key legislative and policy requirements including merit, priority entitlements and articulation of decision, were met.
+
+Appointment-related information was generally found to be accessible and compliant with legislative requirements with high compliance rates across key areas such as articulation of selection decision, notifications and security clearance requirements.
+
+For example, 94 percent of files had the articulation of selection decision documented, which allows the sub-delegated manager to demonstrate what factors, amongst others, influenced the choice of process and why the person was selected for appointment.
+
+In some files examined, certain key information, such as official language results, were not always available or provided to demonstrate that the appointment was based on merit. Some appointment files had insufficient documentation to demonstrate that persons with a priority entitlement were considered prior to considering other candidates. This can impact persons with a priority entitlement opportunity for appointment to a position for which they meet the essential qualifications. Documenting the oath or solemn affirmation was another area requiring improvement, largely due to the name of the sub-delegated manager not being legible and thus not verifiable. As indicated, the oath or solemn affirmation is a key commitment for persons being appointed to the public service.
+
+While documentation is important to demonstrate that key requirements are respected (e.g., consideration of persons with a priority entitlement), ADM(HR-Civ) continues to make significant efforts to streamline administrative aspects, including rationalization of documentation, to achieve improved efficiency across staffing processes.
+
+2.1.2 Documentation of Key Decisions
+
+As per departmental guidance, sub-delegated managers are required to document all decisions made during an appointment process. As well, they are required to seek advice and guidance from HR staffing advisors in the exercise of their staffing responsibilities.
+
+Six key decisions points were reviewed including:
+
+the choice of appointment process;
+area of selection;
+establishment of merit criteria;
+selection of assessment tools;
+selection of candidate; and
+signing of offer of appointment.
+
+In approximately 20 percent of the decisions examined there was no indication that the sub-delegated manager made these key decisions; there was either a lack of documentation as to who made the decision or there was evidence that they were made by someone other than the sub-delegated manager.
+
+Recognizing that while advice and guidance may be sought verbally and thus not systematically documented in the staffing file, less than half of the files had evidence of the sub-delegated manager having sought advice or guidance from the staffing advisor. In not seeking advice from staffing advisors, there is a risk that opportunities to identify and use flexible, innovative solutions to address staffing needs in a more effective manner may be missed.
+
+2.1.3 NDS innovative practices
+
+The NDS is designed to simplify staffing across the public service, and gives the Department greater flexibilities for certified staffing advisors to practice and promote the use of non-advertised processes, tailored assessment process and staffing pools or inventories. Other than the use of non-advertised processes where appropriate, the majority of appointment files reviewed did not demonstrate the use of staffing flexibilities. Interviews with sub-delegated managers and staffing advisors identified opportunities for enhancing guidance and advice around the use of staffing flexibilities to promote more agile approaches to staffing in line with organizational needs.
+
+2.1.4 Staffing Advisor Certification Program
+
+Reinforcing the important role that staffing advisors play in the staffing system, DND guidance stipulates that they must be appropriately certified in staffing or, in cases of non-certification, must be supervised by a certified staffing advisor, before they can provide staffing-related advice and guidance to sub-delegated managers.
+
+The Department recently updated its staffing certification program in July 2019. The goal of the certification program is to validate that staffing advisors have the necessary knowledge and competencies to provide strategic advice and guidance and deliver effective staffing solutions to sub-delegated managers. The audit found that 57 percent of staffing advisors either held a valid staffing certification or were supervised by a certified advisor. While evidence of supervision may not be documented, ADM(HR-Civ) continues its efforts to ensure all staffing advisors are certified, coupled with a coaching model where all junior advisors are coached by experienced advisors as evidence by an established coaching matrix.
+
+2.1.5 Quality Control
+
+Staffing advisors also have a responsibility to ensure appointment files are complete with required information to support the sub-delegated manager’s staffing decisions. 68 percent of files showed evidence of oversight or quality control by a staffing advisor to ensure completeness of the files. Although its use is not mandatory, the staffing checklist developed by ADM(HR-Civ) is a useful tool to facilitate review of appointment files to ensure their completeness. Expanded use of this checklist, supported by a formal quality assurance process, would improve the overall quality of file documentation.
+
+Conclusion
+
+The quality of documentation and completeness of files varied, which made it difficult to conclude on the compliance of key staffing requirements and verify that decisions were made by the appropriate sub-delegated manager. Opportunities exist to increase the use of flexible staffing practices afforded by the PSEA as well as the NDS.
+
+To support fair and transparent civilian staffing appointments, documentation practices should be improved and streamlined to ensure the department can justify decisions made and actions taken while still improving the effectiveness and efficiency of staffing processes.
+
+ADM(RS) Recommendation
+
+1. It is recommended that ADM(HR-Civ) strengthen its information and records management practices for civilian staffing appointments to ensure compliance with legislative and policy requirements is clearly evidenced across all areas of the staffing process.
+
+OPI: ADM(HR-Civ)
+
+2.2 Staffing data and reporting information
+
+ADM(HR-Civ) provides staffing data and analysis to the department. There is an opportunity to further communicate the availability of this information to sub-delegated managers and staffing advisors to better inform decision making.
+
+We expected to find:
+
+Staffing data and information is accessible, reliable and timely
+Staffing data and information is used to support decision making and continuous improvement
+2.2.1 Tools and dashboards
+
+ADM(HR-Civ) produces and maintains a variety of staffing dashboards, tools and reports on staffing-related information to support management decision making. They are made available on the Departmental Intranet site including staffing-related data and analytics, such as Full Time Equivalent employees, vacancy rates, employees’ departure projections by occupational group, and representation levels for employment equity designated groups. This provides important insights to help ensure that the organization recruits the right people with the right skills in a timely manner.
+
+Sub-delegated managers and staffing advisors were interviewed to determine whether they consulted staffing data or analytics produced by ADM(HR-Civ) or their Level 1/CAF organization to inform staffing-related decisions. Approximately half of the managers and, to a lesser extent, staffing advisors were unaware of the availability of staffing-related data and analytics resources and where to find pertinent staffing-related information, which is consistent with the latest survey results from the Staffing Measurement Framework from March 2019.
+
+With ADM(HR-Civ)’s move toward more client-centric solutions using more online tools and resources for managers and staffing advisors, there is an opportunity to more effectively communicate and leverage the use of staffing data and analytics. ADM(RS) made a similar recommendation to enhance communication of staffing information in its recent advisory on the streamlined civilian staffing process.
+
+2.2.2 Controls and Integrity of Staffing Data
+
+The National Staffing Log (NSL) is the departmental system used to capture all information relevant to staffing actions, and the Human Resource Management System (HRMS) is the HR system of record in DND. While ADM(HR-Civ) staff are the main users, in particular staffing advisors, the data from these systems is also used by sub-delegated managers.
+
+Internal controls were found to be generally in place in both HRMS and the NSL to mitigate data integrity risks. Oversight of HRMS and NSL data relies on manual monitoring activities to identify and correct identified data issues but with no formal verification to ensure the issues have been corrected. While HRMS and the NSL contain 11 matching data fields (e.g., position number, appointment type, date of appointment), given the lack of automation there are no automated controls in place to ensure accuracy among matching data fields across the two systems.
+
+Despite the lack of automation, relatively high levels of concordance were observed when comparing a small sample of data points in HRMS to corresponding data points in appointment files. A few discrepancies were noted in appointment process start dates and effective dates of appointment.
+
+2.2.3 Staffing Performance
+
+ADM(HR-Civ) measures and monitors its staffing performance primarily through its annual Staffing Measurement Framework Survey which is distributed to hiring managers and staffing advisors. Key performance indicators measured in the survey include the efficiency and effectiveness of staffing processes, the quality of staffing support and advice, and quality of hire.
+
+The latest DND Survey of Managers demonstrated that 63 percent of sub-delegated managers were satisfied with the execution of the staffing processes and 79 percent were satisfied with the level of support and advice provided by the staffing advisor. In terms of satisfaction with the person hired, 90 percent of sub-delegated managers expressed satisfaction which is consistent with interview results conducted during this audit. Further information on quality of hire is included in Table 1.
+
+Table 1. Extract of DND Survey of Managers, January 2018 and March 2019.
+
+DND Staffing Measurement Framework Survey Results – Managers
+
+
+Survey Questions
+
+
+
+Level of Satisfaction (%)
+(Satisfied and Very Satisfied)
+
+
+
+Difference
+
+
+
+
+FY 2017/18
+
+
+
+FY 2018/19
+
+
+
+
+Quality of Hire
+
+
+
+
+How satisfied are you with the time it took for the new hire to achieve an acceptable level of productivity in the position?
+
+
+
+75%
+
+
+
+76%
+
+
+
+↑1%
+
+
+
+
+In the case of an appointment resulting from an advertised process… how satisfied were you with the individuals available for hire?
+
+
+
+65%
+
+
+
+69%
+
+
+
+↑4%
+
+
+
+
+Generally speaking, how satisfied are you with the individual hired?
+
+
+
+87%
+
+
+
+90%
+
+
+
+↑3%
+
+Table 1. Extract of DND Survey of Managers, January 2018 and March 2019. This table contains an extract from the DND Staffing Measurement Framework Survey Results from the managers.
+
+Table 1 Details - Extract of DND Survey of Managers
+
+To leverage this important source of information, there is an opportunity to incorporate questions more directly focused on the use of staffing flexibilities and innovative staffing practices in future survey cycles.
+
+Conclusion
+
+Staffing data and information was found to be accessible, reliable and timely. Efficiencies could be gained by automating data entry and automated reconciliation between NSL and HRMS.
+
+As well, the Staffing Measurement Framework Survey and the results of audit interviews demonstrated that staffing processes resulted in quality hires that met operational and other requirements. There is an opportunity to gain further insight in the use of flexibilities and innovative practices to support Defence team staffing actions.
+
+Back to Table of Contents
+
+3.0 General Conclusion
+
+Overall, the audit found the department to be generally compliant with the various legislative and policy requirements for civilian staffing appointments. Areas for improvement were noted with respect to information and record management practices, as some files had insufficient information or linkages to supporting documentation to substantiate staffing decisions. The recommendation included in this report is intended to support improvements in staffing to increase compliance and to enhance staffing information to support senior management decision making.
+
+Back to Table of Contents
+
+Annex A—Management Action Plan
+
+Appointment Processes
+
+ADM(RS) Recommendation
+
+1. It is recommended that ADM(HR-Civ) strengthen its information and records management practices for civilian staffing appointments to ensure compliance with legislative and policy requirements is clearly evidenced across all areas of the staffing process.
+
+OPI: ADM(HR-Civ)
+
+Management Actions
+
+Action 1.1: Develop and implement an on-line Reference tool for staffing advisors on Staffing File documentation and Acceptable Evidence to ensure decisions are fully documented and appointment files are complete.
+
+OPI: DSPP
+Target Date: June 2021
+
+Action 1.2: Develop and provide job aids and other quick and easy communications products on required information to support staffing decisions to the sub-delegated manager’s network.
+
+OPI: DSPP
+Target Date: June 2021
+
+Action 1.3: Develop a job aid to support clear expectations and documentation requirements related to order of consideration of priority persons. Distribute on the HR GO app and to sub-delegated managers and staffing advisors.
+
+OPI: DSPP
+Target Date: June 2021
+
+Action 1.4: Update the “General Letter of Offer email template” to ensure that the version of the oath and solemn affirmation form that is appended to the Letter of Offer has sufficient details to enable subsequent validation that the person administering the oath has the appropriate authority.
+
+OPI: DSPP
+Target Date: March 2021
+
+Back to Table of Contents
+
+Annex B—About the Audit
+
+Objective
+
+The objective of this audit was to provide assurance that DND has an effective staffing system to appoint qualified individuals in line with policy direction.
+
+Scope
+
+The scope of this audit included both internal and external advertised and non-advertised appointments in Civilian Staffing. This included acting appointments greater or equal to four months. Furthermore, it examined the following staffing-related requirements:
+
+Sub-delegated authorities;
+Merit and staffing values;
+Priority entitlements;
+Staffing data use;
+Internal controls of HR systems;
+Quality of hire; and
+Innovative staffing practices.
+
+The audit covered appointments made between January 1, 2019 and September 30, 2019 and staffing data recorded between January 1, 2019 and April 30, 2020. This is the period to which the audit conclusion applies.
+
+The audit did not examine term appointments and non-appointment-based staffing activities such as deployments, casual assignments, acting assignments less than four months, part-time/seasonal hiring.
+
+The audit work was conducted between May 2020 and September 2020.
+
+Methodology
+
+The audit findings are based on the following procedures:
+
+Sample testing of 94 civilian appointment files selected across L1s from the HRMS for persons appointed between January 01, 2019 and September 30, 2019 to test compliance with various legislative and policy requirements;
+Questionnaires and interviews with sub-delegated managers, staffing advisors and a range of HR partners and system managers;
+Tests of internal controls for DND’s two HR systems of record, HRMS and the NSL, to evaluate transactional and entity level controls, and data integrity; and
+Review of staffing performance monitoring and reporting activities and other key documentation such as policies, directives, guidance and procedural documentation.
+
+Statement of Conformance
+
+The audit findings and conclusions contained in this report are based on sufficient and appropriate audit evidence gathered in accordance with procedures that meet the Institute of Internal Auditors’ International Standards for the Professional Practice of Internal Auditing. The audit thus conforms to the Institute of Internal Auditors’ International Standards for the Professional Practice of Internal Auditing as supported by the results of the quality assurance and improvement program. The opinions expressed in this report are based on conditions as they existed at the time of the audit and apply only to the entity examined.
+
+Footnotes
+Footnote 1
+
+Return to footnote
+1
+Referrer
+
+Data was sourced from HRMS.
+
+Return to footnote
+2
+Referrer
+
+For details on scope, methodology, criteria and statement of conformance, refer to Annex B.
+
+Page details
+ 2025-02-20
+About this site
+National Defence
+Contact us
+News
+Jobs
+Government of Canada
+All contacts
+Departments and agencies
+About government
+Themes and topics
+Jobs
+Immigration and citizenship
+Travel and tourism
+Business
+Benefits
+Health
+Taxes
+Environment and natural resources
+National security and defence
+Culture, history and sport
+Policing, justice and emergencies
+Transport and infrastructure
+Canada and the world
+Money and finances
+Science and innovation
+Indigenous Peoples
+Veterans and military
+Youth
+Manage life events
+Government of Canada Corporate
+Social media Mobile applications About Canada.ca Terms and conditions Privacy

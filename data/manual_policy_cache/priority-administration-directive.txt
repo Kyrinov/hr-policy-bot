@@ -1,0 +1,564 @@
+Skip to main content
+Skip to "About government"
+Switch to basic HTML version
+Language selection
+Français
+/ Gouvernement du Canada
+Search
+Search Canada.ca
+Search
+Menu
+MAIN
+MENU
+You are here:
+Canada.ca Public Service Commission of Canada Information on priority entitlements
+Priority Administration Directive
+Table of Contents
+1. Effective date
+2. Statement
+3. Purpose
+4. Authority
+5. Other obligations
+6. Definitions
+7. Application
+8. Roles and responsibilities
+8.1 Public Service Commission
+8.1.1 Registration of persons with a priority entitlement
+8.1.2 Providing support
+8.1.3 Identification and notification for positions
+8.1.4 Priority clearance
+8.1.5 Appointing persons with a priority entitlement
+8.1.6 Resolving issues
+8.2 Organizations
+8.2.1 Registration of persons with a priority entitlement
+8.2.2 Providing support
+8.2.3 Self-referrals
+8.2.4 Assessing persons with a priority entitlement
+8.2.5 Feedback reports
+8.2.6 Priority clearance
+8.2.7 Appointing persons with a priority entitlement
+8.2.8 Resolving issues
+8.3 Persons with a priority entitlement
+8.3.1 Registration
+8.3.2 Consideration for positions
+8.3.3 Assessment
+8.3.4 Resolving issues
+8.3.5 Appointment, deployment or conversion
+9. Oversight
+9.1 Public Service Commission oversight activities
+9.2 Organizational monitoring
+10. Non-compliance
+10.1 Organizations
+10.2 Persons with a priority entitlement
+Annex A - Manager's Attestation Form - Priority Entitlements
+1. Effective date
+
+This Directive is effective as of April 1, 2025, and replaces the Directive that came into effect on February 15, 2018.
+
+2. Statement
+
+Persons entitled to a priority for appointment pursuant to the Public Service Employment Act (PSEA) (Sections 39.1-41) or the Public Service Employment Regulations (PSER) (Sections 4.1-10) shall be appointed, in priority to all others, to positions for which they meet the essential qualifications. As part of the Appointment Policy this Directive should be read in conjunction with the legislation, policies and policy support tools listed in that document, as well as those listed in this Directive under “Section 4: Authority” and “Section 5: Other obligations”.
+
+3. Purpose
+
+The purpose of this Directive is to specify:
+
+Roles and responsibilities of the Public Service Commission (PSC), organizations and persons with a priority entitlement in the administration of priority entitlements;
+Measures organizations must take in order to ensure priority entitlements are respected;
+PSC oversight activities; and
+Measures that may be taken by the PSC as a result of non-compliance with this Directive.
+4. Authority
+Priority entitlements are a legal responsibility governed by the Public Service Employment Act (PSEA) and the Public Service Employment Regulations (PSER):
+The preamble of the PSEA states that the public service should be characterized by fair, transparent employment practices, respect for employees and effective dialogue and recourse mechanisms aimed at resolving appointment issues;
+Sections 39.1, 40 and 41 of the PSEA establish statutory priority entitlements;
+Sections 42 to 46 of the PSEA clarify the application of priority entitlements;
+Section 22 of the PSEA gives the Public Service Commission (PSC) the authority to establish regulations regarding priority entitlements;
+Sections 4.1 to 10 of the PSER provide an entitlement, for limited periods, for certain persons who meet specific conditions, to be appointed in priority to all others; and
+Section 11 of the PSER sets the duration of the priority entitlement for laid-off persons to one year.
+The Appointment Policy and this Directive have been developed in accordance with:
+Subsection 29(3) of the PSEA, which gives the PSC authority to establish policies on the manner of making and revoking appointments and to take corrective action;
+Section 16 of the PSEA, which subjects deputy heads to PSC policy when exercising delegated appointment authority; and
+Section 135 of the PSEA, which mandates deputy heads and employees to provide the PSC with any facilities, assistance, information or access that the PSC may require for the performance of its duties.
+5. Other obligations
+Deputy heads must respect employer obligations concerning surplus and laid-off employees in the context of Work Force Adjustment, as outlined in the Work Force Adjustment Directive and appendices to the relevant collective agreements.
+Deputy heads must also respect the policy support tools listed below:
+The PSC Guide on Priority Entitlements;
+The PSC Priority Information Management System (PIMS) Support Centre; and
+The PSC Priority Portal User Manual.
+6. Definitions
+
+At-level: The appointment or deployment of a person with a priority entitlement to a position at the same group and level or a group and level equivalent to their substantive position (as defined in the Definition of Promotion Regulations).
+
+Auto-clearance: A priority clearance that is automatically issued by the Priority Information Management System (PIMS) if no persons with a priority entitlement are identified on an automated search of the priority inventory.
+
+Hiring organization: The organization considering a person with a priority entitlement for employment. The "home" and "hiring" organizations may be the same.
+
+Home organization: The organization who is responsible for the registration and maintenance of a person’s priority entitlement within which the person with a priority entitlement's substantive position is located, or in the case of a Lay-off or Leave of Absence Returnee or Replacement priority entitlement, was formerly located. In the case of a Reinstatement priority, the organization where the new substantive position is located. In the case of a person with a Surviving Spouse or Common-Law Partner entitlement, the organization where the deceased spouse was employed.
+
+Manager’s Attestation Form – Priority Entitlements: An attestation signed by the responsible manager that the home organization would be prepared to appoint the employee declared surplus to a suitable position in that organization, commensurate with their qualifications, if such a position were available.
+
+Priority Entitlements Program Community of Practice: Persons from the Public Service Commission (PSC) and organizations who share information and best practices. Members include Priority Program Liaisons and Priority Information Management System (PIMS) Super Users identified by organizations.
+
+Priority Program Liaison: A person designated by an organization to serve as a point of contact with the Public Service Commission (PSC) and Priority Program Liaisons of other organizations on matters related to priority entitlements.
+
+Priority Clearance: With certain limited exceptions, organizations must obtain priority clearance from the Public Service Commission (PSC) prior to making an appointment. This ensures that persons with a priority entitlement, including those who are registered in the PSC’s Priority Information Management System (PIMS) are considered and assessed prior to other persons. When the organization has done so, a priority clearance number is issued, allowing the organization to proceed with the appointment of a person with a priority entitlement or to proceed with assessing candidates in an appointment process. See also the definition of "auto-clearance" provided in this section.
+
+Priority Information Management System (PIMS): PIMS is the Public Service Commission's (PSC) electronic system where organizations register those who have a priority entitlement and that organizations must search when looking to fill positions.
+
+Priority Information Management System (PIMS) Super User: A person designated by an organization to serve as a point of contact with the Public Service Commission (PSC) and PIMS Super Users of other organizations on technical matters related to the operation of PIMS.
+
+Person with a priority entitlement: A person who has an entitlement under the Public Service Employment Act (PSEA) or Public Service Employment Regulations (PSER), for a limited period, to be appointed ahead of all others, to positions in the public service. To be appointed, the person must meet the essential qualifications of the position.
+
+Priority Portal: A secure, Web-based link to the Public Service Commission's (PSC) Priority Information Management System (PIMS), to be used by persons with a priority entitlement for the purpose of viewing, adding or updating personal information in their priority profile.
+
+Privacy Consent Form: An attestation that must be provided by the person with a priority entitlement, acknowledging that they are aware of the conditions of use and sharing of personal information by the Public Service Commission (PSC). Personal information collected in the Priority Information Management System (PIMS) is described in the PSC Personal Information Bank entitled "Statutory and Regulatory Priority Entitlements" Bank Number: PSC PCE 801.
+
+Responsible manager: The person in the home organization who has supervisory responsibility for the person with a priority entitlement at the time of registration in the Priority Information Management System (PIMS).
+
+Self-referral: A request from a person with a priority entitlement to an organization to be considered for a priority appointment. Persons with a priority entitlement who self-refer have the same standing as those notified by the Public Service Commission (PSC) Priority Information Management System (PIMS).
+
+7. Application
+
+This Directive forms part of the Appointment Policy, and as such, applies to all organizations whose appointments are subject to the Public Service Employment Act (PSEA). These organizations are required to respect any requirements and procedures implemented to administer priority entitlements. These requirements and procedures are outlined in the Appointment Policy, Directive, manuals and guides, as well as the Appointment Delegation and Accountability Instrument between the Public Service Commission and deputy heads.
+
+This Directive applies to all statutory and regulatory priority entitlement types.
+
+Priority clearance is required, with certain limited exceptions, for all indeterminate and specified term appointments made in accordance with the PSEA, regardless of the proposed appointment process (advertised/non-advertised and internal/external).
+
+8. Roles and responsibilities
+8.1 Public Service Commission
+
+The Public Service Commission (PSC) is responsible for the administration and oversight of priority entitlements in accordance with the Public Service Employment Act (PSEA) and the Public Service Employment Regulations (PSER).
+
+The PSC will:
+
+Set and interpret the Appointment Policy, Directive, guides and procedures;
+Set and maintain the Priority Information Management System (PIMS), that must be used by all organizations;
+Set and maintain the Priority Portal;
+Provide information to organizations to support the administration of priority entitlements and the consideration of persons with a priority entitlement for appointment;
+Oversee organizations' adherence to the Appointment Policy, Directive, guides and procedures at operational and corporate levels:
+Monitor organizations’ respect for priority entitlements; and
+Make policy or other adjustments, as required, and communicate with stakeholders to address issues raised through oversight activities.
+8.1.1 Registration of persons with a priority entitlement
+Confirm validity of priority entitlements and registration in PIMS; and
+Monitor coding and other information entered in PIMS to ensure accurate identification of persons with a priority entitlement for positions.
+8.1.2 Providing support
+Provide policy advice and guidance to organizations on priority entitlements;
+Provide information and guidance to persons with a priority entitlement;
+Develop guides and tools;
+Provide a secretariat function for the Priority Entitlements Program Community of Practice; and
+Develop and deliver information sessions.
+8.1.3 Identification and notification
+
+Identify and notify persons with a priority entitlement who are registered in PIMS to positions for which they may be qualified;
+Identify and notify persons with a priority entitlement to positions that are equivalent
+Footnote
+1 to the level of their substantive position. At the person with a priority entitlement's request, and with the approval of their home organization, the PSC will also identify and notify persons with a priority entitlement to positions one level lower than the level of their substantive position;
+Footnote
+2
+Notify persons with a priority entitlement of positions for their consideration;
+Inform home organizations of the feedback results of their Surplus persons with a priority entitlement, Lay-off persons with a priority entitlement and Reinstatement persons with a priority entitlement who previously held a Surplus or Lay-off entitlement;
+Monitor feedback results and feedback from hiring organizations; and
+Monitor to ensure that organizations assess and provide feedback results to persons with a priority entitlement no later than 60 calendar days after notification by PIMS.
+8.1.4 Priority clearance
+Issue a priority clearance number, allowing an organization to make an appointment,
+Footnote
+3 when:
+A person with a priority entitlement is to be appointed to a position;
+A person with a priority entitlement has been found to meet the essential qualifications of a position but has refused the appointment;
+The appointment of a person with a priority entitlement would result in another person having a priority entitlement;
+There are no persons with a priority entitlement identified by PIMS who would potentially meet the essential qualifications of the position; or
+No person with a priority entitlement notified or self-referring are found to meet the essential qualifications of a position.
+Potentially identify and notify additional persons with a priority entitlement after a priority clearance number has been issued and until an appointment is made to the position(s) in question; and
+Review all requests for priority clearance, including requests that received an auto-clearance, for accuracy and completeness.
+8.1.5 Appointing persons with a priority entitlement
+Monitor the validity of priority entitlements and the organization’s respect for those entitlements when appointing persons with a priority entitlement.
+8.1.6 Resolving issues
+Participate in the resolution of issues by working with organizations and persons with a priority entitlement to find solutions; and
+Work with organizations when monitoring activities indicate the qualifications of a person with a priority entitlement have not been fully assessed.
+8.2 Organizations
+
+Deputy heads with delegated appointment authorities under the PSEA are expected to respect the priority entitlement provisions of the PSEA and the PSER and are accountable to the PSC for their role in administering the entitlements.
+
+The PSC expects that organizations will, to the greatest extent possible, provide support to their own persons with a priority entitlement throughout their priority entitlement period; and by showing consideration of the circumstances of persons with an entitlement in all interactions.
+
+Organizations must:
+
+Assess persons with a priority entitlement and obtain a priority clearance number from the PSC before considering other persons for all indeterminate and specified term appointments, with certain limited exceptions;
+Ensure the values articulated in the PSEA are considered when establishing merit criteria and when considering and assessing persons with a priority entitlement;
+Ensure that persons with a priority entitlement are assessed in a fair, transparent and timely manner;
+Ensure that the assessment method and the manner in which it will be applied are inclusive, free from discrimination, and that reasonable efforts are made to remove biases or barriers or mitigate their impact;
+Appoint persons with a priority entitlement, if they meet the essential qualifications and conditions of employment related to the appointment
+Footnote
+4 of a position being filled, in priority to all others;
+Implement tools and processes to manage priority entitlements;
+Identify Priority Program Liaisons and PIMS Super Users within their organizations to participate in the Priority Entitlements Program Community of Practice; and
+Ensure persons with a priority entitlement, Human Resources (HR) practitioners, HR support personnel and managers have adequate information and/or training on priority entitlements.
+8.2.1 Registration of persons with a priority entitlement
+Ensure that persons who meet the conditions of a priority entitlement are informed of their right to an entitlement as soon as possible and in writing
+Footnote
+5;
+Ensure that persons with a priority entitlement provide their consent to the conditions indicated in the Priority Consent Form prior to activating the registration of those persons in PIMS
+Footnote
+6 ;
+Ensure that the Manager's Attestation Form - Priority Entitlements (Annex A) is signed by the responsible manager prior to registering a person with a surplus priority entitlement in PIMS;
+Determine if their own persons with a priority entitlement have accommodation needs;
+Inform their persons with a priority entitlement about the procedures for completion of the registration and maintenance of their personal information, through the Priority Portal;
+Ensure timely registration and activation of their own persons with a priority entitlement in PIMS;
+Provide the PSC with supporting documents
+Footnote
+7 for the priority entitlement no later than 10 working days following registration;
+Review coding in PIMS to ensure proper identification to positions and explain any changes in coding to persons with a priority entitlement;
+Where appropriate, ensure that second language evaluation (SLE) results are valid at the time of registration (or schedule SLE tests for persons with a priority entitlement who have never been tested or whose results have expired);
+Footnote
+When applicable, update a person’s entitlement on the date the new entitlement begins and provide appropriate contact information; and
+When applicable, ensure that changes made or requested to persons' information in PIMS are reviewed/updated in a timely manner.
+8.2.2 Providing support
+Inform and counsel their own persons with a priority entitlement about their entitlements and offer explanations and assistance;
+Provide persons with a priority entitlement with support in accessing the Priority Portal and GC Jobs and/or ensure that persons with a priority entitlement have access to all relevant information contained in these systems;
+Ensure that persons with a priority entitlement without access to a computer or e-mail account are provided with all necessary information related to their identification and notification for positions, in a timely manner;
+Work with persons with a priority entitlement and the PSC to address concerns relating to performance, incapacity or discipline that may affect the person’s ability to find alternative employment. The primary responsibility for performance management of persons with a priority entitlement rests with the home organization.
+8.2.3 Self-referrals
+
+Respect the priority entitlement of persons who self-refer to positions at any point in an appointment process prior to an appointment being made
+Footnote
+8;
+Confirm the entitlement of persons with a priority entitlement who self-refer;
+Add the assessment results of self-referred persons with a priority entitlement to the Priority Referral Feedback Form in PIMS
+Footnote
+9; and
+Retain evidence of the responses of persons with a priority entitlement, including all subsequent communications.
+8.2.4 Assessing persons with a priority entitlement
+Assess persons with a priority entitlement notified by the PSC or who self-refer before assessing other persons
+Footnote
+10;
+Show due consideration for the duration of priority entitlements when planning the assessment of persons with a priority entitlement;
+Provide persons with a priority entitlement with timely information about the position being staffed and the means of assessment, allowing them a reasonable opportunity to prepare;
+Assess persons with a priority entitlement against the essential qualifications that will be used to make the appointment; and
+Provide accommodation in assessment, in accordance with the Appointment Policy.
+8.2.5 Feedback
+Provide feedback on assessment to all persons with a priority entitlement notified by the PSC or self-referred, within 60 calendar days of the notification, using PIMS;
+For indeterminate and specified term appointments, use the PIMS Priority Referral Feedback Form to provide feedback. The Referral Feedback Form must be complete and:
+Respect the official language of choice for correspondence of the person with a priority entitlement;
+Document the fair consideration of the person notified by the PSC or self-referred;
+Clearly indicate the details of the organization's assessment of the person notified by the PSC or self-referred; and
+Provide grounds for finding that the person with a priority entitlement either does or does not meet the essential qualifications.
+In cases where persons with a priority entitlement have self-referred and the Referral Feedback Form has already been submitted, provide written feedback via electronic mail (outside of PIMS), with the same requirements as listed in (ii) above;
+Respond to requests from persons with a priority entitlement for additional feedback on referral/assessment results in a timely manner;
+When requested, provide the PSC with supporting documents, in a timely manner.
+8.2.6 Priority clearance
+Obtain a priority clearance number from the PSC before proceeding with the consideration of other persons, for all indeterminate and specified term appointments requiring priority clearance
+Footnote
+11;
+Include the essential qualifications and conditions of employment in both official languages when requesting a priority clearance;
+Provide valid position numbers for positions when requesting clearance and amend the clearance request if changes are made to these position numbers;
+Obtain a new priority clearance number if:
+Additional appointments are to be made to other positions not covered by the initial clearance request;
+An appointment process for which a priority clearance number has been issued is unproductive and a new appointment process is being initiated;
+The essential qualifications, including official languages requirements and conditions related to the appointment, are amended in a way that might allow other persons with a priority entitlement to be considered;
+An unreasonable period of time has elapsed between the granting of a priority clearance number and the prospective appointment; or
+A clearance request has been cancelled by the PSC as a result of monitoring.
+Wait 2 working days after receiving an auto-clearance before making an appointment, to ensure that no person with a priority entitlement was inadvertently missed for identification and subsequent notification
+Footnote
+12.
+8.2.7 Appointing persons with a priority entitlement
+Respect the order of precedence of priority entitlements;
+Show due consideration for the duration of priority entitlements when appointing persons with a priority entitlement; and
+Provide a copy of the letter of offer, with all signatures, to the PSC no later than 10 working days from the date the letter of offer was signed by the person with a priority entitlement.
+8.2.8 Resolving issues
+Support their organizational Priority Program Liaison, who acts as the first point of contact regarding priority entitlement issues; and
+Play an active, timely role in working with persons with a priority entitlement, other organizations, the employer and the PSC in resolving issues that might arise.
+8.3 Persons with a priority entitlement
+
+Persons with a priority entitlement are entitled to be considered for appointment before all others. They should be readily available and prepared for assessment by organizations to which they have been notified by the PSC or have self-referred. They should review the feedback results provided by the hiring organization after assessment and seek any clarification(s) from the hiring organization in a timely manner. The PSC expects persons with a priority entitlement to seriously consider all reasonable offers of indeterminate employment and provide a reasonable explanation for any refusal.
+
+Persons with a priority entitlement must:
+
+8.3.1 Registration
+Contact their home organization when the conditions for qualifying for a priority entitlement have been met, where applicable
+Footnote
+13;
+Provide consent to the conditions indicated in the Privacy Consent Form
+Footnote
+14 if they wish to be identified and notified by the PSC through PIMS;
+Complete registration in PIMS through the Priority Portal in a timely manner, if applicable;
+Participate actively in the management of their own priority entitlement by ensuring that the information in their Priority Portal profile (for example, contact information, geographic mobility, availability, recommended groups and levels, tenure and qualifications) is up-to-date and accurate at all times; and
+Advise their home organization in a timely manner of any changes to their personal information or circumstances that could impact their entitlement.
+8.3.2 Consideration for positions
+Conduct independent job searches and self-refer to organizations if they believe they meet the essential qualifications of a position;
+Disclose, in a timely manner, that they have priority status, including the entitlement type and end date, when self-referring to organizations;
+Respond to all considerations for positions by the date specified by the hiring organization;
+Respond to and follow the hiring organization’s directions regarding the assessment of the essential qualifications of positions they are being considered for, or explain why they no longer wish to be considered for that position; and
+Provide the hiring organization and the PSC with reasons for refusal
+Footnote
+15 of an appointment to a position.
+8.3.3 Assessment
+Seek information on the qualifications and means of assessment from the hiring organization, as needed; and
+Request accommodation in the assessment process in a timely manner, as necessary.
+8.3.4 Resolving issues
+Play an active, timely role with their organization, the hiring organization and the PSC in raising and resolving issues; and
+Actively cooperate with their home organization and the PSC to address concerns such as performance, incapacity or discipline that may affect their ability to find alternative employment.
+8.3.5 Appointment, deployment or conversion
+Footnote
+16
+Inform their home organization when appointed or deployed to a position, or when their period of employment is converted to indeterminate under subsection 59(1) of the PSEA.
+9. Oversight
+
+The Public Service Commission (PSC) oversees adherence to the roles and responsibilities stated in this Directive and will encourage and actively work with organizations and persons with a priority entitlement to address any issues at an early stage.
+
+9.1 Public Service Commission oversight activities
+
+The PSC’s responsibilities include, but are not restricted to, oversight of the following:
+
+The accuracy of all information entered in the Priority Information Management System;
+The timely activation by the home organization of new registrations and updates to PIMS;
+Respect for the conditions associated with priority clearance;
+Unreasonable delays in the assessment of persons with a priority entitlement that may jeopardize their entitlement to a priority appointment;
+Adherence to the order of precedence of priority entitlements when an organization considers and appoints persons with a priority entitlement;
+The timeliness and completeness of information provided to the PSC by organizations.
+9.2 Organizational monitoring
+
+Organizations are expected to conduct organizational monitoring related to the administration of priority entitlements in accordance with the Appointment Delegation and Accountability Instrument.
+
+10. Non-compliance
+10.1 Organizations
+
+For organizations, failure to comply with this Directive may result in the Public Service Commission (PSC) taking measures such as, but not limited to, the following:
+
+Withholding, suspending or cancelling a priority clearance number;
+Limiting the identification for positions in PIMS of a person with a priority entitlement solely to the home organization, where there are significant performance, incapacity or discipline issues; and
+Communication of non-compliance to senior management within the organization.
+10.2 Persons with a priority entitlement
+
+For persons with a priority entitlement, failure to comply with this Directive may result in the PSC taking measures such as, but not limited to, the following:
+
+Restricting the consideration for positions of the person with a priority entitlement to jobs in their home organization;
+Ceasing to identify and notify a person with a priority entitlement to positions through PIMS; or
+Ending the priority entitlement, where the person with a priority entitlement has been found to have refused an offer of appointment without good and sufficient reason.
+Annex A: Manager's Attestation Form – Priority Entitlements
+Manager's Attestation Form – Priority Entitlements
+Footnotes
+Footnotes
+Footnote 1
+
+See Definition of Promotion Regulations.
+
+Return to footnote
+1
+referrer
+
+Return to footnote
+1
+referrer
+
+Footnote 2
+
+Any priority appointment resulting from a lower-level consideration may have salary protection implications and requires consultation of the applicable Work Force Adjustment Directive. Additionally, consultation with the Office of the Chief Human Resources Officer, Treasury Board of Canada Secretariat is considered a best practice.
+
+Return to footnote
+2
+referrer
+
+Return to footnote
+2
+referrer
+
+Footnote 3
+
+For the purposes of this Directive, for internal appointment processes an appointment is deemed to be made when a Notification of Appointment or Proposed Appointment is published.  For the purposes of this Directive, for external appointment processes an appointment is deemed to be made when the letter of offer is signed by the proposed appointee (includes signed conditional letters of offer).
+
+Return to footnote
+3
+referrer
+
+Return to footnote
+3
+referrer
+
+Footnote 4
+
+Conditions related to the appointment may include, but are not limited to, conditions of employment, which are a responsibility of the Office of the Chief Human Resources Officer, Treasury Board of Canada Secretariat.
+
+Return to footnote
+4
+referrer
+
+Return to footnote
+4
+referrer
+
+Footnote 5
+
+In most instances, the home organization will be aware when conditions for qualifying for an entitlement are met; however, persons who qualify for a “Surviving Spouse” or “Medically Released Canadian Armed Forces” (whether attributable to service or not), “Medically Discharged Royal Canadian Mounted Police” or “Employee unable to carry out their duties” entitlement must contact the home organization to initiate the registration process. To ensure timely registration, persons with leave-based entitlements (Leave of Absence Returnees and Replacements, Relocation of Spouse or Common-law Partner) are advised to contact the home organization to verify that their registration will be initiated.
+
+Return to footnote
+5
+referrer
+
+Return to footnote
+5
+referrer
+
+Footnote 6
+
+If a person chooses not to consent to the conditions of the use and sharing of their personal information via the Privacy Consent Form, that person cannot be registered in PIMS and cannot be identified nor notified for positions through it. The person still holds a priority entitlement and may self-refer to organizations.
+
+Return to footnote
+6
+referrer
+
+Return to footnote
+6
+referrer
+
+Footnote 7
+
+Supporting documents for registering each type of entitlement are listed in the Guide on Priority Entitlements. The PSC will hold in abeyance clearance for any priority appointment until such time as the proof of entitlement has been received.
+
+Return to footnote
+7
+referrer
+
+Return to footnote
+7
+referrer
+
+Footnote 8
+
+For the purposes of this Directive, for internal appointment processes an appointment is deemed to be made when a Notification of Appointment or Proposed Appointment is published. For the purposes of this Directive, for external appointment processes an appointment is deemed to be made when the letter of offer is signed by the proposed appointee (includes signed conditional letters of offer).
+
+Return to footnote
+8
+referrer
+
+Return to footnote
+8
+referrer
+
+Footnote 9
+
+In cases where a PIMS Referral Feedback Form is closed, this can be done via an e-mail to the PSC. The assessment results should also be added to the staffing file.
+
+Return to footnote 9 referrer
+
+Return to footnote
+9
+referrer
+
+Footnote 10
+
+The PSC expects that persons with a priority entitlement will be assessed prior to others in accordance with the PSC’s Appointment Policy. If assessment of candidates has already begun at the time a priority person self-refers, the organization may assess that person with other persons.
+
+Return to footnote
+10
+ referrer
+
+Return to footnote
+10
+referrer
+
+Footnote 11
+
+Consideration of persons with a priority entitlement does not preclude organizations from initiating appointment processes to fill vacancies that are anticipated to occur at some point in the future as part of human resources planning.
+
+Return to footnote
+11
+ referrer
+
+Return to footnote
+11
+referrer
+
+Footnote 12
+
+This requirement applies to both indeterminate and specified term appointment processes
+
+Return to footnote
+12
+ referrer
+
+Return to footnote
+12
+referrer
+
+Footnote 13
+
+In most instances, the home organization will be aware when conditions for qualifying for an entitlement are met; however, persons who qualify for a “Surviving Spouse” or “Medically Released Canadian Armed Forces” (whether attributable to service or not), “Medically Discharged Royal Canadian Mounted Police” or “Employee unable to carry out their duties” entitlement must contact the home organization to initiate the registration process. To ensure timely registration, persons with leave-based entitlements (Leave of Absence Returnees and Replacements, Relocation of Spouse or Common-law Partner) are advised to contact the home organization to verify that their registration will be initiated.
+
+Return to footnote
+13
+ referrer
+
+Return to footnote
+13
+referrer
+
+Footnote 14
+
+If a person with a priority entitlement chooses not to consent to the conditions of the use and sharing of their personal information via the Privacy Consent Form, that person cannot be registered in PIMS and cannot be identified nor notified for positions through it. The person still holds a priority entitlement and may self-refer to organizations.
+
+Return to footnote
+14
+ referrer
+
+Return to footnote
+14
+referrer
+
+Footnote 15
+
+Refusal of an appointment without good and sufficient reason may result in the ending or restriction of an entitlement.
+
+Return to footnote
+15
+ referrer
+
+Return to footnote
+15
+referrer
+
+Footnote 16
+
+Any deployment of a person with a priority entitlement may have potential salary protection implications and requires consultation of the Definition of Promotion Regulations and the applicable Work Force Adjustment Directive. Additionally, consultation with the Office of the Chief Human Resources Officer, Treasury Board of Canada Secretariat is considered a best practice.
+
+Return to footnote
+16
+ referrer
+
+Return to footnote
+16
+referrer
+
+Page details
+ 2025-04-01
+About this site
+Contact us
+General enquiries
+GC Jobs
+Second language evaluation
+Government of Canada
+All contacts
+Departments and agencies
+About government
+Themes and topics
+Jobs
+Immigration and citizenship
+Travel and tourism
+Business
+Benefits
+Health
+Taxes
+Environment and natural resources
+National security and defence
+Culture, history and sport
+Policing, justice and emergencies
+Transport and infrastructure
+Canada and the world
+Money and finances
+Science and innovation
+Indigenous Peoples
+Veterans and military
+Youth
+Manage life events
+Government of Canada Corporate
+Social media Mobile applications About Canada.ca Terms and conditions Privacy
