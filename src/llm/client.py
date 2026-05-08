@@ -23,6 +23,7 @@ class OllamaClient:
         self._model = model or self._config.model.name
         self._host = host
         self._num_predict = num_predict
+        self._has_auth_header = auth_header is not None
         headers = {"Authorization": auth_header} if auth_header else None
         self._client = ollama.AsyncClient(host=host, headers=headers)
 
@@ -99,6 +100,7 @@ class OllamaClient:
             "status": "ok" if model_available else "missing_model",
             "configured_model": self._model,
             "host": self._host or "default",
+            "auth_configured": self._has_auth_header,
             "model_available": model_available,
             "models": model_names,
         }

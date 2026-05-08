@@ -86,7 +86,21 @@ async def health_check() -> dict:
         ):
             result["status"] = "degraded"
     except Exception as e:
-        result["components"]["ollama"] = {"status": "error", "error": str(e)}
+        config = get_config()
+        result["components"]["ollama"] = {
+            "status": "error",
+            "error": str(e),
+            "orchestrator": {
+                "host": config.model.orchestrator_host,
+                "configured_model": config.model.name,
+                "auth_configured": config.model.orchestrator_auth_header is not None,
+            },
+            "specialist": {
+                "host": config.model.specialist_host,
+                "configured_model": config.model.specialist_name,
+                "auth_configured": config.model.specialist_auth_header is not None,
+            },
+        }
         result["status"] = "degraded"
 
     try:
