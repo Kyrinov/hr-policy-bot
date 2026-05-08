@@ -112,12 +112,14 @@ class TestConfig:
         monkeypatch.setenv("PORT", "10000")
         monkeypatch.setenv("APP_DATA_DIR", "/var/data")
         monkeypatch.setenv("APP_DB_PATH", "/var/data/custom.db")
+        monkeypatch.setenv("BROWSER_FETCH_ENABLED", "false")
         monkeypatch.setenv("PARSING_ENABLED", "false")
         monkeypatch.setenv("PARSING_TEACHER_LOOP_ENABLED", "false")
         config = get_config()
         assert config.server.port == 10000
         assert config.storage.data_dir == "/var/data"
         assert config.storage.db_path == "/var/data/custom.db"
+        assert config.fetch.browser_fallback_enabled is False
         assert config.parsing.enabled is False
         assert config.parsing.teacher_loop_enabled is False
         get_config.cache_clear()

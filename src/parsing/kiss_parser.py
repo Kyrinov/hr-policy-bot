@@ -89,6 +89,8 @@ class KISSParser:
         return ("CONNECTOR", False, None)
 
     def _load_spacy(self) -> Any | None:
+        if not self._config.parsing.enabled:
+            return None
         try:
             import spacy
 

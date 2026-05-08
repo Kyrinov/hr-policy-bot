@@ -39,6 +39,10 @@ class StorageConfig(BaseModel):
     db_path: str | None = None
 
 
+class FetchConfig(BaseModel):
+    browser_fallback_enabled: bool = True
+
+
 class LoggingConfig(BaseModel):
     level: str = "INFO"
     file: str = "logs/system.log"
@@ -75,6 +79,7 @@ class AppConfig(BaseModel):
     server: ServerConfig = ServerConfig()
     cache: CacheConfig = CacheConfig()
     storage: StorageConfig = StorageConfig()
+    fetch: FetchConfig = FetchConfig()
     logging: LoggingConfig = LoggingConfig()
     parsing: ParsingConfig = ParsingConfig()
 
@@ -116,6 +121,8 @@ def _load_config(path: Path) -> AppConfig:
         data.setdefault("storage", {})["data_dir"] = data_dir
     if db_path := os.environ.get("APP_DB_PATH"):
         data.setdefault("storage", {})["db_path"] = db_path
+    if (enabled := _env_bool("BROWSER_FETCH_ENABLED")) is not None:
+        data.setdefault("fetch", {})["browser_fallback_enabled"] = enabled
     if (enabled := _env_bool("PARSING_ENABLED")) is not None:
         data.setdefault("parsing", {})["enabled"] = enabled
     if (enabled := _env_bool("PARSING_TEACHER_LOOP_ENABLED")) is not None:

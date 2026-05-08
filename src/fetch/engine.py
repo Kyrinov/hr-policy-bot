@@ -11,7 +11,6 @@ from typing import Any
 import httpx
 
 from src.config import get_config
-from src.fetch.browser import BrowserFetchError, get_browser_fetcher
 from src.fetch.cache import CacheEntry, FetchCache, get_cache
 from src.fetch.extractors import ContentExtractor, get_extractor
 from src.parsing.sage_extractor import get_sage_pipeline
@@ -131,9 +130,14 @@ class FetchEngine:
                 logger.info("Using stale cache for %s", url)
                 return stale.content
 
+            if not self._config.fetch.browser_fallback_enabled:
+                raise FetchError(f"Failed to fetch {url}: httpx={e}") from e
+
             # Browser fallback for bot-protected sites (e.g. tbs-sct.canada.ca)
             logger.info("Attempting browser fallback for %s", url)
             try:
+                from src.fetch.browser import BrowserFetchError, get_browser_fetcher
+
                 html = await get_browser_fetcher().fetch(url)
                 content = self._extractor.extract(url, html)
                 await self._cache.set_cached(

@@ -351,7 +351,11 @@ class OrchestratorAgent(GenericAgent):
 
         await status_callback(WSAgentStatusUpdate(agent_id="orchestrator", status="working"))
         total_started = time.perf_counter()
-        query_kiss_result = QueryKISSParser().parse(query_text)
+        query_kiss_result = (
+            QueryKISSParser().parse(query_text)
+            if self._config.parsing.enabled
+            else None
+        )
 
         # Phase 1: routing
         routing_started = time.perf_counter()

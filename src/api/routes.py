@@ -22,6 +22,7 @@ from src.models.schemas import (
 router = APIRouter()
 
 _POLLING_JOBS: dict[str, dict[str, Any]] = {}
+_POLLING_JOB_TTL_SECONDS = 3600
 
 
 _AGENT_CONFIG = [
@@ -161,6 +162,7 @@ async def list_queries(limit: int = Query(50, ge=1, le=100)) -> list[dict]:
 @router.post("/query/start")
 async def start_query(payload: dict[str, str]) -> dict:
     """Start a query over ordinary HTTPS for networks that block WebSockets."""
+    _cleanup_polling_jobs()
     query_text = payload.get("query_text", "").strip()
     if not query_text:
         raise HTTPException(status_code=400, detail="query_text is required")
@@ -183,10 +185,25 @@ async def start_query(payload: dict[str, str]) -> dict:
 @router.get("/query/{query_id}/status")
 async def get_query_status(query_id: str) -> dict:
     """Return status/result for an HTTPS polling query."""
+    _cleanup_polling_jobs()
     job = _POLLING_JOBS.get(query_id)
     if job is None:
         raise HTTPException(status_code=404, detail="Query job not found")
     return job
+
+
+def _cleanup_polling_jobs() -> None:
+    now = datetime.utcnow()
+    for query_id, job in list(_POLLING_JOBS.items()):
+        completed_at = job.get("completed_at")
+        if not completed_at:
+            continue
+        try:
+            completed = datetime.fromisoformat(completed_at)
+        except ValueError:
+            continue
+        if (now - completed).total_seconds() > _POLLING_JOB_TTL_SECONDS:
+            del _POLLING_JOBS[query_id]
 
 
 async def _run_polling_query(query_id: str, query_text: str) -> None:
