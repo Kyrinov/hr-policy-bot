@@ -311,6 +311,98 @@ class TestOllamaClient:
         assert specialist._num_predict == 1000
 
 
+class TestOrchestrator:
+    """Test orchestrator synthesis behavior."""
+
+    @pytest.mark.asyncio
+    async def test_orchestrator_preserves_synthesis_citation_filter(
+        self, monkeypatch
+    ):
+        """Test final citations come from synthesis, not all specialist citations."""
+        import json
+
+        import src.agents.orchestrator as orchestrator_module
+        from src.config import get_config
+        from src.agents.orchestrator import OrchestratorAgent
+
+        class FakeOllamaClient:
+            async def chat(self, system_prompt, user_message, model=None):
+                return json.dumps(
+                    {
+                        "summary": "Use the Policy on People Management.",
+                        "detailed_analysis": "The relevant rule is in the staffing instrument.",
+                        "policy_tensions": None,
+                        "citations": [
+                            {
+                                "instrument_title": "Policy on People Management",
+                                "instrument_type": "",
+                                "url": None,
+                                "relevant_section": None,
+                                "sourced_from_agent": "staffing",
+                            }
+                        ],
+                        "gaps_and_limitations": None,
+                        "recommended_consultation": None,
+                        "agents_consulted": ["staffing"],
+                        "overall_confidence": "high",
+                    }
+                )
+
+        get_config.cache_clear()
+        monkeypatch.setattr(
+            orchestrator_module,
+            "get_orchestrator_client",
+            lambda: FakeOllamaClient(),
+        )
+
+        agent = OrchestratorAgent()
+        response = await agent.process(
+            "What policy applies?",
+            [
+                {
+                    "agent_id": "staffing",
+                    "findings": "Relevant staffing finding.",
+                    "confidence": "high",
+                    "citations": [
+                        {
+                            "instrument_title": "Policy on People Management",
+                            "instrument_type": "Policy / Directive",
+                            "url": "https://example.test/people-management",
+                            "relevant_section": "Section 4",
+                        },
+                        {
+                            "instrument_title": "Unrelated Staffing Instrument",
+                            "instrument_type": "Policy / Directive",
+                            "url": "https://example.test/unrelated-staffing",
+                            "relevant_section": "Section 1",
+                        },
+                    ],
+                },
+                {
+                    "agent_id": "languages",
+                    "findings": "No relevant languages finding.",
+                    "confidence": "low",
+                    "citations": [
+                        {
+                            "instrument_title": "Official Languages Act",
+                            "instrument_type": "Legislation",
+                            "url": "https://example.test/official-languages",
+                            "relevant_section": "Section 2",
+                        }
+                    ],
+                },
+            ],
+        )
+
+        assert [c.instrument_title for c in response.citations] == [
+            "Policy on People Management"
+        ]
+        assert response.citations[0].instrument_type == "Policy / Directive"
+        assert response.citations[0].url == "https://example.test/people-management"
+        assert response.citations[0].relevant_section == "Section 4"
+        get_config.cache_clear()
+
+
 class TestDatabase:
     """Test database operations."""
 

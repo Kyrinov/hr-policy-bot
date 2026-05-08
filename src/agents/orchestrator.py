@@ -4,7 +4,6 @@ import asyncio
 import json
 import logging
 import time
-import uuid
 from typing import TYPE_CHECKING, Any, Callable
 
 from src.agents.base import GenericAgent
@@ -15,7 +14,6 @@ from src.models.schemas import (
     DeterministicGrounding,
     OrchestratorCitation,
     OrchestratorResponse,
-    RetrievalStatus,
     WSAgentStatusUpdate,
 )
 from src.parsing.query_kiss_parser import QueryKISSParser
@@ -48,7 +46,7 @@ WORKFLOW:
    a. Opens with a direct, natural-language answer to the user's question
    b. Integrates findings across all consulted specialists
    c. Identifies any tensions or conflicts between policy instruments
-   d. Presents all citations in a consolidated reference list
+   d. Presents only citations that directly support the synthesized answer in a consolidated reference list
    e. Notes any gaps — areas the question touches that the agents could not
       fully address
    f. Where professional judgment or management discretion is required,
@@ -65,6 +63,8 @@ EPISTEMIC STANDARDS:
 - If specialist agents report low confidence or retrieval failures, disclose this
   to the user.
 - Never present general HR knowledge as if it were a specific policy provision.
+- Include a citation only when the final summary or detailed analysis relies on
+  that instrument. Do not include every citation supplied by specialists.
 - When in doubt, recommend consultation with the relevant functional specialist
   (e.g., "This question may benefit from consultation with your labour relations
   advisor").
@@ -156,9 +156,17 @@ class OrchestratorAgent(GenericAgent):
                 text = text[:end + 1]
             parsed = json.loads(text)
             orch_response = OrchestratorResponse(**parsed)
-            orch_response.citations = self._aggregate_citations(specialist_responses)
+            orch_response.citations = self._normalize_synthesis_citations(
+                orch_response.citations,
+                specialist_responses,
+            )
             orch_response.deterministic_grounding = self._deterministic_grounding(
                 specialist_responses
+            )
+            logger.info(
+                "Synthesis selected %d citations from %d specialist citations",
+                len(orch_response.citations),
+                self._count_specialist_citations(specialist_responses),
             )
             return orch_response
         except (json.JSONDecodeError, Exception) as e:
@@ -166,7 +174,7 @@ class OrchestratorAgent(GenericAgent):
             return OrchestratorResponse(
                 summary="The system encountered an error processing your query.",
                 detailed_analysis=str(e),
-                citations=self._aggregate_citations(specialist_responses),
+                citations=[],
                 agents_consulted=[],
                 overall_confidence="low",
                 deterministic_grounding=self._deterministic_grounding(specialist_responses),
@@ -204,33 +212,108 @@ class OrchestratorAgent(GenericAgent):
                     parts.append(line + "\n")
 
         parts.append(
-            "\n\nSynthesize these responses into a comprehensive answer. Respond with ONLY the JSON object described in your system prompt — no preamble, no explanation outside the JSON."
+            "\n\nSynthesize these responses into a comprehensive answer. In the citations array, include only the citations that directly support your final answer. Do not copy the full specialist citation lists. Respond with ONLY the JSON object described in your system prompt — no preamble, no explanation outside the JSON."
         )
 
         return "".join(parts)
 
-
-    def _aggregate_citations(
-        self, specialist_responses: list[dict[str, Any]]
+    def _normalize_synthesis_citations(
+        self,
+        citations: list[OrchestratorCitation],
+        specialist_responses: list[dict[str, Any]],
     ) -> list[OrchestratorCitation]:
-        """Collect citations from specialist responses, preserving registry URLs."""
-        seen: set[tuple[str, str]] = set()
+        """Preserve orchestrator-selected citations while filling known metadata."""
+        specialist_lookup = self._specialist_citation_lookup(specialist_responses)
+        seen: set[tuple[str, str, str]] = set()
         result: list[OrchestratorCitation] = []
-        for resp in specialist_responses:
-            agent_id = resp.get("agent_id", "unknown")
-            for c in resp.get("citations", []):
-                key = (c.get("instrument_title", ""), c.get("url", ""))
-                if key in seen:
-                    continue
-                seen.add(key)
-                result.append(OrchestratorCitation(
-                    instrument_title=c.get("instrument_title", ""),
-                    instrument_type=c.get("instrument_type", ""),
-                    url=c.get("url"),
-                    relevant_section=c.get("relevant_section"),
-                    sourced_from_agent=agent_id,
-                ))
+
+        for citation in citations:
+            match = self._find_matching_specialist_citation(citation, specialist_lookup)
+            normalized = citation
+            if match is not None:
+                matched_citation, agent_id = match
+                normalized = OrchestratorCitation(
+                    instrument_title=(
+                        citation.instrument_title
+                        or matched_citation.get("instrument_title", "")
+                    ),
+                    instrument_type=(
+                        citation.instrument_type
+                        or matched_citation.get("instrument_type", "")
+                    ),
+                    url=citation.url or matched_citation.get("url"),
+                    relevant_section=(
+                        citation.relevant_section
+                        or matched_citation.get("relevant_section")
+                    ),
+                    sourced_from_agent=citation.sourced_from_agent or agent_id,
+                )
+
+            key = self._citation_key(
+                normalized.instrument_title,
+                normalized.url,
+                normalized.relevant_section,
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            result.append(normalized)
+
         return result
+
+    def _specialist_citation_lookup(
+        self,
+        specialist_responses: list[dict[str, Any]],
+    ) -> list[tuple[dict[str, Any], str]]:
+        lookup: list[tuple[dict[str, Any], str]] = []
+        for response in specialist_responses:
+            agent_id = response.get("agent_id", "unknown")
+            for citation in response.get("citations", []):
+                lookup.append((citation, agent_id))
+        return lookup
+
+    def _find_matching_specialist_citation(
+        self,
+        citation: OrchestratorCitation,
+        lookup: list[tuple[dict[str, Any], str]],
+    ) -> tuple[dict[str, Any], str] | None:
+        title = self._normalize_citation_text(citation.instrument_title)
+        url = citation.url or ""
+
+        for candidate, agent_id in lookup:
+            candidate_url = candidate.get("url") or ""
+            if url and candidate_url and url == candidate_url:
+                return candidate, agent_id
+
+        for candidate, agent_id in lookup:
+            candidate_title = self._normalize_citation_text(
+                candidate.get("instrument_title", "")
+            )
+            if title and title == candidate_title:
+                return candidate, agent_id
+
+        return None
+
+    def _citation_key(
+        self,
+        title: str,
+        url: str | None,
+        section: str | None,
+    ) -> tuple[str, str, str]:
+        return (
+            self._normalize_citation_text(title),
+            url or "",
+            self._normalize_citation_text(section or ""),
+        )
+
+    def _normalize_citation_text(self, value: str) -> str:
+        return " ".join(value.strip().lower().split())
+
+    def _count_specialist_citations(
+        self,
+        specialist_responses: list[dict[str, Any]],
+    ) -> int:
+        return sum(len(response.get("citations", [])) for response in specialist_responses)
 
     async def process_with_streaming(
         self,
