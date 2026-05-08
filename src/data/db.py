@@ -146,7 +146,20 @@ CREATE INDEX IF NOT EXISTS idx_nodes_text ON graph_nodes(entity_text);
 class DatabaseManager:
     def __init__(self, db_path: Path | None = None) -> None:
         self._db_path = db_path or self._default_db_path()
-        self._db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._ensure_parent_dir()
+
+    def _ensure_parent_dir(self) -> None:
+        try:
+            self._db_path.parent.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            fallback_path = _PROJECT_ROOT / "data" / "hr_policy_agent.db"
+            logger.warning(
+                "Database path %s is not writable; falling back to %s",
+                self._db_path,
+                fallback_path,
+            )
+            self._db_path = fallback_path
+            self._db_path.parent.mkdir(parents=True, exist_ok=True)
 
     @staticmethod
     def _default_db_path() -> Path:

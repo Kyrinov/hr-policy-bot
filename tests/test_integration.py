@@ -308,6 +308,20 @@ class TestDatabase:
         assert retrieved is not None
         assert retrieved.query_id == query_id
 
+    def test_unwritable_configured_db_path_falls_back(self, monkeypatch):
+        """Test startup does not crash when configured storage is not writable."""
+        from src.config import get_config
+        from src.data.db import DatabaseManager
+
+        get_config.cache_clear()
+        monkeypatch.setenv("APP_DATA_DIR", "/proc/render-data")
+        try:
+            db = DatabaseManager()
+            assert db.db_path.name == "hr_policy_agent.db"
+            assert "/proc/render-data" not in str(db.db_path)
+        finally:
+            get_config.cache_clear()
+
 
 class TestFetchEngine:
     """Test fetch engine functionality."""
