@@ -68,12 +68,12 @@ async def build_cache(audit_path: Path | None) -> dict[str, Any]:
     instruments = selected_registry(audit_path)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     extractor = ContentExtractor()
-    semaphore = asyncio.Semaphore(3)
-    limits = httpx.Limits(max_connections=3, max_keepalive_connections=3)
+    semaphore = asyncio.Semaphore(1)
+    limits = httpx.Limits(max_connections=1, max_keepalive_connections=1)
     headers = {
         "User-Agent": (
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            "HRPolicyBotPublicDocumentCache/1.0 "
+            "(allowlisted public Government of Canada policy document cache)"
         ),
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-CA,en;q=0.9",

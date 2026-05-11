@@ -11,6 +11,7 @@ This branch is intended for Render hosting with inference served from the local 
   - `gemma4:e4b` on `127.0.0.1:11435` for all eight specialist agents running in parallel.
 - A small AGX-side proxy exposes both local Ollama servers under one local HTTP port.
 - ngrok exposes that proxy with one stable HTTPS endpoint.
+- Public policy documents are served from the committed manual cache. Render should not run browser automation or large document ingestion at runtime.
 
 ## Render Environment
 
@@ -196,10 +197,25 @@ Create a Render Blueprint from `render.yaml` or create a Python web service manu
 - Persistent disk mount path: `/var/data`
 - Runtime env var: `PLAYWRIGHT_BROWSERS_PATH=0`
 - Runtime env var: `BROWSER_FETCH_ENABLED=false`
+- Runtime env var: `PARSING_ENABLED=false`
+- Runtime env var: `PARSING_TEACHER_LOOP_ENABLED=false`
 
 After deploy, check:
 
 ```text
 https://<render-service>.onrender.com/health
 https://<render-service>.onrender.com/api/health
+```
+
+## Public Document Cache Updates
+
+For demo stability, update policy source text locally and commit the resulting cleaned cache files. Do not use browser automation in Render.
+
+See `docs/PUBLIC_DOCUMENT_INGESTION.md` for the local workflow:
+
+```bash
+python3 scripts/ingest_public_documents.py ~/Downloads/source.pdf --id <policy-registry-id>
+git add data/manual_policy_cache/<policy-registry-id>.txt data/manual_policy_cache/manifest.json
+git commit -m "Update cached policy source"
+git push origin web-app
 ```

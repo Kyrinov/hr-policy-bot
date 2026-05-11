@@ -24,6 +24,9 @@ The Sage extractor converts tagged policy sentences into policy triples, validat
 - `src/parsing/graph_query.py`: graph retrieval interface for agents.
 - `src/data/deontic_verbs.py`: static GC deontic verb classifications.
 - `src/data/db.py`: additive KISS/Sage graph tables and persistence methods.
+- `data/manual_policy_cache/manifest.json`: static public-document cache used before live fetches.
+- `scripts/ingest_public_documents.py`: local ingestion tool for manually downloaded public PDFs/HTML/text.
+- `docs/PUBLIC_DOCUMENT_INGESTION.md`: demo-safe public document ingestion workflow.
 
 ## Reliability Posture
 

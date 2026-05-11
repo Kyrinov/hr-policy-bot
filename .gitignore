@@ -12,6 +12,10 @@ build/
 # Runtime data & logs
 data/*.db
 logs/*.log
+data/manual_policy_ingest/*
+!data/manual_policy_ingest/.gitkeep
+data/manual_policy_cache/*-CBA
+data/fetch_audit/policy_fetch_audit_20260508T173551Z.*
 
 # OS
 .DS_Store

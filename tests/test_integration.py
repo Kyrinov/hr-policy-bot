@@ -669,6 +669,47 @@ class TestSpecialistRetrieval:
         assert "meal allowance" in excerpt
 
 
+class TestPublicDocumentIngestion:
+    """Test local public document ingestion helpers."""
+
+    def test_ingest_cleanup_removes_page_chrome(self):
+        """Cleanup should remove common Canada.ca chrome but keep policy text."""
+        from scripts.ingest_public_documents import clean_text
+
+        raw = """
+        Skip to main content
+        Search
+        Policy Title
+
+        Article 1
+        The employee must follow the requirement.
+
+        Page details
+        Date modified:
+        2026-01-01
+        """
+
+        cleaned = clean_text(raw)
+
+        assert "Skip to main content" not in cleaned
+        assert "Search" not in cleaned
+        assert "Page details" not in cleaned
+        assert "Policy Title" in cleaned
+        assert "Article 1" in cleaned
+
+    def test_ingest_id_inference_uses_registry_id_filename(self, tmp_path):
+        """A source filename matching a registry id should infer that id."""
+        from scripts.ingest_public_documents import infer_instrument_id
+
+        source = tmp_path / "pa-group-collective-agreement.txt"
+        source.write_text("source text", encoding="utf-8")
+        registry = {"pa-group-collective-agreement": {"id": "pa-group-collective-agreement"}}
+
+        instrument_id = infer_instrument_id(source, None, registry)
+
+        assert instrument_id == "pa-group-collective-agreement"
+
+
 class TestContentExtractor:
     """Test content extraction."""
 
