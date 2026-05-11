@@ -1,22 +1,3 @@
-
-
-
-    Skip to main content
-    Skip to "About government"
-    Switch to basic HTML version
-
-Language selection
-
-    Français 
-
-Government of Canada / Gouvernement du Canada
-Search
-Search Canada.ca
-Menu
-You are here:
-
-    Canada.ca Working for the government Pay, pension and benefits Collective agreements for the public service 
-
 Information Technology (IT)
 Addendum
 Addendum
@@ -340,7 +321,6 @@ An employee on shift work shall receive a shift premium of two dollars and twent
 
 When an employee is required to report for work on a day of rest or a designated paid holiday, they shall be paid the greater of:
 
-     
         compensation at the applicable overtime rate,
         or
         compensation equivalent to four (4) hours’ pay at their hourly rate of pay, except that the minimum of four (4) hours’ pay shall apply only to the first (1st) time an employee is required to report for work during a period of eight (8) hours, starting with the employee’s first (1st) reporting.
@@ -509,8 +489,6 @@ Conversion examples
     25 days: 187.5 hours
     30 days: 225 hours
     35 days: 262.5 hours
-
-     
 
     **
         nine decimal three seven five (9.375) hours at their straight-time hourly rate until the month in which their seventh (7th) anniversary of service occurs;
@@ -1665,8 +1643,6 @@ The Treasury Board 	The Professional Institute of the Public Service of Canada
     Karen Power
     Jaspal Sandhu
 
-	
-
     Jennifer Carr
     Jean-Paul Leduc
     Robert Séguin
@@ -1896,7 +1872,7 @@ Note: The term “attainable maximum rate of pay” means the rate attainable fo
 
     Prior to a position being reclassified to a group and/or level having a lower attainable maximum rate of pay, the incumbent shall be notified in writing.
     Downward reclassification notwithstanding, an encumbered position shall be deemed to have retained for all purposes the former group and level. In respect to the pay of the incumbent, this may be cited as Salary Protection Status and subject to section 3(b) below shall apply until the position is vacated or the attainable maximum of the reclassified level, as revised from time to time, becomes greater than that applicable, as revised from time to time, to the former classification level. Determination of the attainable maxima rates of pay shall be in accordance with the Directive on Terms and Conditions of Employment.
-     
+
         The Employer will make a reasonable effort to transfer the incumbent to a position having a level equivalent to that of the former group and/or level of the position.
         In the event that an incumbent declines an offer of transfer to a position as in (a) above in the same geographic area, without good and sufficient reason, that incumbent shall be immediately paid at the rate of pay for the reclassified position.
     Employees subject to section 3 will be considered to have transferred (as defined in the Directive on Terms and Conditions of Employment) for the purpose of determining increment dates and rates of pay.
@@ -2411,7 +2387,6 @@ For clarity, the alternation of positions shall take place on a given date after
 
 6.4.1 Only opting employees who are not in receipt of the guarantee of a reasonable job offer from the deputy head will have access to the choice of options below:
 
-     
         Twelve (12) month surplus priority period in which to secure a reasonable job offer: should a reasonable job offer not be made within a period of twelve (12) months, the employee will be laid off in accordance with the PSEA. Employees who choose or are deemed to have chosen this option are surplus employees.
         At the request of the employee, this twelve (12) month surplus priority period shall be extended by the unused portion of the one hundred and twenty (120) day opting period referred to in 6.1.2 which remains once the employee has selected in writing option 6.4.1(a).
         When a surplus employee who has chosen, or who is deemed to have chosen, option 6.4.1(a) offers to resign before the end of the twelve (12) month surplus priority period, the deputy head may authorize a lump-sum payment equal to the surplus employee’s pay for the substantive position for the balance of the surplus period, up to a maximum of six (6) months. The amount of the lump-sum payment for the pay in lieu cannot exceed the maximum of that which the employee would have received had they chosen option 6.4.1(b), the TSM.
@@ -3401,59 +3376,3 @@ Granting of sick leave credits
 On the effective date of the Treasury Board decision on the Category of Employees, and in recognition of the civilian members’ transition from an unrestricted sick leave regime to a sick leave bank regime, upon the date of deeming, former civilian members shall be granted a bank of sick leave credits that is the greater of six decimal two five (6.25) hours for each completed calendar month of service or four hundred and eighty-seven decimal five zero (487.50) hours of sick leave credits.
 
 This memorandum of understanding expires on December 21, 2025. For greater clarity, it may be renewed or amended by mutual consent of the parties.
-
-© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2023,
-ISSN: 978-0-660-69842-7
-Page details
-
-Date modified:
-
-    2025-12-23 
-
-About this site
-Treasury Board of Canada Secretariat (TBS)
-
-    Contact us
-    Forms
-
-Government of Canada
-
-    All contacts
-    Departments and agencies
-    About government
-
-Themes and topics
-
-    Jobs
-    Immigration and citizenship
-    Travel and tourism
-    Business
-    Benefits
-    Health
-    Taxes
-    Environment and natural resources
-    National security and defence
-    Culture, history and sport
-    Policing, justice and emergencies
-    Transport and infrastructure
-    Canada and the world
-    Money and finances
-    Science and innovation
-    Indigenous Peoples
-    Veterans and military
-    Youth
-    Manage life events
-
-Government of Canada Corporate
-
-    Social media Mobile applications About Canada.ca Terms and conditions Privacy 
-
-Symbol of the Government of Canada
-
-
-
-
-
-
-
-  

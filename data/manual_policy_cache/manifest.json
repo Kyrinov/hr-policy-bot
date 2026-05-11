@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11T16:41:28.023353",
+  "generated_at": "2026-05-11T16:42:34.840413",
   "entry_count": 115,
   "entries": [
     {
@@ -771,8 +771,8 @@
       "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=4",
       "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=4",
       "path": "data/manual_policy_cache/ec-group-collective-agreement.txt",
-      "chars": 273379,
-      "capture_method": "manual_download"
+      "chars": 272063,
+      "capture_method": "manual_download_cleaned"
     },
     {
       "id": "employment-equity-act",
@@ -872,8 +872,8 @@
       "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=1",
       "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=1",
       "path": "data/manual_policy_cache/it-group-collective-agreement.txt",
-      "chars": 350367,
-      "capture_method": "manual_download"
+      "chars": 349036,
+      "capture_method": "manual_download_cleaned"
     },
     {
       "id": "njc-bilingualism-bonus-directive",
@@ -1074,8 +1074,8 @@
       "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=15",
       "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=15",
       "path": "data/manual_policy_cache/pa-group-collective-agreement.txt",
-      "chars": 446970,
-      "capture_method": "manual_download"
+      "chars": 445650,
+      "capture_method": "manual_download_cleaned"
     },
     {
       "id": "pay-equity-act",
@@ -1405,8 +1405,8 @@
       "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=19",
       "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=19",
       "path": "data/manual_policy_cache/sv-group-collective-agreement.txt",
-      "chars": 733141,
-      "capture_method": "manual_download"
+      "chars": 731663,
+      "capture_method": "manual_download_cleaned"
     },
     {
       "id": "tbs-collective-agreements-index",
@@ -1432,8 +1432,8 @@
       "url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=25",
       "normalized_url": "https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=25",
       "path": "data/manual_policy_cache/tc-group-collective-agreement.txt",
-      "chars": 486936,
-      "capture_method": "manual_download"
+      "chars": 485533,
+      "capture_method": "manual_download_cleaned"
     },
     {
       "id": "treasury-board-mandatory-training-inventory",

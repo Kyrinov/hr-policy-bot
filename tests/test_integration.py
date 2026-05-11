@@ -640,6 +640,35 @@ class TestFetchEngine:
         assert health["status"] == "ok"
 
 
+class TestSpecialistRetrieval:
+    """Test specialist retrieval preparation."""
+
+    def test_select_relevant_content_prefers_query_matching_sections(self):
+        """Long documents should use query-focused excerpts instead of first-page truncation."""
+        from src.agents.specialist import select_relevant_content
+
+        content = (
+            "Collective Agreement\n\n"
+            "Opening metadata and table of contents.\n\n"
+            + ("Irrelevant classification text.\n\n" * 600)
+            + "Article 28 Overtime\n\n"
+            "An employee who works overtime may receive overtime compensation "
+            "and a meal allowance when the agreement requirements are met.\n\n"
+            + ("Other appendix text.\n\n" * 200)
+        )
+
+        excerpt = select_relevant_content(
+            content=content,
+            query_text="Does overtime include a meal allowance?",
+            max_chars=2_000,
+        )
+
+        assert len(excerpt) <= 2_000
+        assert "Collective Agreement" in excerpt
+        assert "Article 28 Overtime" in excerpt
+        assert "meal allowance" in excerpt
+
+
 class TestContentExtractor:
     """Test content extraction."""
 

@@ -1,21 +1,3 @@
-
-
-    Skip to main content
-    Skip to "About government"
-    Switch to basic HTML version
-
-Language selection
-
-    Français 
-
-Government of Canada / Gouvernement du Canada
-Search
-Search Canada.ca
-Menu
-You are here:
-
-    Canada.ca Working for the government Pay, pension and benefits Collective agreements for the public service 
-
 Technical Services (TC)
 Addendum
 
@@ -28,7 +10,7 @@ Codes: 403/405/406/407/408/413
 Expiry date: June 21, 2025
 
 This Agreement covers the following classifications:
-     
+
 Code 	Group
 403	Drafting and Illustration (DD)
 405	Engineering and Scientific Support (EG)
@@ -1914,8 +1896,6 @@ The Treasury Board 	The Public Service Alliance of Canada
     Adam Wettges
     Leanne Wilson
 
-	
-
     Sharon DeSousa
     Seth Sazant
     Silja Freitag
@@ -2167,16 +2147,16 @@ Y) June 22, 2023 - Pay Line Adjustment 	102,718 	106,824 	111,092 	115,539 	120,
 D) June 22, 2024 	104,772 	108,960 	113,314 	117,850 	122,565 	127,466 	131,708
 Z) June 22, 2024 - Wage Adjustment 	105,034 	109,232 	113,597 	118,145 	122,871 	127,785 	132,037
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular: 
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
-    Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020, rates. 
+    Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020, rates.
     On the date of restructure in Year 2 (June 22, 2022) in the “V” scale:
-        Employees that have been at step 6 for at least twelve (12) months, will move to the new maximum step 7 which is 1.5% higher than the existing maximum. 
-        Immediately after the adjustment described above is made, Year 2 (2022) increases (i.e., “B” and “W”) will be paid as a retroactive lump sum payment equal to the Year 1 increase in (a) plus the 1.5% restructure described in (b)(i), plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 7.96% of June 22, 2020, rates. 
+        Employees that have been at step 6 for at least twelve (12) months, will move to the new maximum step 7 which is 1.5% higher than the existing maximum.
+        Immediately after the adjustment described above is made, Year 2 (2022) increases (i.e., “B” and “W”) will be paid as a retroactive lump sum payment equal to the Year 1 increase in (a) plus the 1.5% restructure described in (b)(i), plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 7.96% of June 22, 2020, rates.
         Employees other than those captured under (b)(i) will be paid as follows: Year 2 (2022) increases (i.e., “B” and “W”): paid as a retroactive lump sum payment equal to the Year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
-    On the date of restructure in Year 3 (June 22, 2023) in the “X” scale: 
-        Increase step 7 by 1.8%. 
-        Immediately after the adjustment described at (c)(i) is made, Year 3 (2023) increases (i.e., “C” and “Y”) will be paid as a retroactive lump sum payment equal to the Year 1 and Year 2 increases plus a 3.00% economic increase and a 0.5% pay line adjustment for a compounded total increase of 10.104% for employees at the scale 1 to 6 and of 13.77% for employees at step 7 of June 22, 2020, rates. 
+    On the date of restructure in Year 3 (June 22, 2023) in the “X” scale:
+        Increase step 7 by 1.8%.
+        Immediately after the adjustment described at (c)(i) is made, Year 3 (2023) increases (i.e., “C” and “Y”) will be paid as a retroactive lump sum payment equal to the Year 1 and Year 2 increases plus a 3.00% economic increase and a 0.5% pay line adjustment for a compounded total increase of 10.104% for employees at the scale 1 to 6 and of 13.77% for employees at step 7 of June 22, 2020, rates.
 
 Engineering and Scientific Support Group pay notes
 Pay increment for full-time and part-time employees
@@ -2208,7 +2188,7 @@ Y) June 22, 2023 - Pay Line Adjustment 	45,763 	47,368 	49,026 	50,734
 D) June 22, 2024 	46,678 	48,315 	50,007 	51,749
 Z) June 22, 2024 - Wage Adjustment 	46,795 	48,436 	50,132 	51,878
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:      
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
     Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020, rates.
     Year 2 (2022) increases (i.e., “B” and “X”): paid as a retroactive lump sum payment equal to the year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
@@ -2306,7 +2286,7 @@ Y) June 22, 2023 - Pay Line Adjustment 	118,422 	122,177 	125,909 	129,642 	134,
 D) June 22, 2024 	120,790 	124,621 	128,427 	132,235 	137,528
 Z) June 22, 2024 - Wage Adjustment 	121,092 	124,933 	128,748 	132,566 	137,872
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:      
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
     Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020, rates.
     Year 2 (2022) increases (i.e., “B” and “X”): paid as a retroactive lump sum payment equal to the year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
@@ -2326,7 +2306,7 @@ Table legend
     $) Effective June 22, 2020
     A) Effective June 22, 2021
     B) Effective June 22, 2022
-    X) Effective June 22, 2022 - Wage Adjustment 
+    X) Effective June 22, 2022 - Wage Adjustment
     C) Effective June 22, 2023
     Y) Effective June 22, 2023 - Pay Line Adjustment
     D) Effective June 22, 2024
@@ -2396,7 +2376,7 @@ Y) June 22, 2023 - Pay Line Adjustment 	65,220 	67,177 	69,200 	71,272 	73,404 	
 D) June 22, 2024 	66,524 	68,521 	70,584 	72,697 	74,872 	77,872
 Z) June 22, 2024 - Wage Adjustment 	66,690 	68,692 	70,760 	72,879 	75,059 	78,067
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:      
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
     Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020, rates.
     Year 2 (2022) increases (i.e., “B” and “X”): paid as a retroactive lump sum payment equal to the year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
@@ -2498,7 +2478,7 @@ Y) June 22, 2023 - Pay Line Adjustment 	91,341 	94,687 	98,017 	101,382 	105,336
 D) June 22, 2024 	93,168 	96,581 	99,977 	103,410 	107,443 	111,740
 Z) June 22, 2024 - Wage Adjustment 	93,401 	96,822 	100,227 	103,669 	107,712 	112,019
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:      
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
     Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020 rates.
     Year 2 (2022) increases (i.e., “B” and “W”): paid as a retroactive lump sum payment equal to the year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
@@ -2597,7 +2577,7 @@ Y) June 22, 2023 - Pay Line Adjustment 	106,102 	109,665 	113,217 	116,498 	121,
 D) June 22, 2024 	108,224 	111,858 	115,481 	118,828 	123,580
 Z) June 22, 2024 - Wage Adjustment 	108,495 	112,138 	115,770 	119,125 	123,889
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:      
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
     Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020 rates.
     Year 2 (2022) increases (i.e., “B” and “X”): paid as a retroactive lump sum payment equal to the year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
@@ -2727,7 +2707,7 @@ Y) June 22, 2023 - Pay Line Adjustment 	114,575 	118,136 	121,687 	124,970 	129,
 D) June 22, 2024 	116,867 	120,499 	124,121 	127,469 	132,221 	137,511
 Z) June 22, 2024 - Wage Adjustment 	117,159 	120,800 	124,431 	127,788 	132,552 	137,855
 
-Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:      
+Rates of pay will be adjusted within 180 days of signature of the collective agreement. Changes to rates of pay with an effective date prior to the salary adjustment date will be paid according to Appendix S, as a lump sum payment. In particular:
 
     Year 1 (2021) increase (i.e., “A”): paid as a retroactive lump sum payment equal to a 1.50% economic increase of June 22, 2020 rates.
     Year 2 (2022) increases (i.e., “B” and “X”): paid as a retroactive lump sum payment equal to the year 1 increase plus a 3.50% economic increase and a 1.25% wage adjustment, for a compounded total increase of 6.366% of June 22, 2020, rates.
@@ -2769,8 +2749,6 @@ The Treasury Board 	The Public Service Alliance of Canada
     Marie-Chantal Girard
     Danielle Chainé
 
-	
-
     Sharon DeSousa
     Seth Sazant
 
@@ -2808,7 +2786,6 @@ Surveillance mode is defined as the period between the time at which a Fishery O
 
 The normal overtime provisions of the collective agreement will apply to these Officers with the following exceptions:
 
-     
         Employees shall receive thirty-seven decimal five (37.5) hours pay at the straight-time rate per week while in a surveillance mode. For employees who are permanently assigned to work in an offshore detachment, all overtime and compensation earned for work on a designated holiday shall accumulate as compensatory leave. For employees who are temporarily assigned to work in an off-shore detachment, overtime shall be compensated in a combination of cash and compensatory leave, as mutually agreed between the employee and his/her supervisor.
         Notwithstanding the above, where an employee requests to be compensated with compensatory leave, up to the first thirty-seven decimal five (37.5) hours of compensatory in each trip shall be provided in that manner, to a maximum of seventy-five (75) hours per fiscal year. Requests for compensatory leave in excess of seventy-five (75) hours may be provided upon mutual agreement. For employees who are permanently assigned to work in an offshore detachment, the compensatory leave earned while in a surveillance mode shall be liquidated immediately after their return from surveillance mode unless the Employer deems this impractical due to operational requirements.
         For employees who are permanently assigned to work in an offshore detachment, seventy-five (75) hours of compensatory leave shall be held in a bank to ensure that if an officer is unable to make a scheduled trip and there is no other work available, the officer is eligible to request compensatory leave from his or her seventy-five (75) hour bank. Employees who are assigned temporarily to work in surveillance mode will not be required to maintain a bank.
@@ -2920,7 +2897,7 @@ The PSAC-TBS Joint Learning Program (JLP) will continue to provide joint trainin
 
 Starting on the first day of the month following the date of signature of the PA collective agreement, the Employer agrees to increase monthly funding to the PSAC – TBS JLP by a percentage equivalent to the annual base economic increase.
 
-Starting on the first day of the month following the date of signature of this agreement and for a two-year period, the Employer further agrees to provide fifty thousand three hundred and twenty-five dollars ($50,325) per month (for a total of $1.2 million) to fund a time-limited project to provide training tailored to the learning needs of occupational health and safety committees and representatives. For clarity, this temporary provision expires upon completion of the noted two-year period. 
+Starting on the first day of the month following the date of signature of this agreement and for a two-year period, the Employer further agrees to provide fifty thousand three hundred and twenty-five dollars ($50,325) per month (for a total of $1.2 million) to fund a time-limited project to provide training tailored to the learning needs of occupational health and safety committees and representatives. For clarity, this temporary provision expires upon completion of the noted two-year period.
 
 The PSAC-TBS JLP will continue to be governed by the existing joint PSAC-TBS Steering Committee. The Bargaining Agent Side Secretary on the National Joint Council will be invited to attend the meetings of the PSAC-JLP Steering Committee with voice but no vote.
 **Appendix I
@@ -2986,12 +2963,11 @@ Memorandum of Agreement Concerning Employees in the Engineering and Scientific S
 
 Employees in the Engineering and Scientific Support Group employed by the Department of National Defence engaged in Sea Trials under the following conditions will be remunerated in accordance with the terms below:
 
-     
         When an employee is scheduled to proceed to sea beyond the harbour limits aboard a naval vessel, submarine, auxiliary vessel or yardcraft for the purpose of conducting trials, repairing defects or dumping ammunition, the employee shall be compensated for all hours aboard at the straight time rate for all regularly scheduled hours of work and unworked hours aboard the vessel;
         and
         for all hours worked in excess of regularly scheduled hours of work, employees shall be compensated in accordance with clause 28.01 (overtime).
         In addition, an employee shall receive a submarine trials allowance equal to twenty-five per cent (25%) of his or her basic hourly rate for each completed one half (1/2) hour the employee is required to be in a submarine.
-     
+
         When an employee is required to be in a submarine when it is in a closed-down condition either alongside a jetty or within a harbour, on the surface or submerged; that is, when the pressure hull is sealed and undergoing trials, such as vacuum tests, high-pressure tests, snort trials, battery ventilation trials or other recognized formal trials, or the submarine is rigged for diving, the employee shall be compensated for all hours aboard at the applicable rate of pay for all hours’ worked and at the straight-time rate for all unworked hours.
         In addition, an employee shall receive a submarine trial allowance in accordance with 1(b).
     When an employee is engaged in a Sea Trial pursuant to this appendix, the employee will be considered to be at their workplace and not on travel status.
@@ -3167,7 +3143,7 @@ Special Conditions Applicable to Certain Aircraft Maintenance Engineers
 The following special conditions shall apply only to aircraft maintenance engineers of the Aircraft Services Directorate, Department of Transport:
 
     When Aircraft Services Directorate helicopter aircraft maintenance engineers are performing their duties while assigned to shipboard or special assignment,
-         
+
             The following provisions of the collective agreement shall not apply:
                 Articles 25 and 28: hours of work and overtime
                 Article 27: shift premiums
@@ -3185,7 +3161,7 @@ The following special conditions shall apply only to aircraft maintenance engine
         Subject to operational requirements, as determined by the Employer, compensation earned under paragraph 1(b) may, at the request of the Employer or the employee, and with reasonable notice, be granted in leave at times mutually convenient.
         If any such leave cannot be liquidated by the end of the fiscal year, then payment will be made at the employee’s then current rate of pay.
         When an aircraft maintenance engineer on shipboard or special assignment works on a designated paid holiday, he or she shall be credited with one (1) day of leave with pay in lieu of the holiday.
-     
+
         Aircraft maintenance engineers who are required to perform flight duties other than test flights shall be paid an allowance of one hundred dollars ($100) per month, provided such employees complete not less than fifteen (15) hours’ flying time in the performance of such duties each calendar quarter.
         Aircraft maintenance engineers shall be paid a flying time premium of fifteen dollars ($15) per hour or part thereof, while performing flight tests authorized by the appropriate responsible manager or the team leader in Ottawa, or by the Regional Manager Aircraft Maintenance, the team leader or the senior aircraft maintenance engineer in the regions.
     Aircraft maintenance engineers in the EG Group whose normal workplace is the Department of Transport, Aircraft Services Directorate, or any of the Canadian Coast Guard helicopter bases, who are assigned to work as crewperson in support of an aircraft that has departed its main base, on the Administrative Flight Service, the National Aerial Surveillance Program aircraft or on Canadian Coast Guard helicopters and who are not in receipt of the Shipboard or special assignment allowance under paragraph 1(b) above, will be compensated for a minimum of eight (8) hours at their straight-time rate of pay for each day of rest or designated paid holiday while they are on duty away from their headquarters area. Upon request and with the approval of the Employer, such time may be granted as compensatory leave at times mutually acceptable to the employee and the Employer. If any such leave cannot be liquidated by the end of the fiscal year, then payment will be made at the employee’s then current rate of pay.
@@ -3667,7 +3643,6 @@ For clarity, the alternation will not be denied solely as a result of untimely a
 
 6.4.1 Only opting employees who are not in receipt of the guarantee of a reasonable job offer from the deputy head will have access to the choice of options below:
 
-     
         Twelve (12) month surplus priority period in which to secure a reasonable job offer. It is time-limited. Should a reasonable job offer not be made within a period of twelve (12) months, the employee will be laid off in accordance with the Public Service Employment Act. Employees who choose or are deemed to have chosen this option are surplus employees.
         At the request of the employee, this twelve (12) month surplus priority period shall be extended by the unused portion of the one hundred and twenty (120) day opting period referred to in 6.1.2 which remains once the employee has selected in writing option 6.4.1(a).
         When a surplus employee who has chosen or is deemed to have chosen option 6.4.1(a) offers to resign before the end of the twelve (12) month surplus priority period, the deputy head may authorize a lump-sum payment equal to the surplus employee’s regular pay for the balance of the surplus period, up to a maximum of six (6) months. The amount of the lump-sum payment for the pay in lieu cannot exceed the maximum of what he or she would have received had he or she chosen option 6.4.1(b), the Transition Support Measure.
@@ -3956,7 +3931,7 @@ Note: The term “attainable maximum rate of pay” means the rate attainable fo
 
     Prior to a position being reclassified to a group and/or level having a lower attainable maximum rate of pay, the incumbent shall be notified in writing.
     Downward reclassification notwithstanding, an encumbered position shall be deemed to have retained for all purposes the former group and level. In respect to the pay of the incumbent, this may be cited as Salary Protection Status and subject to section 3(b) below shall apply until the position is vacated or the attainable maximum of the reclassified level, as revised from time to time, becomes greater than that applicable, as revised from time to time, to the former classification level. Determination of the attainable maxima rates of pay shall be in accordance with the Directive on Terms and Conditions of Employment.
-     
+
         The Employer will make a reasonable effort to transfer the incumbent to a position having a level equivalent to that of the former group and/or level of the position.
         In the event that an incumbent declines an offer of transfer to a position as in (a) above in the same geographic area, without good and sufficient reason, that incumbent shall be immediately paid at the rate of pay for the reclassified position.
     Employees subject to section 3, will be considered to have transferred (as defined in the Directive on Terms and Conditions of Employment) for the purpose of determining increment dates and rates of pay.
@@ -3987,7 +3962,7 @@ Preamble
 
     In an effort to resolve recruitment and retention problems, the Employer will provide an allowance to incumbents of specific shore-based positions for the performance of duties in the Engineering and Scientific Support (EG) and General Technical (GT) Groups.
     Employees at the Department of Fisheries and Oceans, Canadian Coast Guard who are incumbents of EG-6 and EG-7 and GT-6 through GT-8 levels in the following positions and who meet the conditions listed under point 3 shall be entitled to a terminable allowance as listed below.
-     
+
         Employees working at Canadian Coast Guard for the Integrated Technical Services, Fleet Requirements and Support and Vessel Procurement who are required in the performance of their duties to have knowledge of one of the following: design, construction, or maintenance of vessels as demonstrated by possession of a marine engineering certificate, a Canadian Coast Guard Marine Electrical certificate or post-secondary degree/diploma in a technical discipline applicable to their duties (for example, electrical, mechanical, naval architecture) and extensive marine field experience.
         The conditions listed under point 3(i) above will apply only to employees who started their employment after the signing date of this agreement or who were not in receipt of this allowance before that date. Employees who started employment and were in receipt of this allowance before the signing date of this agreement will be entitled to a terminable allowance based on the conditions listed under 3(iii).
         Employees working at Canadian Coast Guard for the Integrated Technical Services and Vessel Procurement who are required in the performance of their duties to have knowledge of the design, construction, operation or maintenance of vessels as demonstrated by possession of a marine certificate of competency or post-secondary degree/diploma, Department of Transport Marine Engineering or Canadian Coast Guard Marine Electrical certificates of competency, combined with extensive experience in the field.
@@ -4225,7 +4200,7 @@ Memorandum of Understanding in Respect of Employees in the Technical Inspector (
 **Appendix FF
 Memorandum of Understanding Between the Treasury Board and the Public Service Alliance of Canada with Respect to a Joint Review on Employment Equity, Diversity, and Inclusion Training and Informal Conflict Management Systems
 
-This memorandum of understanding is to give effect to the agreement reached between the Treasury Board (the Employer) and the Public Service Alliance of Canada (the Alliance). 
+This memorandum of understanding is to give effect to the agreement reached between the Treasury Board (the Employer) and the Public Service Alliance of Canada (the Alliance).
 
 The parties recognize the importance of a public service culture that fosters employment equity, diversity, and inclusion (EEDI); one where all public service employees have a sense of belonging, and where difference is embraced as a source of strength.
 
@@ -4236,9 +4211,9 @@ To that end, the parties commit to establish a Joint Committee to be co-chaired 
 The Committee shall meet within thirty (30) days of the ratification of the tentative agreement to establish the terms of reference and establish the frequency of meetings. Subject to the Co-Chairs’ pre-approval, subject-matter experts (SMEs) may be resourced by the Employer and invited to contribute to the discussions, as required. They may also consider inviting representatives from the Joint Employment Equity Committee (JEEC) of the NJC to contribute to its work.
 
     The Committee will review existing training courses related to EEDI which are currently available to employees in the core public administration (CPA) in order to:
-        Create an inventory of existing training courses; 
-        Identify potential training gaps in the inventory of existing training courses and possible options to address them; 
-    To ensure employees are fully aware of training opportunities available to them during their normal hours of work, the Committee will make recommendations on options to promote available EEDI training courses to employees. 
+        Create an inventory of existing training courses;
+        Identify potential training gaps in the inventory of existing training courses and possible options to address them;
+    To ensure employees are fully aware of training opportunities available to them during their normal hours of work, the Committee will make recommendations on options to promote available EEDI training courses to employees.
     Recognizing that the informal conflict management approach is a pillar of workplace harassment and violence prevention, the Committee will review existing informal conflict management systems (ICMS) currently available to employees of the CPA to:
         identify the specific needs for ICMS in departments or organizations;
         draw from existing research and best practices with regards to ICMS that take into consideration EEDI to make recommendations on measures to improve upon ICMS in the CPA.
@@ -5006,52 +4981,3 @@ Granting of sick leave credits
 Should the Treasury Board make a decision on the Category of Employees, the parties will enter into discussions with the view of concluding an agreement related to the establishment of a sick leave bank. If, on the date of deeming, an agreement has not been reached, unless otherwise mutually agreed upon, negotiations will conclude, and the parties will proceed to arbitration related to the establishment of a sick leave bank.
 
 This memorandum of understanding expires on June 21, 2025. For greater clarity, it may be renewed or amended by mutual consent of the parties.
-
-© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2023,
-ISSN: 978-0-660-49469-2
-Page details
-
-Date modified:
-
-    2026-05-11 
-
-About this site
-Treasury Board of Canada Secretariat (TBS)
-
-    Contact us
-    Forms
-
-Government of Canada
-
-    All contacts
-    Departments and agencies
-    About government
-
-Themes and topics
-
-    Jobs
-    Immigration and citizenship
-    Travel and tourism
-    Business
-    Benefits
-    Health
-    Taxes
-    Environment and natural resources
-    National security and defence
-    Culture, history and sport
-    Policing, justice and emergencies
-    Transport and infrastructure
-    Canada and the world
-    Money and finances
-    Science and innovation
-    Indigenous Peoples
-    Veterans and military
-    Youth
-    Manage life events
-
-Government of Canada Corporate
-
-    Social media Mobile applications About Canada.ca Terms and conditions Privacy 
-
-Symbol of the Government of Canada
-  

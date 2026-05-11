@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -23,6 +24,42 @@ logger = logging.getLogger(__name__)
 _REGISTRY_PATH = Path(__file__).parent.parent / "data" / "policy_registry.json"
 _MAX_CONTENT_CHARS = 24_000     # ~6,000 tokens per document
 _MAX_INSTRUMENTS_PER_QUERY = 4  # 4 docs × ~6k tokens + prompt + query fits within 32k context
+_DOCUMENT_OPENING_CHARS = 3_000
+_MIN_QUERY_TERM_LENGTH = 3
+
+_QUERY_STOPWORDS = {
+    "about",
+    "after",
+    "also",
+    "and",
+    "are",
+    "can",
+    "could",
+    "does",
+    "for",
+    "from",
+    "has",
+    "have",
+    "how",
+    "into",
+    "our",
+    "should",
+    "that",
+    "the",
+    "their",
+    "then",
+    "there",
+    "this",
+    "what",
+    "when",
+    "where",
+    "which",
+    "who",
+    "why",
+    "with",
+    "would",
+    "you",
+}
 
 _SPECIALIST_METADATA: dict[str, tuple[str, str]] = {
     "staffing": (
@@ -110,7 +147,10 @@ class SpecialistAgent(GenericAgent):
             async def fetch_one(instrument: dict) -> tuple[dict, str | None]:
                 try:
                     content = await fetch_engine.fetch(instrument["url"])
-                    return (instrument, content[:_MAX_CONTENT_CHARS])
+                    return (
+                        instrument,
+                        select_relevant_content(content, query_text, _MAX_CONTENT_CHARS),
+                    )
                 except Exception as e:
                     logger.warning(
                         "Specialist %s failed to fetch %s: %s",
@@ -271,3 +311,71 @@ def get_specialists() -> dict[str, SpecialistAgent]:
             for agent_id, (display_name, domain) in _SPECIALIST_METADATA.items()
         }
     return _specialists
+
+
+def select_relevant_content(content: str, query_text: str, max_chars: int) -> str:
+    """Return a compact query-focused excerpt from a potentially large policy document."""
+    if len(content) <= max_chars:
+        return content
+
+    terms = _query_terms(query_text)
+    if not terms:
+        return content[:max_chars]
+
+    opening_chars = min(_DOCUMENT_OPENING_CHARS, max(500, max_chars // 4))
+    opening = content[:opening_chars].strip()
+    budget = max_chars - len(opening) - 500
+    if budget <= 0:
+        return content[:max_chars]
+
+    blocks = [block.strip() for block in re.split(r"\n\s*\n", content) if block.strip()]
+    scored: list[tuple[int, int, str]] = []
+    for index, block in enumerate(blocks):
+        lower = block.lower()
+        score = sum(lower.count(term) for term in terms)
+        if score == 0:
+            continue
+        if re.match(r"^(article|appendix|part|section)\s+[\w\d.\-]+", lower):
+            score += 2
+        scored.append((score, index, block))
+
+    if not scored:
+        return content[:max_chars]
+
+    selected: list[tuple[int, str]] = []
+    used = 0
+    for _score, index, block in sorted(scored, key=lambda item: (-item[0], item[1])):
+        excerpt = block[:4_000]
+        if used + len(excerpt) > budget:
+            remaining = budget - used
+            if remaining < 500:
+                continue
+            excerpt = excerpt[:remaining]
+        selected.append((index, excerpt))
+        used += len(excerpt)
+        if used >= budget:
+            break
+
+    selected.sort(key=lambda item: item[0])
+    sections = "\n\n".join(block for _index, block in selected)
+    excerpted = (
+        "DOCUMENT OPENING\n"
+        f"{opening}\n\n"
+        "QUERY-RELEVANT EXCERPTS\n"
+        f"{sections}"
+    ).strip()
+    return excerpted[:max_chars]
+
+
+def _query_terms(query_text: str) -> list[str]:
+    tokens = re.findall(r"[a-zA-Z][a-zA-Z0-9'-]+", query_text.lower())
+    terms: list[str] = []
+    seen: set[str] = set()
+    for token in tokens:
+        token = token.strip("'")
+        if len(token) < _MIN_QUERY_TERM_LENGTH or token in _QUERY_STOPWORDS:
+            continue
+        if token not in seen:
+            seen.add(token)
+            terms.append(token)
+    return terms

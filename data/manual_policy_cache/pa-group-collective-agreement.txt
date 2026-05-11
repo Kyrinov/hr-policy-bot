@@ -1,21 +1,3 @@
-
-
-    Skip to main content
-    Skip to "About government"
-    Switch to basic HTML version
-
-Language selection
-
-    Français 
-
-Government of Canada / Gouvernement du Canada
-Search
-Search Canada.ca
-Menu
-You are here:
-
-    Canada.ca Working for the government Pay, pension and benefits Collective agreements for the public service 
-
 Program and Administrative Services (PA)
 Addendum
 Addendum
@@ -1179,7 +1161,6 @@ Accumulation of vacation leave credits
 
 34.03
 
-     
         For the purpose of clauses 34.02 and 34.18 only, all service within the public service, whether continuous or discontinuous, shall count toward vacation leave.
         For the purpose of clause 34.03(a)(i) only, effective April 1, 2012, on a go-forward basis, any former service in the Canadian Forces for a continuous period of six (6) months or more, either as a member of the Regular Force or of the Reserve Force while on class B or C service, shall also be included in the calculation of vacation leave credits.
     Notwithstanding paragraph (a) above, an employee who was a member of one of the bargaining units listed below on the date of signing of the relevant collective agreement or an employee who became a member of one of those bargaining units between the date of signing of the relevant collective agreement and May 31, 1990, shall retain, for the purposes of “service” and of establishing his or her vacation entitlement pursuant to this clause, those periods of former service which had previously qualified for counting as continuous employment, until such time as his or her employment in the public service is terminated.
@@ -1953,8 +1934,6 @@ The Treasury Board 	The Public Service Alliance of Canada
     Irena Farova
     Emilie Duguay
     Isabelle Tétreault
-
-	
 
     Chris Aylward
     Marianne Hladun
@@ -3670,7 +3649,6 @@ For clarity, the alternation will not be denied solely as a result of untimely a
 
 6.4.1 Only opting employees who are not in receipt of the guarantee of a reasonable job offer from the deputy head will have access to the choice of options below:
 
-     
         Twelve (12) month surplus priority period in which to secure a reasonable job offer. It is time-limited. Should a reasonable job offer not be made within a period of twelve (12) months, the employee will be laid off in accordance with the Public Service Employment Act. Employees who choose or are deemed to have chosen this option are surplus employees.
         At the request of the employee, this twelve (12) month surplus priority period shall be extended by the unused portion of the one hundred and twenty (120) day opting period referred to in 6.1.2 which remains once the employee has selected in writing Option 6.4.1(a).
         When a surplus employee who has chosen or is deemed to have chosen Option 6.4.1(a) offers to resign before the end of the twelve (12) month surplus priority period, the deputy head may authorize a lump-sum payment equal to the surplus employee’s regular pay for the balance of the surplus period, up to a maximum of six (6) months. The amount of the lump-sum payment for the pay in lieu cannot exceed the maximum of what he or she would have received had he or she chosen Option 6.4.1(b), the transition support measure.
@@ -3993,7 +3971,7 @@ Note : The term “attainable maximum rate of pay” means the rate attainable f
 
     Prior to a position being reclassified to a group and/or level having a lower attainable maximum rate of pay, the incumbent shall be notified in writing.
     Downward reclassification notwithstanding, an encumbered position shall be deemed to have retained for all purposes the former group and level. In respect to the pay of the incumbent, this may be cited as Salary Protection Status and subject to section 3(b) below shall apply until the position is vacated or the attainable maximum of the reclassified level, as revised from time to time, becomes greater than that applicable, as revised from time to time, to the former classification level. Determination of the attainable maxima rates of pay shall be in accordance with the Directive on Terms and Conditions of Employment.
-     
+
         The Employer will make a reasonable effort to transfer the incumbent to a position having a level equivalent to that of the former group and/or level of the position.
         In the event that an incumbent declines an offer of transfer to a position as in (a) above in the same geographic area, without good and sufficient reason, that incumbent shall be immediately paid at the rate of pay for the reclassified position.
     Employees subject to Section 3, will be considered to have transferred (as defined in the Directive on Terms and Conditions of Employment) for the purpose of determining increment dates and rates of pay.
@@ -4009,7 +3987,7 @@ Signed at Ottawa, this 9th day of the month of February 1982.
 **Appendix I
 Memorandum of Understanding Between the Treasury Board and the Public Service Alliance of Canada with Respect to a Joint Review on Employment Equity, Diversity and Inclusion Training and Informal Conflict Management Systems
 
-This memorandum of understanding is to give effect to the agreement reached between the Treasury Board (the Employer) and the Public Service Alliance of Canada (the Alliance). 
+This memorandum of understanding is to give effect to the agreement reached between the Treasury Board (the Employer) and the Public Service Alliance of Canada (the Alliance).
 
 The parties recognize the importance of a public service culture that fosters employment equity, diversity and inclusion (EEDI); one where all public service employees have a sense of belonging, and where difference is embraced as a source of strength.
 
@@ -4017,7 +3995,7 @@ The parties also recognize the importance of an inclusive informal conflict reso
 
 To that end, the parties commit to establish a Joint Committee to be co-chaired by the Employer and the Alliance who will guide the work of the Committee. The Committee will be comprised of an equal number of representatives of the Employer and the Alliance. Both parties will endeavour to ensure that the membership of the Committee reflects the diversity of the workforce.
 
-The Committee shall meet within thirty (30) days of the ratification of the tentative agreement to establish the terms of reference and establish the frequency of meetings. Subject to the Co-Chairs’ pre-approval, subject-matter experts (SMEs) may be resourced by the Employer and invited to contribute to the discussions, as required. They may also consider inviting representatives from the Joint Employment Equity Committee (JEEC) of the National Joint Council (NJC) to contribute to its work. 
+The Committee shall meet within thirty (30) days of the ratification of the tentative agreement to establish the terms of reference and establish the frequency of meetings. Subject to the Co-Chairs’ pre-approval, subject-matter experts (SMEs) may be resourced by the Employer and invited to contribute to the discussions, as required. They may also consider inviting representatives from the Joint Employment Equity Committee (JEEC) of the National Joint Council (NJC) to contribute to its work.
 
     The Committee will review existing training courses related to EEDI which are currently available to employees in the core public administration (CPA) in order to:
         Create an inventory of existing training courses;
@@ -4027,9 +4005,9 @@ The Committee shall meet within thirty (30) days of the ratification of the tent
         identify the specific needs for ICMS in departments or organizations;
         draw from existing research and best practices with regards to ICMS that take into consideration EEDI to make recommendations on measures to improve upon ICMS in the CPA.
 
-The parties will endeavour to finalize the review and present the work of the Committee to their principals within one (1) year. This timeline may be extended by mutual agreement. 
+The parties will endeavour to finalize the review and present the work of the Committee to their principals within one (1) year. This timeline may be extended by mutual agreement.
 
-This memorandum of understanding expires on the expiry date of this collective agreement. 
+This memorandum of understanding expires on the expiry date of this collective agreement.
 **Appendix J
 Memorandum of Understanding Between the Treasury Board (hereinafter called the Employer) and the Public Service Alliance of Canada (hereinafter called the Alliance) in Respect of the Program and Administrative Services Group: Compensation Advisors Retention Allowance
 
@@ -4901,52 +4879,3 @@ Granting of sick leave credits
 Should the Treasury Board make a decision on the Category of Employees, the parties will enter into discussions with the view of concluding an agreement related to the establishment of a sick leave bank. If, on the date of deeming, an agreement has not been reached, unless otherwise mutually agreed upon, negotiations will conclude, and the parties will proceed to arbitration related to the establishment of a sick leave bank.
 
 This memorandum of understanding expires on June 20, 2025. For greater clarity, it may be renewed or amended by mutual consent of the parties.
-
-© His Majesty the King in Right of Canada, represented by the President of the Treasury Board, 2023,
-ISSN: 978-0-660-33052-5
-Page details
-
-Date modified:
-
-    2025-12-23 
-
-About this site
-Treasury Board of Canada Secretariat (TBS)
-
-    Contact us
-    Forms
-
-Government of Canada
-
-    All contacts
-    Departments and agencies
-    About government
-
-Themes and topics
-
-    Jobs
-    Immigration and citizenship
-    Travel and tourism
-    Business
-    Benefits
-    Health
-    Taxes
-    Environment and natural resources
-    National security and defence
-    Culture, history and sport
-    Policing, justice and emergencies
-    Transport and infrastructure
-    Canada and the world
-    Money and finances
-    Science and innovation
-    Indigenous Peoples
-    Veterans and military
-    Youth
-    Manage life events
-
-Government of Canada Corporate
-
-    Social media Mobile applications About Canada.ca Terms and conditions Privacy 
-
-Symbol of the Government of Canada
-  
