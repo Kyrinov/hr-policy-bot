@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from src.agents.base import GenericAgent
 from src.agents.prompts.specialist_prompts import get_specialist_prompt, get_validate_mode_prompt
 from src.config import get_config
-from src.data.db import DatabaseManager
+from src.data.db import get_db_manager
 from src.data.stopwords import QUERY_STOPWORDS
 from src.fetch.case_law import format_case_law_context, get_case_law_index
 from src.llm.client import get_specialist_client
@@ -78,7 +78,7 @@ class SpecialistAgent(GenericAgent):
         )
         self._llm_client = get_specialist_client()
         self._config = get_config()
-        self._db = DatabaseManager()
+        self._db = get_db_manager()
         self._instruments = self._load_instruments(agent_id)
 
     def _load_instruments(self, agent_id: str) -> list[dict]:

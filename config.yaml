@@ -23,7 +23,7 @@ cache:
 
 storage:
   data_dir: "data"
-  db_path: null
+  database_url: null
 
 logging:
   level: "INFO"

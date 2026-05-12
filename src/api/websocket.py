@@ -10,7 +10,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from src.agents.orchestrator import OrchestratorAgent, get_orchestrator
 from src.config import get_config
-from src.data.db import DatabaseManager
+from src.data.db import get_db_manager
 from src.fetch.engine import FetchEngine, get_fetch_engine
 from src.models.schemas import (
     OrchestratorResponse,
@@ -24,7 +24,6 @@ from src.models.schemas import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-db = DatabaseManager()
 
 
 class WebSocketManager:
@@ -106,7 +105,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                         query_text,
                         orchestrator,
                         fetch_engine,
-                        db,
+                        get_db_manager(),
                     )
                 )
                 await active_task

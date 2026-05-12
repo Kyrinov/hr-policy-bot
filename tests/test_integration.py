@@ -62,7 +62,7 @@ class TestConfig:
         assert config.model.specialist_num_predict == 1000
         assert config.model.route_with_llm is False
         assert config.storage.data_dir == "data"
-        assert config.storage.db_path is None
+        assert config.storage.database_url is None
 
     def test_ollama_model_env_override(self, monkeypatch):
         """Test OLLAMA_MODEL overrides the configured model."""
@@ -112,14 +112,14 @@ class TestConfig:
         get_config.cache_clear()
         monkeypatch.setenv("PORT", "10000")
         monkeypatch.setenv("APP_DATA_DIR", "/var/data")
-        monkeypatch.setenv("APP_DB_PATH", "/var/data/custom.db")
+        monkeypatch.setenv("DATABASE_URL", "postgresql://user:pass@localhost/testdb")
         monkeypatch.setenv("BROWSER_FETCH_ENABLED", "false")
         monkeypatch.setenv("PARSING_ENABLED", "false")
         monkeypatch.setenv("PARSING_TEACHER_LOOP_ENABLED", "false")
         config = get_config()
         assert config.server.port == 10000
         assert config.storage.data_dir == "/var/data"
-        assert config.storage.db_path == "/var/data/custom.db"
+        assert config.storage.database_url == "postgresql://user:pass@localhost/testdb"
         assert config.fetch.browser_fallback_enabled is False
         assert config.parsing.enabled is False
         assert config.parsing.teacher_loop_enabled is False
@@ -511,7 +511,7 @@ class TestPollingQueryApi:
 
         monkeypatch.setattr(routes, "get_orchestrator", lambda: FakeOrchestrator())
         monkeypatch.setattr(routes, "get_fetch_engine", lambda: object())
-        monkeypatch.setattr(routes, "DatabaseManager", FakeDatabaseManager)
+        monkeypatch.setattr(routes, "get_db_manager", lambda: FakeDatabaseManager())
 
         routes._POLLING_JOBS[query_id] = {
             "query_id": query_id,
@@ -537,48 +537,53 @@ class TestDatabase:
 
     @pytest.fixture
     def db_manager(self):
-        """Create database manager for tests."""
+        """Create database manager for tests. Skipped if DATABASE_URL is not set."""
+        import os
         from src.data.db import DatabaseManager
 
+        if not os.environ.get("DATABASE_URL"):
+            pytest.skip("DATABASE_URL not set — skipping PostgreSQL tests")
         return DatabaseManager()
 
     @pytest.mark.asyncio
     async def test_database_initialization(self, db_manager):
         """Test database initializes without errors."""
         await db_manager.initialize()
+        await db_manager.close()
 
     @pytest.mark.asyncio
     async def test_save_and_get_query(self, db_manager):
         """Test saving and retrieving query records."""
         import uuid
-
         from src.models.schemas import QueryRecord
-        from datetime import datetime
 
-        query_id = str(uuid.uuid4())
-        record = QueryRecord(
-            query_id=query_id,
-            query_text="Test query",
-            agents_invoked=["staffing"],
-        )
+        await db_manager.initialize()
+        try:
+            query_id = str(uuid.uuid4())
+            record = QueryRecord(
+                query_id=query_id,
+                query_text="Test query",
+                agents_invoked=["staffing"],
+            )
+            await db_manager.save_query(record)
+            retrieved = await db_manager.get_query(query_id)
+            assert retrieved is not None
+            assert retrieved.query_id == query_id
+        finally:
+            await db_manager.close()
 
-        await db_manager.save_query(record)
-        retrieved = await db_manager.get_query(query_id)
-
-        assert retrieved is not None
-        assert retrieved.query_id == query_id
-
-    def test_unwritable_configured_db_path_falls_back(self, monkeypatch):
-        """Test startup does not crash when configured storage is not writable."""
+    def test_database_url_env_var_is_respected(self, monkeypatch):
+        """Test DatabaseManager picks up DATABASE_URL from environment."""
         from src.config import get_config
         from src.data.db import DatabaseManager
 
         get_config.cache_clear()
-        monkeypatch.setenv("APP_DATA_DIR", "/proc/render-data")
+        monkeypatch.setenv("DATABASE_URL", "postgresql://user:pass@localhost/testdb")
         try:
+            config = get_config()
+            assert config.storage.database_url == "postgresql://user:pass@localhost/testdb"
             db = DatabaseManager()
-            assert db.db_path.name == "hr_policy_agent.db"
-            assert "/proc/render-data" not in str(db.db_path)
+            assert "localhost" in db._database_url
         finally:
             get_config.cache_clear()
 

@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 
 from src.agents.orchestrator import get_orchestrator
 from src.config import get_config
-from src.data.db import DatabaseManager
+from src.data.db import get_db_manager
 from src.fetch.engine import get_fetch_engine
 from src.models.schemas import (
     FeedbackRecord,
@@ -113,13 +113,9 @@ async def health_check() -> dict:
         result["status"] = "degraded"
 
     try:
-        db = DatabaseManager()
-        if db.db_path.exists():
-            result["components"]["database"] = await db.health_check()
-            if result["components"]["database"].get("status") != "ok":
-                result["status"] = "degraded"
-        else:
-            result["components"]["database"] = {"status": "not_initialized"}
+        result["components"]["database"] = await get_db_manager().health_check()
+        if result["components"]["database"].get("status") != "ok":
+            result["status"] = "degraded"
     except Exception as e:
         result["components"]["database"] = {"status": "error", "error": str(e)}
         result["status"] = "degraded"
@@ -136,9 +132,9 @@ async def list_agents() -> list[dict]:
 @router.get("/queries")
 async def list_queries(limit: int = Query(50, ge=1, le=100)) -> list[dict]:
     """List recent queries from database."""
-    from src.data.db import DatabaseManager
+    from src.data.db import get_db_manager
 
-    db = DatabaseManager()
+    db = get_db_manager()
     try:
         queries = await db.list_queries(limit=limit)
         return [q.model_dump() for q in queries]
@@ -198,7 +194,7 @@ async def _run_polling_query(query_id: str, query_text: str) -> None:
     job["status"] = "running"
     start_time = datetime.utcnow()
 
-    db = DatabaseManager()
+    db = get_db_manager()
     query_record = QueryRecord(
         query_id=query_id,
         query_text=query_text,
@@ -249,9 +245,9 @@ async def _run_polling_query(query_id: str, query_text: str) -> None:
 @router.get("/queries/{query_id}")
 async def get_query(query_id: str) -> dict:
     """Get a specific query with its responses."""
-    from src.data.db import DatabaseManager
+    from src.data.db import get_db_manager
 
-    db = DatabaseManager()
+    db = get_db_manager()
     try:
         query = await db.get_query(query_id)
         if query is None:
@@ -279,9 +275,9 @@ async def get_query(query_id: str) -> dict:
 @router.post("/feedback")
 async def submit_feedback(record: FeedbackRecord) -> dict:
     """Submit feedback for a query."""
-    from src.data.db import DatabaseManager
+    from src.data.db import get_db_manager
 
-    db = DatabaseManager()
+    db = get_db_manager()
     try:
         await db.save_feedback(record)
         return {"status": "ok", "feedback_id": record.feedback_id}
@@ -292,9 +288,9 @@ async def submit_feedback(record: FeedbackRecord) -> dict:
 @router.get("/feedback/export")
 async def export_feedback() -> JSONResponse:
     """Export all feedback records as JSON."""
-    from src.data.db import DatabaseManager
+    from src.data.db import get_db_manager
 
-    db = DatabaseManager()
+    db = get_db_manager()
     try:
         feedback_list = await db.export_feedback()
         return JSONResponse(content=feedback_list)

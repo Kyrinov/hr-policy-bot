@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from src.config import get_config
-from src.data.db import DatabaseManager
+from src.data.db import DatabaseManager, get_db_manager
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class CacheEntry:
 
 class FetchCache:
     def __init__(self, db_manager: DatabaseManager | None = None) -> None:
-        self._db_manager = db_manager or DatabaseManager()
+        self._db_manager = db_manager or get_db_manager()
         self._config = get_config()
 
     async def get(self, url: str) -> CacheEntry | None:

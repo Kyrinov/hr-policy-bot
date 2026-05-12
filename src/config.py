@@ -36,7 +36,7 @@ class CacheConfig(BaseModel):
 
 class StorageConfig(BaseModel):
     data_dir: str = "data"
-    db_path: str | None = None
+    database_url: str | None = None
 
 
 class FetchConfig(BaseModel):
@@ -119,8 +119,8 @@ def _load_config(path: Path) -> AppConfig:
         data.setdefault("server", {})["port"] = int(port)
     if data_dir := os.environ.get("APP_DATA_DIR"):
         data.setdefault("storage", {})["data_dir"] = data_dir
-    if db_path := os.environ.get("APP_DB_PATH"):
-        data.setdefault("storage", {})["db_path"] = db_path
+    if database_url := os.environ.get("DATABASE_URL"):
+        data.setdefault("storage", {})["database_url"] = database_url
     if (enabled := _env_bool("BROWSER_FETCH_ENABLED")) is not None:
         data.setdefault("fetch", {})["browser_fallback_enabled"] = enabled
     if (enabled := _env_bool("PARSING_ENABLED")) is not None:

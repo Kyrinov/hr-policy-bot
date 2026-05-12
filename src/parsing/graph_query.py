@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from src.config import get_config
-from src.data.db import DatabaseManager
+from src.data.db import DatabaseManager, get_db_manager
 from src.models.schemas import PolicyTriple
 
 
 class GraphQueryEngine:
     def __init__(self, db: DatabaseManager | None = None) -> None:
         self._config = get_config()
-        self._db = db or DatabaseManager()
+        self._db = db or get_db_manager()
 
     async def search_triples_semantic(
         self,

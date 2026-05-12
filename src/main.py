@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from src.api.routes import router as api_router
 from src.api.websocket import router as websocket_router
 from src.config import get_config
-from src.data.db import DatabaseManager
+from src.data.db import get_db_manager, init_db_manager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -61,8 +61,7 @@ async def startup_event() -> None:
     logger.info("Starting DND HR-Civ Policy Advisory System")
 
     # Initialize database
-    db = DatabaseManager()
-    await db.initialize()
+    await init_db_manager()
     logger.info("Database initialized")
 
     # Check Ollama connectivity
@@ -90,6 +89,10 @@ async def shutdown_event() -> None:
     logger.info("Shutting down fetch resources")
     await cleanup_browser_fetcher()
     await cleanup_fetch_engine()
+    try:
+        await get_db_manager().close()
+    except Exception:
+        pass
 
 
 @app.get("/")
@@ -111,7 +114,7 @@ async def health_check() -> dict:
 
     # Check database
     try:
-        db = DatabaseManager()
+        get_db_manager()
         health["database"] = "ok"
     except Exception as e:
         health["database"] = f"error: {str(e)}"
