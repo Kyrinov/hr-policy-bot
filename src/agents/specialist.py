@@ -12,6 +12,7 @@ from src.agents.base import GenericAgent
 from src.agents.prompts.specialist_prompts import get_specialist_prompt, get_validate_mode_prompt
 from src.config import get_config
 from src.data.db import DatabaseManager
+from src.data.stopwords import QUERY_STOPWORDS
 from src.fetch.case_law import format_case_law_context, get_case_law_index
 from src.llm.client import get_specialist_client
 from src.models.schemas import CitationItem, PolicyTriple, QueryKISSResult, RetrievalStatus, SpecialistResponse
@@ -28,39 +29,6 @@ _MAX_INSTRUMENTS_PER_QUERY = 4  # 4 docs × ~6k tokens + prompt + query fits wit
 _DOCUMENT_OPENING_CHARS = 3_000
 _MIN_QUERY_TERM_LENGTH = 3
 
-_QUERY_STOPWORDS = {
-    "about",
-    "after",
-    "also",
-    "and",
-    "are",
-    "can",
-    "could",
-    "does",
-    "for",
-    "from",
-    "has",
-    "have",
-    "how",
-    "into",
-    "our",
-    "should",
-    "that",
-    "the",
-    "their",
-    "then",
-    "there",
-    "this",
-    "what",
-    "when",
-    "where",
-    "which",
-    "who",
-    "why",
-    "with",
-    "would",
-    "you",
-}
 
 _SPECIALIST_METADATA: dict[str, tuple[str, str]] = {
     "staffing": (
@@ -387,7 +355,7 @@ def _query_terms(query_text: str) -> list[str]:
     seen: set[str] = set()
     for token in tokens:
         token = token.strip("'")
-        if len(token) < _MIN_QUERY_TERM_LENGTH or token in _QUERY_STOPWORDS:
+        if len(token) < _MIN_QUERY_TERM_LENGTH or token in QUERY_STOPWORDS:
             continue
         if token not in seen:
             seen.add(token)

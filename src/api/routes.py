@@ -113,24 +113,11 @@ async def health_check() -> dict:
         result["status"] = "degraded"
 
     try:
-        import aiosqlite
-
-        from src.data.db import DatabaseManager
-
-        db_path = DatabaseManager().db_path
-        if db_path.exists():
-            async with aiosqlite.connect(db_path) as db:
-                async with db.execute("SELECT COUNT(*) FROM queries") as cursor:
-                    row = await cursor.fetchone()
-                    query_count = row[0] if row else 0
-                async with db.execute("SELECT COUNT(*) FROM feedback") as cursor:
-                    row = await cursor.fetchone()
-                    feedback_count = row[0] if row else 0
-            result["components"]["database"] = {
-                "status": "ok",
-                "query_count": query_count,
-                "feedback_count": feedback_count,
-            }
+        db = DatabaseManager()
+        if db.db_path.exists():
+            result["components"]["database"] = await db.health_check()
+            if result["components"]["database"].get("status") != "ok":
+                result["status"] = "degraded"
         else:
             result["components"]["database"] = {"status": "not_initialized"}
     except Exception as e:

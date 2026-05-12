@@ -688,6 +688,47 @@ class DatabaseManager:
         )
         return node_id
 
+    async def health_check(self) -> dict:
+        """Return query and feedback row counts for system health reporting."""
+        try:
+            async with aiosqlite.connect(self._db_path) as db:
+                query_count = await self._count(db, "queries")
+                feedback_count = await self._count(db, "feedback")
+            return {"status": "ok", "query_count": query_count, "feedback_count": feedback_count}
+        except Exception as e:
+            return {"status": "error", "error": str(e)}
+
+    async def cache_stats(self) -> dict:
+        """Return fetch_cache statistics for cache health reporting."""
+        try:
+            async with aiosqlite.connect(self._db_path) as db:
+                db.row_factory = aiosqlite.Row
+                async with db.execute(
+                    """
+                    SELECT
+                        COUNT(*) as total,
+                        SUM(CASE WHEN datetime(fetched_at, '+' || ttl_hours || ' hours') > datetime('now')
+                            THEN 1 ELSE 0 END) as valid,
+                        SUM(CASE WHEN datetime(fetched_at, '+' || ttl_hours || ' hours') <= datetime('now')
+                            THEN 1 ELSE 0 END) as expired,
+                        COALESCE(SUM(content_length), 0) as total_bytes
+                    FROM fetch_cache
+                    """
+                ) as cursor:
+                    row = await cursor.fetchone()
+                    if row:
+                        total_bytes = row["total_bytes"] or 0
+                        return {
+                            "total": row["total"] or 0,
+                            "valid": row["valid"] or 0,
+                            "expired": row["expired"] or 0,
+                            "total_bytes": total_bytes,
+                            "total_mb": round(total_bytes / (1024 * 1024), 2),
+                        }
+            return {"total": 0, "valid": 0, "expired": 0, "total_bytes": 0, "total_mb": 0.0}
+        except Exception as e:
+            return {"error": str(e)}
+
     async def _count(self, db: aiosqlite.Connection, table_name: str) -> int:
         async with db.execute(f"SELECT COUNT(*) FROM {table_name}") as cursor:
             row = await cursor.fetchone()

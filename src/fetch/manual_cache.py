@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import logging
-import re
 from pathlib import Path
 from typing import Any
+
+from src.fetch.url_utils import normalize_url
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ class ManualPolicyCache:
         self._url_index: dict[str, dict[str, Any]] | None = None
 
     def get(self, url: str) -> str | None:
-        entry = self._entries_by_url().get(_normalize_url(url))
+        entry = self._entries_by_url().get(normalize_url(url))
         if entry is None:
             return None
 
@@ -48,14 +49,9 @@ class ManualPolicyCache:
         for entry in manifest.get("entries", []):
             for url in {entry.get("url"), entry.get("normalized_url")}:
                 if url:
-                    self._url_index[_normalize_url(url)] = entry
+                    self._url_index[normalize_url(url)] = entry
         return self._url_index
 
-
-def _normalize_url(url: str) -> str:
-    if re.search(r"laws-lois\.justice\.gc\.ca/eng/acts/[^/]+/$", url):
-        return url.rstrip("/") + "/FullText.html"
-    return url
 
 
 _manual_policy_cache: ManualPolicyCache | None = None

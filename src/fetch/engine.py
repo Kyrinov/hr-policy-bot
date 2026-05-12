@@ -14,6 +14,7 @@ from src.config import get_config
 from src.fetch.cache import CacheEntry, FetchCache, get_cache
 from src.fetch.extractors import ContentExtractor, get_extractor
 from src.fetch.manual_cache import ManualPolicyCache, get_manual_policy_cache
+from src.fetch.url_utils import normalize_url
 from src.parsing.sage_extractor import get_sage_pipeline
 
 logger = logging.getLogger(__name__)
@@ -67,16 +68,9 @@ class FetchEngine:
 
     async def fetch(self, url: str) -> str:
         """Fetch and return clean text content from a URL."""
-        url = self._normalize_url(url)
+        url = normalize_url(url)
         async with self._global_semaphore:
             return await self._fetch_with_concurrency(url)
-
-    def _normalize_url(self, url: str) -> str:
-        """Rewrite laws-lois act index pages to their FullText.html version for full text retrieval."""
-        import re
-        if re.search(r'laws-lois\.justice\.gc\.ca/eng/acts/[^/]+/$', url):
-            return url.rstrip('/') + '/FullText.html'
-        return url
 
     async def _fetch_with_concurrency(self, url: str) -> str:
         """Fetch with per-domain and global concurrency limits."""

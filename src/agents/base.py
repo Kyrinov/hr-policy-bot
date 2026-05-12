@@ -12,10 +12,11 @@ logger = logging.getLogger(__name__)
 class BaseAgent(abc.ABC):
     """Base interface for all agent types."""
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def agent_id(self) -> str:
         """Unique agent identifier."""
-        pass
+        ...
 
     @abc.abstractmethod
     async def process(self, query_text: str) -> SpecialistResponse:

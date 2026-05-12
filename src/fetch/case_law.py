@@ -7,46 +7,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from src.data.stopwords import QUERY_STOPWORDS
+
 logger = logging.getLogger(__name__)
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _DEFAULT_INDEX_PATH = _PROJECT_ROOT / "data" / "case_law" / "fpslreb_cases.json"
 _MIN_QUERY_TERM_LENGTH = 3
 _MAX_SUMMARY_CHARS = 900
-
-_QUERY_STOPWORDS = {
-    "about",
-    "after",
-    "also",
-    "and",
-    "are",
-    "can",
-    "could",
-    "does",
-    "for",
-    "from",
-    "has",
-    "have",
-    "how",
-    "into",
-    "our",
-    "should",
-    "that",
-    "the",
-    "their",
-    "then",
-    "there",
-    "this",
-    "what",
-    "when",
-    "where",
-    "which",
-    "who",
-    "why",
-    "with",
-    "would",
-    "you",
-}
 
 
 @dataclass(frozen=True)
@@ -170,7 +138,7 @@ def _query_terms(query_text: str) -> list[str]:
     seen: set[str] = set()
     for token in tokens:
         token = token.strip("'")
-        if len(token) < _MIN_QUERY_TERM_LENGTH or token in _QUERY_STOPWORDS:
+        if len(token) < _MIN_QUERY_TERM_LENGTH or token in QUERY_STOPWORDS:
             continue
         if token not in seen:
             seen.add(token)

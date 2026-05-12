@@ -65,7 +65,7 @@ class OllamaClient:
                     or not self._is_retryable_chat_error(exc)
                 ):
                     raise
-                delay = self._CHAT_RETRY_BASE_SECONDS * attempt
+                delay = self._CHAT_RETRY_BASE_SECONDS * (2 ** (attempt - 1))
                 logger.warning(
                     "Retrying Ollama chat for %s after transient error on attempt %d/%d: %s",
                     target_model,
@@ -110,19 +110,24 @@ class OllamaClient:
             keep_alive=0,
         )
 
+    _STREAM_TIMEOUT_SECONDS = 120.0
+
     async def stream_chat(
         self, system_prompt: str, user_message: str, model: str | None = None
     ) -> AsyncGenerator[str, None]:
         """Stream chat responses from Ollama. Yields text chunks as they arrive."""
-        stream = await self._client.chat(
-            model=model or self._model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message},
-            ],
-            options=self._options(),
-            think=self._config.model.think,
-            stream=True,
+        stream = await asyncio.wait_for(
+            self._client.chat(
+                model=model or self._model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message},
+                ],
+                options=self._options(),
+                think=self._config.model.think,
+                stream=True,
+            ),
+            timeout=self._STREAM_TIMEOUT_SECONDS,
         )
         async for chunk in stream:
             content = chunk.message.content or ""
