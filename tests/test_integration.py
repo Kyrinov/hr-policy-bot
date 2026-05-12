@@ -668,6 +668,91 @@ class TestSpecialistRetrieval:
         assert "Article 28 Overtime" in excerpt
         assert "meal allowance" in excerpt
 
+    def test_case_law_index_returns_labour_matches(self, tmp_path):
+        """Compact FPSLREB index should retrieve query-matching labour examples."""
+        from src.fetch.case_law import CaseLawIndex, format_case_law_context
+
+        index_path = tmp_path / "cases.json"
+        index_path.write_text(
+            json.dumps(
+                {
+                    "cases": [
+                        {
+                            "case_id": "fpslreb-test",
+                            "title": "Example v. Deputy Head",
+                            "citation": "2025 FPSLREB 1",
+                            "decision_date": "2025-01-01",
+                            "decision_type": "Labour Relations",
+                            "subject_terms": ["Misconduct"],
+                            "keywords": ["Suspension", "Discipline"],
+                            "summary": "The Board considered discipline proportionality for a suspension.",
+                            "disposition": "Grievance denied.",
+                            "url": "https://example.test/case",
+                            "agent_ids": ["labour"],
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        cases = CaseLawIndex(index_path).search(
+            "Was the suspension discipline proportionate?",
+            agent_id="labour",
+        )
+        context = format_case_law_context(cases)
+
+        assert len(cases) == 1
+        assert "2025 FPSLREB 1" in context
+        assert "interpretive examples" in context
+
+    def test_specialist_adds_case_law_context_only_for_labour(self, monkeypatch, tmp_path):
+        """Only the labour specialist should see FPSLREB case-law context."""
+        from src.agents.specialist import SpecialistAgent
+        from src.fetch.case_law import CaseLawIndex
+
+        index_path = tmp_path / "cases.json"
+        index_path.write_text(
+            json.dumps(
+                {
+                    "cases": [
+                        {
+                            "case_id": "fpslreb-test",
+                            "title": "Example v. Deputy Head",
+                            "citation": "2025 FPSLREB 1",
+                            "decision_date": "2025-01-01",
+                            "decision_type": "Labour Relations",
+                            "subject_terms": ["Misconduct"],
+                            "keywords": ["Suspension", "Discipline"],
+                            "summary": "The Board considered discipline proportionality for a suspension.",
+                            "disposition": "Grievance denied.",
+                            "url": "https://example.test/case",
+                            "agent_ids": ["labour"],
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        class FakeClient:
+            pass
+
+        monkeypatch.setattr(
+            "src.agents.specialist.get_specialist_client",
+            lambda: FakeClient(),
+        )
+        monkeypatch.setattr(
+            "src.agents.specialist.get_case_law_index",
+            lambda: CaseLawIndex(index_path),
+        )
+
+        labour = SpecialistAgent("labour", "Labour", "Labour relations")
+        staffing = SpecialistAgent("staffing", "Staffing", "Staffing")
+
+        assert "2025 FPSLREB 1" in labour._build_case_law_context("suspension discipline")
+        assert staffing._build_case_law_context("suspension discipline") == ""
+
 
 class TestPublicDocumentIngestion:
     """Test local public document ingestion helpers."""

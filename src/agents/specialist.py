@@ -12,6 +12,7 @@ from src.agents.base import GenericAgent
 from src.agents.prompts.specialist_prompts import get_specialist_prompt, get_validate_mode_prompt
 from src.config import get_config
 from src.data.db import DatabaseManager
+from src.fetch.case_law import format_case_law_context, get_case_law_index
 from src.llm.client import get_specialist_client
 from src.models.schemas import CitationItem, PolicyTriple, QueryKISSResult, RetrievalStatus, SpecialistResponse
 from src.parsing.graph_query import get_graph_query
@@ -165,10 +166,17 @@ class SpecialistAgent(GenericAgent):
                 else:
                     failed.append(instrument["title"])
 
-        policy_context = self._build_policy_context(fetched)
+        retrieval_context = "\n\n".join(
+            part
+            for part in [
+                self._build_policy_context(fetched),
+                self._build_case_law_context(query_text),
+            ]
+            if part
+        )
         user_message = (
-            f"QUERY: {query_text}\n\n{policy_context}"
-            if policy_context
+            f"QUERY: {query_text}\n\n{retrieval_context}"
+            if retrieval_context
             else f"QUERY: {query_text}"
         )
 
@@ -250,6 +258,12 @@ class SpecialistAgent(GenericAgent):
             parts.append(content)
             parts.append("\n")
         return "".join(parts)
+
+    def _build_case_law_context(self, query_text: str) -> str:
+        if self._agent_id != "labour":
+            return ""
+        cases = get_case_law_index().search(query_text, self._agent_id, limit=5)
+        return format_case_law_context(cases)
 
     def _parse_response(
         self,

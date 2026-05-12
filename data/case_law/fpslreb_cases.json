@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-05-12T00:00:00",
+  "source": "Federal Public Sector Labour Relations and Employment Board decisions",
+  "scope": "Compact case-law index for retrieval. Entries are interpretive examples only and do not replace legislation, collective agreements, policies, directives, or DAODs.",
+  "cases": [
+    {
+      "case_id": "fpslreb-2026-43",
+      "title": "Houde v. Deputy Head (Correctional Service of Canada)",
+      "citation": "2026 FPSLREB 43",
+      "decision_date": "2026-04-16",
+      "decision_type": "Labour Relations",
+      "subject_terms": [
+        "Aggressive behaviour",
+        "Misconduct"
+      ],
+      "keywords": [
+        "Individual grievance",
+        "Suspension",
+        "Misconduct",
+        "Use of force",
+        "Discipline",
+        "Wm. Scott approach"
+      ],
+      "summary": "The Board denied a grievance challenging an eight-day suspension after a correctional manager used unnecessary and disproportionate force while working an overtime correctional officer shift. The result turned on discipline proportionality, use-of-force seriousness, remorse, prior record, experience, and aggravating/mitigating factors.",
+      "disposition": "Grievance denied.",
+      "url": "https://decisions.fpslreb-crtespf.gc.ca/fpslreb-crtespf/d/en/item/521553/index.do",
+      "agent_ids": [
+        "labour"
+      ]
+    }
+  ]
+}
