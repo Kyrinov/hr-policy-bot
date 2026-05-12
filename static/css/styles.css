@@ -124,6 +124,21 @@ button {
     margin-bottom: 1.5rem;
 }
 
+.dadm-notice {
+    background: #fff8e1;
+    border-left: 3px solid #c8a000;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.dadm-notice p {
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    font-size: 0.875rem;
+    color: #5a4500;
+    margin: 0;
+}
+
 .example-queries {
     background: var(--off-white);
     border: 1px solid var(--border);
