@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-11T16:42:34.840413",
-  "entry_count": 115,
+  "generated_at": "2026-05-12T10:22:19.093266",
+  "entry_count": 116,
   "entries": [
     {
       "id": "accessibility-strategy-for-the-public-service",
@@ -1331,17 +1331,30 @@
       "chars": 19887
     },
     {
-      "id": "qualification-standards",
-      "title": "Qualification Standards",
+      "type": "Reference",
+      "agent_ids": [
+        "governance"
+      ],
+      "path": "data/manual_policy_cache/qualification-standards.txt",
+      "chars": 43364,
+      "capture_method": "local_public_document_optimized",
+      "id": "qualification-standard-for-the-executive-group",
+      "title": "Qualification Standard for the Executive Group",
+      "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/core.html#ex",
+      "normalized_url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/core.html#ex"
+    },
+    {
       "type": "PSC Instrument",
       "agent_ids": [
         "staffing"
       ],
-      "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/overview.html",
-      "normalized_url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/overview.html",
       "path": "data/manual_policy_cache/qualification-standards.txt",
-      "chars": 102655,
-      "capture_method": "playwright"
+      "chars": 43364,
+      "capture_method": "local_public_document_optimized",
+      "id": "qualification-standards",
+      "title": "Qualification Standards",
+      "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/core.html",
+      "normalized_url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/core.html"
     },
     {
       "id": "qualification-standards-in-relation-to-official-languages",
@@ -1465,11 +1478,6 @@
     {
       "id": "fpslreb-decisions-database",
       "title": "FPSLREB Decisions Database",
-      "error": "HTTP 404"
-    },
-    {
-      "id": "qualification-standard-for-the-executive-group",
-      "title": "Qualification Standard for the Executive Group",
       "error": "HTTP 404"
     }
   ]

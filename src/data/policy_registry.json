@@ -108,7 +108,7 @@
     "id": "qualification-standards",
     "title": "Qualification Standards",
     "type": "PSC Instrument",
-    "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/overview.html",
+    "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/core.html",
     "agent_ids": ["staffing"]
   },
   {
@@ -738,7 +738,7 @@
     "id": "qualification-standard-for-the-executive-group",
     "title": "Qualification Standard for the Executive Group",
     "type": "Reference",
-    "url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=17800",
+    "url": "https://www.canada.ca/en/treasury-board-secretariat/services/staffing/qualification-standards/core.html#ex",
     "agent_ids": ["governance"]
   },
   {
