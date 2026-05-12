@@ -248,13 +248,25 @@ class SpecialistAgent(GenericAgent):
         )
         try:
             text = raw.strip()
+            # Strip markdown code fences if present
+            if text.startswith("```"):
+                text = text.split("\n", 1)[-1]
+            if text.endswith("```"):
+                text = text.rsplit("```", 1)[0]
+            text = text.strip()
             start = text.find('{')
             if start > 0:
                 text = text[start:]
             end = text.rfind('}')
             if end >= 0:
                 text = text[:end + 1]
-            parsed = json.loads(text)
+            try:
+                parsed = json.loads(text)
+            except json.JSONDecodeError:
+                # Second pass: strip control characters that break the parser
+                import re
+                sanitized = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', text)
+                parsed = json.loads(sanitized)
             citations = [CitationItem(**c) for c in parsed.get("citations", [])]
             return SpecialistResponse(
                 agent_id=parsed.get("agent_id", self._agent_id),
