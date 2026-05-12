@@ -1,0 +1,116 @@
+# Codex Agent Context
+# DND HR-Civ Multi-Agent Policy Advisory System
+
+## Project Purpose
+
+Pilot proof-of-concept multi-agent system for DND ADM(HR-Civ). HR policy advisors ask questions; specialist agents fetch and analyze authoritative federal policy instruments; an orchestrator synthesizes a cited response.
+
+## Architecture
+
+```
+src/
+├── main.py              # FastAPI entry point
+├── config.py            # get_config() singleton — all config comes from here
+├── agents/
+│   ├── base.py          # BaseAgent interface
+│   ├── orchestrator.py  # Routes queries, synthesizes responses
+│   ├── specialist.py    # 8 domain agents driven by policy_registry.json
+│   └── prompts/         # System prompts (orchestrator + specialists)
+├── fetch/
+│   ├── engine.py        # Async HTTP fetch with rate limiting — use this for all fetching
+│   ├── cache.py         # SQLite fetch cache
+│   ├── extractors.py    # HTML → text extraction
+│   └── selectors.yaml   # CSS selectors per domain
+├── llm/
+│   └── client.py        # OllamaClient — use this for all LLM calls
+├── data/
+│   ├── policy_registry.json  # 117 instruments across 8 agent domains
+│   └── db.py            # DatabaseManager — use this for all SQLite access
+├── api/
+│   ├── routes.py        # REST endpoints
+│   └── websocket.py     # WebSocket streaming
+└── models/
+    └── schemas.py       # All Pydantic v2 models
+```
+
+## Hard Rules
+
+1. **All LLM calls → `OllamaClient` in `src/llm/client.py`.** Never call `ollama.*` directly from agents.
+2. **All web fetching → `FetchEngine` in `src/fetch/engine.py`.** Never use `httpx` directly from agents or api modules.
+3. **All SQLite access → `DatabaseManager` in `src/data/db.py`.** Never call `aiosqlite.connect()` outside that file.
+4. **All config → `get_config()` from `src/config.py`.** Never open `config.yaml` directly.
+5. **Do not modify `src/data/policy_registry.json`** without explicit instruction.
+6. **Epistemic humility**: Agent prompts must instruct the model to decline or qualify when policy instruments don't cover the query. No confabulation.
+7. **No features beyond task scope.** Implement exactly what is specified.
+
+## Code Style
+
+- Python 3.10+. Type hints everywhere. `list[X]` not `List[X]`. `Optional[X]` for nullable.
+- All I/O must be `async def`. Use `asyncio.gather()` for parallel operations.
+- Imports: stdlib → third-party → local, blank line between groups.
+- f-strings only. No `%` formatting, no `.format()`.
+- No comments on obvious code. Comments only for non-obvious invariants.
+
+## Key Patterns
+
+```python
+# Config
+from src.config import get_config
+config = get_config()
+
+# Database
+from src.data.db import DatabaseManager
+db = DatabaseManager()
+await db.initialize()
+
+# LLM
+from src.llm.client import OllamaClient
+client = OllamaClient()
+response = await client.chat(system_prompt, user_message)
+
+# Fetch
+from src.fetch.engine import FetchEngine
+engine = FetchEngine()
+content = await engine.fetch(url)
+
+# Models
+from src.models.schemas import PolicyInstrument, SpecialistResponse, OrchestratorResponse, QueryRecord, RetrievalStatus
+```
+
+## Mandatory Post-Task Validation
+
+**A task is not complete until `bash scripts/validate.sh` exits cleanly.**
+
+```bash
+bash scripts/validate.sh
+```
+
+### Validation layers
+
+| Layer | What it checks | Fail condition |
+|-------|---------------|----------------|
+| L0 Syntax | `py_compile` all `.py` files | Any syntax error |
+| L1 Boundaries | Architecture bypass detection | `httpx` in agents/api; `aiosqlite.connect` outside `db.py`; `ollama.*` outside `llm/client.py`; `config.yaml` opened outside `config.py` |
+| L2 Registry | `policy_registry.json` validity | Missing fields, unknown `agent_id`, non-http URL |
+| L3 Schemas | Import of 5 canonical Pydantic classes | `ImportError` or missing export |
+| L4 Tests | `pytest tests/ -q --tb=short` | Any test failure |
+| L5 Prompts | Epistemic-humility keyword scan on prompt files | Prompt lacks refusal/qualification language |
+
+### Known pre-existing violations — do not fix, do not replicate
+
+The script will flag these two lines. They predate your task and are not your responsibility. But you must not introduce any new violations of the same kind:
+
+- `src/api/routes.py:122` — health-check endpoint opens raw `aiosqlite.connect`
+- `src/fetch/cache.py:121` — `FetchCache.health_check()` opens raw `aiosqlite.connect`
+
+If `validate.sh` reports any failures beyond those two, fix your code first.
+
+### Quick pre-script self-check
+
+Before running the script, verify your own output:
+
+- No `import httpx` in `src/agents/` or `src/api/`?
+- No `aiosqlite.connect(` outside `src/data/db.py`?
+- No `ollama.` or `import ollama` outside `src/llm/client.py`?
+- No `open("config.yaml")` outside `src/config.py`?
+- Every new agent prompt file contains a clause for declining when instruments are insufficient?

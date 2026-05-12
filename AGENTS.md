@@ -123,3 +123,41 @@ engine = FetchEngine()
 content = await engine.fetch(url)
 results = await engine.fetch_batch(urls)
 ```
+
+## Mandatory Post-Task Validation
+
+You must run the validation script after completing any task and before reporting it done. **A task is not complete until `scripts/validate.sh` exits 0** (or exits with only the two known pre-existing violations listed below).
+
+```bash
+bash scripts/validate.sh
+```
+
+### What each layer checks
+
+| Layer | Check | Fail condition |
+|-------|-------|----------------|
+| L0 Syntax | `py_compile` every `.py` file | Any syntax error |
+| L1 Boundaries | grep for architecture bypass | httpx in agents/api; aiosqlite outside db.py; ollama outside llm/client.py; config.yaml opened outside config.py |
+| L2 Registry | JSON validity + field/agent-id check | Missing fields, unknown agent_id, bad URL |
+| L3 Schemas | Import of 5 canonical Pydantic classes | ImportError or missing class |
+| L4 Tests | `pytest tests/ -q --tb=short` | Any test failure |
+| L5 Prompts | Epistemic-humility keyword scan | Prompt file lacks refusal/qualification language |
+
+### Known pre-existing violations (do not fix, do not replicate)
+
+These two violations exist in the codebase before your task. The script will flag them. They are **not** your responsibility to fix, but you must not introduce additional violations of the same kind:
+
+- `src/api/routes.py:122` — health-check opens raw `aiosqlite.connect`
+- `src/fetch/cache.py:121` — `FetchCache.health_check()` opens raw `aiosqlite.connect`
+
+If `validate.sh` reports failures beyond these two lines, fix your code before reporting the task complete.
+
+### Quick self-check before running the script
+
+Before running the script, scan your own output for these common mistakes:
+
+- Did you `import httpx` anywhere in `src/agents/` or `src/api/`? → Remove it, use `FetchEngine`.
+- Did you call `aiosqlite.connect(...)` anywhere outside `src/data/db.py`? → Remove it, use `DatabaseManager`.
+- Did you call `ollama.chat(...)` or `import ollama` outside `src/llm/client.py`? → Remove it, use `OllamaClient`.
+- Did you open `config.yaml` directly? → Remove it, use `get_config()`.
+- Did you add an agent prompt without a clause that declines to answer when instruments are insufficient? → Add one.

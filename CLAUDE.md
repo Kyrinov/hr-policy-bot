@@ -47,13 +47,61 @@ TASK-014 [CLAUDE CODE] → TASK-015 [CLAUDE CODE] → TASK-016 [CLAUDE CODE] →
 
 Tasks marked [CLAUDE CODE] must be implemented by Claude Code (Sonnet 4.6) directly.
 
-## Validation
+## Validation Loop
 
-After each OpenCode task completion:
-1. Read all output files.
-2. Verify against acceptance criteria in the task spec.
-3. Run `python -m py_compile` on all Python files.
-4. Run applicable tests.
+**Every task — whether implemented by Claude Code, OpenCode, or any other agent — must pass the full validation loop before being declared complete.** Run it from the project root:
+
+```bash
+bash scripts/validate.sh
+```
+
+The script runs five layers in order and exits non-zero if any layer fails. Do not commit or mark a task done while any layer is red.
+
+### Layer 0 — Syntax
+`python -m py_compile` on every `.py` file under `src/`, `tests/`, and `scripts/`. Catches import errors and typos before anything else runs.
+
+### Layer 1 — Architecture boundaries
+Grep-based static checks that enforce the layering rules:
+
+| Check | Rule |
+|-------|------|
+| No `httpx` in `src/agents/` or `src/api/` | Web fetching must go through `src/fetch/engine.py` |
+| No `aiosqlite.connect` outside `src/data/db.py` | All SQLite access goes through `DatabaseManager` |
+| No `ollama.*` outside `src/llm/client.py` | All LLM calls go through `OllamaClient` |
+| No `open("config.yaml")` outside `src/config.py` | Config loaded only via `get_config()` |
+
+**Known pre-existing violations** (technical debt, not regressions introduced by new work):
+- `src/api/routes.py:122` — health-check endpoint opens raw aiosqlite connection
+- `src/fetch/cache.py:121` — `FetchCache.health_check()` opens raw aiosqlite connection
+
+Any new code that triggers these checks is a hard blocker. The two known violations above must not grow.
+
+### Layer 2 — Policy registry integrity
+Validates `src/data/policy_registry.json`:
+- Parses as valid JSON
+- Every instrument has `id`, `title`, `type`, `url`, `agent_ids`
+- Every URL starts with `http`
+- Every `agent_id` is one of the 8 valid domains
+
+Run this layer any time `policy_registry.json` is touched.
+
+### Layer 3 — Schema imports
+Imports the five canonical Pydantic classes from `src/models/schemas.py`. Catches missing exports, renamed models, and circular imports.
+
+### Layer 4 — Test suite
+Runs `pytest tests/ -q --tb=short`. All 36+ tests must pass. If you add a module, add tests for it in the same task.
+
+### Layer 5 — Epistemic-humility audit
+Checks that every non-`__init__` file under `src/agents/prompts/` contains language instructing the agent to decline or qualify when instruments don't support the query. Any prompt file lacking such language triggers a warning. Hardening agent prompts against confabulation is a first-class concern for this system.
+
+### When to run which layers
+
+| Event | Layers |
+|-------|--------|
+| Any `.py` file changed | 0, 1, 3, 4 |
+| `policy_registry.json` changed | 2 (plus 0, 1, 3, 4) |
+| Agent prompt file changed | 5 (plus 0, 1, 3, 4) |
+| Full pre-commit check | All layers (default `bash scripts/validate.sh`) |
 
 ## Running the System
 
