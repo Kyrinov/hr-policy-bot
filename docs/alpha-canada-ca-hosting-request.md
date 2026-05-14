@@ -11,7 +11,7 @@ alpha.canada.ca is a Government of Canada domain for digital prototypes, managed
 Before submitting, verify the Render public hostname resolves correctly:
 
 ```bash
-curl -I https://hr-policy-bot-web-app.onrender.com/health
+curl -I https://hr-policy-bot-1yy5.onrender.com/health
 ```
 
 Expected: HTTP 200. This hostname is the CNAME target.
@@ -52,7 +52,7 @@ resource "aws_route53_record" "dnd-rh-hr-alpha-canada-ca-CNAME" {
   name    = "dnd-rh-hr.alpha.canada.ca"
   type    = "CNAME"
   records = [
-    "hr-policy-bot-web-app.onrender.com"
+    "hr-policy-bot-1yy5.onrender.com"
   ]
   ttl = "300"
 }
@@ -79,7 +79,7 @@ Submit a PR from `Kyrinov/dns` → `cds-snc/dns`. Use this PR body:
 >
 > **Purpose:** Multi-agent AI system that provides HR advisors at DND ADM(HR-Civ) with accurate, referenced guidance on federal civilian HR policy. Orchestrates 8 specialist agents querying 147 authoritative policy instruments (PSEA, CHRA, collective agreements, TBS directives, etc.).
 >
-> **Record type:** CNAME → `hr-policy-bot-web-app.onrender.com`
+> **Record type:** CNAME → `hr-policy-bot-1yy5.onrender.com`
 >
 > **Tech contact:** Charles Humphrey — chumphrey385@gmail.com
 >
@@ -111,4 +111,4 @@ dig dnd-rh-hr.alpha.canada.ca CNAME
 curl -I https://dnd-rh-hr.alpha.canada.ca/health
 ```
 
-Expected: CNAME → `hr-policy-bot-web-app.onrender.com`, health endpoint returns HTTP 200.
+Expected: CNAME → `hr-policy-bot-1yy5.onrender.com`, health endpoint returns HTTP 200.
