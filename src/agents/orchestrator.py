@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 import time
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -72,7 +73,7 @@ EPISTEMIC STANDARDS:
 CRITICAL — OUTPUT FORMAT: Respond with ONLY a valid JSON object. Do not write any text, preamble, or explanation outside the JSON. The JSON must match this structure exactly:
 {
   "summary": "string — the direct answer in natural language (2-4 sentences)",
-  "detailed_analysis": "string — the full multi-layered analysis integrating all specialties",
+  "detailed_analysis": "string — the full multi-layered analysis integrating all specialties, formatted as accessible Markdown with short sections, short paragraphs, and bullet points for relevant specialist findings",
   "policy_tensions": "string or null — any identified conflicts between instruments",
   "citations": [
     {
@@ -90,6 +91,14 @@ CRITICAL — OUTPUT FORMAT: Respond with ONLY a valid JSON object. Do not write 
 }
 
 Begin your synthesis directly with the JSON object. Do not include any preface, introductory text, or text outside the JSON.
+
+ACCESSIBLE STRUCTURE:
+- Format detailed_analysis for readability, including for users with dyslexia.
+- Do not return detailed_analysis as one long paragraph.
+- Use short Markdown sections with clear headings.
+- Keep paragraphs to one or two sentences.
+- Put relevant specialist/subagent findings in bullets grouped by agent or topic.
+- Use blank lines between sections and bullet groups.
 """
 
 
@@ -162,6 +171,9 @@ class OrchestratorAgent(GenericAgent):
                     specialist_responses,
                 )
             ]
+            parsed["detailed_analysis"] = self._format_detailed_analysis(
+                str(parsed.get("detailed_analysis", ""))
+            )
             orch_response = OrchestratorResponse(**parsed)
             orch_response.deterministic_grounding = self._deterministic_grounding(
                 specialist_responses,
@@ -215,10 +227,31 @@ class OrchestratorAgent(GenericAgent):
                     parts.append(line + "\n")
 
         parts.append(
-            "\n\nSynthesize these responses into a comprehensive answer. In the citations array, include only the citations that directly support your final answer. Do not copy the full specialist citation lists. Respond with ONLY the JSON object described in your system prompt — no preamble, no explanation outside the JSON."
+            "\n\nSynthesize these responses into a comprehensive answer. Format detailed_analysis as accessible Markdown with short sections, short paragraphs, and bullet points for the relevant specialist/subagent findings; do not return it as one large paragraph. In the citations array, include only the citations that directly support your final answer. Do not copy the full specialist citation lists. Respond with ONLY the JSON object described in your system prompt — no preamble, no explanation outside the JSON."
         )
 
         return "".join(parts)
+
+    def _format_detailed_analysis(self, detailed_analysis: str) -> str:
+        """Break single-paragraph synthesis into shorter blocks for readability."""
+        text = detailed_analysis.strip()
+        if not text:
+            return text
+
+        has_structure = "\n\n" in text or re.search(r"(?m)^\s*(#{1,6}|\-|\*)\s+", text)
+        if has_structure:
+            return text
+
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+        sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+        if len(sentences) <= 2:
+            return text
+
+        paragraphs = [
+            " ".join(sentences[index:index + 2])
+            for index in range(0, len(sentences), 2)
+        ]
+        return "\n\n".join(paragraphs)
 
     def _normalize_synthesis_citations(
         self,

@@ -405,6 +405,85 @@ class TestOrchestrator:
         assert response.citations[0].relevant_section == "Section 4"
         get_config.cache_clear()
 
+    def test_orchestrator_prompt_requests_accessible_detailed_analysis(
+        self, monkeypatch
+    ):
+        """Synthesis prompt should ask for dyslexia-friendly structure."""
+        import src.agents.orchestrator as orchestrator_module
+        from src.agents.orchestrator import OrchestratorAgent
+        from src.config import get_config
+
+        class FakeOllamaClient:
+            pass
+
+        get_config.cache_clear()
+        monkeypatch.setattr(
+            orchestrator_module,
+            "get_orchestrator_client",
+            lambda: FakeOllamaClient(),
+        )
+
+        agent = OrchestratorAgent()
+        prompt = agent._build_synthesis_prompt(
+            "What applies?",
+            [
+                {
+                    "agent_id": "staffing",
+                    "findings": "Staffing finding.",
+                    "confidence": "high",
+                    "citations": [],
+                }
+            ],
+        )
+
+        assert "accessible Markdown" in orchestrator_module.ORCHESTRATOR_PROMPT
+        assert "users with dyslexia" in orchestrator_module.ORCHESTRATOR_PROMPT
+        assert "do not return it as one large paragraph" in prompt
+        get_config.cache_clear()
+
+    @pytest.mark.asyncio
+    async def test_orchestrator_breaks_single_paragraph_analysis(
+        self, monkeypatch
+    ):
+        """Single-paragraph detailed analysis should be split into readable blocks."""
+        import json
+
+        import src.agents.orchestrator as orchestrator_module
+        from src.agents.orchestrator import OrchestratorAgent
+        from src.config import get_config
+
+        class FakeOllamaClient:
+            async def chat(self, system_prompt, user_message, model=None):
+                return json.dumps(
+                    {
+                        "summary": "Use the Policy on People Management.",
+                        "detailed_analysis": (
+                            "Staffing rules apply. Classification may also be relevant. "
+                            "Labour relations should be consulted. Document the rationale."
+                        ),
+                        "policy_tensions": None,
+                        "citations": [],
+                        "gaps_and_limitations": None,
+                        "recommended_consultation": None,
+                        "agents_consulted": ["staffing", "classification", "labour"],
+                        "overall_confidence": "medium",
+                    }
+                )
+
+        get_config.cache_clear()
+        monkeypatch.setattr(
+            orchestrator_module,
+            "get_orchestrator_client",
+            lambda: FakeOllamaClient(),
+        )
+
+        agent = OrchestratorAgent()
+        response = await agent.process("What applies?", [])
+
+        assert "\n\n" in response.detailed_analysis
+        assert response.detailed_analysis.startswith("Staffing rules apply.")
+        get_config.cache_clear()
+
     @pytest.mark.asyncio
     async def test_orchestrator_fills_missing_sourced_from_agent(
         self, monkeypatch
