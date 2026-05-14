@@ -1,11 +1,15 @@
 """Integration tests for the DND HR-Civ Policy Advisory System."""
 
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import httpx
 import pytest
 from src.models.schemas import PolicyInstrument, SpecialistResponse, RetrievalStatus
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class TestPydanticModels:
@@ -38,6 +42,47 @@ class TestPydanticModels:
         )
         assert response.agent_id == "staffing"
         assert response.confidence == "high"
+
+
+class TestStaticAccessibility:
+    """Accessibility guardrails for the prototype frontend."""
+
+    def test_static_shell_has_accessible_landmarks_and_labels(self):
+        """Main static shell exposes keyboard and assistive technology structure."""
+        html = (ROOT / "static/index.html").read_text(encoding="utf-8")
+
+        assert 'class="skip-link"' in html
+        assert 'id="liveStatus"' in html
+        assert 'role="log"' in html
+        assert 'aria-live="polite"' in html
+        assert '<label class="sr-only" for="queryInput">' in html
+        assert 'aria-describedby="queryInputNote"' in html
+        assert 'role="progressbar"' in html
+        assert 'aria-hidden="true"' in html
+        assert 'class="agent-status-text">Idle</span>' in html
+        assert 'class="accessibility-panel"' in html
+
+    def test_mobile_layout_keeps_citations_and_feedback_available(self):
+        """Responsive CSS must not hide citation or feedback panels."""
+        css = (ROOT / "static/css/styles.css").read_text(encoding="utf-8")
+
+        assert "prefers-reduced-motion: reduce" in css
+        assert "forced-colors: active" in css
+        assert ":focus-visible" in css
+        assert ".citation-panel,\n    .feedback-panel {\n        display: none;" not in css
+
+    def test_dynamic_rendering_uses_semantic_and_safe_patterns(self):
+        """Response, citation, and feedback rendering should preserve semantics."""
+        js = (ROOT / "static/js/app.js").read_text(encoding="utf-8")
+
+        assert "function renderMarkdownInto" in js
+        assert "document.createElement('h3')" in js
+        assert "document.createElement('ul')" in js
+        assert "link.textContent = citation.instrument_title" in js
+        assert 'aria-pressed="false"' in js
+        assert "statusText.textContent = formatStatus(data.status)" in js
+        assert "announce('Response complete." in js
+        assert "wrapWithCitations" not in js
 
 
 class TestConfig:

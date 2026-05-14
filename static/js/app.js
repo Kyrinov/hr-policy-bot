@@ -23,6 +23,8 @@
     const feedbackContent = document.getElementById('feedbackContent');
     const progressBarArea = document.getElementById('progressBarArea');
     const progressStatusText = document.getElementById('progressStatusText');
+    const liveStatus = document.getElementById('liveStatus');
+    const queryForm = document.getElementById('queryForm');
 
     const AGENT_DISPLAY_NAMES = {
         orchestrator: 'Orchestrator',
@@ -39,6 +41,7 @@
     function showProgress(text) {
         progressStatusText.textContent = text;
         progressBarArea.hidden = false;
+        announce(text);
     }
 
     function hideProgress() {
@@ -46,18 +49,28 @@
         progressStatusText.textContent = '';
     }
 
+    function announce(text) {
+        if (liveStatus) {
+            liveStatus.textContent = text;
+        }
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
 
     function init() {
         setupEventListeners();
+        sendButton.disabled = queryInput.value.trim().length === 0;
         if (ENABLE_WEBSOCKET) {
             connectWebSocket();
         }
     }
 
     function setupEventListeners() {
-        sendButton.addEventListener('click', submitQuery);
+        queryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            submitQuery();
+        });
         
         queryInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -69,7 +82,6 @@
         queryInput.addEventListener('input', () => {
             const hasText = queryInput.value.trim().length > 0;
             sendButton.disabled = !hasText || isProcessing();
-            sendButton.style.opacity = hasText && !isProcessing() ? '1' : '0.6';
         });
 
         // submitFeedback listener is wired in showFeedbackControls() after the element is created
@@ -162,7 +174,9 @@
         const agentItem = agentList.querySelector(`[data-agent="${data.agent_id}"]`);
         if (agentItem) {
             const statusDot = agentItem.querySelector('.status-dot');
+            const statusText = agentItem.querySelector('.agent-status-text');
             statusDot.setAttribute('data-status', data.status);
+            statusText.textContent = formatStatus(data.status);
         }
 
         if (data.status === 'working') {
@@ -212,18 +226,12 @@
             const textEl = messageEl.querySelector('.message-text');
 
             if (resp && textEl) {
-                let html = '';
-                if (resp.summary) {
-                    html += `<p>${resp.summary}</p>`;
-                }
-                if (resp.detailed_analysis) {
-                    html += `<p style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">${resp.detailed_analysis}</p>`;
-                }
-                textEl.innerHTML = html || '<p><em>Response received but contained no text.</em></p>';
+                renderResponseText(textEl, resp);
             }
 
             renderCitations((data.orchestrator_response && data.orchestrator_response.citations) ? data.orchestrator_response.citations : []);
             showFeedbackControls(currentQueryId);
+            announce('Response complete. Policy citations and feedback controls are now available.');
             scrollToBottom();
         } catch (err) {
             console.error('Error rendering response:', err);
@@ -239,6 +247,7 @@
         scrollToBottom();
         hideProgress();
         resetProcessingState();
+        announce(`Error processing query. ${data.message}`);
     }
 
     function submitQuery() {
@@ -252,6 +261,9 @@
         // Reset agent dots to idle before each new query
         agentList.querySelectorAll('.status-dot').forEach(dot => {
             dot.setAttribute('data-status', 'idle');
+        });
+        agentList.querySelectorAll('.agent-status-text').forEach(text => {
+            text.textContent = 'Idle';
         });
 
         if (canUseWebSocket()) {
@@ -359,10 +371,14 @@
             
             const headers = document.createElement('div');
             headers.className = 'message-header';
-            headers.innerHTML = `
-                <span class="agent-badge">Orchestrator</span>
-                <span class="message-time">${formatTime(new Date())}</span>
-            `;
+            const badge = document.createElement('span');
+            badge.className = 'agent-badge';
+            badge.textContent = 'Orchestrator';
+            const time = document.createElement('span');
+            time.className = 'message-time';
+            time.textContent = formatTime(new Date());
+            headers.appendChild(badge);
+            headers.appendChild(time);
             
             const textDiv = document.createElement('div');
             textDiv.className = 'message-text';
@@ -377,47 +393,84 @@
         return messageDiv;
     }
 
-    function updateMessageWithMetadata(messageEl, response) {
-        const textEl = messageEl.querySelector('.message-text');
-        const agentBadges = messageEl.querySelector('.agent-badges');
-        const footer = messageEl.querySelector('.message-footer');
+    function renderResponseText(textEl, response) {
+        textEl.textContent = '';
 
-        // Update main text
         if (response.summary) {
-            textEl.innerHTML = wrapWithCitations(response.summary, response.citations || []);
+            renderMarkdownInto(textEl, response.summary);
         }
 
         if (response.detailed_analysis) {
-            textEl.innerHTML += `<p style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">${response.detailed_analysis}</p>`;
+            const detail = document.createElement('div');
+            detail.className = 'response-detail';
+            renderMarkdownInto(detail, response.detailed_analysis);
+            textEl.appendChild(detail);
         }
 
-        // Update agent badges
-        if (response.agents_consulted && response.agents_consulted.length > 0 && agentBadges) {
-            const badgeNames = {
-                'staffing': 'Staffing',
-                'classification': 'Classification',
-                'labour': 'Labour',
-                'learning': 'Learning',
-                'equity': 'Equity',
-                'ohs': 'Safety',
-                'languages': 'Languages',
-                'governance': 'Governance'
-            };
-            agentBadges.innerHTML = response.agents_consulted
-                .map(id => `<span class="agent-badge">${badgeNames[id] || id}</span>`)
-                .join('');
+        if (!response.summary && !response.detailed_analysis) {
+            const empty = document.createElement('p');
+            const emphasis = document.createElement('em');
+            emphasis.textContent = 'Response received but contained no text.';
+            empty.appendChild(emphasis);
+            textEl.appendChild(empty);
+        }
+    }
+
+    function renderMarkdownInto(container, markdown) {
+        const lines = String(markdown || '').replace(/\r\n/g, '\n').split('\n');
+        let paragraphLines = [];
+        let list = null;
+
+        function flushParagraph() {
+            if (paragraphLines.length === 0) return;
+            const p = document.createElement('p');
+            p.textContent = paragraphLines.join(' ');
+            container.appendChild(p);
+            paragraphLines = [];
         }
 
-        // Update confidence badge
-        if (footer) {
-            const newFooter = document.createElement('div');
-            newFooter.className = 'message-footer';
-            const confidenceClass = `confidence-${(response.overall_confidence || 'medium').toLowerCase()}`;
-            newFooter.innerHTML = `
-                <span class="confidence-badge ${confidenceClass}">${response.overall_confidence || 'medium'} confidence</span>
-            `;
-            messageEl.appendChild(newFooter);
+        function flushList() {
+            if (!list) return;
+            container.appendChild(list);
+            list = null;
         }
+
+        lines.forEach(rawLine => {
+            const line = rawLine.trim();
+            if (!line) {
+                flushParagraph();
+                flushList();
+                return;
+            }
+
+            const heading = line.match(/^#{1,4}\s+(.+)$/);
+            if (heading) {
+                flushParagraph();
+                flushList();
+                const h = document.createElement('h3');
+                h.textContent = heading[1];
+                container.appendChild(h);
+                return;
+            }
+
+            const bullet = line.match(/^[-*]\s+(.+)$/);
+            if (bullet) {
+                flushParagraph();
+                if (!list) {
+                    list = document.createElement('ul');
+                }
+                const li = document.createElement('li');
+                li.textContent = bullet[1];
+                list.appendChild(li);
+                return;
+            }
+
+            flushList();
+            paragraphLines.push(line);
+        });
+
+        flushParagraph();
+        flushList();
     }
 
     function renderCitations(citations) {
@@ -447,28 +500,55 @@
 
             Object.entries(groupedByAgent).forEach(([agentId, agentCitations]) => {
                 const groupDiv = document.createElement('div');
-                groupDiv.innerHTML = `
-                    <p style="font-family: 'Calibri', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); margin-bottom: 0.5rem;">
-                        ${agentNames[agentId] || agentId}
-                    </p>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        ${agentCitations.map(citation => `
-                            <div class="citation-item">
-                                <div class="citation-item-title">
-                                    ${citation.url
-                                        ? `<a href="${citation.url}" target="_blank" rel="noopener noreferrer">${citation.instrument_title}</a>`
-                                        : citation.instrument_title}
-                                </div>
-                                <div class="citation-type">${citation.instrument_type}</div>
-                                ${citation.relevant_section ? `<div class="citation-section">Section: ${citation.relevant_section}</div>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                const heading = document.createElement('p');
+                heading.className = 'citation-agent-heading';
+                heading.textContent = agentNames[agentId] || agentId;
+                const citationGroup = document.createElement('div');
+                citationGroup.className = 'citation-group';
+
+                agentCitations.forEach(citation => {
+                    const item = document.createElement('div');
+                    item.className = 'citation-item';
+
+                    const title = document.createElement('div');
+                    title.className = 'citation-item-title';
+                    if (citation.url) {
+                        const link = document.createElement('a');
+                        link.href = citation.url;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        link.textContent = citation.instrument_title || 'Untitled instrument';
+                        title.appendChild(link);
+                    } else {
+                        title.textContent = citation.instrument_title || 'Untitled instrument';
+                    }
+
+                    const type = document.createElement('div');
+                    type.className = 'citation-type';
+                    type.textContent = citation.instrument_type || 'Policy instrument';
+
+                    item.appendChild(title);
+                    item.appendChild(type);
+
+                    if (citation.relevant_section) {
+                        const section = document.createElement('div');
+                        section.className = 'citation-section';
+                        section.textContent = `Section: ${citation.relevant_section}`;
+                        item.appendChild(section);
+                    }
+
+                    citationGroup.appendChild(item);
+                });
+
+                groupDiv.appendChild(heading);
+                groupDiv.appendChild(citationGroup);
                 citationList.appendChild(groupDiv);
             });
         } else {
-            citationList.innerHTML = '<p class="citation-placeholder">No citations available for this response.</p>';
+            const placeholder = document.createElement('p');
+            placeholder.className = 'citation-placeholder';
+            placeholder.textContent = 'No citations available for this response.';
+            citationList.appendChild(placeholder);
         }
     }
 
@@ -477,16 +557,18 @@
         
         feedbackContent.innerHTML = `
             <div class="feedback-controls">
-                <p style="font-family: 'Calibri', sans-serif; font-size: 0.8rem; color: var(--text); margin-bottom: 0.5rem;">
-                    How accurate was this response?
-                </p>
-                <div class="feedback-buttons">
-                    <button class="btn-feedback accurate" data-rating="accurate">✓ Accurate</button>
-                    <button class="btn-feedback needs-work" data-rating="needs-work">⚠ Needs Work</button>
-                </div>
+                <fieldset class="feedback-rating">
+                    <legend>How accurate was this response?</legend>
+                    <div class="feedback-buttons">
+                        <button type="button" class="btn-feedback accurate" data-rating="accurate" aria-pressed="false">Accurate</button>
+                        <button type="button" class="btn-feedback needs-work" data-rating="needs-work" aria-pressed="false">Needs Work</button>
+                    </div>
+                </fieldset>
+                <p class="feedback-error" id="feedbackError" tabindex="-1" hidden>Please select Accurate or Needs Work.</p>
                 <div class="feedback-comment">
-                    <textarea placeholder="Optional: Tell us how we can improve... (press Enter to submit)"></textarea>
-                    <button class="btn-submit-feedback" id="submitFeedback">Submit Feedback</button>
+                    <label for="feedbackComment">Optional improvement note</label>
+                    <textarea id="feedbackComment" placeholder="Tell us how we can improve. Press Shift+Enter for a new line."></textarea>
+                    <button type="button" class="btn-submit-feedback" id="submitFeedback">Submit Feedback</button>
                 </div>
             </div>
         `;
@@ -496,11 +578,14 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.feedback-buttons .btn-feedback').forEach(b => {
                     b.classList.remove('selected');
-                    b.style.opacity = '0.5';
-                    b.disabled = true;
+                    b.setAttribute('aria-pressed', 'false');
                 });
                 btn.classList.add('selected');
-                btn.style.opacity = '1';
+                btn.setAttribute('aria-pressed', 'true');
+                const error = document.getElementById('feedbackError');
+                if (error) {
+                    error.hidden = true;
+                }
             });
         });
 
@@ -527,7 +612,12 @@
         const comment = commentEl ? commentEl.value.trim() : null;
 
         if (!rating) {
-            alert('Please select "Accurate" or "Needs Work"');
+            const error = document.getElementById('feedbackError');
+            if (error) {
+                error.hidden = false;
+                error.focus();
+            }
+            announce('Please select Accurate or Needs Work before submitting feedback.');
             return;
         }
 
@@ -549,16 +639,21 @@
         })
         .catch(err => {
             console.error('Failed to submit feedback:', err);
-            alert('Failed to submit feedback. Please try again.');
+            announce('Failed to submit feedback. Please try again.');
         });
     }
 
     function showFeedbackThankYou() {
         feedbackContent.innerHTML = `
-            <p style="font-family: 'Calibri', sans-serif; font-size: 0.85rem; color: var(--green); text-align: center; padding: 1rem;">
+            <p class="feedback-thanks" tabindex="-1">
                 Thank you for your feedback. This helps improve the system.
             </p>
         `;
+        const thanks = feedbackContent.querySelector('.feedback-thanks');
+        if (thanks) {
+            thanks.focus();
+        }
+        announce('Thank you for your feedback.');
         pendingFeedback = null;
     }
 
@@ -580,30 +675,17 @@
         currentQueryId = null;
         queryInput.disabled = false;
         queryInput.focus();
-        sendButton.disabled = false;
-        sendButton.style.opacity = '1';
+        sendButton.disabled = queryInput.value.trim().length === 0;
     }
 
-    function wrapWithCitations(text, citations) {
-        let result = text;
-        citations.forEach((citation, index) => {
-            const marker = `<sup class="citation-marker" title="${citation.instrument_title}">${index + 1}</sup>`;
-            const search = citation.instrument_title.split(' ').slice(0, 3).join('');
-            result = result.replace(
-                new RegExp(`(${search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s\\S]*?)`, 'gi'),
-                `$1${marker}`
-            );
-        });
-        return result;
-    }
-
-    function showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'message system error';
-        errorDiv.innerHTML = `<p style="color: var(--error);">${message}</p>`;
-        chatHistory.appendChild(errorDiv);
-        scrollToBottom();
-        resetProcessingState();
+    function formatStatus(status) {
+        const labels = {
+            idle: 'Idle',
+            working: 'Working',
+            complete: 'Complete',
+            error: 'Error',
+        };
+        return labels[status] || status;
     }
 
     function generateId() {

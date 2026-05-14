@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <a class="skip-link" href="#queryInput">Skip to query input</a>
+    <div id="liveStatus" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
     <header class="header-bar">
         <div class="header-content">
             <h1>ADM(HR-Civ) // HR Policy Advisory System</h1>
@@ -17,11 +20,12 @@
         </div>
     </header>
 
-    <main class="main-container">
-        <section class="chat-panel">
-            <div class="chat-history" id="chatHistory">
+    <main class="main-container" id="mainContent">
+        <section class="chat-panel" aria-labelledby="chat-heading">
+            <h2 id="chat-heading" class="sr-only">Policy advisory chat</h2>
+            <div class="chat-history" id="chatHistory" role="log" aria-live="polite" aria-relevant="additions">
                 <div class="welcome-message">
-                    <h2>Welcome to the HR Policy Advisory System</h2>
+                    <h3>Welcome to the HR Policy Advisory System</h3>
                     <p>This system synthesizes guidance from DND civilian HR policy instruments. Submit your question below to receive well-referenced policy advice from our specialist agents.</p>
                     <div class="dadm-notice">
                         <p>Decision support system only — not for making operational decisions. Authority and accountability remains with human users at all times.</p>
@@ -38,67 +42,77 @@
             </div>
 
             <div class="progress-bar-area" id="progressBarArea" aria-live="polite" aria-atomic="true" hidden>
-                <div class="progress-track">
+                <div class="progress-track" role="progressbar" aria-label="Query processing progress">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
                 <p class="progress-status-text" id="progressStatusText"></p>
             </div>
 
-            <div class="query-input-area">
+            <form class="query-input-area" id="queryForm">
                 <div class="input-wrapper">
+                    <label class="sr-only" for="queryInput">Enter your HR policy question</label>
                     <textarea 
                         id="queryInput" 
                         placeholder="Type your HR policy question here..." 
                         rows="3"
-                        aria-label="Policy query input"
+                        aria-describedby="queryInputNote"
                     ></textarea>
-                    <button id="sendButton" aria-label="Send query">
+                    <button id="sendButton" type="submit">
                         <span>Send Query</span>
                     </button>
                 </div>
-                <p class="input-note">Your question will be routed to relevant specialist agents for analysis.</p>
-            </div>
+                <p class="input-note" id="queryInputNote">Your question will be routed to relevant specialist agents for analysis. Press Shift+Enter for a new line.</p>
+            </form>
         </section>
 
-        <aside class="sidebar">
+        <aside class="sidebar" aria-label="Supporting information">
             <section class="agent-status-panel" aria-labelledby="agent-status-heading">
                 <h2 id="agent-status-heading">Agent Status</h2>
-                <div class="agent-list" id="agentList">
-                    <div class="agent-item" data-agent="orchestrator">
-                        <span class="status-dot" data-status="idle"></span>
+                <div class="agent-list" id="agentList" role="list">
+                    <div class="agent-item" data-agent="orchestrator" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Orchestrator</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="staffing">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="staffing" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Staffing & Recruitment</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="classification">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="classification" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Classification & Compensation</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="labour">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="labour" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Labour Relations</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="learning">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="learning" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Learning & Performance</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="equity">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="equity" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Equity, Diversity & Inclusion</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="ohs">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="ohs" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Health, Safety & Wellness</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="languages">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="languages" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Official Languages</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
-                    <div class="agent-item" data-agent="governance">
-                        <span class="status-dot" data-status="idle"></span>
+                    <div class="agent-item" data-agent="governance" role="listitem">
+                        <span class="status-dot" data-status="idle" aria-hidden="true"></span>
                         <span class="agent-name">Values, Ethics & Governance</span>
+                        <span class="agent-status-text">Idle</span>
                     </div>
                 </div>
             </section>
@@ -115,6 +129,11 @@
                 <div class="feedback-content" id="feedbackContent">
                     <p class="feedback-placeholder">Feedback controls will appear after a response.</p>
                 </div>
+            </section>
+
+            <section class="accessibility-panel" aria-labelledby="accessibility-heading">
+                <h2 id="accessibility-heading">Accessibility</h2>
+                <p>This prototype is being improved against Government of Canada digital accessibility guidance. It supports keyboard use, visible focus, structured responses, and reduced motion preferences.</p>
             </section>
         </aside>
     </main>
